@@ -331,8 +331,12 @@
   margin-top: 0.8rem;
 }
 
-.velto-more__spinner {
+/* higher specificity than velto-buttons.css `.button > span` (which makes
+   spans inline-block + relative for the hover underline) — the spinner must
+   stay absolutely centered and take no space, or the label shifts left */
+.velto-more__btn > .velto-more__spinner {
   position: absolute;
+  display: block;
   inset: 0;
   margin: auto;
   width: 1.8rem;
@@ -347,6 +351,8 @@
 .velto-more.is-loading .velto-more__text { opacity: 0; }
 .velto-more.is-loading .velto-more__spinner { opacity: 1; }
 .velto-more.is-done .velto-more__btn { display: none; }
+
+.velto-more__btn > .velto-more__spinner::after { content: none; }
 
 @keyframes velto-spin { to { transform: rotate(360deg); } }
 
