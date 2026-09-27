@@ -1,0 +1,21 @@
+# macOS
+.DS_Store
+
+# IDE
+.idea/
+.vscode/
+
+# Shopify CLI
+.shopify/
+*.theme.lock
+
+# Env / secrets
+.env
+.env.*
+
+# Node (на случай если появятся build tools)
+node_modules/
+npm-debug.log*
+
+# Logs
+*.log
