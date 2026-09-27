@@ -56,22 +56,40 @@
         }}
       </div>
     {%- elsif has_media -%}
-      <ul class="velto-hero__showcase" role="list" aria-label="{{ showcase.title | escape }}">
-        {%- for product in showcase.products limit: 4 -%}
-          <li class="velto-hero__tile velto-hero__tile--{{ forloop.index }}">
-            <a href="{{ product.url }}" tabindex="-1">
-              {%- if product.featured_media -%}
-                {{
-                  product.featured_media
-                  | image_url: width: 500
-                  | image_tag: loading: 'eager', sizes: '(min-width: 990px) 22vw, 1px', widths: '300, 400, 500', alt: product.title
-                }}
-              {%- endif -%}
-              <span class="velto-hero__tile-price">{{ product.price | money }}</span>
-            </a>
-          </li>
-        {%- endfor -%}
-      </ul>
+      {%- comment -%}
+        Rotating "best sellers" showcase. The 4 tiles below are a no-JS
+        fallback (collection default order); velto-showcase.js swaps them for
+        the store's best sellers (up to 30, via sections/velto-top-products)
+        and rotates them 4 at a time.
+      {%- endcomment -%}
+      <velto-showcase
+        class="velto-hero__showcase-wrap"
+        data-src="{{ showcase.url }}?sort_by=best-selling&section_id=velto-top-products"
+        data-limit="{{ section.settings.showcase_count }}"
+        data-interval="{{ section.settings.rotate_seconds | times: 1000 }}"
+      >
+        {%- if section.settings.showcase_label != blank -%}
+          <p class="velto-hero__showcase-label">{{ section.settings.showcase_label }}</p>
+        {%- endif -%}
+        <ul class="velto-hero__showcase is-loading" role="list" aria-live="off">
+          {%- for product in showcase.products limit: 4 -%}
+            <li class="velto-hero__tile">
+              <a href="{{ product.url }}" aria-label="{{ product.title | escape }} — {{ product.price | money | strip_html | escape }}">
+                {%- if product.featured_media -%}
+                  {{
+                    product.featured_media
+                    | image_url: width: 500
+                    | image_tag: loading: 'eager', sizes: '(min-width: 990px) 22vw, 25vw', widths: '300, 500', alt: ''
+                  }}
+                {%- endif -%}
+                <span class="velto-hero__tile-price">{{ product.price | money }}</span>
+              </a>
+            </li>
+          {%- endfor -%}
+        </ul>
+        <div class="velto-hero__dots" hidden></div>
+      </velto-showcase>
+      <script src="{{ 'velto-showcase.js' | asset_url }}" defer="defer"></script>
     {%- endif -%}
   </div>
 
@@ -119,7 +137,11 @@
     { "type": "text", "id": "button_label_2", "label": "Poga 2", "default": "Kategorijas" },
     { "type": "url", "id": "button_link_2", "label": "Poga 2 saite" },
     { "type": "image_picker", "id": "image", "label": "Attēls (nav obligāts)" },
-    { "type": "collection", "id": "showcase_collection", "label": "Produkti labajā pusē (ja nav attēla)", "info": "Datorā parāda 4 produktus no kolekcijas." },
+    { "type": "header", "content": "Populārāko preču vitrīna" },
+    { "type": "collection", "id": "showcase_collection", "label": "Kolekcija", "info": "Ja nav izvēlēta — visi produkti. Rāda vispirktākās preces (bez maksām, biedra karti un precēm ar tagu velto-hide-showcase)." },
+    { "type": "text", "id": "showcase_label", "label": "Vitrīnas virsraksts", "default": "Populārākās preces" },
+    { "type": "range", "id": "showcase_count", "min": 4, "max": 30, "step": 1, "label": "Preču skaits", "default": 30 },
+    { "type": "range", "id": "rotate_seconds", "min": 3, "max": 12, "step": 1, "unit": "s", "label": "Maiņas intervāls", "default": 5 },
     { "type": "color_scheme", "id": "color_scheme", "label": "t:sections.all.colors.label", "default": "scheme-1" }
   ],
   "blocks": [

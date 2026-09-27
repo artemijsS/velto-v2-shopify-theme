@@ -1,0 +1,56 @@
+{%- comment -%}
+  Data-only section for the homepage hero showcase.
+  Fetched via the Section Rendering API in the context of a collection URL:
+    /collections/all?sort_by=best-selling&section_id=velto-top-products
+  so `collection.products` comes back sorted by sales. Outputs JSON only.
+  Skips fees (bag / small-order fee), the membership product, gift cards,
+  sold-out items and anything tagged `velto-hide-showcase`. Max 30.
+{%- endcomment -%}
+{%- liquid
+  assign pool = collection
+  if pool == blank
+    assign pool = collections['all']
+  endif
+-%}
+<script type="application/json" data-velto-top>
+  [
+    {%- assign first = true -%}
+    {%- assign count = 0 -%}
+    {%- for product in pool.products limit: 50 -%}
+      {%- liquid
+        assign skip = false
+        if product.available == false or product.featured_media == blank or product.gift_card?
+          assign skip = true
+        elsif product.type == 'mws_fee_generated' or product.tags contains 'mws_fee_generated'
+          assign skip = true
+        elsif product.tags contains 'main-subscriptions' or product.tags contains 'velto-hide-showcase'
+          assign skip = true
+        elsif product.selected_or_first_available_variant.requires_shipping == false
+          assign skip = true
+        endif
+        if count >= 30
+          assign skip = true
+        endif
+      -%}
+      {%- unless skip -%}
+        {%- assign count = count | plus: 1 -%}
+        {%- unless first -%},{%- endunless -%}
+        {%- assign first = false -%}
+        {
+          "title": {{ product.title | json }},
+          "url": {{ product.url | json }},
+          "price": {{ product.price | money | json }},
+          "img": {{ product.featured_media | image_url: width: 500 | json }},
+          "img_small": {{ product.featured_media | image_url: width: 300 | json }}
+        }
+      {%- endunless -%}
+    {%- endfor -%}
+  ]
+</script>
+
+{% schema %}
+{
+  "name": "Velto top products (data)",
+  "settings": []
+}
+{% endschema %}

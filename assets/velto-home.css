@@ -120,56 +120,172 @@
   .velto-hero__text { font-size: 1.8rem; }
 }
 
-/* Product showcase (desktop only, when no hero image) */
+/* ---------- Rotating best-sellers showcase ---------- */
+.velto-hero__showcase-wrap {
+  display: block;
+  min-width: 0;
+}
+
+.velto-hero__showcase-label {
+  margin: 0 0 1.2rem;
+  font-size: 1.2rem;
+  letter-spacing: 0.2rem;
+  text-transform: uppercase;
+  color: rgba(var(--color-foreground), 0.6);
+}
+
 .velto-hero__showcase {
-  display: none;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.8rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.velto-hero__tile { min-width: 0; }
+
+.velto-hero__tile a {
+  position: relative;
+  display: block;
+  aspect-ratio: 1 / 1;
+  border-radius: 0.8rem;
+  background: #fff;
+  overflow: hidden;
+  transition: opacity 0.28s ease, transform 0.28s ease;
+}
+
+.velto-hero__tile img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  padding: 12%;
+  transition: transform 0.4s ease;
+}
+
+.velto-hero__tile-price {
+  position: absolute;
+  left: 0.5rem;
+  bottom: 0.5rem;
+  padding: 0.2rem 0.6rem;
+  border-radius: 2rem;
+  background: #0a0a0a;
+  color: #fff;
+  font-size: 1.1rem;
+  font-weight: 700;
+  line-height: 1.5;
+  white-space: nowrap;
+}
+
+/* first paint: keep white tiles until best sellers arrive (max 2.5s) */
+.velto-hero__showcase.is-loading .velto-hero__tile a > * {
+  opacity: 0;
+}
+
+.velto-hero__tile.is-swapping a {
+  opacity: 0;
+  transform: scale(0.96);
+}
+
+@media (hover: hover) {
+  .velto-hero__tile a:hover img { transform: scale(1.06); }
+}
+
+/* dots with a progress fill on the active one */
+.velto-hero__dots {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  margin-top: 1.4rem;
+}
+
+.velto-hero__dots[hidden] { display: none; }
+
+.velto-hero__dot {
+  position: relative;
+  width: 1.8rem;
+  height: 0.4rem;
+  padding: 0;
+  border: 0;
+  border-radius: 0.2rem;
+  background: rgba(var(--color-foreground), 0.2);
+  cursor: pointer;
+  overflow: hidden;
+}
+
+.velto-hero__dot::before {
+  /* larger tap area */
+  content: '';
+  position: absolute;
+  inset: -1rem -0.3rem;
+}
+
+.velto-hero__dot::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgb(var(--color-foreground));
+  transform: scaleX(0);
+  transform-origin: left;
+}
+
+.velto-hero__dot.is-active { width: 3.2rem; }
+
+.velto-hero__dot.is-active::after {
+  animation: velto-dot var(--velto-rotate, 5000ms) linear forwards;
+}
+
+velto-showcase.is-paused .velto-hero__dot.is-active::after {
+  animation-play-state: paused;
+}
+
+@keyframes velto-dot {
+  from { transform: scaleX(0); }
+  to { transform: scaleX(1); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .velto-hero__dot.is-active::after { animation: none; transform: scaleX(1); }
+  .velto-hero__tile a { transition: none; }
+}
+
+@media screen and (max-width: 989px) {
+  .velto-hero--has-image .velto-hero__inner { gap: 2.8rem; }
+  .velto-hero__tile img { padding: 10% 10% 22%; }
+  .velto-hero__tile-price {
+    left: 0.4rem;
+    bottom: 0.4rem;
+    padding: 0.1rem 0.5rem;
+    font-size: 1rem;
+  }
 }
 
 @media screen and (min-width: 990px) {
-  .velto-hero__showcase {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 1.6rem;
-    margin: 0;
-    padding: 0;
-    list-style: none;
-    max-width: 46rem;
+  .velto-hero__showcase-wrap {
     justify-self: end;
     width: 100%;
+    max-width: 46rem;
+  }
+
+  .velto-hero__showcase {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1.6rem;
   }
 
   .velto-hero__tile:nth-child(even) { transform: translateY(3.2rem); }
 
-  .velto-hero__tile a {
-    position: relative;
-    display: block;
-    aspect-ratio: 1 / 1;
-    border-radius: 1rem;
-    background: #fff;
-    overflow: hidden;
-  }
-
-  .velto-hero__tile img {
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
-    padding: 14%;
-    transition: transform 0.4s ease;
-  }
-
-  .velto-hero__tile a:hover img { transform: scale(1.05); }
+  .velto-hero__tile a { border-radius: 1rem; }
+  .velto-hero__tile img { padding: 14%; }
 
   .velto-hero__tile-price {
-    position: absolute;
     left: 1.2rem;
     bottom: 1.2rem;
     padding: 0.4rem 1rem;
-    border-radius: 2rem;
-    background: #0a0a0a;
-    color: #fff;
     font-size: 1.3rem;
-    font-weight: 700;
   }
+
+  .velto-hero__dots { margin-top: 4.8rem; }
 }
 
 /* ---------- Perks strip ---------- */
