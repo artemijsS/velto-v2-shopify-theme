@@ -748,8 +748,8 @@ velto-showcase.is-paused .velto-hero__dot.is-active::after {
 
 .velto-curated__list {
   display: grid;
-  grid-template-columns: 1fr;
-  gap: 1.2rem;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
   margin: 0;
   padding: 0;
   list-style: none;
@@ -875,6 +875,18 @@ velto-showcase.is-paused .velto-hero__dot.is-active::after {
   background: rgb(var(--color-foreground));
   border-color: rgb(var(--color-foreground));
   color: rgb(var(--color-background));
+}
+
+@media screen and (max-width: 749px) {
+  .velto-cur { min-height: 0; padding: 1.6rem 1.4rem 1.4rem; }
+  .velto-cur__thumbs { margin-bottom: 1.8rem; }
+  .velto-cur__thumb { width: 4rem; height: 4rem; box-shadow: 0 0 0 2px rgb(var(--color-background)); }
+  .velto-cur__thumb + .velto-cur__thumb { margin-left: -1rem; }
+  .velto-cur__eyebrow { font-size: 1rem; letter-spacing: 0.15rem; }
+  .velto-cur__title { font-size: 2rem; }
+  .velto-cur__text { font-size: 1.3rem; }
+  .velto-cur__meta { padding-top: 1.6rem; font-size: 1.2rem; }
+  .velto-cur__go { width: 3.2rem; height: 3.2rem; }
 }
 
 /* ================= Steps ================= */
