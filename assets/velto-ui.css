@@ -121,6 +121,15 @@
   }
 }
 
+/* ---------- Featured collection: breathing room above "View all" ---------- */
+.collection .collection__view-all {
+  margin-top: 3.2rem;
+}
+
+@media screen and (min-width: 750px) {
+  .collection .collection__view-all { margin-top: 4.8rem; }
+}
+
 /* ---------- Section titles ---------- */
 .collection .title-wrapper--no-top-margin .title,
 .collection__title .title {

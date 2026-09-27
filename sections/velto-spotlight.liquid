@@ -1,0 +1,117 @@
+{%- comment -%}
+  Velto spotlight — a collection "moment": big headline with the brand
+  underline accent + CTA on one side, a swipeable row of real product
+  cards (with quick add) on the other. Use it several times on the
+  homepage with different collections; "Reverse" flips the sides.
+{%- endcomment -%}
+{{ 'velto-home.css' | asset_url | stylesheet_tag }}
+{{ 'component-card.css' | asset_url | stylesheet_tag }}
+{{ 'component-price.css' | asset_url | stylesheet_tag }}
+{{ 'quick-add.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'product-form.js' | asset_url }}" defer="defer"></script>
+<script src="{{ 'quick-add.js' | asset_url }}" defer="defer"></script>
+
+{%- liquid
+  assign coll = section.settings.collection
+  if coll == blank
+    assign coll = collections['all']
+  endif
+  assign count = coll.products_count
+-%}
+
+<section
+  class="velto-spot{% if section.settings.reverse %} velto-spot--reverse{% endif %}"
+  style="--velto-spot-pt: {{ section.settings.padding_top }}px; --velto-spot-pb: {{ section.settings.padding_bottom }}px;"
+>
+  <div class="page-width">
+    <div class="velto-spot__card color-{{ section.settings.color_scheme }} gradient">
+      <div class="velto-spot__intro">
+        {%- if section.settings.eyebrow != blank -%}
+          <p class="velto-spot__eyebrow">{{ section.settings.eyebrow }}</p>
+        {%- endif -%}
+        <h2 class="velto-spot__title">
+          {{ section.settings.heading_before }}
+          {%- if section.settings.heading_accent != blank %}
+            <span class="velto-accent">{{ section.settings.heading_accent }}</span>
+          {%- endif %}
+          {{ section.settings.heading_after }}
+        </h2>
+        {%- if section.settings.text != blank -%}
+          <div class="velto-spot__text">{{ section.settings.text }}</div>
+        {%- endif -%}
+        <a class="button button--primary velto-spot__cta" href="{{ coll.url }}">
+          {{- section.settings.button_label -}}
+          {%- if section.settings.show_count and count > 0 %} ({{ count }}){% endif -%}
+        </a>
+      </div>
+
+      <div class="velto-spot__rail-wrap">
+        <ul class="velto-spot__rail" role="list" aria-label="{{ coll.title | escape }}">
+          {%- for product in coll.products limit: section.settings.products_to_show -%}
+            <li class="velto-spot__item">
+              {% render 'card-product',
+                card_product: product,
+                media_aspect_ratio: 'square',
+                image_shape: 'default',
+                lazy_load: true,
+                show_secondary_image: false,
+                show_vendor: false,
+                show_rating: false,
+                skip_styles: true,
+                section_id: section.id,
+                quick_add: 'standard',
+                product_view_context: 'collection'
+              %}
+            </li>
+          {%- endfor -%}
+        </ul>
+        <div class="velto-spot__nav">
+          <button type="button" class="velto-spot__arrow" data-dir="-1" aria-label="{{ 'general.slider.previous_slide' | t }}">
+            {{- 'icon-caret.svg' | inline_asset_content -}}
+          </button>
+          <button type="button" class="velto-spot__arrow" data-dir="1" aria-label="{{ 'general.slider.next_slide' | t }}">
+            {{- 'icon-caret.svg' | inline_asset_content -}}
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  (() => {
+    const root = document.currentScript.previousElementSibling;
+    const rail = root.querySelector('.velto-spot__rail');
+    root.querySelectorAll('.velto-spot__arrow').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const item = rail.querySelector('.velto-spot__item');
+        const step = item ? item.getBoundingClientRect().width + 16 : 240;
+        rail.scrollBy({ left: step * 2 * Number(btn.dataset.dir), behavior: 'smooth' });
+      });
+    });
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Velto akcents",
+  "tag": "div",
+  "class": "section",
+  "settings": [
+    { "type": "collection", "id": "collection", "label": "Kolekcija" },
+    { "type": "text", "id": "eyebrow", "label": "Virsraksts virs galvenā", "default": "Mūsu izlase" },
+    { "type": "text", "id": "heading_before", "label": "Virsraksts (sākums)", "default": "Atklāj" },
+    { "type": "text", "id": "heading_accent", "label": "Izcelts vārds", "default": "interesantāko" },
+    { "type": "text", "id": "heading_after", "label": "Virsraksts (beigas)" },
+    { "type": "richtext", "id": "text", "label": "Teksts" },
+    { "type": "text", "id": "button_label", "label": "Pogas teksts", "default": "Skatīt visu" },
+    { "type": "checkbox", "id": "show_count", "label": "Rādīt preču skaitu pogā", "default": true },
+    { "type": "range", "id": "products_to_show", "min": 3, "max": 16, "step": 1, "label": "Preču skaits", "default": 10 },
+    { "type": "checkbox", "id": "reverse", "label": "Apmainīt puses (datorā)", "default": false },
+    { "type": "color_scheme", "id": "color_scheme", "label": "t:sections.all.colors.label", "default": "scheme-2" },
+    { "type": "range", "id": "padding_top", "min": 0, "max": 100, "step": 4, "unit": "px", "label": "Atstarpe augšā", "default": 24 },
+    { "type": "range", "id": "padding_bottom", "min": 0, "max": 100, "step": 4, "unit": "px", "label": "Atstarpe apakšā", "default": 24 }
+  ],
+  "presets": [{ "name": "Velto akcents" }]
+}
+{% endschema %}

@@ -93,11 +93,178 @@
         "padding_top": 36,
         "padding_bottom": 52
       }
+    },
+    "marquee": {
+      "type": "velto-marquee",
+      "blocks": {
+        "m1": {
+          "type": "phrase",
+          "settings": {
+            "text": "Godīga cena",
+            "link": ""
+          }
+        },
+        "m2": {
+          "type": "phrase",
+          "settings": {
+            "text": "Kvalitatīva prece",
+            "link": ""
+          }
+        },
+        "m3": {
+          "type": "phrase",
+          "settings": {
+            "text": "1300+ preču",
+            "link": "shopify://collections/all"
+          }
+        },
+        "m4": {
+          "type": "phrase",
+          "settings": {
+            "text": "Tikai labākais",
+            "link": ""
+          }
+        }
+      },
+      "block_order": [
+        "m1",
+        "m2",
+        "m3",
+        "m4"
+      ],
+      "settings": {
+        "speed": 35,
+        "color_scheme": "scheme-4"
+      }
+    },
+    "spot_new": {
+      "type": "velto-spotlight",
+      "settings": {
+        "collection": "jaunumi",
+        "eyebrow": "Mūsu izlase",
+        "heading_before": "Atklāj",
+        "heading_accent": "interesantāko",
+        "heading_after": "",
+        "text": "<p>Īpaši atlasītas preces, kuras vērts nogaršot — rūpīgi izvēlētas mūsu komandas.</p>",
+        "button_label": "Skatīt visu",
+        "show_count": true,
+        "products_to_show": 10,
+        "reverse": false,
+        "color_scheme": "scheme-2",
+        "padding_top": 48,
+        "padding_bottom": 24
+      }
+    },
+    "prices": {
+      "type": "velto-price-tiles",
+      "blocks": {
+        "p1": {
+          "type": "price",
+          "settings": {
+            "max_price": 1
+          }
+        },
+        "p2": {
+          "type": "price",
+          "settings": {
+            "max_price": 2
+          }
+        },
+        "p3": {
+          "type": "price",
+          "settings": {
+            "max_price": 3
+          }
+        },
+        "p5": {
+          "type": "price",
+          "settings": {
+            "max_price": 5
+          }
+        }
+      },
+      "block_order": [
+        "p1",
+        "p2",
+        "p3",
+        "p5"
+      ],
+      "settings": {
+        "heading": "Godīgas cenas katru dienu",
+        "subheading": "Izvēlies budžetu — parādīsim visu, kas tajā iekļaujas.",
+        "prefix": "līdz",
+        "count_label": "prece|preces",
+        "color_scheme": "scheme-1",
+        "padding_top": 48,
+        "padding_bottom": 48
+      }
+    },
+    "spot_ready": {
+      "type": "velto-spotlight",
+      "settings": {
+        "collection": "gatava-kulinarija",
+        "eyebrow": "Ātri un garšīgi",
+        "heading_before": "Vakariņas",
+        "heading_accent": "bez gatavošanas",
+        "heading_after": "",
+        "text": "<p>Pankūkas, zupas, plovs un citi gatavie ēdieni — atliek tikai uzsildīt.</p>",
+        "button_label": "Skatīt visu",
+        "show_count": true,
+        "products_to_show": 12,
+        "reverse": true,
+        "color_scheme": "scheme-2",
+        "padding_top": 24,
+        "padding_bottom": 24
+      }
+    },
+    "steps": {
+      "type": "velto-steps",
+      "blocks": {
+        "s1": {
+          "type": "step",
+          "settings": {
+            "title": "Izvēlies preces",
+            "text": "Vairāk nekā 1300 preču — pārtika, dzērieni un viss mājai."
+          }
+        },
+        "s2": {
+          "type": "step",
+          "settings": {
+            "title": "Noformē pasūtījumu",
+            "text": "Pievieno grozam un samaksā droši tiešsaistē."
+          }
+        },
+        "s3": {
+          "type": "step",
+          "settings": {
+            "title": "Saņem",
+            "text": "Mēs sagatavosim pasūtījumu un paziņosim, kad tas būs gatavs."
+          }
+        }
+      },
+      "block_order": [
+        "s1",
+        "s2",
+        "s3"
+      ],
+      "settings": {
+        "heading": "Kā iepirkties Velto",
+        "button_label": "Sākt iepirkties",
+        "button_link": "shopify://collections/all",
+        "color_scheme": "scheme-1",
+        "padding_top": 48,
+        "padding_bottom": 72
+      }
     }
   },
   "order": [
     "hero",
     "categories",
-    "featured_collection"
+    "featured_collection",
+    "marquee",
+    "spot_new",
+    "prices",
+    "spot_ready",
+    "steps"
   ]
 }

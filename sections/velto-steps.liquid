@@ -1,0 +1,72 @@
+{%- comment -%}
+  Velto steps — "Kā iepirkties": 3 numbered steps with the brand
+  underline under each number, plus a closing CTA.
+{%- endcomment -%}
+{{ 'velto-home.css' | asset_url | stylesheet_tag }}
+
+<section
+  class="velto-steps color-{{ section.settings.color_scheme }} gradient"
+  style="--velto-steps-pt: {{ section.settings.padding_top }}px; --velto-steps-pb: {{ section.settings.padding_bottom }}px;"
+>
+  <div class="page-width">
+    <div class="velto-steps__head">
+      {%- if section.settings.heading != blank -%}
+        <h2 class="h2 velto-section-head__title">{{ section.settings.heading }}</h2>
+      {%- endif -%}
+      {%- if section.settings.button_label != blank -%}
+        <a class="button button--secondary" href="{{ section.settings.button_link | default: routes.all_products_collection_url }}">
+          {{- section.settings.button_label -}}
+        </a>
+      {%- endif -%}
+    </div>
+
+    <ol class="velto-steps__list" role="list">
+      {%- for block in section.blocks -%}
+        <li class="velto-step" {{ block.shopify_attributes }}>
+          <span class="velto-step__num"><span class="velto-accent">{{ forloop.index | prepend: '0' }}</span></span>
+          <h3 class="velto-step__title">{{ block.settings.title }}</h3>
+          {%- if block.settings.text != blank -%}
+            <p class="velto-step__text">{{ block.settings.text }}</p>
+          {%- endif -%}
+        </li>
+      {%- endfor -%}
+    </ol>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Velto soļi",
+  "tag": "div",
+  "class": "section",
+  "max_blocks": 4,
+  "settings": [
+    { "type": "text", "id": "heading", "label": "Virsraksts", "default": "Kā iepirkties Velto" },
+    { "type": "text", "id": "button_label", "label": "Pogas teksts", "default": "Sākt iepirkties" },
+    { "type": "url", "id": "button_link", "label": "Pogas saite" },
+    { "type": "color_scheme", "id": "color_scheme", "label": "t:sections.all.colors.label", "default": "scheme-1" },
+    { "type": "range", "id": "padding_top", "min": 0, "max": 100, "step": 4, "unit": "px", "label": "Atstarpe augšā", "default": 48 },
+    { "type": "range", "id": "padding_bottom", "min": 0, "max": 100, "step": 4, "unit": "px", "label": "Atstarpe apakšā", "default": 64 }
+  ],
+  "blocks": [
+    {
+      "type": "step",
+      "name": "Solis",
+      "settings": [
+        { "type": "text", "id": "title", "label": "Virsraksts", "default": "Izvēlies preces" },
+        { "type": "textarea", "id": "text", "label": "Teksts" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Velto soļi",
+      "blocks": [
+        { "type": "step", "settings": { "title": "Izvēlies preces", "text": "Vairāk nekā 1300 preču — pārtika, dzērieni un viss mājai." } },
+        { "type": "step", "settings": { "title": "Noformē pasūtījumu", "text": "Pievieno grozam un samaksā droši tiešsaistē." } },
+        { "type": "step", "settings": { "title": "Saņem", "text": "Mēs sagatavosim pasūtījumu un paziņosim, kad tas būs gatavs." } }
+      ]
+    }
+  ]
+}
+{% endschema %}

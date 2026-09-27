@@ -1,0 +1,59 @@
+{%- comment -%}
+  Velto marquee — a slow, endless running line of brand phrases between
+  homepage sections. Pauses on hover; static for reduced-motion users.
+{%- endcomment -%}
+{{ 'velto-home.css' | asset_url | stylesheet_tag }}
+
+{%- if section.blocks.size > 0 -%}
+  <div class="velto-marquee color-{{ section.settings.color_scheme }} gradient" style="--velto-marquee-speed: {{ section.settings.speed }}s;">
+    <div class="velto-marquee__track">
+      {%- for i in (1..2) -%}
+        <ul class="velto-marquee__group" role="list"{% if i == 2 %} aria-hidden="true"{% endif %}>
+          {%- for block in section.blocks -%}
+            <li class="velto-marquee__item" {% if i == 1 %}{{ block.shopify_attributes }}{% endif %}>
+              {%- if block.settings.link != blank -%}
+                <a href="{{ block.settings.link }}"{% if i == 2 %} tabindex="-1"{% endif %}>{{ block.settings.text }}</a>
+              {%- else -%}
+                {{ block.settings.text }}
+              {%- endif -%}
+            </li>
+          {%- endfor -%}
+        </ul>
+      {%- endfor -%}
+    </div>
+  </div>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Velto skrejošā līnija",
+  "tag": "div",
+  "class": "section",
+  "max_blocks": 10,
+  "settings": [
+    { "type": "range", "id": "speed", "min": 10, "max": 80, "step": 5, "unit": "s", "label": "Viena cikla ilgums", "default": 35 },
+    { "type": "color_scheme", "id": "color_scheme", "label": "t:sections.all.colors.label", "default": "scheme-4" }
+  ],
+  "blocks": [
+    {
+      "type": "phrase",
+      "name": "Frāze",
+      "settings": [
+        { "type": "text", "id": "text", "label": "Teksts", "default": "Godīga cena" },
+        { "type": "url", "id": "link", "label": "Saite" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Velto skrejošā līnija",
+      "blocks": [
+        { "type": "phrase", "settings": { "text": "Godīga cena" } },
+        { "type": "phrase", "settings": { "text": "Kvalitatīva prece" } },
+        { "type": "phrase", "settings": { "text": "1300+ preču" } },
+        { "type": "phrase", "settings": { "text": "Tikai labākais" } }
+      ]
+    }
+  ]
+}
+{% endschema %}
