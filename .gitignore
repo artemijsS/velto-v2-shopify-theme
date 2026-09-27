@@ -9,6 +9,11 @@
 .shopify/
 *.theme.lock
 
+# Temp/atomic-save files (editors, sync tools)
+*.tmp
+.*.tmp
+.*.*.tmp
+
 # Env / secrets
 .env
 .env.*
