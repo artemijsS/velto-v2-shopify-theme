@@ -1,0 +1,72 @@
+/* Velto — premium button styling.
+   Adds a small brand touch: the same hand-drawn, slightly-tilted
+   underline stroke used under the "velto" wordmark (see
+   snippets/velto-logo.liquid) reveals itself under the button label on
+   hover/focus, instead of a generic shadow/scale effect. */
+
+.button:not(.button--tertiary),
+.shopify-challenge__button,
+.customer button:not(.button--tertiary) {
+  text-transform: uppercase;
+  letter-spacing: 0.15rem;
+}
+
+.button > span {
+  position: relative;
+  display: inline-block;
+}
+
+.button > span::after {
+  content: '';
+  position: absolute;
+  left: 0.1rem;
+  right: 0.1rem;
+  bottom: -0.6rem;
+  height: 0.2rem;
+  background: currentColor;
+  transform: scaleX(0) rotate(-1deg);
+  transform-origin: left center;
+  opacity: 0;
+  transition: transform 0.4s cubic-bezier(0.65, 0, 0.35, 1), opacity 0.25s ease;
+  pointer-events: none;
+}
+
+.button:not([disabled]):hover > span::after,
+.button:not([disabled]):focus-visible > span::after {
+  transform: scaleX(1) rotate(-1deg);
+  opacity: 0.85;
+}
+
+.button--tertiary {
+  position: relative;
+}
+
+.button--tertiary::after {
+  content: '';
+  position: absolute;
+  left: 1.5rem;
+  right: 1.5rem;
+  bottom: 0.6rem;
+  height: 0.15rem;
+  background: currentColor;
+  transform: scaleX(0) rotate(-1deg);
+  transform-origin: left center;
+  opacity: 0;
+  transition: transform 0.4s cubic-bezier(0.65, 0, 0.35, 1), opacity 0.25s ease;
+  pointer-events: none;
+}
+
+.button--tertiary:not([disabled]):hover::after,
+.button--tertiary:not([disabled]):focus-visible::after {
+  transform: scaleX(1) rotate(-1deg);
+  opacity: 0.7;
+}
+
+.button {
+  transition: background-color var(--duration-short) ease, box-shadow var(--duration-short) ease,
+    color var(--duration-short) ease;
+}
+
+.button--primary:not([disabled]):hover {
+  background-color: rgba(var(--color-button), 0.88);
+}
