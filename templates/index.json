@@ -145,15 +145,15 @@
         "heading_before": "Atklāj",
         "heading_accent": "interesantāko",
         "heading_after": "",
-        "text": "<p>Jaunākās preces mūsu sortimentā — izlase atjaunojas automātiski, tiklīdz pienāk kas jauns.</p>",
+        "text": "<p>Jaunākās preces mūsu sortimentā — atklāj, kas jauns plauktos.</p>",
         "button_label": "Visi jaunumi",
-        "show_count": false,
+        "show_count": true,
         "products_to_show": 12,
         "reverse": false,
         "color_scheme": "scheme-2",
         "padding_top": 48,
         "padding_bottom": 24,
-        "source_url": "/collections/all?sort_by=created-descending"
+        "source_url": ""
       }
     },
     "spot_ready": {
