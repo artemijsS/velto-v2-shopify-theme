@@ -188,6 +188,26 @@
               </ul>
 
               {%- if paginate.pages > 1 -%}
+                {%- comment -%} Velto: "Rādīt vēl" + progress; pagination stays as no-JS fallback {%- endcomment -%}
+                {%- assign velto_shown = paginate.current_offset | plus: collection.products.size -%}
+                <velto-load-more
+                  class="velto-more"
+                  data-section="{{ section.id }}"
+                  data-total="{{ paginate.items }}"
+                  data-shown="{{ velto_shown }}"
+                  data-template="{{ 'velto.shown_of' | t: shown: '__SHOWN__', total: '__TOTAL__' | escape }}"
+                  {% if paginate.next %}data-next="{{ paginate.next.url }}"{% endif %}
+                >
+                  <p class="velto-more__label" data-shown>{{ 'velto.shown_of' | t: shown: velto_shown, total: paginate.items }}</p>
+                  <div class="velto-more__bar" aria-hidden="true"><span></span></div>
+                  {%- if paginate.next -%}
+                    <button type="button" class="button button--secondary velto-more__btn">
+                      <span class="velto-more__text">{{ 'velto.load_more' | t }}</span>
+                      <span class="velto-more__spinner" aria-hidden="true"></span>
+                    </button>
+                  {%- endif -%}
+                </velto-load-more>
+                <script src="{{ 'velto-load-more.js' | asset_url }}" defer="defer"></script>
                 {% render 'pagination', paginate: paginate, anchor: '' %}
               {%- endif -%}
             </div>
@@ -200,6 +220,9 @@
     {%- endif -%}
   </div>
 </collection-component>
+
+{%- comment -%} Velto overrides load after Dawn's facet/collection CSS {%- endcomment -%}
+{{ 'velto-collection.css' | asset_url | stylesheet_tag }}
 
 {% schema %}
 {

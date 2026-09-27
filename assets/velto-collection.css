@@ -1,0 +1,354 @@
+/* Velto — collection page: hero, subcategory chips, load more, facets. */
+
+/* ================= Hero ================= */
+.velto-coll-hero {
+  position: relative;
+  overflow: hidden;
+  border-bottom: 1px solid rgba(var(--color-foreground), 0.08);
+}
+
+.velto-coll-hero::before {
+  content: '';
+  position: absolute;
+  inset: -60% -10% auto auto;
+  width: 60rem;
+  height: 60rem;
+  background: radial-gradient(closest-side, rgba(var(--color-foreground), 0.06), transparent);
+  pointer-events: none;
+}
+
+.velto-coll-hero__inner {
+  position: relative;
+  display: grid;
+  gap: 2.4rem;
+  padding-top: 2.4rem;
+  padding-bottom: 2rem;
+}
+
+@media screen and (min-width: 990px) {
+  .velto-coll-hero__inner {
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: end;
+    padding-top: 4rem;
+    padding-bottom: 3.2rem;
+  }
+}
+
+.velto-crumbs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem 0.8rem;
+  margin-bottom: 1.6rem;
+  font-size: 1.2rem;
+  letter-spacing: 0.12rem;
+  text-transform: uppercase;
+  color: rgba(var(--color-foreground), 0.5);
+}
+
+.velto-crumbs a {
+  color: rgba(var(--color-foreground), 0.7);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.velto-crumbs a:hover { color: rgb(var(--color-foreground)); }
+.velto-crumbs [aria-current] { color: rgba(var(--color-foreground), 0.9); }
+
+.velto-coll-hero__title {
+  margin: 0;
+  font-size: clamp(3.4rem, 6vw, 6.4rem);
+  line-height: 1.02;
+  letter-spacing: -0.025em;
+  animation: velto-rise 0.6s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+}
+
+.velto-coll-hero__meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.6rem 1.2rem;
+  margin: 1.4rem 0 0;
+  font-size: 1.4rem;
+  color: rgba(var(--color-foreground), 0.65);
+  animation: velto-rise 0.6s 0.08s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+}
+
+.velto-coll-hero__count {
+  color: rgb(var(--color-foreground));
+  font-weight: 600;
+}
+
+.velto-coll-hero__dot {
+  width: 0.4rem;
+  height: 0.4rem;
+  border-radius: 50%;
+  background: rgba(var(--color-foreground), 0.35);
+}
+
+.velto-coll-hero__desc {
+  max-width: 64rem;
+  margin-top: 1.4rem;
+  font-size: 1.5rem;
+  line-height: 1.6;
+  color: rgba(var(--color-foreground), 0.7);
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.velto-coll-hero__desc p { margin: 0; }
+
+/* collage — desktop only */
+.velto-coll-hero__collage { display: none; }
+
+@media screen and (min-width: 990px) {
+  .velto-coll-hero__collage {
+    display: flex;
+    align-items: flex-end;
+    margin: 0;
+    padding: 0 1.2rem 0 0;
+    list-style: none;
+  }
+
+  .velto-coll-hero__tile {
+    width: 13rem;
+    height: 13rem;
+    border-radius: 1.2rem;
+    background: #fff;
+    box-shadow: 0 0 0 4px rgb(var(--color-background)), 0 2rem 4rem rgba(0, 0, 0, 0.35);
+    overflow: hidden;
+    animation: velto-tile-in 0.7s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+  }
+
+  .velto-coll-hero__tile + .velto-coll-hero__tile { margin-left: -2.4rem; }
+  .velto-coll-hero__tile:nth-child(1) { transform: rotate(-6deg) translateY(0.8rem); animation-delay: 0.05s; }
+  .velto-coll-hero__tile:nth-child(2) { transform: translateY(-1.6rem); z-index: 1; width: 15rem; height: 15rem; animation-delay: 0.15s; }
+  .velto-coll-hero__tile:nth-child(3) { transform: rotate(6deg) translateY(0.8rem); animation-delay: 0.25s; }
+
+  .velto-coll-hero__tile img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    padding: 14%;
+  }
+}
+
+@keyframes velto-rise {
+  from { opacity: 0; transform: translateY(1.2rem); }
+  to { opacity: 1; transform: none; }
+}
+
+@keyframes velto-tile-in {
+  from { opacity: 0; margin-top: 3rem; }
+  to { opacity: 1; margin-top: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .velto-coll-hero__title,
+  .velto-coll-hero__meta,
+  .velto-coll-hero__tile { animation: none; }
+}
+
+/* ================= Chips ================= */
+.velto-chips-wrap {
+  position: relative;
+  padding-bottom: 2rem;
+}
+
+@media screen and (max-width: 989px) {
+  .velto-chips-wrap {
+    margin: 0 -1.5rem;
+    -webkit-mask-image: linear-gradient(90deg, #000 85%, transparent);
+    mask-image: linear-gradient(90deg, #000 85%, transparent);
+  }
+}
+
+.velto-chips {
+  display: flex;
+  gap: 0.8rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.velto-chips::-webkit-scrollbar { display: none; }
+
+@media screen and (max-width: 989px) {
+  .velto-chips { padding: 0 1.5rem; }
+}
+
+@media screen and (min-width: 990px) {
+  .velto-chips { flex-wrap: wrap; overflow: visible; }
+}
+
+.velto-chips > li { flex: 0 0 auto; }
+
+.velto-chips__sep {
+  width: 1px;
+  align-self: stretch;
+  margin: 0.6rem 0.4rem;
+  background: rgba(var(--color-foreground), 0.15);
+}
+
+.velto-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.8rem;
+  height: 4.4rem;
+  padding: 0 1.8rem;
+  border-radius: 4rem;
+  border: 1px solid rgba(var(--color-foreground), 0.16);
+  background: rgba(var(--color-foreground), 0.03);
+  color: rgba(var(--color-foreground), 0.85);
+  font-size: 1.4rem;
+  white-space: nowrap;
+  text-decoration: none;
+  transition: border-color 0.2s ease, background-color 0.2s ease, color 0.2s ease;
+}
+
+.velto-chip:has(.velto-chip__img) { padding-left: 0.5rem; }
+
+.velto-chip:hover {
+  border-color: rgba(var(--color-foreground), 0.5);
+  color: rgb(var(--color-foreground));
+}
+
+.velto-chip.is-active {
+  background: rgb(var(--color-foreground));
+  border-color: rgb(var(--color-foreground));
+  color: rgb(var(--color-background));
+  font-weight: 600;
+}
+
+.velto-chip__img {
+  display: grid;
+  place-items: center;
+  width: 3.4rem;
+  height: 3.4rem;
+  border-radius: 50%;
+  background: #fff;
+  overflow: hidden;
+}
+
+.velto-chip__img img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  padding: 12%;
+}
+
+.velto-chip--filter .velto-chip__spark svg {
+  display: block;
+  width: 1.5rem;
+  height: 1.5rem;
+  fill: currentColor;
+}
+
+.velto-chip__x {
+  margin-left: 0.2rem;
+  font-size: 1.8rem;
+  line-height: 1;
+}
+
+/* ================= Facets bar polish ================= */
+.facets-container {
+  padding-top: 0.4rem;
+}
+
+.facets__form .facets__summary,
+.facet-filters__field .select__select,
+.facets__disclosure-horizontal > summary {
+  border-radius: 4rem;
+}
+
+.facets__disclosure-horizontal > .facets__summary {
+  padding: 0.8rem 1.4rem;
+  border: 1px solid rgba(var(--color-foreground), 0.16);
+  transition: border-color 0.2s ease;
+}
+
+.facets__disclosure-horizontal > .facets__summary:hover,
+.facets__disclosure-horizontal[open] > .facets__summary {
+  border-color: rgba(var(--color-foreground), 0.5);
+}
+
+.facets__disclosure-horizontal .facets__display {
+  border-radius: 1rem;
+  box-shadow: 0 2rem 4rem rgba(0, 0, 0, 0.45);
+}
+
+.active-facets__button-inner {
+  border-radius: 4rem;
+}
+
+.facet-filters__field .select__select {
+  padding-left: 1.4rem;
+  border: 1px solid rgba(var(--color-foreground), 0.16);
+  box-shadow: none;
+}
+
+/* ================= Load more ================= */
+.velto-more {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.2rem;
+  margin: 4.8rem auto 0;
+  max-width: 32rem;
+  text-align: center;
+}
+
+.velto-more__label {
+  margin: 0;
+  font-size: 1.3rem;
+  letter-spacing: 0.06rem;
+  color: rgba(var(--color-foreground), 0.65);
+}
+
+.velto-more__bar {
+  width: 100%;
+  height: 2px;
+  border-radius: 2px;
+  background: rgba(var(--color-foreground), 0.12);
+  overflow: hidden;
+}
+
+.velto-more__bar span {
+  display: block;
+  height: 100%;
+  background: rgb(var(--color-foreground));
+  transform-origin: left;
+  transform: scaleX(0);
+  transition: transform 0.6s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+.velto-more__btn {
+  position: relative;
+  min-width: 22rem;
+  margin-top: 0.8rem;
+}
+
+.velto-more__spinner {
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  width: 1.8rem;
+  height: 1.8rem;
+  border-radius: 50%;
+  border: 2px solid currentColor;
+  border-right-color: transparent;
+  opacity: 0;
+  animation: velto-spin 0.7s linear infinite;
+}
+
+.velto-more.is-loading .velto-more__text { opacity: 0; }
+.velto-more.is-loading .velto-more__spinner { opacity: 1; }
+.velto-more.is-done .velto-more__btn { display: none; }
+
+@keyframes velto-spin { to { transform: rotate(360deg); } }
+
+/* JS version replaces classic pagination */
+velto-load-more:defined ~ .pagination-wrapper { display: none; }

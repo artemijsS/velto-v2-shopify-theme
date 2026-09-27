@@ -85,7 +85,7 @@
       "blog": "Blogs",
       "read_more_title": "Lasīt vairāk: {{ title }}",
       "comments": {
-        "zero": "{{ count }} komentāru",
+        "zero": "{{ count }} komentāri",
         "one": "{{ count }} komentārs",
         "other": "{{ count }} komentāri"
       },
@@ -209,7 +209,7 @@
         "other": "{{ product_count }} no {{ count }} produktiem"
       },
       "product_count_simple": {
-        "zero": "{{ count }} produktu",
+        "zero": "{{ count }} produkti",
         "one": "{{ count }} produkts",
         "other": "{{ count }} produkti"
       },
@@ -226,27 +226,27 @@
       "page": "Lapa",
       "products": "Produkti",
       "results_pages_with_count": {
-        "zero": "{{ count }} lapu",
+        "zero": "{{ count }} lapas",
         "one": "{{ count }} lapa",
         "other": "{{ count }} lapas"
       },
       "results_suggestions_with_count": {
-        "zero": "{{ count }} ieteikumu",
+        "zero": "{{ count }} ieteikumi",
         "one": "{{ count }} ieteikums",
         "other": "{{ count }} ieteikumi"
       },
       "results_products_with_count": {
-        "zero": "{{ count }} produktu",
+        "zero": "{{ count }} produkti",
         "one": "{{ count }} produkts",
         "other": "{{ count }} produkti"
       },
       "results_with_count": {
-        "zero": "{{ count }} rezultātu",
+        "zero": "{{ count }} rezultāti",
         "one": "{{ count }} rezultāts",
         "other": "{{ count }} rezultāti"
       },
       "results_with_count_and_term": {
-        "zero": "Vaicājumam “{{ terms }}” atrasts {{ count }} rezultātu",
+        "zero": "Vaicājumam “{{ terms }}” atrasti {{ count }} rezultāti",
         "one": "Vaicājumam “{{ terms }}” atrasts {{ count }} rezultāts",
         "other": "Vaicājumam “{{ terms }}” atrasti {{ count }} rezultāti"
       },
@@ -287,7 +287,7 @@
       "announcement": "Paziņojums",
       "menu": "Izvēlne",
       "cart_count": {
-        "zero": "{{ count }} preču",
+        "zero": "{{ count }} preces",
         "one": "{{ count }} prece",
         "other": "{{ count }} preces"
       }
@@ -369,12 +369,12 @@
       "variant": "Variants",
       "variant_total": "Varianta summa",
       "items_added": {
-        "zero": "Pievienots {{ quantity }} preču",
+        "zero": "Pievienotas {{ quantity }} preces",
         "one": "Pievienota {{ quantity }} prece",
         "other": "Pievienotas {{ quantity }} preces"
       },
       "items_removed": {
-        "zero": "Noņemts {{ quantity }} preču",
+        "zero": "Noņemtas {{ quantity }} preces",
         "one": "Noņemta {{ quantity }} prece",
         "other": "Noņemtas {{ quantity }} preces"
       },
@@ -539,5 +539,16 @@
       "send_on": "GGGG-MM-DD",
       "send_on_label": "Nosūtīt (nav obligāts)"
     }
+  },
+  "velto": {
+    "home": "Sākums",
+    "all": "Visi",
+    "products_count": {
+      "zero": "{{ count }} preces",
+      "one": "{{ count }} prece",
+      "other": "{{ count }} preces"
+    },
+    "load_more": "Rādīt vēl",
+    "shown_of": "Parādītas {{ shown }} no {{ total }}"
   }
 }

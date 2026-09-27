@@ -1,0 +1,179 @@
+{%- comment -%}
+  Velto collection hero — replaces Dawn's plain collection title.
+  - breadcrumb (Sākums › parent category › current)
+  - big title with product count, short description
+  - subcategory chips built from the main menu: on a top category its
+    children, on a subcategory its siblings (current one highlighted),
+    each with a small product thumbnail; swipe row on mobile
+  - one-tap quick filter (default: "Lieliska cena") with its live count
+    in this collection; toggles on/off
+  - desktop: a small collage of 3 products from the collection
+{%- endcomment -%}
+{{ 'velto-collection.css' | asset_url | stylesheet_tag }}
+
+{%- liquid
+  assign menu = section.settings.menu
+  assign parent_link = nil
+  for link in menu.links
+    if link.active or link.child_active
+      assign parent_link = link
+      break
+    endif
+  endfor
+
+  assign qf_name = ''
+  assign qf_value = ''
+  assign qf_count = 0
+  assign qf_active = false
+  if section.settings.quick_filter != blank
+    assign qf_parts = section.settings.quick_filter | split: '='
+    assign qf_name = qf_parts | first
+    assign qf_value = section.settings.quick_filter | remove_first: qf_name | remove_first: '='
+    for f in collection.filters
+      for v in f.values
+        if v.param_name == qf_name and v.value == qf_value
+          assign qf_count = v.count
+          if v.active
+            assign qf_active = true
+            assign qf_off_url = v.url_to_remove
+          else
+            assign qf_on_url = v.url_to_add
+          endif
+        endif
+      endfor
+    endfor
+  endif
+
+  assign collage = collection.products | where: 'featured_media'
+-%}
+
+<section class="velto-coll-hero color-{{ section.settings.color_scheme }} gradient">
+  <div class="page-width velto-coll-hero__inner">
+    <div class="velto-coll-hero__main">
+      <nav class="velto-crumbs" aria-label="Breadcrumb">
+        <a href="{{ routes.root_url }}">{{ 'velto.home' | t }}</a>
+        {%- if parent_link and parent_link.active == false -%}
+          <span aria-hidden="true">/</span>
+          <a href="{{ parent_link.url }}">{{ parent_link.title | remove: '💙' | strip }}</a>
+        {%- endif -%}
+        <span aria-hidden="true">/</span>
+        <span aria-current="page">{{ collection.title | remove: '💙' | strip }}</span>
+      </nav>
+
+      <h1 class="velto-coll-hero__title">{{ collection.title | remove: '💙' | strip }}</h1>
+
+      <p class="velto-coll-hero__meta">
+        <span class="velto-coll-hero__count">{{ 'velto.products_count' | t: count: collection.products_count }}</span>
+        {%- if qf_count > 0 and qf_active == false -%}
+          <span class="velto-coll-hero__dot" aria-hidden="true"></span>
+          <span>{{ section.settings.quick_filter_label }}: {{ qf_count }}</span>
+        {%- endif -%}
+      </p>
+
+      {%- if section.settings.show_description and collection.description != blank -%}
+        <div class="velto-coll-hero__desc rte">{{ collection.description | strip_html | truncatewords: 40 }}</div>
+      {%- endif -%}
+    </div>
+
+    {%- if section.settings.show_collage and collage.size > 0 -%}
+      <ul class="velto-coll-hero__collage" role="list" aria-hidden="true">
+        {%- for p in collage limit: 3 -%}
+          <li class="velto-coll-hero__tile">
+            {{
+              p.featured_media
+              | image_url: width: 400
+              | image_tag: loading: 'eager', sizes: '180px', widths: '200, 300, 400', alt: ''
+            }}
+          </li>
+        {%- endfor -%}
+      </ul>
+    {%- endif -%}
+  </div>
+
+  {%- if parent_link and parent_link.links.size > 0 or qf_count > 0 or qf_active -%}
+    <div class="page-width">
+      <div class="velto-chips-wrap">
+        <ul class="velto-chips" role="list">
+          {%- if qf_count > 0 or qf_active -%}
+            <li>
+              <a
+                class="velto-chip velto-chip--filter{% if qf_active %} is-active{% endif %}"
+                href="{% if qf_active %}{{ qf_off_url }}{% else %}{{ qf_on_url }}{% endif %}"
+                {% if qf_active %}aria-current="true"{% endif %}
+              >
+                <span class="velto-chip__spark" aria-hidden="true">{{- 'icon-price-tag.svg' | inline_asset_content -}}</span>
+                {{ section.settings.quick_filter_label }}
+                {%- if qf_active %}<span class="velto-chip__x" aria-hidden="true">×</span>{% endif -%}
+              </a>
+            </li>
+            {%- if parent_link and parent_link.links.size > 0 -%}
+              <li class="velto-chips__sep" aria-hidden="true"></li>
+            {%- endif -%}
+          {%- endif -%}
+
+          {%- if parent_link and parent_link.links.size > 0 -%}
+            <li>
+              <a class="velto-chip{% if parent_link.active %} is-active{% endif %}" href="{{ parent_link.url }}"{% if parent_link.active %} aria-current="page"{% endif %}>
+                {{ 'velto.all' | t }}
+              </a>
+            </li>
+            {%- for child in parent_link.links -%}
+              {%- if child.url == parent_link.url -%}{%- continue -%}{%- endif -%}
+              {%- liquid
+                assign img = nil
+                if child.type == 'collection_link' and child.object
+                  assign img = child.object.featured_image
+                  if img == blank
+                    assign img = child.object.products.first.featured_media.preview_image
+                  endif
+                endif
+              -%}
+              <li>
+                <a class="velto-chip{% if child.active %} is-active{% endif %}" href="{{ child.url }}"{% if child.active %} aria-current="page"{% endif %}>
+                  {%- if img != blank -%}
+                    <span class="velto-chip__img">{{ img | image_url: width: 96 | image_tag: loading: 'eager', sizes: '34px', widths: '96', alt: '' }}</span>
+                  {%- endif -%}
+                  {{ child.title }}
+                </a>
+              </li>
+            {%- endfor -%}
+          {%- endif -%}
+        </ul>
+      </div>
+    </div>
+  {%- endif -%}
+</section>
+
+<script>
+  (() => {
+    // keep the active chip in view on mobile
+    const row = document.currentScript.previousElementSibling.querySelector('.velto-chips');
+    const active = row && row.querySelector('.velto-chip.is-active:not(.velto-chip--filter)');
+    if (active && row.scrollWidth > row.clientWidth) {
+      row.scrollLeft = active.offsetLeft - row.clientWidth / 2 + active.offsetWidth / 2;
+    }
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Velto kolekcijas galva",
+  "tag": "div",
+  "class": "section",
+  "settings": [
+    { "type": "link_list", "id": "menu", "label": "Izvēlne apakškategorijām", "default": "main-menu" },
+    { "type": "checkbox", "id": "show_description", "label": "Rādīt aprakstu", "default": true },
+    { "type": "checkbox", "id": "show_collage", "label": "Rādīt produktu kolāžu (datorā)", "default": true },
+    { "type": "header", "content": "Ātrais filtrs" },
+    { "type": "text", "id": "quick_filter_label", "label": "Nosaukums", "default": "Lieliska cena" },
+    {
+      "type": "text",
+      "id": "quick_filter",
+      "label": "Filtra parametrs",
+      "default": "filter.p.m.custom.price_category=gid://shopify/FilterSettingGroup/311165259",
+      "info": "Nokopējiet no kolekcijas lapas adreses pēc filtra ieslēgšanas (param=vērtība). Tukšs — neslēpt."
+    },
+    { "type": "color_scheme", "id": "color_scheme", "label": "t:sections.all.colors.label", "default": "scheme-1" }
+  ]
+}
+{% endschema %}
