@@ -1,53 +1,17 @@
-/* Velto wordmark — live text logo (Permanent Marker + Manrope).
-   Matches the brand lockup in Figma (file: Brand, node 2316:9 / 2316:5).
-   Renders as real text (not an image) so it stays crisp at any size,
-   inherits color from the surrounding color scheme, and needs no asset. */
+/* Velto wordmark — inline vector logo (see snippets/velto-logo.liquid).
+   The artwork uses fill="currentColor" so it automatically matches
+   whatever color scheme the surrounding section applies. */
+
+.velto-logo-wrap {
+  display: inline-flex;
+}
 
 .velto-logo {
-  display: inline-flex;
-  flex-direction: column;
-  align-items: flex-start;
-  line-height: 1;
-}
-
-.velto-logo__mark {
-  display: inline-flex;
-  flex-direction: column;
-  align-items: stretch;
-  transform: rotate(1.5deg);
-  transform-origin: left center;
-}
-
-.velto-logo__word {
-  font-family: 'Permanent Marker', cursive;
-  font-size: var(--velto-font-size, 40px);
-  line-height: 1;
   color: currentColor;
-  white-space: nowrap;
-}
-
-.velto-logo__rule {
-  display: block;
-  height: var(--velto-underline-h, 3px);
-  border-radius: var(--velto-underline-radius, 2px);
-  background: currentColor;
-  margin-top: calc(var(--velto-font-size, 40px) * -0.18);
-}
-
-.velto-logo__tagline {
-  font-family: 'Manrope', sans-serif;
-  font-weight: 600;
-  font-size: var(--velto-tagline-size, 10px);
-  letter-spacing: 0.4em;
-  text-transform: uppercase;
-  color: currentColor;
-  opacity: 0.65;
-  margin-top: calc(var(--velto-tagline-size, 10px) * 0.9);
-  white-space: nowrap;
 }
 
 @media screen and (max-width: 749px) {
-  .velto-logo__tagline {
+  .velto-logo .velto-logo__tagline {
     display: none;
   }
 }
