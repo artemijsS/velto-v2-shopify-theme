@@ -55,35 +55,19 @@
     padding-right: 2.7rem;
   }
 
-  /* Velto: large category menu — keep the top-level nav on one clean,
-     horizontally scrollable row on desktop instead of letting ~10+ long
-     category names wrap into a messy multi-line block under the logo. */
+  /* Velto: large category menu — the nav now has its own full-width row
+     (logo_position: top-left), so instead of forcing everything onto one
+     line, let it wrap into a centered, evenly-spaced block. Fully visible
+     at a glance, no hidden scroll interaction to discover. */
   @media screen and (min-width: 990px) {
-    .header__inline-menu {
-      overflow-x: auto;
-      overflow-y: hidden;
-      -ms-overflow-style: none;
-      scrollbar-width: none;
-      -webkit-mask-image: linear-gradient(to right, transparent, black 1.5rem, black calc(100% - 3rem), transparent);
-      mask-image: linear-gradient(to right, transparent, black 1.5rem, black calc(100% - 3rem), transparent);
-    }
-
-    .header__inline-menu::-webkit-scrollbar {
-      display: none;
-    }
-
     .header__inline-menu .list-menu--inline {
-      flex-wrap: nowrap;
-      width: max-content;
+      justify-content: center;
+      row-gap: 0.6rem;
+      column-gap: 0.4rem;
     }
 
     summary.list-menu__item {
-      padding-right: 1.8rem;
-      white-space: nowrap;
-    }
-
-    .header__inline-menu .list-menu__item--link {
-      white-space: nowrap;
+      padding-right: 1.6rem;
     }
   }
 
