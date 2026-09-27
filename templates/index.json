@@ -105,8 +105,9 @@
         "m4"
       ],
       "settings": {
-        "speed": 70,
-        "color_scheme": "scheme-1"
+        "speed": 280,
+        "color_scheme": "scheme-1",
+        "repeat": 4
       }
     },
     "spot_new": {

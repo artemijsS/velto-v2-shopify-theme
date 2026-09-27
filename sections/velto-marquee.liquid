@@ -7,16 +7,29 @@
 {%- if section.blocks.size > 0 -%}
   <div class="velto-marquee color-{{ section.settings.color_scheme }} gradient" style="--velto-marquee-speed: {{ section.settings.speed }}s;">
     <div class="velto-marquee__track">
+      {%- comment -%}
+        Two identical halves scroll by -50% for a seamless loop. Each half
+        repeats the phrases (setting "Atkārtojumi") so it is always wider
+        than the screen — otherwise wide monitors see the end of the line.
+      {%- endcomment -%}
       {%- for i in (1..2) -%}
         <ul class="velto-marquee__group" role="list"{% if i == 2 %} aria-hidden="true"{% endif %}>
-          {%- for block in section.blocks -%}
-            <li class="velto-marquee__item" {% if i == 1 %}{{ block.shopify_attributes }}{% endif %}>
-              {%- if block.settings.link != blank -%}
-                <a href="{{ block.settings.link }}"{% if i == 2 %} tabindex="-1"{% endif %}>{{ block.settings.text }}</a>
-              {%- else -%}
-                {{ block.settings.text }}
-              {%- endif -%}
-            </li>
+          {%- for r in (1..section.settings.repeat) -%}
+            {%- for block in section.blocks -%}
+              {%- liquid
+                assign hidden = false
+                if i == 2 or r > 1
+                  assign hidden = true
+                endif
+              -%}
+              <li class="velto-marquee__item"{% if hidden %} aria-hidden="true"{% endif %} {% if i == 1 and r == 1 %}{{ block.shopify_attributes }}{% endif %}>
+                {%- if block.settings.link != blank -%}
+                  <a href="{{ block.settings.link }}"{% if hidden %} tabindex="-1"{% endif %}>{{ block.settings.text }}</a>
+                {%- else -%}
+                  {{ block.settings.text }}
+                {%- endif -%}
+              </li>
+            {%- endfor -%}
           {%- endfor -%}
         </ul>
       {%- endfor -%}
@@ -31,7 +44,8 @@
   "class": "section",
   "max_blocks": 10,
   "settings": [
-    { "type": "range", "id": "speed", "min": 10, "max": 80, "step": 5, "unit": "s", "label": "Viena cikla ilgums", "default": 35 },
+    { "type": "range", "id": "speed", "min": 20, "max": 300, "step": 10, "unit": "s", "label": "Viena cikla ilgums", "default": 240 },
+    { "type": "range", "id": "repeat", "min": 1, "max": 8, "step": 1, "label": "Atkārtojumi (lai līnija būtu platāka par ekrānu)", "default": 4 },
     { "type": "color_scheme", "id": "color_scheme", "label": "t:sections.all.colors.label", "default": "scheme-4" }
   ],
   "blocks": [
