@@ -576,6 +576,11 @@
       "legend_today": "Сегодня",
       "order": "Закажите",
       "delivery": "Доставка"
+    },
+    "footer": {
+      "email": "E-mail",
+      "phone": "Телефон",
+      "cookies": "Настройки cookie"
     }
   }
 }

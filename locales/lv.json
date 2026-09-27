@@ -563,6 +563,11 @@
       "legend_today": "Šodien",
       "order": "Pasūti",
       "delivery": "Piegāde"
+    },
+    "footer": {
+      "email": "E-pasts",
+      "phone": "Tālrunis",
+      "cookies": "Sīkdatņu iestatījumi"
     }
   }
 }

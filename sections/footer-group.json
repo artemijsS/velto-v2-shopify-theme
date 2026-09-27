@@ -3,40 +3,28 @@
   "type": "footer",
   "sections": {
     "footer": {
-      "type": "footer",
-      "blocks": {
-        "brand": {
-          "type": "text",
-          "settings": {
-            "heading": "Velto",
-            "subtext": "<p>Interneta veikals Latvijā ar kvalitatīvu produkciju par godīgām cenām. Mēs garantējam godīgu cenu un kvalitatīvu preci.</p>"
-          }
-        },
-        "info": {
-          "type": "link_list",
-          "settings": {
-            "heading": "Informācija",
-            "menu": "footer"
-          }
-        }
-      },
-      "block_order": [
-        "brand",
-        "info"
-      ],
+      "type": "velto-footer",
       "settings": {
-        "color_scheme": "scheme-1",
-        "newsletter_enable": true,
-        "newsletter_heading": "Saņemiet jaunumus un piedāvājumus",
-        "enable_follow_on_shop": true,
-        "show_social": true,
-        "enable_country_selector": true,
-        "enable_language_selector": true,
+        "tagline": "Vairāk vērtības jums",
+        "about": "<p>Interneta veikals ar kvalitatīvu produkciju par godīgām cenām. Sadarbojamies ar vietējiem ražotājiem un piegādātājiem.</p>",
+        "instagram_handle": "@velto.lv",
+        "tiktok_handle": "@velto.lv",
+        "categories_heading": "Kategorijas",
+        "categories_menu": "main-menu",
+        "categories_limit": 8,
+        "info_heading": "Informācija",
+        "info_menu": "footer",
+        "contacts_heading": "Kontakti",
+        "email": "info@expresspoint.lv",
+        "phones": "+371 26322465, +371 22331502",
+        "phone_hours": "Darba dienās 10:00–17:00",
+        "pickup_heading": "Izsniegšanas punkts",
+        "pickup_address": "Aroniju iela 1a, Dreiliņi, Stopiņu pagasts, Ropažu novads, LV-2130",
+        "pickup_hours": "Pk.: 13:00–21:00\nS.–Sv.: 11:00–19:00",
+        "company": "SIA ExpressPoint, reģ. nr. 40203433692",
         "payment_enable": true,
-        "show_policy": true,
-        "margin_top": 0,
-        "padding_top": 36,
-        "padding_bottom": 36
+        "show_watermark": true,
+        "color_scheme": "scheme-1"
       }
     }
   },

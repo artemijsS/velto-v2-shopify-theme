@@ -1,0 +1,234 @@
+{%- comment -%}
+  Velto footer — replaces Dawn's footer (no newsletter).
+  Brand + socials · categories · info menu · contacts & pickup point with
+  the live weekly schedule · bottom bar (company, policies, cookie
+  preferences, language, payments) · large wordmark watermark.
+{%- endcomment -%}
+{{ 'velto-footer.css' | asset_url | stylesheet_tag }}
+{{ 'component-list-payment.css' | asset_url | stylesheet_tag }}
+
+{%- liquid
+  assign ig = settings.social_instagram_link
+  assign tt = settings.social_tiktok_link
+  assign cat_menu = section.settings.categories_menu
+  assign info_menu = section.settings.info_menu
+  assign cat_limit = section.settings.categories_limit
+-%}
+
+<footer class="velto-footer color-{{ section.settings.color_scheme }} gradient">
+  <div class="page-width">
+    <div class="velto-footer__grid">
+      {%- comment -%} ---------- Brand ---------- {%- endcomment -%}
+      <div class="velto-footer__brand">
+        <a href="{{ routes.root_url }}" class="velto-footer__logo" aria-label="{{ shop.name | escape }}">
+          {%- render 'velto-logo' -%}
+        </a>
+        {%- if section.settings.tagline != blank -%}
+          <p class="velto-footer__tagline">{{ section.settings.tagline }}</p>
+        {%- endif -%}
+        {%- if section.settings.about != blank -%}
+          <div class="velto-footer__about">{{ section.settings.about }}</div>
+        {%- endif -%}
+
+        {%- if ig != blank or tt != blank -%}
+          <ul class="velto-footer__social" role="list">
+            {%- if ig != blank -%}
+              <li>
+                <a class="velto-social" href="{{ ig }}" target="_blank" rel="noopener">
+                  <span class="velto-social__icon" aria-hidden="true">{{- 'icon-instagram.svg' | inline_asset_content -}}</span>
+                  <span class="velto-social__text">
+                    <span class="velto-social__net">Instagram</span>
+                    <span class="velto-social__handle">{{ section.settings.instagram_handle }}</span>
+                  </span>
+                </a>
+              </li>
+            {%- endif -%}
+            {%- if tt != blank -%}
+              <li>
+                <a class="velto-social" href="{{ tt }}" target="_blank" rel="noopener">
+                  <span class="velto-social__icon" aria-hidden="true">{{- 'icon-tiktok.svg' | inline_asset_content -}}</span>
+                  <span class="velto-social__text">
+                    <span class="velto-social__net">TikTok</span>
+                    <span class="velto-social__handle">{{ section.settings.tiktok_handle }}</span>
+                  </span>
+                </a>
+              </li>
+            {%- endif -%}
+          </ul>
+        {%- endif -%}
+      </div>
+
+      {%- comment -%} ---------- Categories ---------- {%- endcomment -%}
+      {%- if cat_menu != blank and cat_menu.links.size > 0 -%}
+        <nav class="velto-footer__col" aria-labelledby="VeltoFooterCats">
+          <h2 class="velto-footer__heading" id="VeltoFooterCats">{{ section.settings.categories_heading }}</h2>
+          <ul class="velto-footer__links" role="list">
+            {%- for link in cat_menu.links limit: cat_limit -%}
+              <li><a href="{{ link.url }}">{{ link.title | remove: '💙' | strip }}</a></li>
+            {%- endfor -%}
+            {%- if cat_menu.links.size > cat_limit -%}
+              <li>
+                <a class="velto-footer__more" href="{{ routes.collections_url }}">
+                  {{- 'sections.collection_list.view_all' | t }}
+                  <span aria-hidden="true">→</span>
+                </a>
+              </li>
+            {%- endif -%}
+          </ul>
+        </nav>
+      {%- endif -%}
+
+      {%- comment -%} ---------- Info ---------- {%- endcomment -%}
+      {%- if info_menu != blank and info_menu.links.size > 0 -%}
+        <nav class="velto-footer__col" aria-labelledby="VeltoFooterInfo">
+          <h2 class="velto-footer__heading" id="VeltoFooterInfo">{{ section.settings.info_heading }}</h2>
+          <ul class="velto-footer__links" role="list">
+            {%- for link in info_menu.links -%}
+              <li><a href="{{ link.url }}">{{ link.title }}</a></li>
+            {%- endfor -%}
+          </ul>
+        </nav>
+      {%- endif -%}
+
+      {%- comment -%} ---------- Contacts + pickup ---------- {%- endcomment -%}
+      <div class="velto-footer__col velto-footer__contacts">
+        <h2 class="velto-footer__heading">{{ section.settings.contacts_heading }}</h2>
+        <ul class="velto-footer__contact-list" role="list">
+          {%- if section.settings.email != blank -%}
+            <li>
+              <span class="velto-footer__label">{{ 'velto.footer.email' | t }}</span>
+              <a href="mailto:{{ section.settings.email }}">{{ section.settings.email }}</a>
+            </li>
+          {%- endif -%}
+          {%- if section.settings.phones != blank -%}
+            <li>
+              <span class="velto-footer__label">{{ 'velto.footer.phone' | t }}</span>
+              {%- assign phones = section.settings.phones | split: ',' -%}
+              {%- for ph in phones -%}
+                {%- assign ph_clean = ph | strip -%}
+                <a href="tel:{{ ph_clean | remove: ' ' }}">{{ ph_clean }}</a>
+              {%- endfor -%}
+              {%- if section.settings.phone_hours != blank -%}
+                <span class="velto-footer__muted">{{ section.settings.phone_hours }}</span>
+              {%- endif -%}
+            </li>
+          {%- endif -%}
+          {%- if section.settings.pickup_address != blank -%}
+            <li>
+              <span class="velto-footer__label">{{ section.settings.pickup_heading }}</span>
+              <a
+                href="https://www.google.com/maps/search/?api=1&query={{ section.settings.pickup_address | url_encode }}"
+                target="_blank"
+                rel="noopener"
+              >
+                {{- section.settings.pickup_address -}}
+              </a>
+              {%- if section.settings.pickup_hours != blank -%}
+                <span class="velto-footer__muted">{{ section.settings.pickup_hours | newline_to_br }}</span>
+              {%- endif -%}
+            </li>
+          {%- endif -%}
+        </ul>
+
+        {%- if settings.velto_delivery_enable -%}
+          <velto-delivery
+            class="velto-footer__cycle"
+            data-cutoff-day="{{ settings.velto_cutoff_day }}"
+            data-cutoff-time="{{ settings.velto_cutoff_time }}"
+            data-delivery-days="{{ settings.velto_delivery_days }}"
+          >
+            <span class="velto-footer__cycle-dot" aria-hidden="true"></span>
+            <span>
+              <strong>{{ 'velto.delivery.order' | t }} <span data-v="deadline">{{ 'velto.delivery.fallback' | t }}</span></strong>
+              <span class="velto-footer__muted">{{ 'velto.delivery.delivery' | t }} <span data-v="days"></span></span>
+            </span>
+          </velto-delivery>
+          <script src="{{ 'velto-delivery.js' | asset_url }}" defer="defer"></script>
+        {%- endif -%}
+      </div>
+    </div>
+
+    {%- comment -%} ---------- Bottom bar ---------- {%- endcomment -%}
+    <div class="velto-footer__bottom">
+      <div class="velto-footer__legal">
+        <span>&copy; {{ 'now' | date: '%Y' }} {{ shop.name }}{% if section.settings.company != blank %} · {{ section.settings.company }}{% endif %}</span>
+        <ul class="velto-footer__policies" role="list">
+          {%- for policy in shop.policies -%}
+            {%- if policy != blank and policy.url contains 'shopifyReshowConsentBanner' -%}{%- continue -%}{%- endif -%}
+            {%- if policy != blank -%}
+              <li><a href="{{ policy.url }}">{{ policy.title | escape }}</a></li>
+            {%- endif -%}
+          {%- endfor -%}
+          <li><a href="#" data-velto-cookie-prefs>{{ 'velto.footer.cookies' | t }}</a></li>
+        </ul>
+      </div>
+
+      <div class="velto-footer__meta">
+        {%- if localization.available_languages.size > 1 -%}
+          <localization-form class="velto-footer__lang">
+            {%- form 'localization', id: 'VeltoFooterLanguageForm', class: 'localization-form' -%}
+              <div>
+                <h2 class="visually-hidden" id="FooterLanguageLabel">{{ 'localization.language_label' | t }}</h2>
+                {%- render 'language-localization', localPosition: 'FooterLanguage' -%}
+              </div>
+            {%- endform -%}
+          </localization-form>
+        {%- endif -%}
+
+        {%- if section.settings.payment_enable and shop.enabled_payment_types.size > 0 -%}
+          <ul class="list list-payment velto-footer__pay" role="list" aria-label="{{ 'sections.footer.payment' | t }}">
+            {%- for type in shop.enabled_payment_types -%}
+              <li class="list-payment__item">{{ type | payment_type_svg_tag: class: 'icon icon--full-color' }}</li>
+            {%- endfor -%}
+          </ul>
+        {%- endif -%}
+      </div>
+    </div>
+  </div>
+
+  {%- if section.settings.show_watermark -%}
+    <div class="velto-footer__watermark" aria-hidden="true">{%- render 'velto-logo' -%}</div>
+  {%- endif -%}
+</footer>
+
+<script>
+  document.querySelectorAll('[data-velto-cookie-prefs]').forEach((a) =>
+    a.addEventListener('click', (e) => {
+      e.preventDefault();
+      if (window.privacyBanner && window.privacyBanner.showPreferences) window.privacyBanner.showPreferences();
+    })
+  );
+</script>
+
+{% schema %}
+{
+  "name": "Velto kājene",
+  "class": "section-footer",
+  "settings": [
+    { "type": "header", "content": "Zīmols" },
+    { "type": "text", "id": "tagline", "label": "Sauklis", "default": "Vairāk vērtības jums" },
+    { "type": "richtext", "id": "about", "label": "Apraksts", "default": "<p>Interneta veikals ar kvalitatīvu produkciju par godīgām cenām. Sadarbojamies ar vietējiem ražotājiem un piegādātājiem.</p>" },
+    { "type": "text", "id": "instagram_handle", "label": "Instagram lietotājvārds", "default": "@velto.lv", "info": "Saite — Tēmas iestatījumi → Sociālie tīkli" },
+    { "type": "text", "id": "tiktok_handle", "label": "TikTok lietotājvārds", "default": "@velto.lv" },
+    { "type": "header", "content": "Kolonnas" },
+    { "type": "text", "id": "categories_heading", "label": "Kategoriju virsraksts", "default": "Kategorijas" },
+    { "type": "link_list", "id": "categories_menu", "label": "Kategoriju izvēlne", "default": "main-menu" },
+    { "type": "range", "id": "categories_limit", "min": 4, "max": 20, "step": 1, "label": "Rādīt kategorijas", "default": 8 },
+    { "type": "text", "id": "info_heading", "label": "Informācijas virsraksts", "default": "Informācija" },
+    { "type": "link_list", "id": "info_menu", "label": "Informācijas izvēlne", "default": "footer" },
+    { "type": "header", "content": "Kontakti" },
+    { "type": "text", "id": "contacts_heading", "label": "Virsraksts", "default": "Kontakti" },
+    { "type": "text", "id": "email", "label": "E-pasts" },
+    { "type": "text", "id": "phones", "label": "Tālruņi (ar komatu)" },
+    { "type": "text", "id": "phone_hours", "label": "Zvanu laiks" },
+    { "type": "text", "id": "pickup_heading", "label": "Izsniegšanas punkta virsraksts", "default": "Izsniegšanas punkts" },
+    { "type": "text", "id": "pickup_address", "label": "Adrese" },
+    { "type": "textarea", "id": "pickup_hours", "label": "Darba laiks" },
+    { "type": "header", "content": "Apakšā" },
+    { "type": "text", "id": "company", "label": "Uzņēmums / rekvizīti" },
+    { "type": "checkbox", "id": "payment_enable", "label": "Rādīt maksājumu veidus", "default": true },
+    { "type": "checkbox", "id": "show_watermark", "label": "Liels logotips fonā", "default": true },
+    { "type": "color_scheme", "id": "color_scheme", "label": "t:sections.all.colors.label", "default": "scheme-1" }
+  ]
+}
+{% endschema %}

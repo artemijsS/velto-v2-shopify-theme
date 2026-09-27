@@ -550,6 +550,11 @@
       "legend_today": "Today",
       "order": "Order",
       "delivery": "Delivery:"
+    },
+    "footer": {
+      "email": "Email",
+      "phone": "Phone",
+      "cookies": "Cookie preferences"
     }
   }
 }
