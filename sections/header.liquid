@@ -60,28 +60,29 @@
      line, let it wrap into a centered, evenly-spaced block. Fully visible
      at a glance, no hidden scroll interaction to discover.
 
-     Dawn normally spaces top-level items with padding baked into each
-     item (1.2rem on the plain links, 2.7rem on the ones with a caret,
-     to leave room for the absolutely-positioned icon). That made the
-     rows uneven and left almost no visible gap after caret items, since
-     the icon sits inside that padding. We flatten both item types to a
-     small, equal side padding and let a single column-gap do the
-     spacing consistently for every item. */
+     The caret icon on items with a submenu is absolutely positioned
+     0.8rem from the item's right edge (see base.css .header__menu-item
+     .icon-caret), so that item needs real padding-right or the icon
+     overlaps the text — Dawn's own default is 2.7rem for exactly this
+     reason. Plain links don't have an icon and only need a small,
+     even side padding. We keep a smaller shared column-gap for the
+     space between *different* items, on top of each item's own
+     padding. */
   @media screen and (min-width: 990px) {
     .header__inline-menu .list-menu--inline {
       justify-content: center;
       row-gap: 0.3rem;
-      column-gap: 1.2rem;
+      column-gap: 0.9rem;
     }
 
-    .header__inline-menu .list-menu__item--link,
-    .header__inline-menu summary.list-menu__item {
+    .header__inline-menu .list-menu__item--link {
       padding-left: 0.2rem;
       padding-right: 0.2rem;
     }
 
     .header__inline-menu summary.list-menu__item {
-      padding-right: 1.3rem; /* room for the caret icon */
+      padding-left: 0.2rem;
+      padding-right: 2.2rem; /* text -> gap -> caret icon -> edge */
     }
   }
 
