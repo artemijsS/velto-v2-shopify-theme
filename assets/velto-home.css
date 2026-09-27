@@ -508,17 +508,19 @@ velto-showcase.is-paused .velto-hero__dot.is-active::after {
   color: rgba(var(--color-foreground), 0.65);
 }
 
-/* ================= Marquee ================= */
+/* ================= Marquee (quiet, editorial) ================= */
 .velto-marquee {
   overflow: hidden;
-  padding: 1.6rem 0;
+  padding: 2rem 0;
   border-block: 1px solid rgba(var(--color-foreground), 0.1);
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent);
 }
 
 .velto-marquee__track {
   display: flex;
   width: max-content;
-  animation: velto-marquee var(--velto-marquee-speed, 35s) linear infinite;
+  animation: velto-marquee var(--velto-marquee-speed, 70s) linear infinite;
 }
 
 .velto-marquee:hover .velto-marquee__track { animation-play-state: paused; }
@@ -534,31 +536,32 @@ velto-showcase.is-paused .velto-hero__dot.is-active::after {
 .velto-marquee__item {
   display: flex;
   align-items: center;
-  font-family: var(--font-heading-family);
-  font-weight: 700;
-  font-size: clamp(2rem, 3.4vw, 3.6rem);
+  font-size: 1.2rem;
+  font-weight: 500;
   line-height: 1;
-  letter-spacing: -0.01em;
+  letter-spacing: 0.42em;
   text-transform: uppercase;
   white-space: nowrap;
+  color: rgba(var(--color-foreground), 0.62);
 }
 
 .velto-marquee__item::after {
-  /* the brand's tilted stroke as a separator */
   content: '';
   display: inline-block;
-  width: 3.2rem;
+  width: 0.4rem;
   height: 0.4rem;
-  margin: 0 2.4rem;
-  border-radius: 0.2rem;
-  background: currentColor;
-  transform: rotate(-8deg);
+  margin: 0 4.8rem 0 calc(4.8rem - 0.42em);
+  border-radius: 50%;
+  background: rgba(var(--color-foreground), 0.35);
 }
 
 .velto-marquee__item a {
   color: inherit;
   text-decoration: none;
+  transition: color 0.2s ease;
 }
+
+.velto-marquee__item a:hover { color: rgb(var(--color-foreground)); }
 
 @keyframes velto-marquee {
   from { transform: translateX(0); }
@@ -722,22 +725,30 @@ velto-showcase.is-paused .velto-hero__dot.is-active::after {
   .velto-spot--reverse .velto-spot__nav { padding-right: 0; justify-content: flex-start; padding-left: 4rem; }
 }
 
-/* ================= Price tiles ================= */
-.velto-prices {
-  padding-top: calc(var(--velto-prices-pt) * 0.75);
-  padding-bottom: calc(var(--velto-prices-pb) * 0.75);
+/* ================= Curated picks ================= */
+.velto-curated {
+  padding-top: calc(var(--velto-cur-pt) * 0.75);
+  padding-bottom: calc(var(--velto-cur-pb) * 0.75);
 }
 
 @media screen and (min-width: 750px) {
-  .velto-prices {
-    padding-top: var(--velto-prices-pt);
-    padding-bottom: var(--velto-prices-pb);
+  .velto-curated {
+    padding-top: var(--velto-cur-pt);
+    padding-bottom: var(--velto-cur-pb);
   }
 }
 
-.velto-prices__list {
+.velto-curated__eyebrow {
+  margin: 0 0 1rem;
+  font-size: 1.2rem;
+  letter-spacing: 0.25rem;
+  text-transform: uppercase;
+  color: rgba(var(--color-foreground), 0.6);
+}
+
+.velto-curated__list {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: 1fr;
   gap: 1.2rem;
   margin: 0;
   padding: 0;
@@ -745,83 +756,126 @@ velto-showcase.is-paused .velto-hero__dot.is-active::after {
 }
 
 @media screen and (min-width: 750px) {
-  .velto-prices__list {
-    grid-template-columns: repeat(auto-fit, minmax(0, 1fr));
+  .velto-curated__list {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 1.6rem;
   }
 }
 
-.velto-price {
+@media screen and (min-width: 1100px) {
+  .velto-curated__list { grid-template-columns: repeat(auto-fit, minmax(0, 1fr)); }
+}
+
+.velto-cur {
   position: relative;
   display: flex;
   flex-direction: column;
   height: 100%;
-  padding: 1.8rem 1.8rem 1.6rem;
+  min-height: 26rem;
+  padding: 2.4rem;
   border-radius: 1.2rem;
-  border: 1px solid rgba(var(--color-foreground), 0.12);
-  background: rgba(var(--color-foreground), 0.03);
+  border: 1px solid rgba(var(--color-foreground), 0.1);
+  background:
+    radial-gradient(120% 80% at 100% 0%, rgba(var(--color-foreground), 0.07), transparent 60%),
+    rgba(var(--color-foreground), 0.025);
   color: rgb(var(--color-foreground));
   text-decoration: none;
   overflow: hidden;
-  transition: background-color 0.25s ease, color 0.25s ease, border-color 0.25s ease, transform 0.25s ease;
+  transition: border-color 0.35s ease, background-color 0.35s ease;
 }
 
-.velto-price:hover {
-  background: rgb(var(--color-foreground));
-  color: rgb(var(--color-background));
-  border-color: rgb(var(--color-foreground));
-}
+.velto-cur:hover { border-color: rgba(var(--color-foreground), 0.4); }
 
-@media (hover: hover) {
-  .velto-price:hover { transform: translateY(-3px); }
-}
-
-.velto-price__label {
-  font-size: 1.3rem;
-  letter-spacing: 0.2rem;
-  text-transform: uppercase;
-  opacity: 0.65;
-}
-
-.velto-price__value {
+/* 3 overlapping product thumbnails */
+.velto-cur__thumbs {
   display: flex;
-  align-items: flex-start;
-  margin: 0.4rem 0 1.6rem;
+  margin-bottom: 2.8rem;
+}
+
+.velto-cur__thumb {
+  position: relative;
+  width: 5.6rem;
+  height: 5.6rem;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 0 0 3px rgb(var(--color-background));
+  overflow: hidden;
+  transition: transform 0.4s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+.velto-cur__thumb + .velto-cur__thumb { margin-left: -1.4rem; }
+
+.velto-cur__thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  padding: 16%;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
+.velto-cur__thumb.is-loaded img { opacity: 1; }
+
+.velto-cur:hover .velto-cur__thumb:nth-child(2) { transform: translateX(0.6rem); }
+.velto-cur:hover .velto-cur__thumb:nth-child(3) { transform: translateX(1.2rem); }
+
+.velto-cur__eyebrow {
+  margin-bottom: 0.8rem;
+  font-size: 1.1rem;
+  letter-spacing: 0.25rem;
+  text-transform: uppercase;
+  color: rgba(var(--color-foreground), 0.55);
+}
+
+.velto-cur__title {
   font-family: var(--font-heading-family);
   font-weight: 700;
-  line-height: 0.9;
-  letter-spacing: -0.04em;
+  font-size: clamp(2.4rem, 2.4vw, 3rem);
+  line-height: 1.1;
+  letter-spacing: -0.015em;
 }
 
-.velto-price__num { font-size: clamp(6.4rem, 11vw, 11.2rem); }
-
-.velto-price__cur {
-  margin: 0.4em 0 0 0.08em;
-  font-size: clamp(2.4rem, 3.6vw, 4rem);
+.velto-cur__text {
+  margin-top: 0.8rem;
+  font-size: 1.4rem;
+  line-height: 1.5;
+  color: rgba(var(--color-foreground), 0.65);
 }
 
-.velto-price__meta {
+.velto-cur__meta {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 1rem;
   margin-top: auto;
-  padding-top: 1.2rem;
-  border-top: 1px solid currentColor;
-  border-top-color: rgba(128, 128, 128, 0.35);
-  font-size: 1.4rem;
+  padding-top: 2.4rem;
+  font-size: 1.3rem;
+  letter-spacing: 0.04rem;
 }
 
-.velto-price__count { opacity: 0.8; }
+.velto-cur__count { color: rgba(var(--color-foreground), 0.7); }
 
-.velto-price__go svg {
-  width: 1.6rem;
-  height: 1.6rem;
+.velto-cur__go {
+  display: grid;
+  place-items: center;
+  width: 4rem;
+  height: 4rem;
+  border-radius: 50%;
+  border: 1px solid rgba(var(--color-foreground), 0.25);
+  transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
+}
+
+.velto-cur__go svg {
+  width: 1.4rem;
+  height: 1.4rem;
   fill: currentColor;
-  transition: transform 0.25s ease;
 }
 
-.velto-price:hover .velto-price__go svg { transform: translateX(4px); }
+.velto-cur:hover .velto-cur__go {
+  background: rgb(var(--color-foreground));
+  border-color: rgb(var(--color-foreground));
+  color: rgb(var(--color-background));
+}
 
 /* ================= Steps ================= */
 .velto-steps {

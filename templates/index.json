@@ -100,28 +100,28 @@
         "m1": {
           "type": "phrase",
           "settings": {
-            "text": "Godīga cena",
+            "text": "Tikai labākais",
             "link": ""
           }
         },
         "m2": {
           "type": "phrase",
           "settings": {
-            "text": "Kvalitatīva prece",
+            "text": "Rūpīgi atlasīts",
             "link": ""
           }
         },
         "m3": {
           "type": "phrase",
           "settings": {
-            "text": "1300+ preču",
-            "link": "shopify://collections/all"
+            "text": "Godīga cena",
+            "link": ""
           }
         },
         "m4": {
           "type": "phrase",
           "settings": {
-            "text": "Tikai labākais",
+            "text": "Kvalitāte bez kompromisiem",
             "link": ""
           }
         }
@@ -133,8 +133,8 @@
         "m4"
       ],
       "settings": {
-        "speed": 35,
-        "color_scheme": "scheme-4"
+        "speed": 70,
+        "color_scheme": "scheme-1"
       }
     },
     "spot_new": {
@@ -153,50 +153,6 @@
         "color_scheme": "scheme-2",
         "padding_top": 48,
         "padding_bottom": 24
-      }
-    },
-    "prices": {
-      "type": "velto-price-tiles",
-      "blocks": {
-        "p1": {
-          "type": "price",
-          "settings": {
-            "max_price": 1
-          }
-        },
-        "p2": {
-          "type": "price",
-          "settings": {
-            "max_price": 2
-          }
-        },
-        "p3": {
-          "type": "price",
-          "settings": {
-            "max_price": 3
-          }
-        },
-        "p5": {
-          "type": "price",
-          "settings": {
-            "max_price": 5
-          }
-        }
-      },
-      "block_order": [
-        "p1",
-        "p2",
-        "p3",
-        "p5"
-      ],
-      "settings": {
-        "heading": "Godīgas cenas katru dienu",
-        "subheading": "Izvēlies budžetu — parādīsim visu, kas tajā iekļaujas.",
-        "prefix": "līdz",
-        "count_label": "prece|preces",
-        "color_scheme": "scheme-1",
-        "padding_top": 48,
-        "padding_bottom": 48
       }
     },
     "spot_ready": {
@@ -255,6 +211,62 @@
         "padding_top": 48,
         "padding_bottom": 72
       }
+    },
+    "curated": {
+      "type": "velto-curated",
+      "blocks": {
+        "c1": {
+          "type": "pick",
+          "settings": {
+            "eyebrow": "Cena un kvalitāte",
+            "title": "Lieliska cena",
+            "text": "Labākā cenas un kvalitātes attiecība mūsu sortimentā.",
+            "link": "/collections/all?filter.p.m.custom.price_category=gid://shopify/FilterSettingGroup/311165259"
+          }
+        },
+        "c2": {
+          "type": "pick",
+          "settings": {
+            "eyebrow": "Velto izlase",
+            "title": "Ekskluzīvi",
+            "text": "Īpaši atlasītas preces, kuras vērts izmēģināt.",
+            "link": "/collections/all/exclusive"
+          }
+        },
+        "c3": {
+          "type": "pick",
+          "settings": {
+            "eyebrow": "Delikateses",
+            "title": "Siera galds",
+            "text": "No aitas piena sieriem līdz itāļu klasikai.",
+            "link": "/collections/all/cheese"
+          }
+        },
+        "c4": {
+          "type": "pick",
+          "settings": {
+            "eyebrow": "Īpašiem brīžiem",
+            "title": "Svētku galdam",
+            "text": "Delikateses un gardumi, ar kuriem pārsteigt viesus.",
+            "link": "/collections/all/christmas"
+          }
+        }
+      },
+      "block_order": [
+        "c1",
+        "c2",
+        "c3",
+        "c4"
+      ],
+      "settings": {
+        "eyebrow": "Kvalitāte par labu cenu",
+        "heading": "Iepērcies gudri",
+        "subheading": "",
+        "count_label": "prece|preces",
+        "color_scheme": "scheme-1",
+        "padding_top": 56,
+        "padding_bottom": 48
+      }
     }
   },
   "order": [
@@ -263,7 +275,7 @@
     "featured_collection",
     "marquee",
     "spot_new",
-    "prices",
+    "curated",
     "spot_ready",
     "steps"
   ]

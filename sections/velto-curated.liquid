@@ -1,0 +1,142 @@
+{%- comment -%}
+  Velto curated — "Iepērcies gudri": curated entry points into the
+  catalog (a storefront filter, a tag or a collection URL), each with a
+  headline, a short line and — fetched live from that same filtered page —
+  the number of matching products and 3 product thumbnails.
+{%- endcomment -%}
+{{ 'velto-home.css' | asset_url | stylesheet_tag }}
+
+<section
+  class="velto-curated color-{{ section.settings.color_scheme }} gradient"
+  style="--velto-cur-pt: {{ section.settings.padding_top }}px; --velto-cur-pb: {{ section.settings.padding_bottom }}px;"
+>
+  <div class="page-width">
+    <div class="velto-section-head">
+      <div>
+        {%- if section.settings.eyebrow != blank -%}
+          <p class="velto-curated__eyebrow">{{ section.settings.eyebrow }}</p>
+        {%- endif -%}
+        {%- if section.settings.heading != blank -%}
+          <h2 class="h2 velto-section-head__title">{{ section.settings.heading }}</h2>
+        {%- endif -%}
+        {%- if section.settings.subheading != blank -%}
+          <p class="velto-section-head__sub">{{ section.settings.subheading }}</p>
+        {%- endif -%}
+      </div>
+    </div>
+
+    <ul class="velto-curated__list" role="list">
+      {%- for block in section.blocks -%}
+        {%- liquid
+          assign url = block.settings.link | default: routes.all_products_collection_url
+          if url contains '?'
+            assign data_url = url | append: '&sort_by=best-selling&section_id=main-collection-product-grid'
+          else
+            assign data_url = url | append: '?sort_by=best-selling&section_id=main-collection-product-grid'
+          endif
+        -%}
+        <li class="velto-curated__item" {{ block.shopify_attributes }}>
+          <a class="velto-cur" href="{{ url }}" data-src="{{ data_url }}">
+            <span class="velto-cur__thumbs" aria-hidden="true">
+              <span class="velto-cur__thumb"></span>
+              <span class="velto-cur__thumb"></span>
+              <span class="velto-cur__thumb"></span>
+            </span>
+            {%- if block.settings.eyebrow != blank -%}
+              <span class="velto-cur__eyebrow">{{ block.settings.eyebrow }}</span>
+            {%- endif -%}
+            <span class="velto-cur__title">{{ block.settings.title }}</span>
+            {%- if block.settings.text != blank -%}
+              <span class="velto-cur__text">{{ block.settings.text }}</span>
+            {%- endif -%}
+            <span class="velto-cur__meta">
+              <span class="velto-cur__count" data-count>&nbsp;</span>
+              <span class="velto-cur__go" aria-hidden="true">{{- 'icon-arrow.svg' | inline_asset_content -}}</span>
+            </span>
+          </a>
+        </li>
+      {%- endfor -%}
+    </ul>
+  </div>
+</section>
+
+<script>
+  (() => {
+    const root = document.currentScript.previousElementSibling;
+    const label = {{ section.settings.count_label | json }};
+    const [one, many] = label.split('|').map((s) => s.trim());
+    const word = (n) => (n % 10 === 1 && n % 100 !== 11 ? one : many || one);
+
+    const load = () =>
+      root.querySelectorAll('.velto-cur[data-src]').forEach(async (a) => {
+        try {
+          const html = await (await fetch(a.dataset.src)).text();
+          const doc = new DOMParser().parseFromString(html, 'text/html');
+          const txt = doc.querySelector('#ProductCountDesktop, .product-count__text')?.textContent || '';
+          const n = parseInt(txt.trim().split(/\s+/)[0], 10);
+          if (!isNaN(n)) a.querySelector('[data-count]').textContent = `${n} ${word(n)}`;
+
+          const imgs = [...doc.querySelectorAll('.product-grid .card__media img')].slice(0, 3);
+          const slots = a.querySelectorAll('.velto-cur__thumb');
+          imgs.forEach((img, i) => {
+            const el = new Image();
+            const src = (img.getAttribute('src') || '').replace(/[&?]width=\d+/, '').replace(/&$/, '');
+            el.src = src + (src.includes('?') ? '&' : '?') + 'width=200';
+            el.alt = '';
+            el.onload = () => slots[i].classList.add('is-loaded');
+            slots[i].appendChild(el);
+          });
+        } catch (e) {}
+      });
+
+    // Start early: when the browser is idle after load, or when the block
+    // gets within ~1.5 screens — whichever comes first.
+    let started = false;
+    const start = () => { if (started) return; started = true; load(); };
+    if ('IntersectionObserver' in window) {
+      const io = new IntersectionObserver((e) => {
+        if (e[0].isIntersecting) { io.disconnect(); start(); }
+      }, { rootMargin: '1200px' });
+      io.observe(root);
+    }
+    window.addEventListener('load', () => {
+      ('requestIdleCallback' in window ? requestIdleCallback : (f) => setTimeout(f, 1200))(start);
+    });
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Velto izlases",
+  "tag": "div",
+  "class": "section",
+  "max_blocks": 6,
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Virsraksts virs galvenā", "default": "Kvalitāte par labu cenu" },
+    { "type": "text", "id": "heading", "label": "Virsraksts", "default": "Iepērcies gudri" },
+    { "type": "text", "id": "subheading", "label": "Apakšvirsraksts" },
+    { "type": "text", "id": "count_label", "label": "Preču skaita vārds (vienskaitlis|daudzskaitlis)", "default": "prece|preces" },
+    { "type": "color_scheme", "id": "color_scheme", "label": "t:sections.all.colors.label", "default": "scheme-1" },
+    { "type": "range", "id": "padding_top", "min": 0, "max": 100, "step": 4, "unit": "px", "label": "Atstarpe augšā", "default": 56 },
+    { "type": "range", "id": "padding_bottom", "min": 0, "max": 100, "step": 4, "unit": "px", "label": "Atstarpe apakšā", "default": 48 }
+  ],
+  "blocks": [
+    {
+      "type": "pick",
+      "name": "Izlase",
+      "settings": [
+        { "type": "text", "id": "eyebrow", "label": "Mazais virsraksts" },
+        { "type": "text", "id": "title", "label": "Nosaukums", "default": "Lieliska cena" },
+        { "type": "text", "id": "text", "label": "Apraksts" },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Saite",
+          "info": "Kolekcija, kolekcija ar filtru (piem. /collections/all?filter.p.m.custom.price_category=…) vai tags (/collections/all/exclusive). Skaits un attēli tiek ņemti no šīs lapas."
+        }
+      ]
+    }
+  ],
+  "presets": [{ "name": "Velto izlases" }]
+}
+{% endschema %}
