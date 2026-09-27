@@ -1,0 +1,74 @@
+{%- comment -%}
+  Velto categories — tile grid built straight from a navigation menu
+  (defaults to the main menu), so new categories show up automatically.
+  Tile image: collection image → first product image → first letter.
+  Desktop: grid. Mobile: horizontal swipe row with snap.
+{%- endcomment -%}
+{{ 'velto-home.css' | asset_url | stylesheet_tag }}
+
+{%- assign menu = section.settings.menu -%}
+{%- if menu != blank and menu.links.size > 0 -%}
+  <section
+    id="velto-categories"
+    class="velto-cats color-{{ section.settings.color_scheme }} gradient"
+    style="--velto-cats-pt: {{ section.settings.padding_top }}px; --velto-cats-pb: {{ section.settings.padding_bottom }}px;"
+  >
+    <div class="page-width">
+      <div class="velto-section-head">
+        {%- if section.settings.heading != blank -%}
+          <h2 class="h2 velto-section-head__title">{{ section.settings.heading }}</h2>
+        {%- endif -%}
+        <a class="velto-section-head__link link underlined-link" href="{{ routes.collections_url }}">
+          {{- 'sections.collection_list.view_all' | t -}}
+        </a>
+      </div>
+
+      <ul class="velto-cats__list" role="list">
+        {%- for link in menu.links -%}
+          {%- liquid
+            assign img = nil
+            if link.type == 'collection_link' and link.object
+              assign img = link.object.featured_image
+              if img == blank
+                assign img = link.object.products.first.featured_media.preview_image
+              endif
+            endif
+            assign clean_title = link.title | remove: '💙' | strip
+          -%}
+          <li class="velto-cats__item">
+            <a class="velto-cat" href="{{ link.url }}">
+              <span class="velto-cat__media">
+                {%- if img != blank -%}
+                  {{
+                    img
+                    | image_url: width: 400
+                    | image_tag: loading: 'lazy', sizes: '(min-width: 990px) 180px, 40vw', widths: '200, 300, 400', alt: clean_title
+                  }}
+                {%- else -%}
+                  <span class="velto-cat__letter" aria-hidden="true">{{ clean_title | slice: 0 }}</span>
+                {%- endif -%}
+              </span>
+              <span class="velto-cat__title">{{ clean_title }}</span>
+            </a>
+          </li>
+        {%- endfor -%}
+      </ul>
+    </div>
+  </section>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Velto kategorijas",
+  "tag": "div",
+  "class": "section",
+  "settings": [
+    { "type": "text", "id": "heading", "label": "Virsraksts", "default": "Kategorijas" },
+    { "type": "link_list", "id": "menu", "label": "Izvēlne", "default": "main-menu" },
+    { "type": "color_scheme", "id": "color_scheme", "label": "t:sections.all.colors.label", "default": "scheme-1" },
+    { "type": "range", "id": "padding_top", "min": 0, "max": 100, "step": 4, "unit": "px", "label": "Atstarpe augšā", "default": 36 },
+    { "type": "range", "id": "padding_bottom", "min": 0, "max": 100, "step": 4, "unit": "px", "label": "Atstarpe apakšā", "default": 12 }
+  ],
+  "presets": [{ "name": "Velto kategorijas" }]
+}
+{% endschema %}

@@ -1,0 +1,253 @@
+/* Velto — storefront UI polish (cards, product page, footer, mobile).
+   Loaded after base.css so it can refine Dawn defaults without editing them. */
+
+/* ---------- Product cards ---------- */
+
+/* Supplier photos are shot on white: give every card a clean white,
+   square image well and never crop the packshot. */
+.card-wrapper .card__inner .card__media,
+.card-wrapper .card__inner {
+  background-color: #fff;
+}
+
+.card-wrapper .card__media .media img {
+  object-fit: contain;
+  padding: 8%;
+  transition: transform var(--duration-long) ease;
+}
+
+@media (hover: hover) {
+  .card-wrapper:hover .card__media .media img {
+    transform: scale(1.04);
+  }
+}
+
+.card-wrapper .card--card {
+  transition: border-color var(--duration-short) ease;
+}
+
+.card-wrapper:hover .card--card {
+  --border-opacity: 0.35;
+}
+
+/* Sale / sold-out badge a little crisper */
+.card__badge .badge {
+  font-weight: 600;
+  letter-spacing: 0.04rem;
+}
+
+/* Title: always two lines so prices line up across a row */
+.card-wrapper .card__heading {
+  font-family: var(--font-body-family);
+  font-weight: 600;
+  font-size: 1.4rem;
+  line-height: 1.35;
+  letter-spacing: 0;
+}
+
+.card-wrapper .card__information .card__heading,
+.card-wrapper .card__heading a {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.card-wrapper .card__information .card__heading {
+  min-height: calc(1.35em * 2);
+}
+
+.card-wrapper .card__content .card__heading:not(.card__information .card__heading) {
+  /* the duplicate heading Dawn renders over the image for "card" style */
+  min-height: 0;
+}
+
+/* Price: the thing shoppers scan for — make it the strongest line */
+.card-wrapper .price {
+  margin-top: 0.4rem;
+}
+
+.card-wrapper .price .price-item--regular,
+.card-wrapper .price .price-item--sale {
+  font-size: 1.7rem;
+  font-weight: 700;
+  letter-spacing: 0;
+}
+
+.card-wrapper .price--on-sale .price-item--regular {
+  font-size: 1.3rem;
+  font-weight: 400;
+}
+
+.card-wrapper .unit-price,
+.price .unit-price {
+  font-size: 1.2rem;
+  color: rgba(var(--color-foreground), 0.6);
+}
+
+@media screen and (max-width: 749px) {
+  .card-wrapper .card__heading { font-size: 1.3rem; }
+  .card-wrapper .price .price-item--regular,
+  .card-wrapper .price .price-item--sale { font-size: 1.5rem; }
+  .card--card .card__content { padding: 1.2rem; }
+}
+
+/* Quick add button on cards: compact, one line, bottom of every card */
+.card-wrapper .quick-add {
+  margin: 0;
+}
+
+.card-wrapper .quick-add__submit {
+  min-height: 4rem;
+  padding: 0 0.8rem;
+  font-size: 1.2rem;
+  letter-spacing: 0.06rem;
+  white-space: nowrap;
+  width: 100%;
+}
+
+@media screen and (max-width: 749px) {
+  .card-wrapper .quick-add__submit {
+    font-size: 1.1rem;
+    letter-spacing: 0.02rem;
+    padding: 0 0.4rem;
+  }
+}
+
+/* ---------- Desktop nav: keep the big category menu to two rows ---------- */
+@media screen and (min-width: 990px) and (max-width: 1399px) {
+  .header__inline-menu .list-menu__item {
+    font-size: 1.3rem;
+  }
+}
+
+/* ---------- Section titles ---------- */
+.collection .title-wrapper--no-top-margin .title,
+.collection__title .title {
+  letter-spacing: -0.01em;
+}
+
+/* ---------- Collection page ---------- */
+.collection-hero .collection-hero__title {
+  letter-spacing: -0.02em;
+}
+
+.facets__summary,
+.facet-filters__label,
+.product-count__text {
+  font-size: 1.3rem;
+}
+
+/* ---------- Product page ---------- */
+.product__media-item .media,
+.product-media-container .media {
+  background-color: #fff;
+}
+
+.product__title h1 {
+  letter-spacing: -0.01em;
+  line-height: 1.15;
+}
+
+.product__info-container .price {
+  margin-top: 0.4rem;
+}
+
+.product__info-container .price .price-item--regular,
+.product__info-container .price .price-item--sale {
+  font-size: 2.6rem;
+  font-weight: 700;
+  letter-spacing: 0;
+}
+
+.product__info-container .product-form__submit {
+  min-height: 5.2rem;
+}
+
+/* Dawn turns "Add to cart" into an outline button when dynamic checkout
+   is on, handing the visual lead to the purple Shop Pay button. For a
+   grocery store adding to cart is the main action — keep it solid. */
+.product__info-container .product-form__submit.button--secondary {
+  --color-button: var(--color-foreground);
+  --color-button-text: var(--color-background);
+  --alpha-button-background: 1;
+  background-color: rgb(var(--color-foreground));
+  color: rgb(var(--color-background));
+  font-weight: 700;
+}
+
+.product__info-container .product-form__submit.button--secondary:hover {
+  background-color: rgba(var(--color-foreground), 0.88);
+}
+
+/* Rich-text description: calmer body copy, readable headings */
+.product__description.rte {
+  font-size: 1.5rem;
+  line-height: 1.7;
+  color: rgba(var(--color-foreground), 0.82);
+}
+
+.product__description.rte strong,
+.product__description.rte b {
+  color: rgb(var(--color-foreground));
+}
+
+.product__description.rte table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 1.4rem;
+}
+
+.product__description.rte td,
+.product__description.rte th {
+  padding: 0.8rem 1rem;
+  border: 1px solid rgba(var(--color-foreground), 0.15);
+}
+
+/* ---------- Mobile header ---------- */
+@media screen and (max-width: 989px) {
+  .header {
+    padding-top: 0.6rem;
+    padding-bottom: 0.6rem;
+  }
+
+  .header__heading-link .velto-logo-wrap {
+    --velto-logo-width: 112px !important;
+  }
+}
+
+/* Mobile drawer: comfortable tap targets for the long category list */
+.menu-drawer .menu-drawer__menu-item {
+  padding-top: 1.2rem;
+  padding-bottom: 1.2rem;
+  font-size: 1.6rem;
+}
+
+.menu-drawer .menu-drawer__menu > li + li {
+  border-top: 1px solid rgba(var(--color-foreground), 0.06);
+}
+
+/* ---------- Footer ---------- */
+.footer {
+  border-top: 1px solid rgba(var(--color-foreground), 0.08);
+}
+
+.footer .footer-block__heading {
+  font-size: 1.3rem;
+  letter-spacing: 0.2rem;
+  text-transform: uppercase;
+  color: rgba(var(--color-foreground), 0.6);
+}
+
+.footer .footer-block__details-content .list-menu__item--link {
+  color: rgba(var(--color-foreground), 0.85);
+}
+
+.footer .footer-block__details-content .list-menu__item--link:hover {
+  color: rgb(var(--color-foreground));
+}
+
+/* ---------- Focus visibility on dark UI ---------- */
+:focus-visible {
+  outline-offset: 0.3rem;
+}

@@ -1,0 +1,152 @@
+{%- comment -%}
+  Velto hero — text-first brand hero for the homepage.
+  Works without a photo (no placeholder illustration); an optional image
+  can be added in the theme editor and appears on the right on desktop.
+  The highlighted word gets the same tilted hand-drawn underline stroke
+  used under the "velto" wordmark.
+{%- endcomment -%}
+{{ 'velto-home.css' | asset_url | stylesheet_tag }}
+
+{%- liquid
+  assign showcase = section.settings.showcase_collection
+  if showcase == blank
+    assign showcase = collections['all']
+  endif
+  assign has_media = false
+  if section.settings.image != blank or showcase != blank
+    assign has_media = true
+  endif
+-%}
+<section class="velto-hero color-{{ section.settings.color_scheme }} gradient{% if has_media %} velto-hero--has-image{% endif %}">
+  <div class="velto-hero__inner page-width">
+    <div class="velto-hero__content">
+      {%- if section.settings.eyebrow != blank -%}
+        <p class="velto-hero__eyebrow">{{ section.settings.eyebrow }}</p>
+      {%- endif -%}
+      <h1 class="velto-hero__title">
+        {{ section.settings.heading_before }}
+        {%- if section.settings.heading_accent != blank %}
+          <span class="velto-accent">{{ section.settings.heading_accent }}</span>
+        {%- endif %}
+        {{ section.settings.heading_after }}
+      </h1>
+      {%- if section.settings.text != blank -%}
+        <div class="velto-hero__text rte">{{ section.settings.text }}</div>
+      {%- endif -%}
+      <div class="velto-hero__buttons">
+        {%- if section.settings.button_label_1 != blank -%}
+          <a href="{{ section.settings.button_link_1 | default: routes.all_products_collection_url }}" class="button button--primary">
+            {{- section.settings.button_label_1 -}}
+          </a>
+        {%- endif -%}
+        {%- if section.settings.button_label_2 != blank -%}
+          <a href="{{ section.settings.button_link_2 | default: '#velto-categories' }}" class="button button--secondary">
+            {{- section.settings.button_label_2 -}}
+          </a>
+        {%- endif -%}
+      </div>
+    </div>
+
+    {%- if section.settings.image != blank -%}
+      <div class="velto-hero__media">
+        {{
+          section.settings.image
+          | image_url: width: 1400
+          | image_tag: loading: 'eager', fetchpriority: 'high', sizes: '(min-width: 990px) 50vw, 100vw', widths: '600, 900, 1200, 1400'
+        }}
+      </div>
+    {%- elsif has_media -%}
+      <ul class="velto-hero__showcase" role="list" aria-label="{{ showcase.title | escape }}">
+        {%- for product in showcase.products limit: 4 -%}
+          <li class="velto-hero__tile velto-hero__tile--{{ forloop.index }}">
+            <a href="{{ product.url }}" tabindex="-1">
+              {%- if product.featured_media -%}
+                {{
+                  product.featured_media
+                  | image_url: width: 500
+                  | image_tag: loading: 'eager', sizes: '(min-width: 990px) 22vw, 1px', widths: '300, 400, 500', alt: product.title
+                }}
+              {%- endif -%}
+              <span class="velto-hero__tile-price">{{ product.price | money }}</span>
+            </a>
+          </li>
+        {%- endfor -%}
+      </ul>
+    {%- endif -%}
+  </div>
+
+  {%- if section.blocks.size > 0 -%}
+    <div class="velto-hero__perks page-width">
+      <ul class="velto-perks" role="list">
+        {%- for block in section.blocks -%}
+          <li class="velto-perk" {{ block.shopify_attributes }}>
+            <span class="velto-perk__icon" aria-hidden="true">
+              {%- case block.settings.icon -%}
+                {%- when 'tag' -%}{{- 'icon-price-tag.svg' | inline_asset_content -}}
+                {%- when 'check' -%}{{- 'icon-checkmark.svg' | inline_asset_content -}}
+                {%- when 'truck' -%}{{- 'icon-truck.svg' | inline_asset_content -}}
+                {%- when 'leaf' -%}{{- 'icon-leaf.svg' | inline_asset_content -}}
+                {%- when 'lock' -%}{{- 'icon-padlock.svg' | inline_asset_content -}}
+                {%- when 'pin' -%}{{- 'icon-map-pin.svg' | inline_asset_content -}}
+                {%- else -%}{{- 'icon-box.svg' | inline_asset_content -}}
+              {%- endcase -%}
+            </span>
+            <span class="velto-perk__text">
+              <strong>{{ block.settings.title }}</strong>
+              {%- if block.settings.text != blank -%}<span>{{ block.settings.text }}</span>{%- endif -%}
+            </span>
+          </li>
+        {%- endfor -%}
+      </ul>
+    </div>
+  {%- endif -%}
+</section>
+
+{% schema %}
+{
+  "name": "Velto hero",
+  "tag": "div",
+  "class": "section",
+  "max_blocks": 4,
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Virsraksts virs galvenā", "default": "Interneta veikals Latvijā" },
+    { "type": "text", "id": "heading_before", "label": "Virsraksts (sākums)", "default": "Kvalitatīva produkcija par" },
+    { "type": "text", "id": "heading_accent", "label": "Izcelts vārds (ar pasvītrojumu)", "default": "godīgu cenu" },
+    { "type": "text", "id": "heading_after", "label": "Virsraksts (beigas)" },
+    { "type": "richtext", "id": "text", "label": "Teksts", "default": "<p>Pārtika, dzērieni, sadzīves ķīmija un ikdienas preces — rūpīgi atlasītas un vienmēr par godīgu cenu.</p>" },
+    { "type": "text", "id": "button_label_1", "label": "Poga 1", "default": "Iepirkties" },
+    { "type": "url", "id": "button_link_1", "label": "Poga 1 saite" },
+    { "type": "text", "id": "button_label_2", "label": "Poga 2", "default": "Kategorijas" },
+    { "type": "url", "id": "button_link_2", "label": "Poga 2 saite" },
+    { "type": "image_picker", "id": "image", "label": "Attēls (nav obligāts)" },
+    { "type": "collection", "id": "showcase_collection", "label": "Produkti labajā pusē (ja nav attēla)", "info": "Datorā parāda 4 produktus no kolekcijas." },
+    { "type": "color_scheme", "id": "color_scheme", "label": "t:sections.all.colors.label", "default": "scheme-1" }
+  ],
+  "blocks": [
+    {
+      "type": "perk",
+      "name": "Priekšrocība",
+      "settings": [
+        {
+          "type": "select",
+          "id": "icon",
+          "label": "Ikona",
+          "default": "tag",
+          "options": [
+            { "value": "tag", "label": "Cenu zīme" },
+            { "value": "check", "label": "Ķeksītis" },
+            { "value": "truck", "label": "Piegāde" },
+            { "value": "leaf", "label": "Lapa" },
+            { "value": "lock", "label": "Drošība" },
+            { "value": "pin", "label": "Vieta" },
+            { "value": "box", "label": "Kaste" }
+          ]
+        },
+        { "type": "text", "id": "title", "label": "Virsraksts", "default": "Godīga cena" },
+        { "type": "text", "id": "text", "label": "Teksts" }
+      ]
+    }
+  ],
+  "presets": [{ "name": "Velto hero" }]
+}
+{% endschema %}

@@ -4,12 +4,30 @@
   "sections": {
     "footer": {
       "type": "footer",
-      "blocks": {},
-      "block_order": [],
+      "blocks": {
+        "brand": {
+          "type": "text",
+          "settings": {
+            "heading": "Velto",
+            "subtext": "<p>Interneta veikals Latvijā ar kvalitatīvu produkciju par godīgām cenām. Mēs garantējam godīgu cenu un kvalitatīvu preci.</p>"
+          }
+        },
+        "info": {
+          "type": "link_list",
+          "settings": {
+            "heading": "Informācija",
+            "menu": "footer"
+          }
+        }
+      },
+      "block_order": [
+        "brand",
+        "info"
+      ],
       "settings": {
         "color_scheme": "scheme-1",
         "newsletter_enable": true,
-        "newsletter_heading": "Subscribe to our emails",
+        "newsletter_heading": "Saņemiet jaunumus un piedāvājumus",
         "enable_follow_on_shop": true,
         "show_social": true,
         "enable_country_selector": true,
