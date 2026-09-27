@@ -17,6 +17,11 @@
     assign coll = collections['all']
   endif
   assign count = coll.products_count
+  assign src = section.settings.source_url | strip
+  assign link = coll.url
+  if src != blank
+    assign link = src
+  endif
 -%}
 
 <section
@@ -39,14 +44,23 @@
         {%- if section.settings.text != blank -%}
           <div class="velto-spot__text">{{ section.settings.text }}</div>
         {%- endif -%}
-        <a class="button button--primary velto-spot__cta" href="{{ coll.url }}">
+        <a class="button button--primary velto-spot__cta" href="{{ link }}">
           {{- section.settings.button_label -}}
-          {%- if section.settings.show_count and count > 0 %} ({{ count }}){% endif -%}
+          <span data-spot-count>{%- if section.settings.show_count and count > 0 and src == blank %} ({{ count }}){% endif -%}</span>
         </a>
       </div>
 
       <div class="velto-spot__rail-wrap">
-        <ul class="velto-spot__rail" role="list" aria-label="{{ coll.title | escape }}">
+        <ul
+          class="velto-spot__rail{% if src != blank %} is-loading{% endif %}"
+          role="list"
+          aria-label="{{ section.settings.eyebrow | default: coll.title | escape }}"
+          {% if src != blank %}
+            data-src="{{ src }}{% if src contains '?' %}&{% else %}?{% endif %}section_id=velto-product-rail"
+            data-limit="{{ section.settings.products_to_show }}"
+            data-show-count="{{ section.settings.show_count }}"
+          {% endif %}
+        >
           {%- for product in coll.products limit: section.settings.products_to_show -%}
             <li class="velto-spot__item">
               {% render 'card-product',
@@ -82,6 +96,29 @@
   (() => {
     const root = document.currentScript.previousElementSibling;
     const rail = root.querySelector('.velto-spot__rail');
+
+    // Source URL mode: swap the fallback cards for the URL's products
+    // (sorting / tag / filter come from the URL). Keeps fallback on error.
+    if (rail.dataset.src) {
+      const reveal = () => rail.classList.remove('is-loading');
+      const t = setTimeout(reveal, 3000);
+      fetch(rail.dataset.src)
+        .then((r) => r.text())
+        .then((html) => {
+          const doc = new DOMParser().parseFromString(html, 'text/html');
+          const list = doc.querySelector('[data-velto-rail]');
+          const items = list ? [...list.children].slice(0, +rail.dataset.limit || 10) : [];
+          if (items.length) {
+            rail.replaceChildren(...items.map((li) => document.adoptNode(li)));
+            rail.scrollLeft = 0;
+            const n = parseInt(list.dataset.count, 10);
+            const c = root.querySelector('[data-spot-count]');
+            if (c && rail.dataset.showCount === 'true' && n > 0) c.textContent = ` (${n})`;
+          }
+        })
+        .catch(() => {})
+        .finally(() => { clearTimeout(t); reveal(); });
+    }
     root.querySelectorAll('.velto-spot__arrow').forEach((btn) => {
       btn.addEventListener('click', () => {
         const item = rail.querySelector('.velto-spot__item');
@@ -99,6 +136,12 @@
   "class": "section",
   "settings": [
     { "type": "collection", "id": "collection", "label": "Kolekcija" },
+    {
+      "type": "text",
+      "id": "source_url",
+      "label": "Preču avots (saite, nav obligāts)",
+      "info": "Aizstāj kolekciju. Piem.: jaunākās — /collections/all?sort_by=created-descending; ekskluzīvās — /collections/all/exclusive?sort_by=best-selling"
+    },
     { "type": "text", "id": "eyebrow", "label": "Virsraksts virs galvenā", "default": "Mūsu izlase" },
     { "type": "text", "id": "heading_before", "label": "Virsraksts (sākums)", "default": "Atklāj" },
     { "type": "text", "id": "heading_accent", "label": "Izcelts vārds", "default": "interesantāko" },

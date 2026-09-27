@@ -1,0 +1,55 @@
+{%- comment -%}
+  Data-only section: product cards for the spotlight rail, rendered via
+  the Section Rendering API in the context of any catalog URL, e.g.
+    /collections/all?sort_by=created-descending&section_id=velto-product-rail
+    /collections/all/exclusive?sort_by=best-selling&section_id=velto-product-rail
+  so sorting / tag filtering come from the URL. Skips fees, membership,
+  gift cards and sold-out items. Up to 16 cards.
+{%- endcomment -%}
+{%- liquid
+  assign pool = collection
+  if pool == blank
+    assign pool = collections['all']
+  endif
+  assign n = 0
+-%}
+<ul data-velto-rail data-count="{{ pool.products_count }}">
+  {%- for product in pool.products limit: 40 -%}
+    {%- liquid
+      assign skip = false
+      if product.available == false or product.featured_media == blank or product.gift_card?
+        assign skip = true
+      elsif product.type == 'mws_fee_generated' or product.tags contains 'mws_fee_generated' or product.tags contains 'main-subscriptions'
+        assign skip = true
+      endif
+      if n >= 16
+        assign skip = true
+      endif
+    -%}
+    {%- unless skip -%}
+      {%- assign n = n | plus: 1 -%}
+      <li class="velto-spot__item">
+        {% render 'card-product',
+          card_product: product,
+          media_aspect_ratio: 'square',
+          image_shape: 'default',
+          lazy_load: true,
+          show_secondary_image: false,
+          show_vendor: false,
+          show_rating: false,
+          skip_styles: true,
+          section_id: 'rail',
+          quick_add: 'standard',
+          product_view_context: 'collection'
+        %}
+      </li>
+    {%- endunless -%}
+  {%- endfor -%}
+</ul>
+
+{% schema %}
+{
+  "name": "Velto product rail (data)",
+  "settings": []
+}
+{% endschema %}

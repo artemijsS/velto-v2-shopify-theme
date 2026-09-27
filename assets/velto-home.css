@@ -955,3 +955,13 @@ velto-showcase.is-paused .velto-hero__dot.is-active::after {
   line-height: 1.55;
   color: rgba(var(--color-foreground), 0.68);
 }
+
+/* spotlight rail while its source URL loads: keep layout, fade cards */
+.velto-spot__rail.is-loading .velto-spot__item {
+  opacity: 0.15;
+  filter: grayscale(1);
+}
+
+.velto-spot__rail .velto-spot__item {
+  transition: opacity 0.4s ease, filter 0.4s ease;
+}

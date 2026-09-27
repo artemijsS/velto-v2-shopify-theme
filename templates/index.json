@@ -141,18 +141,19 @@
       "type": "velto-spotlight",
       "settings": {
         "collection": "jaunumi",
-        "eyebrow": "Mūsu izlase",
+        "eyebrow": "Jaunumi",
         "heading_before": "Atklāj",
         "heading_accent": "interesantāko",
         "heading_after": "",
-        "text": "<p>Īpaši atlasītas preces, kuras vērts nogaršot — rūpīgi izvēlētas mūsu komandas.</p>",
-        "button_label": "Skatīt visu",
-        "show_count": true,
-        "products_to_show": 10,
+        "text": "<p>Jaunākās preces mūsu sortimentā — izlase atjaunojas automātiski, tiklīdz pienāk kas jauns.</p>",
+        "button_label": "Visi jaunumi",
+        "show_count": false,
+        "products_to_show": 12,
         "reverse": false,
         "color_scheme": "scheme-2",
         "padding_top": 48,
-        "padding_bottom": 24
+        "padding_bottom": 24,
+        "source_url": "/collections/all?sort_by=created-descending"
       }
     },
     "spot_ready": {
@@ -167,7 +168,7 @@
         "button_label": "Skatīt visu",
         "show_count": true,
         "products_to_show": 12,
-        "reverse": true,
+        "reverse": false,
         "color_scheme": "scheme-2",
         "padding_top": 24,
         "padding_bottom": 24
@@ -282,6 +283,25 @@
         "padding_top": 40,
         "padding_bottom": 16
       }
+    },
+    "spot_excl": {
+      "type": "velto-spotlight",
+      "settings": {
+        "collection": "",
+        "source_url": "/collections/all/exclusive?sort_by=best-selling",
+        "eyebrow": "Tikai Velto",
+        "heading_before": "Ekskluzīvas",
+        "heading_accent": "preces",
+        "heading_after": "",
+        "text": "<p>Īpaši atlasīti produkti un delikateses mūsu izlasē — to, ko vērts izmēģināt.</p>",
+        "button_label": "Skatīt visas",
+        "show_count": true,
+        "products_to_show": 12,
+        "reverse": true,
+        "color_scheme": "scheme-2",
+        "padding_top": 24,
+        "padding_bottom": 24
+      }
     }
   },
   "order": [
@@ -292,6 +312,7 @@
     "marquee",
     "spot_new",
     "curated",
+    "spot_excl",
     "spot_ready",
     "steps"
   ]
