@@ -1,0 +1,29 @@
+{%- comment -%}
+  Velto delivery line — compact, live info about the weekly delivery
+  cycle (product page, cart, cart notification).
+  Uses theme settings → "Velto piegāde". Text is filled by
+  assets/velto-delivery.js in Riga time; the static fallback is shown
+  without JS.
+
+  Usage: {% render 'velto-delivery-info' %}
+{%- endcomment -%}
+{%- if settings.velto_delivery_enable -%}
+  <velto-delivery
+    class="velto-deliv-line"
+    data-cutoff-day="{{ settings.velto_cutoff_day }}"
+    data-cutoff-time="{{ settings.velto_cutoff_time }}"
+    data-delivery-days="{{ settings.velto_delivery_days }}"
+  >
+    <span class="velto-deliv-line__icon" aria-hidden="true">{{- 'icon-truck.svg' | inline_asset_content -}}</span>
+    <span class="velto-deliv-line__body">
+      <span class="velto-deliv-line__fallback">{{ 'velto.delivery.fallback' | t }}</span>
+      <span class="velto-deliv-line__main">{{ 'velto.delivery.order' | t }} <span data-v="deadline"></span></span>
+      <span class="velto-deliv-line__days">{{ 'velto.delivery.delivery' | t }} <span data-v="days"></span></span>
+      <span class="velto-deliv-line__sub">
+        {{- 'velto.delivery.pick_slot' | t }} · {{ 'velto.delivery.time_left' | t }} <strong data-v="countdown"></strong>
+      </span>
+    </span>
+  </velto-delivery>
+  {{ 'velto-delivery.css' | asset_url | stylesheet_tag }}
+  <script src="{{ 'velto-delivery.js' | asset_url }}" defer="defer"></script>
+{%- endif -%}

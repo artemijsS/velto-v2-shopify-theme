@@ -549,6 +549,20 @@
       "other": "{{ count }} preces"
     },
     "load_more": "Rādīt vēl",
-    "shown_of": "Parādītas {{ shown }} no {{ total }}"
+    "shown_of": "Parādītas {{ shown }} no {{ total }}",
+    "delivery": {
+      "fallback": "Pasūti līdz otrdienas beigām — piegāde piektdien vai sestdien.",
+      "pick_slot": "Dienu un laiku izvēlies, noformējot pasūtījumu",
+      "time_left": "Līdz pieņemšanas beigām:",
+      "time_left_long": "Pasūtījumu pieņemšana beigsies pēc",
+      "next_delivery": "Tuvākā piegāde",
+      "week_label": "Nedēļas piegādes grafiks",
+      "weekdays_short": "P,O,T,C,Pk,S,Sv",
+      "legend_cutoff": "Pēdējā diena pasūtīt",
+      "legend_delivery": "Piegāde",
+      "legend_today": "Šodien",
+      "order": "Pasūti",
+      "delivery": "Piegāde"
+    }
   }
 }

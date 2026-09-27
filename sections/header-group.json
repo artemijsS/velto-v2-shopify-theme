@@ -17,10 +17,10 @@
         "announcement-bar-0": {
           "type": "announcement",
           "settings": {
-            "text": "Godīga cena. Kvalitatīva prece.",
+            "text": "Pasūti līdz otrdienas beigām — piegāde piektdien vai sestdien",
             "text_alignment": "center",
             "color_scheme": "scheme-1",
-            "link": "shopify://collections/all"
+            "link": ""
           }
         }
       },

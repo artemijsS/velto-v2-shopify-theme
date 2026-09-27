@@ -536,6 +536,20 @@
       "other": "{{ count }} products"
     },
     "load_more": "Show more",
-    "shown_of": "Showing {{ shown }} of {{ total }}"
+    "shown_of": "Showing {{ shown }} of {{ total }}",
+    "delivery": {
+      "fallback": "Order by the end of Tuesday — delivered on Friday or Saturday.",
+      "pick_slot": "Pick the day and time slot at checkout",
+      "time_left": "Time left to order:",
+      "time_left_long": "Orders for this week close in",
+      "next_delivery": "Next delivery",
+      "week_label": "Weekly delivery schedule",
+      "weekdays_short": "Mo,Tu,We,Th,Fr,Sa,Su",
+      "legend_cutoff": "Last day to order",
+      "legend_delivery": "Delivery",
+      "legend_today": "Today",
+      "order": "Order",
+      "delivery": "Delivery:"
+    }
   }
 }

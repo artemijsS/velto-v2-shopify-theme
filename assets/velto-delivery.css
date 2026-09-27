@@ -1,0 +1,294 @@
+/* Velto — weekly delivery info: compact line + homepage explainer. */
+
+/* ================= Compact line ================= */
+.velto-deliv-line {
+  display: flex;
+  align-items: flex-start;
+  gap: 1.2rem;
+  margin: 1.6rem 0 0;
+  padding: 1.4rem 1.6rem;
+  border-radius: 1rem;
+  border: 1px solid rgba(var(--color-foreground), 0.14);
+  background: rgba(var(--color-foreground), 0.04);
+  font-size: 1.4rem;
+  line-height: 1.45;
+  text-align: left;
+}
+
+.velto-deliv-line__icon {
+  flex: 0 0 auto;
+  display: grid;
+  place-items: center;
+  width: 3.4rem;
+  height: 3.4rem;
+  border-radius: 50%;
+  background: rgba(var(--color-foreground), 0.08);
+  color: rgb(var(--color-foreground));
+}
+
+.velto-deliv-line__icon svg {
+  width: 1.8rem;
+  height: 1.8rem;
+  fill: currentColor;
+}
+
+.velto-deliv-line__body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.velto-deliv-line__main {
+  color: rgb(var(--color-foreground));
+  font-weight: 700;
+}
+
+.velto-deliv-line__days { color: rgba(var(--color-foreground), 0.85); }
+
+.velto-deliv-line__sub {
+  font-size: 1.3rem;
+  color: rgba(var(--color-foreground), 0.6);
+}
+
+.velto-deliv-line__sub strong { color: rgb(var(--color-foreground)); font-weight: 600; }
+.velto-deliv-line.is-urgent .velto-deliv-line__sub strong { text-decoration: underline; text-underline-offset: 0.3rem; }
+
+/* no-JS: only the static sentence; with JS: the live 3-line version */
+.velto-deliv-line__main,
+.velto-deliv-line__days,
+.velto-deliv-line__sub { display: none; }
+.velto-deliv-line.is-ready .velto-deliv-line__main,
+.velto-deliv-line.is-ready .velto-deliv-line__days,
+.velto-deliv-line.is-ready .velto-deliv-line__sub { display: block; }
+.velto-deliv-line.is-ready .velto-deliv-line__fallback { display: none; }
+.velto-deliv-line__fallback { font-weight: 600; }
+
+/* in the small cart popup */
+.cart-notification .velto-deliv-line {
+  margin: 0 0 1.2rem;
+  padding: 1rem 1.2rem;
+  font-size: 1.3rem;
+}
+
+.cart-notification .velto-deliv-line__icon { width: 2.8rem; height: 2.8rem; }
+
+/* ================= Homepage explainer ================= */
+.velto-deliv {
+  padding-top: calc(var(--velto-deliv-pt) * 0.75);
+  padding-bottom: calc(var(--velto-deliv-pb) * 0.75);
+}
+
+@media screen and (min-width: 750px) {
+  .velto-deliv {
+    padding-top: var(--velto-deliv-pt);
+    padding-bottom: var(--velto-deliv-pb);
+  }
+}
+
+.velto-deliv__card {
+  position: relative;
+  display: grid;
+  gap: 2.8rem;
+  padding: 2.8rem 2rem;
+  border-radius: 1.2rem;
+  border: 1px solid rgba(var(--color-foreground), 0.1);
+  background:
+    radial-gradient(90% 120% at 100% 0%, rgba(var(--color-foreground), 0.07), transparent 60%),
+    rgba(var(--color-foreground), 0.025);
+  overflow: hidden;
+}
+
+@media screen and (min-width: 990px) {
+  .velto-deliv__card {
+    grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
+    gap: 4.8rem;
+    padding: 4.8rem;
+  }
+}
+
+.velto-deliv__eyebrow,
+.velto-deliv__label {
+  margin: 0 0 1rem;
+  font-size: 1.2rem;
+  letter-spacing: 0.25rem;
+  text-transform: uppercase;
+  color: rgba(var(--color-foreground), 0.6);
+}
+
+.velto-deliv__title {
+  margin: 0 0 0.14em;
+  font-size: clamp(2.8rem, 3.6vw, 4.4rem);
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+}
+
+.velto-deliv__title .velto-accent {
+  /* long accent that wraps: underline every line instead of one stroke */
+  display: inline;
+  white-space: normal;
+  padding-bottom: 0.06em;
+  background: linear-gradient(currentColor, currentColor) 0 100% / 100% 0.08em no-repeat;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+}
+
+.velto-deliv__title .velto-accent::after { content: none; }
+
+.velto-deliv__text {
+  margin-top: 1.6rem;
+  max-width: 56rem;
+  font-size: 1.5rem;
+  line-height: 1.6;
+  color: rgba(var(--color-foreground), 0.72);
+}
+
+.velto-deliv__text p { margin: 0; }
+
+/* week strip */
+.velto-week {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 0.6rem;
+  margin: 2.8rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.velto-week__day {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.8rem;
+  padding: 1.2rem 0 1rem;
+  border-radius: 0.8rem;
+  border: 1px solid rgba(var(--color-foreground), 0.1);
+  color: rgba(var(--color-foreground), 0.45);
+  font-size: 1.3rem;
+  font-weight: 600;
+}
+
+.velto-week__mark {
+  display: grid;
+  place-items: center;
+  height: 2rem;
+}
+
+.velto-week__mark svg {
+  width: 1.8rem;
+  height: 1.8rem;
+  fill: currentColor;
+}
+
+.velto-week__day--cutoff {
+  border-color: rgba(var(--color-foreground), 0.6);
+  color: rgb(var(--color-foreground));
+}
+
+.velto-week__day--delivery {
+  background: rgb(var(--color-foreground));
+  border-color: rgb(var(--color-foreground));
+  color: rgb(var(--color-background));
+}
+
+.velto-week__day.is-today::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  bottom: -0.9rem;
+  width: 0.6rem;
+  height: 0.6rem;
+  margin-left: -0.3rem;
+  border-radius: 50%;
+  background: rgb(var(--color-foreground));
+}
+
+.velto-week__legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.8rem 2rem;
+  margin: 2rem 0 0;
+  padding: 0;
+  list-style: none;
+  font-size: 1.3rem;
+  color: rgba(var(--color-foreground), 0.65);
+}
+
+.velto-week__legend li {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.8rem;
+}
+
+.velto-week__key {
+  width: 1.2rem;
+  height: 1.2rem;
+  border-radius: 0.3rem;
+  border: 1px solid rgba(var(--color-foreground), 0.6);
+}
+
+.velto-week__key--delivery {
+  background: rgb(var(--color-foreground));
+  border-color: rgb(var(--color-foreground));
+}
+
+.velto-week__key--today {
+  width: 0.6rem;
+  height: 0.6rem;
+  border: 0;
+  border-radius: 50%;
+  background: rgb(var(--color-foreground));
+}
+
+/* live panel */
+.velto-deliv__live {
+  display: flex;
+  flex-direction: column;
+  padding: 2.4rem;
+  border-radius: 1rem;
+  border: 1px solid rgba(var(--color-foreground), 0.12);
+  background: rgb(var(--color-background));
+}
+
+.velto-deliv__countdown {
+  margin: 0;
+  font-family: var(--font-heading-family);
+  font-weight: 700;
+  font-size: clamp(3.2rem, 4.4vw, 4.8rem);
+  line-height: 1;
+  letter-spacing: -0.02em;
+  font-variant-numeric: tabular-nums;
+}
+
+.velto-deliv__deadline {
+  margin: 0.8rem 0 0;
+  font-size: 1.4rem;
+  color: rgba(var(--color-foreground), 0.65);
+}
+
+.velto-deliv__next {
+  margin-top: 2.4rem;
+  padding-top: 2.4rem;
+  border-top: 1px solid rgba(var(--color-foreground), 0.12);
+}
+
+.velto-deliv__days {
+  margin: 0;
+  font-size: 1.8rem;
+  font-weight: 600;
+  line-height: 1.4;
+  white-space: pre-line;
+}
+
+.velto-deliv__days::first-letter { text-transform: uppercase; }
+
+.velto-deliv__slot {
+  margin: 0.8rem 0 0;
+  font-size: 1.4rem;
+  color: rgba(var(--color-foreground), 0.65);
+}
+
+.velto-deliv__cta {
+  margin-top: 2.4rem;
+  align-self: flex-start;
+}

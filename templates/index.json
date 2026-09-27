@@ -186,15 +186,15 @@
         "s2": {
           "type": "step",
           "settings": {
-            "title": "Noformē pasūtījumu",
-            "text": "Pievieno grozam un samaksā droši tiešsaistē."
+            "title": "Pasūti līdz otrdienai",
+            "text": "Pievieno grozam un noformē pasūtījumu līdz otrdienas beigām."
           }
         },
         "s3": {
           "type": "step",
           "settings": {
-            "title": "Saņem",
-            "text": "Mēs sagatavosim pasūtījumu un paziņosim, kad tas būs gatavs."
+            "title": "Saņem piektdien vai sestdien",
+            "text": "Piegādes dienu un ērtāko laiku izvēlies pats, noformējot pasūtījumu."
           }
         }
       },
@@ -267,10 +267,26 @@
         "padding_top": 56,
         "padding_bottom": 48
       }
+    },
+    "delivery": {
+      "type": "velto-delivery",
+      "settings": {
+        "eyebrow": "Kā notiek piegāde",
+        "heading_before": "Pasūti līdz otrdienai —",
+        "heading_accent": "saņem piektdien vai sestdien",
+        "heading_after": "",
+        "text": "<p>Pasūtījumus pieņemam līdz otrdienas beigām. Piegāde notiek piektdien un sestdien — ērtāko dienu un laiku izvēlies pats, noformējot pasūtījumu.</p>",
+        "button_label": "Sākt iepirkties",
+        "button_link": "shopify://collections/all",
+        "color_scheme": "scheme-1",
+        "padding_top": 40,
+        "padding_bottom": 16
+      }
     }
   },
   "order": [
     "hero",
+    "delivery",
     "categories",
     "featured_collection",
     "marquee",

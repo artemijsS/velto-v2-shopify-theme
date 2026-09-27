@@ -1,0 +1,112 @@
+{%- comment -%}
+  Velto delivery — homepage explainer of the weekly cycle:
+  a week strip (last order day + delivery days + today), a live countdown
+  to the order cutoff and the next delivery dates. Rule comes from theme
+  settings → "Velto piegāde".
+{%- endcomment -%}
+{{ 'velto-delivery.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'velto-delivery.js' | asset_url }}" defer="defer"></script>
+
+{%- liquid
+  assign short = 'velto.delivery.weekdays_short' | t | split: ','
+  assign delivery_days = settings.velto_delivery_days | split: ','
+  assign cutoff_day = settings.velto_cutoff_day | plus: 0
+-%}
+
+<section
+  class="velto-deliv color-{{ section.settings.color_scheme }}"
+  style="--velto-deliv-pt: {{ section.settings.padding_top }}px; --velto-deliv-pb: {{ section.settings.padding_bottom }}px;"
+>
+  <div class="page-width">
+    <velto-delivery
+      class="velto-deliv__card gradient"
+      data-cutoff-day="{{ settings.velto_cutoff_day }}"
+      data-cutoff-time="{{ settings.velto_cutoff_time }}"
+      data-delivery-days="{{ settings.velto_delivery_days }}"
+    >
+      <div class="velto-deliv__intro">
+        {%- if section.settings.eyebrow != blank -%}
+          <p class="velto-deliv__eyebrow">{{ section.settings.eyebrow }}</p>
+        {%- endif -%}
+        <h2 class="velto-deliv__title">
+          {{ section.settings.heading_before }}
+          {%- if section.settings.heading_accent != blank %}
+            <span class="velto-accent">{{ section.settings.heading_accent }}</span>
+          {%- endif %}
+          {{ section.settings.heading_after }}
+        </h2>
+        {%- if section.settings.text != blank -%}
+          <div class="velto-deliv__text">{{ section.settings.text }}</div>
+        {%- endif -%}
+
+        <ol class="velto-week" role="list" aria-label="{{ 'velto.delivery.week_label' | t | escape }}">
+          {%- for i in (1..7) -%}
+            {%- liquid
+              assign dow = i | append: ''
+              assign kind = ''
+              if i == cutoff_day
+                assign kind = 'cutoff'
+              elsif delivery_days contains dow
+                assign kind = 'delivery'
+              endif
+            -%}
+            <li class="velto-week__day{% if kind != '' %} velto-week__day--{{ kind }}{% endif %}" data-dow="{{ i }}">
+              <span class="velto-week__name">{{ short[forloop.index0] | strip }}</span>
+              <span class="velto-week__mark" aria-hidden="true">
+                {%- case kind -%}
+                  {%- when 'cutoff' -%}{{- 'icon-stopwatch.svg' | inline_asset_content -}}
+                  {%- when 'delivery' -%}{{- 'icon-truck.svg' | inline_asset_content -}}
+                {%- endcase -%}
+              </span>
+            </li>
+          {%- endfor -%}
+        </ol>
+        <ul class="velto-week__legend" role="list">
+          <li><span class="velto-week__key velto-week__key--cutoff"></span>{{ 'velto.delivery.legend_cutoff' | t }}</li>
+          <li><span class="velto-week__key velto-week__key--delivery"></span>{{ 'velto.delivery.legend_delivery' | t }}</li>
+          <li><span class="velto-week__key velto-week__key--today"></span>{{ 'velto.delivery.legend_today' | t }}</li>
+        </ul>
+      </div>
+
+      <div class="velto-deliv__live">
+        <p class="velto-deliv__label">{{ 'velto.delivery.time_left_long' | t }}</p>
+        <p class="velto-deliv__countdown" data-v="countdown">—</p>
+        <p class="velto-deliv__deadline" data-v="deadline"></p>
+
+        <div class="velto-deliv__next">
+          <p class="velto-deliv__label">{{ 'velto.delivery.next_delivery' | t }}</p>
+          <p class="velto-deliv__days" data-v="days-lines">{{ 'velto.delivery.fallback' | t }}</p>
+          <p class="velto-deliv__slot">{{ 'velto.delivery.pick_slot' | t }}</p>
+        </div>
+
+        {%- if section.settings.button_label != blank -%}
+          <a class="button button--primary velto-deliv__cta" href="{{ section.settings.button_link | default: routes.all_products_collection_url }}">
+            {{- section.settings.button_label -}}
+          </a>
+        {%- endif -%}
+      </div>
+    </velto-delivery>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Velto piegāde",
+  "tag": "div",
+  "class": "section",
+  "settings": [
+    { "type": "paragraph", "content": "Pasūtījumu termiņš un piegādes dienas: Tēmas iestatījumi → Velto piegāde." },
+    { "type": "text", "id": "eyebrow", "label": "Virsraksts virs galvenā", "default": "Kā notiek piegāde" },
+    { "type": "text", "id": "heading_before", "label": "Virsraksts (sākums)", "default": "Pasūti līdz otrdienai —" },
+    { "type": "text", "id": "heading_accent", "label": "Izcelts teksts", "default": "saņem piektdien vai sestdien" },
+    { "type": "text", "id": "heading_after", "label": "Virsraksts (beigas)" },
+    { "type": "richtext", "id": "text", "label": "Teksts", "default": "<p>Pasūtījumus pieņemam līdz otrdienas beigām. Piegāde notiek piektdien un sestdien — ērtāko dienu un laiku izvēlies pats, noformējot pasūtījumu.</p>" },
+    { "type": "text", "id": "button_label", "label": "Pogas teksts", "default": "Sākt iepirkties" },
+    { "type": "url", "id": "button_link", "label": "Pogas saite" },
+    { "type": "color_scheme", "id": "color_scheme", "label": "t:sections.all.colors.label", "default": "scheme-1" },
+    { "type": "range", "id": "padding_top", "min": 0, "max": 100, "step": 4, "unit": "px", "label": "Atstarpe augšā", "default": 40 },
+    { "type": "range", "id": "padding_bottom", "min": 0, "max": 100, "step": 4, "unit": "px", "label": "Atstarpe apakšā", "default": 16 }
+  ],
+  "presets": [{ "name": "Velto piegāde" }]
+}
+{% endschema %}

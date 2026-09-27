@@ -1466,5 +1466,69 @@
         "label": "t:settings_schema.customer_accounts.settings.customer_account_menu.label"
       }
     ]
+  },
+  {
+    "name": "Velto piegāde",
+    "settings": [
+      {
+        "type": "paragraph",
+        "content": "Nedēļas cikls: pasūtījumus pieņem līdz termiņam, piegāde nākamajās piegādes dienās. Informācija tiek rādīta produkta lapā, grozā un sākumlapā (sadaļa \"Velto piegāde\") un aprēķināta pēc Rīgas laika."
+      },
+      {
+        "type": "checkbox",
+        "id": "velto_delivery_enable",
+        "label": "Rādīt piegādes informāciju",
+        "default": true
+      },
+      {
+        "type": "select",
+        "id": "velto_cutoff_day",
+        "label": "Pēdējā pasūtīšanas diena",
+        "default": "2",
+        "options": [
+          {
+            "value": "1",
+            "label": "Pirmdiena"
+          },
+          {
+            "value": "2",
+            "label": "Otrdiena"
+          },
+          {
+            "value": "3",
+            "label": "Trešdiena"
+          },
+          {
+            "value": "4",
+            "label": "Ceturtdiena"
+          },
+          {
+            "value": "5",
+            "label": "Piektdiena"
+          },
+          {
+            "value": "6",
+            "label": "Sestdiena"
+          },
+          {
+            "value": "7",
+            "label": "Svētdiena"
+          }
+        ]
+      },
+      {
+        "type": "text",
+        "id": "velto_cutoff_time",
+        "label": "Pēdējais pasūtīšanas laiks (HH:MM)",
+        "default": "23:59"
+      },
+      {
+        "type": "text",
+        "id": "velto_delivery_days",
+        "label": "Piegādes dienas (1=P … 7=Sv, ar komatu)",
+        "default": "5,6",
+        "info": "Piektdiena un sestdiena = 5,6"
+      }
+    ]
   }
 ]
