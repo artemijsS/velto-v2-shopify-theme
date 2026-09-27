@@ -1,0 +1,159 @@
+{%- comment -%}
+  Velto bestsellers — a live "top chart": real best sellers (Shopify
+  sort_by=best-selling) with rank numbers, and category tabs that switch
+  the list in place. Products come from sections/velto-product-rail via the
+  Section Rendering API (fees / membership / sold-out skipped).
+{%- endcomment -%}
+{{ 'velto-home.css' | asset_url | stylesheet_tag }}
+{{ 'component-card.css' | asset_url | stylesheet_tag }}
+{{ 'component-price.css' | asset_url | stylesheet_tag }}
+{{ 'quick-add.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'product-form.js' | asset_url }}" defer="defer"></script>
+<script src="{{ 'quick-add.js' | asset_url }}" defer="defer"></script>
+
+{%- assign limit = section.settings.limit -%}
+
+<section
+  class="velto-best color-{{ section.settings.color_scheme }} gradient"
+  style="--velto-best-pt: {{ section.settings.padding_top }}px; --velto-best-pb: {{ section.settings.padding_bottom }}px;"
+>
+  <div class="page-width">
+    <div class="velto-best__head">
+      <div>
+        {%- if section.settings.eyebrow != blank -%}
+          <p class="velto-best__eyebrow">{{ section.settings.eyebrow }}</p>
+        {%- endif -%}
+        <h2 class="h2 velto-best__title">{{ section.settings.heading }}</h2>
+        {%- if section.settings.subheading != blank -%}
+          <p class="velto-section-head__sub">{{ section.settings.subheading }}</p>
+        {%- endif -%}
+      </div>
+      <a class="velto-best__all link underlined-link" href="{{ routes.all_products_collection_url }}?sort_by=best-selling" data-best-all>
+        {{- 'sections.featured_collection.view_all' | t -}}
+      </a>
+    </div>
+
+    {%- if section.blocks.size > 1 -%}
+      <div class="velto-best__tabs-wrap">
+        <div class="velto-best__tabs" role="tablist" aria-label="{{ section.settings.heading | escape }}">
+          {%- for block in section.blocks -%}
+            <button
+              type="button"
+              role="tab"
+              class="velto-best__tab"
+              aria-selected="{% if forloop.first %}true{% else %}false{% endif %}"
+              data-url="{{ block.settings.link | default: routes.all_products_collection_url }}"
+              {{ block.shopify_attributes }}
+            >
+              {{- block.settings.label -}}
+            </button>
+          {%- endfor -%}
+        </div>
+      </div>
+    {%- endif -%}
+
+    <ol class="velto-best__grid is-loading" role="list" data-limit="{{ limit }}" aria-live="polite">
+      {%- for i in (1..limit) -%}
+        <li class="velto-best__skeleton" aria-hidden="true"><span></span></li>
+      {%- endfor -%}
+    </ol>
+  </div>
+</section>
+
+<script>
+  (() => {
+    const root = document.currentScript.previousElementSibling;
+    const grid = root.querySelector('.velto-best__grid');
+    const all = root.querySelector('[data-best-all]');
+    const tabs = [...root.querySelectorAll('.velto-best__tab')];
+    const limit = +grid.dataset.limit || 10;
+    const cache = new Map();
+    let token = 0;
+
+    const withParams = (url, params) => url + (url.includes('?') ? '&' : '?') + params;
+
+    const fetchList = (url) => {
+      if (!cache.has(url)) {
+        cache.set(
+          url,
+          fetch(withParams(url, 'sort_by=best-selling&section_id=velto-product-rail'))
+            .then((r) => r.text())
+            .then((html) => {
+              const doc = new DOMParser().parseFromString(html, 'text/html');
+              const list = doc.querySelector('[data-velto-rail]');
+              return list ? [...list.children].slice(0, limit).map((li) => li.outerHTML) : [];
+            })
+        );
+      }
+      return cache.get(url);
+    };
+
+    const show = async (url) => {
+      const my = ++token;
+      grid.classList.add('is-loading');
+      all.href = withParams(url, 'sort_by=best-selling');
+      try {
+        const items = await fetchList(url);
+        if (my !== token) return;
+        grid.innerHTML = items.join('');
+        grid.querySelectorAll('li').forEach((li, i) => {
+          li.className = 'velto-best__item';
+          li.style.setProperty('--i', i);
+          li.dataset.rank = String(i + 1).padStart(2, '0');
+        });
+      } catch (e) {}
+      if (my === token) grid.classList.remove('is-loading');
+    };
+
+    tabs.forEach((tab) =>
+      tab.addEventListener('click', () => {
+        tabs.forEach((t) => t.setAttribute('aria-selected', String(t === tab)));
+        tab.scrollIntoView({ block: 'nearest', inline: 'center', behavior: 'smooth' });
+        show(tab.dataset.url);
+      })
+    );
+
+    // prefetch other tabs on hover / focus
+    tabs.forEach((tab) => {
+      const pre = () => fetchList(tab.dataset.url);
+      tab.addEventListener('mouseenter', pre, { once: true });
+      tab.addEventListener('focus', pre, { once: true });
+    });
+
+    show(tabs[0] ? tabs[0].dataset.url : {{ routes.all_products_collection_url | json }});
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Velto populārākās",
+  "tag": "div",
+  "class": "section",
+  "max_blocks": 10,
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Virsraksts virs galvenā", "default": "Tops" },
+    { "type": "text", "id": "heading", "label": "Virsraksts", "default": "Populārākās preces" },
+    { "type": "text", "id": "subheading", "label": "Apakšvirsraksts", "default": "Ko Velto pircēji izvēlas visbiežāk" },
+    { "type": "range", "id": "limit", "min": 4, "max": 15, "step": 1, "label": "Preču skaits", "default": 10 },
+    { "type": "color_scheme", "id": "color_scheme", "label": "t:sections.all.colors.label", "default": "scheme-1" },
+    { "type": "range", "id": "padding_top", "min": 0, "max": 100, "step": 4, "unit": "px", "label": "Atstarpe augšā", "default": 48 },
+    { "type": "range", "id": "padding_bottom", "min": 0, "max": 100, "step": 4, "unit": "px", "label": "Atstarpe apakšā", "default": 48 }
+  ],
+  "blocks": [
+    {
+      "type": "tab",
+      "name": "Cilne",
+      "settings": [
+        { "type": "text", "id": "label", "label": "Nosaukums", "default": "Visi" },
+        { "type": "url", "id": "link", "label": "Kolekcija / saite", "info": "Tukšs — visi produkti" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Velto populārākās",
+      "blocks": [{ "type": "tab", "settings": { "label": "Visi" } }]
+    }
+  ]
+}
+{% endschema %}

@@ -965,3 +965,190 @@ velto-showcase.is-paused .velto-hero__dot.is-active::after {
 .velto-spot__rail .velto-spot__item {
   transition: opacity 0.4s ease, filter 0.4s ease;
 }
+
+/* ================= Bestsellers top chart ================= */
+.velto-best {
+  padding-top: calc(var(--velto-best-pt) * 0.75);
+  padding-bottom: calc(var(--velto-best-pb) * 0.75);
+}
+
+@media screen and (min-width: 750px) {
+  .velto-best {
+    padding-top: var(--velto-best-pt);
+    padding-bottom: var(--velto-best-pb);
+  }
+}
+
+.velto-best__head {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1.6rem;
+  margin-bottom: 2rem;
+}
+
+.velto-best__eyebrow {
+  margin: 0 0 1rem;
+  font-size: 1.2rem;
+  letter-spacing: 0.25rem;
+  text-transform: uppercase;
+  color: rgba(var(--color-foreground), 0.6);
+}
+
+.velto-best__title { margin: 0; }
+.velto-best__all { flex: 0 0 auto; font-size: 1.4rem; }
+
+/* tabs */
+.velto-best__tabs-wrap { margin-bottom: 2.4rem; }
+
+@media screen and (max-width: 749px) {
+  .velto-best__tabs-wrap {
+    margin: 0 -1.5rem 2rem;
+    -webkit-mask-image: linear-gradient(90deg, #000 85%, transparent);
+    mask-image: linear-gradient(90deg, #000 85%, transparent);
+  }
+}
+
+.velto-best__tabs {
+  display: flex;
+  gap: 0.8rem;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.velto-best__tabs::-webkit-scrollbar { display: none; }
+
+@media screen and (max-width: 749px) {
+  .velto-best__tabs { padding: 0 1.5rem; }
+}
+
+.velto-best__tab {
+  flex: 0 0 auto;
+  height: 4rem;
+  padding: 0 1.8rem;
+  border-radius: 4rem;
+  border: 1px solid rgba(var(--color-foreground), 0.16);
+  background: transparent;
+  color: rgba(var(--color-foreground), 0.8);
+  font-family: var(--font-body-family);
+  font-size: 1.4rem;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: border-color 0.2s ease, background-color 0.2s ease, color 0.2s ease;
+}
+
+.velto-best__tab:hover { border-color: rgba(var(--color-foreground), 0.5); color: rgb(var(--color-foreground)); }
+
+.velto-best__tab[aria-selected='true'] {
+  background: rgb(var(--color-foreground));
+  border-color: rgb(var(--color-foreground));
+  color: rgb(var(--color-background));
+  font-weight: 600;
+}
+
+/* grid / rail */
+.velto-best__grid {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: 44%;
+  gap: 1.2rem;
+  margin: 0 -1.5rem;
+  padding: 0 1.5rem 0.4rem;
+  list-style: none;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scroll-padding: 0 1.5rem;
+  scrollbar-width: none;
+}
+
+.velto-best__grid::-webkit-scrollbar { display: none; }
+
+@media screen and (min-width: 750px) {
+  .velto-best__grid {
+    grid-auto-flow: row;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    margin: 0;
+    padding: 0;
+    overflow: visible;
+    gap: 1.6rem;
+  }
+}
+
+@media screen and (min-width: 990px) {
+  .velto-best__grid { grid-template-columns: repeat(5, minmax(0, 1fr)); }
+}
+
+.velto-best__item,
+.velto-best__skeleton {
+  position: relative;
+  min-width: 0;
+  scroll-snap-align: start;
+}
+
+.velto-best__item {
+  animation: velto-rise 0.5s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+  animation-delay: calc(var(--i, 0) * 45ms);
+}
+
+.velto-best__item .card-wrapper { height: 100%; }
+
+/* rank badge */
+.velto-best__item::before {
+  content: attr(data-rank);
+  position: absolute;
+  z-index: 3;
+  top: 1rem;
+  left: 1rem;
+  display: grid;
+  place-items: center;
+  min-width: 3.6rem;
+  height: 3.6rem;
+  padding: 0 0.8rem;
+  border-radius: 2rem;
+  background: rgba(10, 10, 10, 0.88);
+  color: #fff;
+  font-family: var(--font-heading-family);
+  font-weight: 700;
+  font-size: 1.4rem;
+  letter-spacing: 0.02em;
+  font-variant-numeric: tabular-nums;
+  pointer-events: none;
+}
+
+/* podium: top 3 get a bigger, outlined numeral */
+.velto-best__item:nth-child(-n + 3)::before {
+  min-width: 4.4rem;
+  height: 4.4rem;
+  font-size: 1.8rem;
+  background: #0a0a0a;
+  box-shadow: 0 0 0 2px #fff, 0 0 0 3px rgba(10, 10, 10, 0.9);
+}
+
+/* skeletons while loading */
+.velto-best__skeleton span {
+  display: block;
+  aspect-ratio: 3 / 4.4;
+  border-radius: var(--card-corner-radius, 0.8rem);
+  background: linear-gradient(100deg, rgba(var(--color-foreground), 0.04) 30%, rgba(var(--color-foreground), 0.09) 50%, rgba(var(--color-foreground), 0.04) 70%) 0 0 / 300% 100%;
+  animation: velto-shimmer 1.4s linear infinite;
+}
+
+@keyframes velto-shimmer {
+  from { background-position: 100% 0; }
+  to { background-position: 0 0; }
+}
+
+.velto-best__grid.is-loading .velto-best__item {
+  opacity: 0.35;
+  transition: opacity 0.2s ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .velto-best__item { animation: none; }
+  .velto-best__skeleton span { animation: none; }
+}
+
+@keyframes velto-rise {
+  from { opacity: 0; transform: translateY(1.2rem); }
+  to { opacity: 1; transform: none; }
+}

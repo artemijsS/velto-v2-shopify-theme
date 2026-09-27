@@ -66,34 +66,6 @@
         "padding_bottom": 12
       }
     },
-    "featured_collection": {
-      "type": "featured-collection",
-      "settings": {
-        "title": "Populārākās preces",
-        "heading_size": "h2",
-        "description": "",
-        "show_description": false,
-        "description_style": "body",
-        "collection": "all",
-        "products_to_show": 10,
-        "columns_desktop": 5,
-        "color_scheme": "scheme-1",
-        "full_width": false,
-        "show_view_all": true,
-        "view_all_style": "solid",
-        "enable_desktop_slider": false,
-        "swipe_on_mobile": false,
-        "image_ratio": "square",
-        "image_shape": "default",
-        "show_secondary_image": false,
-        "show_vendor": false,
-        "show_rating": false,
-        "quick_add": "standard",
-        "columns_mobile": "2",
-        "padding_top": 36,
-        "padding_bottom": 52
-      }
-    },
     "marquee": {
       "type": "velto-marquee",
       "blocks": {
@@ -302,13 +274,85 @@
         "padding_top": 24,
         "padding_bottom": 24
       }
+    },
+    "bestsellers": {
+      "type": "velto-bestsellers",
+      "blocks": {
+        "t1": {
+          "type": "tab",
+          "settings": {
+            "label": "Visi",
+            "link": ""
+          }
+        },
+        "t2": {
+          "type": "tab",
+          "settings": {
+            "label": "Piena produkti",
+            "link": "shopify://collections/piena-produkti"
+          }
+        },
+        "t3": {
+          "type": "tab",
+          "settings": {
+            "label": "Gaļa un zivis",
+            "link": "shopify://collections/gala-zivis-un-gatava-kulinarija"
+          }
+        },
+        "t4": {
+          "type": "tab",
+          "settings": {
+            "label": "Gatavā kulinārija",
+            "link": "shopify://collections/gatava-kulinarija"
+          }
+        },
+        "t5": {
+          "type": "tab",
+          "settings": {
+            "label": "Maize",
+            "link": "shopify://collections/maize-un-konditoreja"
+          }
+        },
+        "t6": {
+          "type": "tab",
+          "settings": {
+            "label": "Uzkodas",
+            "link": "shopify://collections/uzkodas"
+          }
+        },
+        "t7": {
+          "type": "tab",
+          "settings": {
+            "label": "Dzērieni",
+            "link": "shopify://collections/dzerieni-1"
+          }
+        }
+      },
+      "block_order": [
+        "t1",
+        "t2",
+        "t3",
+        "t4",
+        "t5",
+        "t6",
+        "t7"
+      ],
+      "settings": {
+        "eyebrow": "Tops",
+        "heading": "Populārākās preces",
+        "subheading": "Ko Velto pircēji izvēlas visbiežāk",
+        "limit": 10,
+        "color_scheme": "scheme-1",
+        "padding_top": 48,
+        "padding_bottom": 48
+      }
     }
   },
   "order": [
     "hero",
     "delivery",
     "categories",
-    "featured_collection",
+    "bestsellers",
     "marquee",
     "spot_new",
     "curated",
