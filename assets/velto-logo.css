@@ -1,6 +1,6 @@
 /* Velto wordmark — inline vector logo (see snippets/velto-logo.liquid).
    The artwork uses fill="currentColor" so it automatically matches
-   whatever color scheme the surrounding section applies. */
+   whatever color scheme the surrounding section uses. */
 
 .velto-logo-wrap {
   display: inline-flex;
@@ -10,8 +10,15 @@
   color: currentColor;
 }
 
+/* Mobile: the tagline is too small to read, so hide it and crop the
+   viewBox to the wordmark + underline (no empty band under the logo).
+   viewBox is 312×152; the wordmark+underline part is ~312×108. */
 @media screen and (max-width: 749px) {
   .velto-logo .velto-logo__tagline {
     display: none;
+  }
+
+  .velto-logo {
+    height: calc(var(--velto-logo-width) * 108 / 312) !important;
   }
 }
