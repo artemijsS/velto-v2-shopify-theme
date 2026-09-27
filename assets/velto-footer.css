@@ -297,16 +297,29 @@
   box-shadow: 0 1.6rem 4rem rgba(0, 0, 0, 0.5);
 }
 
-/* ---------- wordmark watermark ---------- */
+/* ---------- wordmark watermark ----------
+   Background texture, not a second logo: wordmark only (no underline /
+   tagline), cropped by the page bottom and fading out downwards. */
 .velto-footer__watermark {
-  display: flex;
-  justify-content: center;
-  margin-top: -2rem;
-  margin-bottom: -4vw;
-  color: rgba(var(--color-foreground), 0.05);
+  position: relative;
+  height: clamp(7rem, 14vw, 19rem);
+  margin-top: 1.6rem;
+  overflow: hidden;
   pointer-events: none;
   user-select: none;
+  color: rgba(var(--color-foreground), 0.07);
+  -webkit-mask-image: linear-gradient(to bottom, #000 0%, #000 35%, transparent 100%);
+  mask-image: linear-gradient(to bottom, #000 0%, #000 35%, transparent 100%);
 }
 
-.velto-footer__watermark .velto-logo-wrap { --velto-logo-width: min(110rem, 92vw) !important; }
+.velto-footer__watermark .velto-logo-wrap {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  transform: translateX(-50%);
+  --velto-logo-width: min(120rem, 96vw) !important;
+}
+
+.velto-footer__watermark .velto-logo { height: auto !important; }
+.velto-footer__watermark .velto-logo rect,
 .velto-footer__watermark .velto-logo__tagline { display: none; }
