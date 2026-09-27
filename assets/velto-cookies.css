@@ -1,0 +1,357 @@
+/* Velto — Shopify cookie banner + preferences dialog, restyled to the
+   site (dark premium card, Manrope, pill buttons, toggle switches).
+   The markup and its base CSS are injected by Shopify at runtime
+   (#shopify-pc__banner__styles / #shopify-pc__prefs__styles, loaded after
+   the theme), so rules here are anchored on IDs to win specificity.
+   Texts are edited in Shopify admin → Settings → Customer privacy. */
+
+:root {
+  --vc-bg: #121212;
+  --vc-panel: #181818;
+  --vc-fg: 255, 255, 255;
+  --vc-line: rgba(255, 255, 255, 0.12);
+  --vc-radius: 1.4rem;
+}
+
+/* ================= Banner ================= */
+body #shopify-pc__banner.shopify-pc__banner__dialog {
+  left: auto;
+  right: 2.4rem;
+  bottom: 2.4rem;
+  width: 44rem;
+  max-width: calc(100vw - 3.2rem);
+  padding: 2.8rem;
+  border: 1px solid var(--vc-line);
+  border-radius: var(--vc-radius);
+  background: var(--vc-bg);
+  background-image: radial-gradient(120% 90% at 100% 0%, rgba(255, 255, 255, 0.07), transparent 60%);
+  box-shadow: 0 2.4rem 6rem rgba(0, 0, 0, 0.55);
+  color: rgb(var(--vc-fg));
+  font-family: var(--font-body-family);
+  animation: velto-cookie-in 0.5s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+}
+
+@media screen and (max-width: 749px) {
+  body #shopify-pc__banner.shopify-pc__banner__dialog {
+    left: 1.2rem;
+    right: 1.2rem;
+    bottom: 1.2rem;
+    width: auto;
+    max-width: none;
+    padding: 2.2rem 2rem 2rem;
+  }
+}
+
+@keyframes velto-cookie-in {
+  from { opacity: 0; transform: translateY(2rem); }
+  to { opacity: 1; transform: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body #shopify-pc__banner.shopify-pc__banner__dialog { animation: none; }
+}
+
+body #shopify-pc__banner .shopify-pc__banner__wrapper {
+  align-items: stretch;
+}
+
+body #shopify-pc__banner .shopify-pc__banner__body {
+  margin-bottom: 0;
+}
+
+/* small eyebrow drawn above the title: the brand's tilted stroke */
+body #shopify-pc__banner .shopify-pc__banner__body::before {
+  content: '';
+  display: block;
+  width: 3.2rem;
+  height: 0.3rem;
+  margin-bottom: 1.8rem;
+  border-radius: 0.2rem;
+  background: rgb(var(--vc-fg));
+  transform: rotate(-4deg);
+}
+
+body #shopify-pc__banner h2 {
+  margin: 0 0 1rem;
+  color: rgb(var(--vc-fg));
+  font-family: var(--font-heading-family);
+  font-weight: 700;
+  font-size: 2rem;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+}
+
+body #shopify-pc__banner p {
+  color: rgba(var(--vc-fg), 0.68);
+  font-size: 1.4rem;
+  line-height: 1.6;
+}
+
+body #shopify-pc__banner a {
+  color: rgb(var(--vc-fg));
+  text-decoration: underline;
+  text-underline-offset: 0.3rem;
+  text-decoration-color: rgba(var(--vc-fg), 0.4);
+}
+
+body #shopify-pc__banner a:hover { text-decoration-color: rgb(var(--vc-fg)); }
+
+/* buttons: Accept (solid) + Decline (outline) side by side, Manage as a link below */
+body #shopify-pc__banner .shopify-pc__banner__btns {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  margin-top: 2.2rem;
+}
+
+body #shopify-pc__banner .shopify-pc__banner__btns button {
+  margin: 0;
+  min-height: 4.6rem;
+  padding: 0 1.6rem;
+  border-radius: 4rem;
+  font-family: var(--font-body-family);
+  font-size: 1.3rem;
+  font-weight: 600;
+  letter-spacing: 0.08rem;
+  text-transform: uppercase;
+  transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+}
+
+body #shopify-pc__banner #shopify-pc__banner__btn-accept {
+  order: 1;
+  border: 1px solid rgb(var(--vc-fg));
+  background: rgb(var(--vc-fg));
+  color: #0a0a0a;
+}
+
+body #shopify-pc__banner #shopify-pc__banner__btn-accept:hover {
+  background: rgba(var(--vc-fg), 0.88);
+}
+
+body #shopify-pc__banner #shopify-pc__banner__btn-decline {
+  order: 2;
+  border: 1px solid rgba(var(--vc-fg), 0.35);
+  background: transparent;
+  color: rgb(var(--vc-fg));
+}
+
+body #shopify-pc__banner #shopify-pc__banner__btn-decline:hover {
+  border-color: rgb(var(--vc-fg));
+}
+
+body #shopify-pc__banner #shopify-pc__banner__btn-manage-prefs {
+  order: 3;
+  grid-column: 1 / -1;
+  min-height: 3.2rem;
+  border: 0;
+  background: transparent;
+  color: rgba(var(--vc-fg), 0.65);
+  font-weight: 500;
+  letter-spacing: 0.04rem;
+  text-transform: none;
+  text-decoration: none;
+}
+
+body #shopify-pc__banner #shopify-pc__banner__btn-manage-prefs span {
+  text-decoration: underline;
+  text-underline-offset: 0.3rem;
+}
+
+body #shopify-pc__banner #shopify-pc__banner__btn-manage-prefs:hover { color: rgb(var(--vc-fg)); }
+
+body #shopify-pc__banner button:focus-visible,
+body #shopify-pc__prefs__dialog button:focus-visible {
+  outline: 2px solid rgb(var(--vc-fg));
+  outline-offset: 3px;
+  box-shadow: none;
+}
+
+/* ================= Preferences dialog ================= */
+body #shopify-pc__prefs__overlay {
+  background: rgba(0, 0, 0, 0.7);
+  -webkit-backdrop-filter: blur(4px);
+  backdrop-filter: blur(4px);
+}
+
+body #shopify-pc__prefs__dialog.shopify-pc__prefs__dialog {
+  left: 50%;
+  width: min(64rem, calc(100vw - 2.4rem));
+  transform: translate(-50%, -50%);
+  border: 1px solid var(--vc-line);
+  border-radius: var(--vc-radius);
+  background: var(--vc-bg);
+  box-shadow: 0 3rem 8rem rgba(0, 0, 0, 0.6);
+  color: rgb(var(--vc-fg));
+  font-family: var(--font-body-family);
+  font-size: 1.4rem;
+}
+
+body #shopify-pc__prefs__dialog header {
+  flex-direction: column;
+  align-items: stretch;
+  gap: 2rem;
+  padding: 2.8rem 2.8rem 2.4rem;
+  border-bottom: 1px solid var(--vc-line);
+}
+
+body #shopify-pc__prefs__dialog header h2 {
+  margin: 0;
+  padding: 0 4rem 0 0 !important;
+  color: rgb(var(--vc-fg));
+  font-family: var(--font-heading-family);
+  font-size: 2.2rem;
+  font-weight: 700;
+  text-align: left;
+}
+
+body #shopify-pc__prefs__header-close {
+  top: 2.6rem;
+  right: 2.4rem;
+  width: 3.6rem;
+  height: 3.6rem;
+  border: 1px solid var(--vc-line);
+  border-radius: 50%;
+}
+
+body #shopify-pc__prefs__header-close svg path { fill: rgb(var(--vc-fg)); }
+body #shopify-pc__prefs__header-close:hover { border-color: rgb(var(--vc-fg)); }
+
+body #shopify-pc__prefs__dialog .shopify-pc__prefs__header-actions {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.8rem;
+  padding: 0;
+  width: 100%;
+}
+
+@media screen and (max-width: 599px) {
+  body #shopify-pc__prefs__dialog .shopify-pc__prefs__header-actions { grid-template-columns: 1fr; }
+}
+
+body #shopify-pc__prefs__dialog .shopify-pc__prefs__header-actions button {
+  margin: 0;
+  width: 100%;
+  min-height: 4.4rem;
+  padding: 0 1.2rem;
+  border-radius: 4rem;
+  border: 1px solid rgba(var(--vc-fg), 0.35);
+  background: transparent;
+  color: rgb(var(--vc-fg));
+  font-family: var(--font-body-family);
+  font-size: 1.2rem;
+  font-weight: 600;
+  letter-spacing: 0.06rem;
+  text-transform: uppercase;
+  white-space: normal;
+  line-height: 1.2;
+}
+
+body #shopify-pc__prefs__dialog .shopify-pc__prefs__header-actions button:hover { border-color: rgb(var(--vc-fg)); }
+
+body #shopify-pc__prefs__dialog #shopify-pc__prefs__header-accept,
+body #shopify-pc__prefs__dialog #shopify-pc__prefs__header-save {
+  background: rgb(var(--vc-fg));
+  border-color: rgb(var(--vc-fg));
+  color: #0a0a0a;
+}
+
+body #shopify-pc__prefs__dialog #shopify-pc__prefs__header-accept { order: 1; }
+body #shopify-pc__prefs__dialog #shopify-pc__prefs__header-save {
+  order: 2;
+  background: transparent;
+  color: rgb(var(--vc-fg));
+}
+body #shopify-pc__prefs__dialog #shopify-pc__prefs__header-decline { order: 3; }
+
+body #shopify-pc__prefs__dialog .shopify-pc__prefs__intro-main {
+  padding: 2.4rem 2.8rem 0;
+}
+
+body #shopify-pc__prefs__dialog .shopify-pc__prefs__intro h3,
+body #shopify-pc__prefs__dialog .shopify-pc__prefs__option label {
+  color: rgb(var(--vc-fg));
+  font-family: var(--font-heading-family);
+}
+
+body #shopify-pc__prefs__dialog .shopify-pc__prefs__intro p,
+body #shopify-pc__prefs__dialog .shopify-pc__prefs__option p {
+  color: rgba(var(--vc-fg), 0.65);
+  line-height: 1.55;
+}
+
+body #shopify-pc__prefs__dialog .shopify-pc__prefs__intro a { color: rgb(var(--vc-fg)); }
+
+body #shopify-pc__prefs__dialog .shopify-pc__prefs__options {
+  padding: 0 2.8rem 2.8rem;
+  color: rgb(var(--vc-fg));
+}
+
+body #shopify-pc__prefs__dialog .shopify-pc__prefs__option {
+  padding: 1.8rem 0;
+  border-top: 1px solid var(--vc-line);
+}
+
+body #shopify-pc__prefs__dialog .shopify-pc__prefs__option:first-child {
+  margin-top: 2rem;
+  padding-top: 1.8rem;
+  border-top-color: var(--vc-line);
+}
+
+body #shopify-pc__prefs__dialog .shopify-pc__prefs__option label {
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.6rem;
+  font-size: 1.5rem;
+}
+
+body #shopify-pc__prefs__dialog .shopify-pc__prefs__option p {
+  padding: 0.4rem 6rem 0 0;
+  font-size: 1.35rem;
+}
+
+/* checkbox → toggle switch (text left, switch right) */
+body #shopify-pc__prefs__dialog .shopify-pc__prefs__option label span {
+  order: 2;
+  position: relative;
+  flex: 0 0 auto;
+  width: 4.4rem;
+  height: 2.6rem;
+  border-radius: 2rem;
+  background: rgba(var(--vc-fg), 0.16);
+  transition: background-color 0.2s ease;
+}
+
+body #shopify-pc__prefs__dialog .shopify-pc__prefs__option label span svg { display: none !important; } /* Shopify toggles them via inline style */
+
+body #shopify-pc__prefs__dialog .shopify-pc__prefs__option label span::after {
+  content: '';
+  position: absolute;
+  top: 0.3rem;
+  left: 0.3rem;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  background: rgb(var(--vc-fg));
+  transition: transform 0.25s cubic-bezier(0.2, 0.7, 0.2, 1), background-color 0.2s ease;
+}
+
+body #shopify-pc__prefs__dialog .shopify-pc__prefs__option label input:checked ~ span {
+  background: rgb(var(--vc-fg));
+}
+
+body #shopify-pc__prefs__dialog .shopify-pc__prefs__option label input:checked ~ span::after {
+  transform: translateX(1.8rem);
+  background: #0a0a0a;
+}
+
+body #shopify-pc__prefs__dialog .shopify-pc__prefs__option label input[aria-readonly='true'] ~ span {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+body #shopify-pc__prefs__dialog .shopify-pc__prefs__option label input:focus-visible ~ span {
+  outline: 2px solid rgb(var(--vc-fg));
+  outline-offset: 3px;
+}
+
+body #shopify-pc__prefs__dialog .shopify-pc__prefs__option label input:focus ~ span { box-shadow: none; }
