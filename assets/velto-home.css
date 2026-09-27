@@ -325,9 +325,23 @@ velto-showcase.is-paused .velto-hero__dot.is-active::after {
   background: rgba(var(--color-foreground), 0.08);
 }
 
-.velto-perk__icon svg {
+.velto-perk__icon {
+  color: rgb(var(--color-foreground));
+}
+
+/* Some Dawn icons (price-tag, box, truck, leaf, map-pin) ship without a
+   fill attribute and would render black on the dark background — force
+   every perk icon to the text color. */
+.velto-perk__icon svg,
+.velto-perk__icon svg path {
   width: 1.8rem;
   height: 1.8rem;
+  fill: currentColor;
+}
+
+.velto-perk__icon svg path {
+  width: auto;
+  height: auto;
 }
 
 .velto-perk__text {
@@ -460,6 +474,7 @@ velto-showcase.is-paused .velto-hero__dot.is-active::after {
 }
 
 .velto-cat__title {
+  overflow-wrap: break-word;
   font-size: 1.3rem;
   font-weight: 600;
   line-height: 1.3;
@@ -471,4 +486,17 @@ velto-showcase.is-paused .velto-hero__dot.is-active::after {
 
 @media screen and (min-width: 750px) {
   .velto-cat__title { font-size: 1.4rem; }
+}
+
+/* Even rows for the 15-item main menu: 5 per row on desktop, 3 on tablet */
+@media screen and (min-width: 750px) and (max-width: 989px) {
+  .velto-cats__list { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+
+@media screen and (min-width: 990px) {
+  .velto-cats__list { grid-template-columns: repeat(5, minmax(0, 1fr)); }
+  .velto-cat { flex-direction: row; align-items: center; gap: 1rem; padding: 0.8rem; }
+  .velto-cat__media { flex: 0 0 5.6rem; width: 5.6rem; }
+  .velto-cat__media img { padding: 8%; }
+  .velto-cat__title { font-size: 1.3rem; }
 }
