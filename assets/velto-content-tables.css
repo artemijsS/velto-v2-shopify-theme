@@ -1,0 +1,11 @@
+/* Velto — imported product data (nutrition facts / spec tables) ships
+   from the supplier feed as raw HTML with inline light-gray header
+   backgrounds (e.g. background-color: rgb(242,242,242)) meant for a
+   white-page theme. Our theme's default text color is white, so those
+   header cells render as invisible white-on-light-gray text.
+   Force readable dark text wherever an inline background is present
+   on a table cell inside rich-text product content. */
+.rte table th[style*="background"],
+.rte table td[style*="background"] {
+  color: #1a1a1a !important;
+}
