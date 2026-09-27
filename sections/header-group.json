@@ -17,7 +17,7 @@
         "announcement-bar-0": {
           "type": "announcement",
           "settings": {
-            "text": "Pasūti līdz otrdienas beigām — piegāde piektdien vai sestdien",
+            "text": "Pasūti līdz otrdienas beigām — piegāde no piektdienas līdz svētdienai",
             "text_alignment": "center",
             "color_scheme": "scheme-1",
             "link": ""

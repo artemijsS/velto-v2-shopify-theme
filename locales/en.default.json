@@ -538,7 +538,7 @@
     "load_more": "Show more",
     "shown_of": "Showing {{ shown }} of {{ total }}",
     "delivery": {
-      "fallback": "Order by the end of Tuesday — delivered on Friday or Saturday.",
+      "fallback": "Order by the end of Tuesday — delivered Friday to Sunday.",
       "pick_slot": "Pick the day and time slot at checkout",
       "time_left": "Time left to order:",
       "time_left_long": "Orders for this week close in",

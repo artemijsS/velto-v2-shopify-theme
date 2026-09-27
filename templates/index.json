@@ -193,7 +193,7 @@
         "s3": {
           "type": "step",
           "settings": {
-            "title": "Saņem piektdien vai sestdien",
+            "title": "Saņem piektdien–svētdien",
             "text": "Piegādes dienu un ērtāko laiku izvēlies pats, noformējot pasūtījumu."
           }
         }
@@ -273,9 +273,9 @@
       "settings": {
         "eyebrow": "Kā notiek piegāde",
         "heading_before": "Pasūti līdz otrdienai —",
-        "heading_accent": "saņem piektdien vai sestdien",
+        "heading_accent": "saņem no piektdienas līdz svētdienai",
         "heading_after": "",
-        "text": "<p>Pasūtījumus pieņemam līdz otrdienas beigām. Piegāde notiek piektdien un sestdien — ērtāko dienu un laiku izvēlies pats, noformējot pasūtījumu.</p>",
+        "text": "<p>Pasūtījumus pieņemam līdz otrdienas beigām. Piegāde notiek no piektdienas līdz svētdienai — ērtāko dienu un laiku izvēlies pats, noformējot pasūtījumu.</p>",
         "button_label": "Sākt iepirkties",
         "button_link": "shopify://collections/all",
         "color_scheme": "scheme-1",

@@ -551,7 +551,7 @@
     "load_more": "Rādīt vēl",
     "shown_of": "Parādītas {{ shown }} no {{ total }}",
     "delivery": {
-      "fallback": "Pasūti līdz otrdienas beigām — piegāde piektdien vai sestdien.",
+      "fallback": "Pasūti līdz otrdienas beigām — piegāde no piektdienas līdz svētdienai.",
       "pick_slot": "Dienu un laiku izvēlies, noformējot pasūtījumu",
       "time_left": "Līdz pieņemšanas beigām:",
       "time_left_long": "Pasūtījumu pieņemšana beigsies pēc",
