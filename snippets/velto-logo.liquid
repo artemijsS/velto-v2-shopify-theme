@@ -1,0 +1,24 @@
+{%- comment -%}
+  Velto wordmark — live text logo (not an image).
+  Matches the brand lockup in Figma: "velto" in Permanent Marker + underline bar
+  + "TIKAI LABĀKAIS" tagline in tracked Manrope.
+  Sizing is driven by the theme's existing "Logo width" setting so merchants
+  keep the familiar Theme Editor control.
+{%- endcomment -%}
+{%- liquid
+  assign logo_w = settings.logo_width | default: 100
+  assign font_size = logo_w | times: 0.388
+  assign underline_h = font_size | times: 0.067
+  assign underline_radius = font_size | times: 0.025
+  assign tagline_size = font_size | times: 0.125
+-%}
+<span
+  class="velto-logo"
+  style="--velto-font-size: {{ font_size | round: 1 }}px; --velto-underline-h: {{ underline_h | round: 2 }}px; --velto-underline-radius: {{ underline_radius | round: 2 }}px; --velto-tagline-size: {{ tagline_size | round: 1 }}px;"
+>
+  <span class="velto-logo__mark">
+    <span class="velto-logo__word">velto</span>
+    <span class="velto-logo__rule" aria-hidden="true"></span>
+  </span>
+  <span class="velto-logo__tagline">TIKAI LABĀKAIS</span>
+</span>
