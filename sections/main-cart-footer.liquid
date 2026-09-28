@@ -118,7 +118,7 @@
                       <span>{{ 'velto.cart.bar_total' | t }}</span>
                       <strong>{{ cart.total_price | money }}</strong>
                     </div>
-                    <button type="submit" name="checkout" form="cart" class="velto-cart-bar__btn" tabindex="-1">
+                    <button type="button" class="velto-cart-bar__btn" data-velto-checkout tabindex="-1">
                       {{ 'sections.cart.checkout' | t }}
                     </button>
                   </div>
@@ -235,6 +235,27 @@
 </script>
 
 <script>
+  /* The bar's button presses the real checkout button, so apps that validate
+     the checkout click (delivery date / time picker) run exactly as usual.
+     If the page is still here a moment later (validation stopped it),
+     bring the checkout area into view so the message / picker is visible. */
+  document.addEventListener('click', (e) => {
+    const b = e.target.closest('[data-velto-checkout]');
+    if (!b) return;
+    e.preventDefault();
+    const real = document.getElementById('checkout');
+    if (!real) return;
+    real.click();
+    setTimeout(() => {
+      if (document.visibilityState !== 'visible') return;
+      const target =
+        document.querySelector('#main-cart-footer [class*="date" i]:not(.velto-deliv-line), #main-cart-footer [class*="delivery" i]:not([class*="velto"])') ||
+        real.closest('.cart__ctas') ||
+        real;
+      target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }, 350);
+  });
+
   /* mobile: fixed "Kopā · Noformēt" bar while the real checkout button is below the fold */
   (() => {
     if (window.__veltoCartBar) return;
