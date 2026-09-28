@@ -12,12 +12,41 @@
     "hero": {
       "type": "velto-about-hero",
       "blocks": {
-        "st1": { "type": "stat", "settings": { "value": "auto:products", "label": "@velto.content.about.stat_products" } },
-        "st2": { "type": "stat", "settings": { "value": "@velto.content.about.stat_days_value", "label": "@velto.content.about.stat_days" } },
-        "st3": { "type": "stat", "settings": { "value": "LV", "label": "@velto.content.about.stat_local" } },
-        "st4": { "type": "stat", "settings": { "value": "24/7", "label": "@velto.content.about.stat_online" } }
+        "st1": {
+          "type": "stat",
+          "settings": {
+            "value": "auto:products",
+            "label": "@velto.content.about.stat_products"
+          }
+        },
+        "st2": {
+          "type": "stat",
+          "settings": {
+            "value": "@velto.content.about.stat_days_value",
+            "label": "@velto.content.about.stat_days"
+          }
+        },
+        "st3": {
+          "type": "stat",
+          "settings": {
+            "value": "LV",
+            "label": "@velto.content.about.stat_local"
+          }
+        },
+        "st4": {
+          "type": "stat",
+          "settings": {
+            "value": "24/7",
+            "label": "@velto.content.about.stat_online"
+          }
+        }
       },
-      "block_order": ["st1", "st2", "st3", "st4"],
+      "block_order": [
+        "st1",
+        "st2",
+        "st3",
+        "st4"
+      ],
       "settings": {
         "eyebrow": "@velto.content.about.eyebrow",
         "heading_before": "@velto.content.about.heading",
@@ -35,12 +64,45 @@
     "values": {
       "type": "velto-about-values",
       "blocks": {
-        "v1": { "type": "value", "settings": { "icon": "tag", "title": "@velto.content.about.v1_title", "text": "@velto.content.about.v1_text" } },
-        "v2": { "type": "value", "settings": { "icon": "check", "title": "@velto.content.about.v2_title", "text": "@velto.content.about.v2_text" } },
-        "v3": { "type": "value", "settings": { "icon": "leaf", "title": "@velto.content.about.v3_title", "text": "@velto.content.about.v3_text" } },
-        "v4": { "type": "value", "settings": { "icon": "truck", "title": "@velto.content.about.v4_title", "text": "@velto.content.about.v4_text" } }
+        "v1": {
+          "type": "value",
+          "settings": {
+            "icon": "tag",
+            "title": "@velto.content.about.v1_title",
+            "text": "@velto.content.about.v1_text"
+          }
+        },
+        "v2": {
+          "type": "value",
+          "settings": {
+            "icon": "check",
+            "title": "@velto.content.about.v2_title",
+            "text": "@velto.content.about.v2_text"
+          }
+        },
+        "v3": {
+          "type": "value",
+          "settings": {
+            "icon": "leaf",
+            "title": "@velto.content.about.v3_title",
+            "text": "@velto.content.about.v3_text"
+          }
+        },
+        "v4": {
+          "type": "value",
+          "settings": {
+            "icon": "truck",
+            "title": "@velto.content.about.v4_title",
+            "text": "@velto.content.about.v4_text"
+          }
+        }
       },
-      "block_order": ["v1", "v2", "v3", "v4"],
+      "block_order": [
+        "v1",
+        "v2",
+        "v3",
+        "v4"
+      ],
       "settings": {
         "eyebrow": "@velto.content.about.values_eyebrow",
         "heading": "@velto.content.about.values_heading",
@@ -54,7 +116,7 @@
       "settings": {
         "eyebrow": "@velto.content.about.story_eyebrow",
         "heading": "@velto.content.about.story_heading",
-        "signature": "@velto.content.footer.tagline",
+        "signature": "",
         "fallback": "",
         "color_scheme": "scheme-1",
         "padding_top": 32,
@@ -79,11 +141,33 @@
     "steps": {
       "type": "velto-steps",
       "blocks": {
-        "s1": { "type": "step", "settings": { "title": "@velto.content.home.step1_title", "text": "@velto.content.home.step1_text" } },
-        "s2": { "type": "step", "settings": { "title": "@velto.content.home.step2_title", "text": "@velto.content.home.step2_text" } },
-        "s3": { "type": "step", "settings": { "title": "@velto.content.home.step3_title", "text": "@velto.content.home.step3_text" } }
+        "s1": {
+          "type": "step",
+          "settings": {
+            "title": "@velto.content.home.step1_title",
+            "text": "@velto.content.home.step1_text"
+          }
+        },
+        "s2": {
+          "type": "step",
+          "settings": {
+            "title": "@velto.content.home.step2_title",
+            "text": "@velto.content.home.step2_text"
+          }
+        },
+        "s3": {
+          "type": "step",
+          "settings": {
+            "title": "@velto.content.home.step3_title",
+            "text": "@velto.content.home.step3_text"
+          }
+        }
       },
-      "block_order": ["s1", "s2", "s3"],
+      "block_order": [
+        "s1",
+        "s2",
+        "s3"
+      ],
       "settings": {
         "heading": "@velto.content.home.steps_heading",
         "button_label": "",
@@ -115,14 +199,57 @@
     "faq": {
       "type": "velto-faq",
       "blocks": {
-        "q1": { "type": "question", "settings": { "question": "@velto.content.about.q1", "answer": "<p>@velto.content.about.a1</p>" } },
-        "q2": { "type": "question", "settings": { "question": "@velto.content.about.q2", "answer": "<p>@velto.content.about.a2</p>" } },
-        "q3": { "type": "question", "settings": { "question": "@velto.content.about.q3", "answer": "<p>@velto.content.about.a3</p>" } },
-        "q4": { "type": "question", "settings": { "question": "@velto.content.about.q4", "answer": "<p>@velto.content.about.a4</p>" } },
-        "q5": { "type": "question", "settings": { "question": "@velto.content.about.q5", "answer": "<p>@velto.content.about.a5</p>" } },
-        "q6": { "type": "question", "settings": { "question": "@velto.content.about.q6", "answer": "<p>@velto.content.about.a6</p>" } }
+        "q1": {
+          "type": "question",
+          "settings": {
+            "question": "@velto.content.about.q1",
+            "answer": "<p>@velto.content.about.a1</p>"
+          }
+        },
+        "q2": {
+          "type": "question",
+          "settings": {
+            "question": "@velto.content.about.q2",
+            "answer": "<p>@velto.content.about.a2</p>"
+          }
+        },
+        "q3": {
+          "type": "question",
+          "settings": {
+            "question": "@velto.content.about.q3",
+            "answer": "<p>@velto.content.about.a3</p>"
+          }
+        },
+        "q4": {
+          "type": "question",
+          "settings": {
+            "question": "@velto.content.about.q4",
+            "answer": "<p>@velto.content.about.a4</p>"
+          }
+        },
+        "q5": {
+          "type": "question",
+          "settings": {
+            "question": "@velto.content.about.q5",
+            "answer": "<p>@velto.content.about.a5</p>"
+          }
+        },
+        "q6": {
+          "type": "question",
+          "settings": {
+            "question": "@velto.content.about.q6",
+            "answer": "<p>@velto.content.about.a6</p>"
+          }
+        }
       },
-      "block_order": ["q1", "q2", "q3", "q4", "q5", "q6"],
+      "block_order": [
+        "q1",
+        "q2",
+        "q3",
+        "q4",
+        "q5",
+        "q6"
+      ],
       "settings": {
         "eyebrow": "@velto.content.about.faq_eyebrow",
         "heading": "@velto.content.about.faq_heading",
@@ -150,5 +277,14 @@
       }
     }
   },
-  "order": ["hero", "values", "story", "delivery", "steps", "excl", "faq", "contact"]
+  "order": [
+    "hero",
+    "values",
+    "story",
+    "delivery",
+    "steps",
+    "excl",
+    "faq",
+    "contact"
+  ]
 }
