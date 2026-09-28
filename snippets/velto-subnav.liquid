@@ -90,7 +90,7 @@
               assign lk = 'velto_quick_label_' | append: i
               assign uk = 'velto_quick_url_' | append: i
               assign ql = section.settings[lk]
-              assign qu = section.settings[uk]
+              assign qu = section.settings[uk] | replace: 'shopify://collections/', '/collections/' | replace: 'shopify://pages/', '/pages/' | replace: 'shopify://products/', '/products/'
             -%}
             {%- if ql != blank and qu != blank -%}
               <li><a href="{{ qu }}">{{ ql }}</a></li>

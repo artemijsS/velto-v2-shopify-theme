@@ -172,8 +172,10 @@
     top: 100%;
     display: grid;
     grid-template-columns: 30rem minmax(0, 1fr);
+    grid-template-rows: minmax(0, 1fr); /* lets both columns scroll inside */
     max-width: var(--page-width);
-    max-height: min(68rem, calc(100vh - 20rem));
+    /* --velto-catalog-top = panel top in the viewport, set by JS on open */
+    height: min(72rem, calc(100vh - var(--velto-catalog-top, 20rem) - 2.4rem));
     margin: 0 auto;
     border: 1px solid rgba(var(--color-foreground), 0.1);
     border-top: 0;
@@ -191,11 +193,19 @@
     transform: none;
   }
 
+  .velto-catalog__cats,
+  .velto-catalog__panes {
+    min-height: 0;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(var(--color-foreground), 0.25) transparent;
+  }
+
   .velto-catalog__cats {
     margin: 0;
     padding: 1.2rem;
     list-style: none;
-    overflow-y: auto;
     border-right: 1px solid rgba(var(--color-foreground), 0.08);
   }
 

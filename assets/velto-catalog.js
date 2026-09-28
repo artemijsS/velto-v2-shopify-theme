@@ -64,6 +64,9 @@ if (!customElements.get('velto-catalog')) {
         const current = this.cats.findIndex((c) => c.classList.contains('is-current'));
         this.activate(current > -1 ? current : 0);
         this.panel.hidden = false;
+        // fit the panel between the header and the bottom of the window
+        const top = this.closest('.velto-subnav')?.getBoundingClientRect().bottom || 0;
+        this.panel.style.setProperty('--velto-catalog-top', `${Math.max(0, Math.round(top))}px`);
         if (this.backdrop) this.backdrop.hidden = false;
         requestAnimationFrame(() => {
           this.classList.add('is-open');
