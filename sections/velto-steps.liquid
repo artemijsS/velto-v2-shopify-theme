@@ -11,11 +11,11 @@
   <div class="page-width">
     <div class="velto-steps__head">
       {%- if section.settings.heading != blank -%}
-        <h2 class="h2 velto-section-head__title">{{ section.settings.heading }}</h2>
+        <h2 class="h2 velto-section-head__title">{% render 'velto-t', s: section.settings.heading %}</h2>
       {%- endif -%}
       {%- if section.settings.button_label != blank -%}
         <a class="button button--secondary" href="{{ section.settings.button_link | default: routes.all_products_collection_url }}">
-          {{- section.settings.button_label -}}
+          {%- render 'velto-t', s: section.settings.button_label -%}
         </a>
       {%- endif -%}
     </div>
@@ -24,9 +24,9 @@
       {%- for block in section.blocks -%}
         <li class="velto-step" {{ block.shopify_attributes }}>
           <span class="velto-step__num"><span class="velto-accent">{{ forloop.index | prepend: '0' }}</span></span>
-          <h3 class="velto-step__title">{{ block.settings.title }}</h3>
+          <h3 class="velto-step__title">{% render 'velto-t', s: block.settings.title %}</h3>
           {%- if block.settings.text != blank -%}
-            <p class="velto-step__text">{{ block.settings.text }}</p>
+            <p class="velto-step__text">{% render 'velto-t', s: block.settings.text %}</p>
           {%- endif -%}
         </li>
       {%- endfor -%}

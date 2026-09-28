@@ -26,7 +26,7 @@
         "menu": "main-menu",
         "show_description": true,
         "show_collage": true,
-        "quick_filter_label": "Lieliska cena",
+        "quick_filter_label": "@velto.content.nav.quick_great_price",
         "quick_filter": "filter.p.m.custom.price_category=gid://shopify/FilterSettingGroup/311165259",
         "color_scheme": "scheme-1"
       }

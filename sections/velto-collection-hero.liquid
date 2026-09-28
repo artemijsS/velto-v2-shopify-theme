@@ -55,7 +55,9 @@
     if current_tags contains ex_tag
       assign title = 'velto.collection.exclusive_title' | t
     elsif qf_active
-      assign title = section.settings.quick_filter_label
+      capture title
+        render 'velto-t', s: section.settings.quick_filter_label
+      endcapture
     endif
   elsif current_tags contains ex_tag
     assign ex_label = 'velto.badges.exclusive_filter' | t
@@ -109,7 +111,7 @@
         <span class="velto-coll-hero__count">{{ 'velto.products_count' | t: count: collection.products_count }}</span>
         {%- if qf_count > 0 and qf_active == false -%}
           <span class="velto-coll-hero__dot" aria-hidden="true"></span>
-          <span>{{ section.settings.quick_filter_label }}: {{ qf_count }}</span>
+          <span>{% render 'velto-t', s: section.settings.quick_filter_label %}: {{ qf_count }}</span>
         {%- endif -%}
         {%- if ex_available and ex_active == false -%}
           <span class="velto-coll-hero__dot" aria-hidden="true" data-velto-ex-meta hidden></span>
@@ -149,7 +151,7 @@
                 {% if qf_active %}aria-current="true"{% endif %}
               >
                 <span class="velto-chip__spark" aria-hidden="true">{{- 'icon-price-tag.svg' | inline_asset_content -}}</span>
-                {{ section.settings.quick_filter_label }}
+                {% render 'velto-t', s: section.settings.quick_filter_label %}
                 {%- if qf_active %}<span class="velto-chip__x" aria-hidden="true">×</span>{% endif -%}
               </a>
             </li>

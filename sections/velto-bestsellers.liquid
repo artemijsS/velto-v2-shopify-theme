@@ -21,11 +21,11 @@
     <div class="velto-best__head">
       <div>
         {%- if section.settings.eyebrow != blank -%}
-          <p class="velto-best__eyebrow">{{ section.settings.eyebrow }}</p>
+          <p class="velto-best__eyebrow">{% render 'velto-t', s: section.settings.eyebrow %}</p>
         {%- endif -%}
-        <h2 class="h2 velto-best__title">{{ section.settings.heading }}</h2>
+        <h2 class="h2 velto-best__title">{% render 'velto-t', s: section.settings.heading %}</h2>
         {%- if section.settings.subheading != blank -%}
-          <p class="velto-section-head__sub">{{ section.settings.subheading }}</p>
+          <p class="velto-section-head__sub">{% render 'velto-t', s: section.settings.subheading %}</p>
         {%- endif -%}
       </div>
       <a class="velto-best__all link underlined-link" href="{{ routes.all_products_collection_url }}?sort_by=best-selling" data-best-all>
@@ -35,7 +35,7 @@
 
     {%- if section.blocks.size > 1 -%}
       <div class="velto-best__tabs-wrap">
-        <div class="velto-best__tabs" role="tablist" aria-label="{{ section.settings.heading | escape }}">
+        <div class="velto-best__tabs" role="tablist" aria-label="{%- capture best_label -%}{%- render 'velto-t', s: section.settings.heading -%}{%- endcapture -%}{{ best_label | escape }}">
           {%- for block in section.blocks -%}
             <button
               type="button"
@@ -45,7 +45,7 @@
               data-url="{{ block.settings.link | default: routes.all_products_collection_url }}"
               {{ block.shopify_attributes }}
             >
-              {{- block.settings.label -}}
+              {%- render 'velto-t', s: block.settings.label -%}
             </button>
           {%- endfor -%}
         </div>

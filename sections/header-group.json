@@ -17,8 +17,8 @@
         "announcement-bar-0": {
           "type": "announcement",
           "settings": {
-            "text": "Pasūti līdz otrdienas beigām — piegāde no piektdienas līdz svētdienai",
-            "velto_mobile_text": "Pasūti līdz otrdienai — piegāde pk.–sv.",
+            "text": "@velto.content.announcement.text",
+            "velto_mobile_text": "@velto.content.announcement.short",
             "text_alignment": "center",
             "color_scheme": "scheme-1",
             "link": ""
@@ -45,13 +45,13 @@
         "margin_bottom": 0,
         "padding_top": 20,
         "padding_bottom": 20,
-        "velto_quick_label_1": "Jaunumi",
+        "velto_quick_label_1": "@velto.content.nav.quick_new",
         "velto_quick_url_1": "/collections/jaunumi",
-        "velto_quick_label_2": "Ekskluzīvi",
+        "velto_quick_label_2": "@velto.content.nav.quick_exclusive",
         "velto_quick_url_2": "/collections/all/exclusive",
-        "velto_quick_label_3": "Lieliska cena",
+        "velto_quick_label_3": "@velto.content.nav.quick_great_price",
         "velto_quick_url_3": "/collections/all?filter.p.m.custom.price_category=gid://shopify/FilterSettingGroup/311165259",
-        "velto_quick_label_4": "Gatavā kulinārija",
+        "velto_quick_label_4": "@velto.content.nav.quick_ready",
         "velto_quick_url_4": "/collections/gatava-kulinarija"
       }
     }

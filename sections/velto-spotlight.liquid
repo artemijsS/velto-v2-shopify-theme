@@ -32,20 +32,20 @@
     <div class="velto-spot__card color-{{ section.settings.color_scheme }} gradient">
       <div class="velto-spot__intro">
         {%- if section.settings.eyebrow != blank -%}
-          <p class="velto-spot__eyebrow">{{ section.settings.eyebrow }}</p>
+          <p class="velto-spot__eyebrow">{% render 'velto-t', s: section.settings.eyebrow %}</p>
         {%- endif -%}
         <h2 class="velto-spot__title">
-          {{ section.settings.heading_before }}
+          {% render 'velto-t', s: section.settings.heading_before %}
           {%- if section.settings.heading_accent != blank %}
-            <span class="velto-accent">{{ section.settings.heading_accent }}</span>
+            <span class="velto-accent">{% render 'velto-t', s: section.settings.heading_accent %}</span>
           {%- endif %}
-          {{ section.settings.heading_after }}
+          {% render 'velto-t', s: section.settings.heading_after %}
         </h2>
         {%- if section.settings.text != blank -%}
-          <div class="velto-spot__text">{{ section.settings.text }}</div>
+          <div class="velto-spot__text">{% render 'velto-t', s: section.settings.text %}</div>
         {%- endif -%}
         <a class="button button--primary velto-spot__cta" href="{{ link }}">
-          {{- section.settings.button_label -}}
+          {%- render 'velto-t', s: section.settings.button_label -%}
           <span data-spot-count>{%- if section.settings.show_count and count > 0 and src == blank %} ({{ count }}){% endif -%}</span>
         </a>
       </div>
@@ -54,7 +54,8 @@
         <ul
           class="velto-spot__rail{% if src != blank %} is-loading{% endif %}"
           role="list"
-          aria-label="{{ section.settings.eyebrow | default: coll.title | escape }}"
+          {%- capture spot_label -%}{%- render 'velto-t', s: section.settings.eyebrow -%}{%- endcapture -%}
+          aria-label="{{ spot_label | default: coll.title | escape }}"
           {% if src != blank %}
             data-src="{{ src }}{% if src contains '?' %}&{% else %}?{% endif %}section_id=velto-product-rail"
             data-limit="{{ section.settings.products_to_show }}"

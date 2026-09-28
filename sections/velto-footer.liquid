@@ -24,10 +24,10 @@
           {%- render 'velto-logo' -%}
         </a>
         {%- if section.settings.tagline != blank -%}
-          <p class="velto-footer__tagline">{{ section.settings.tagline }}</p>
+          <p class="velto-footer__tagline">{% render 'velto-t', s: section.settings.tagline %}</p>
         {%- endif -%}
         {%- if section.settings.about != blank -%}
-          <div class="velto-footer__about">{{ section.settings.about }}</div>
+          <div class="velto-footer__about">{% render 'velto-t', s: section.settings.about %}</div>
         {%- endif -%}
 
         {%- if ig != blank or tt != blank -%}
@@ -61,7 +61,7 @@
       {%- comment -%} ---------- Categories ---------- {%- endcomment -%}
       {%- if cat_menu != blank and cat_menu.links.size > 0 -%}
         <nav class="velto-footer__col" aria-labelledby="VeltoFooterCats">
-          <h2 class="velto-footer__heading" id="VeltoFooterCats">{{ section.settings.categories_heading }}</h2>
+          <h2 class="velto-footer__heading" id="VeltoFooterCats">{% render 'velto-t', s: section.settings.categories_heading %}</h2>
           <ul class="velto-footer__links" role="list">
             {%- for link in cat_menu.links limit: cat_limit -%}
               <li><a href="{{ link.url }}">{{ link.title | remove: '💙' | strip }}</a></li>
@@ -81,7 +81,7 @@
       {%- comment -%} ---------- Info ---------- {%- endcomment -%}
       {%- if info_menu != blank and info_menu.links.size > 0 -%}
         <nav class="velto-footer__col" aria-labelledby="VeltoFooterInfo">
-          <h2 class="velto-footer__heading" id="VeltoFooterInfo">{{ section.settings.info_heading }}</h2>
+          <h2 class="velto-footer__heading" id="VeltoFooterInfo">{% render 'velto-t', s: section.settings.info_heading %}</h2>
           <ul class="velto-footer__links" role="list">
             {%- for link in info_menu.links -%}
               <li><a href="{{ link.url }}">{{ link.title }}</a></li>
@@ -92,7 +92,7 @@
 
       {%- comment -%} ---------- Contacts + pickup ---------- {%- endcomment -%}
       <div class="velto-footer__col velto-footer__contacts">
-        <h2 class="velto-footer__heading">{{ section.settings.contacts_heading }}</h2>
+        <h2 class="velto-footer__heading">{% render 'velto-t', s: section.settings.contacts_heading %}</h2>
         <ul class="velto-footer__contact-list" role="list">
           {%- if section.settings.email != blank -%}
             <li>
@@ -109,13 +109,13 @@
                 <a href="tel:{{ ph_clean | remove: ' ' }}">{{ ph_clean }}</a>
               {%- endfor -%}
               {%- if section.settings.phone_hours != blank -%}
-                <span class="velto-footer__muted">{{ section.settings.phone_hours }}</span>
+                <span class="velto-footer__muted">{% render 'velto-t', s: section.settings.phone_hours %}</span>
               {%- endif -%}
             </li>
           {%- endif -%}
           {%- if section.settings.pickup_address != blank -%}
             <li>
-              <span class="velto-footer__label">{{ section.settings.pickup_heading }}</span>
+              <span class="velto-footer__label">{% render 'velto-t', s: section.settings.pickup_heading %}</span>
               <a
                 href="https://www.google.com/maps/search/?api=1&query={{ section.settings.pickup_address | url_encode }}"
                 target="_blank"
@@ -151,7 +151,7 @@
     {%- comment -%} ---------- Bottom bar ---------- {%- endcomment -%}
     <div class="velto-footer__bottom">
       <div class="velto-footer__legal">
-        <span>&copy; {{ 'now' | date: '%Y' }} {{ shop.name }}{% if section.settings.company != blank %} · {{ section.settings.company }}{% endif %}</span>
+        <span>&copy; {{ 'now' | date: '%Y' }} {{ shop.name }}{% if section.settings.company != blank %} · {% render 'velto-t', s: section.settings.company %}{% endif %}</span>
         <ul class="velto-footer__policies" role="list">
           {%- for policy in shop.policies -%}
             {%- if policy != blank and policy.url contains 'shopifyReshowConsentBanner' -%}{%- continue -%}{%- endif -%}

@@ -16,7 +16,7 @@
     <div class="page-width">
       <div class="velto-section-head">
         {%- if section.settings.heading != blank -%}
-          <h2 class="h2 velto-section-head__title">{{ section.settings.heading }}</h2>
+          <h2 class="h2 velto-section-head__title">{% render 'velto-t', s: section.settings.heading %}</h2>
         {%- endif -%}
         <a class="velto-section-head__link link underlined-link" href="{{ routes.collections_url }}">
           {{- 'sections.collection_list.view_all' | t -}}

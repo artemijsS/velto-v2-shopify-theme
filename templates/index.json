@@ -7,32 +7,32 @@
           "type": "perk",
           "settings": {
             "icon": "tag",
-            "title": "Godīga cena",
-            "text": "Bez slēptiem uzcenojumiem"
+            "title": "@velto.content.home.perk_price_title",
+            "text": "@velto.content.home.perk_price_text"
           }
         },
         "p2": {
           "type": "perk",
           "settings": {
             "icon": "check",
-            "title": "Pārbaudīta kvalitāte",
-            "text": "Atlasām tikai labāko"
+            "title": "@velto.content.home.perk_quality_title",
+            "text": "@velto.content.home.perk_quality_text"
           }
         },
         "p3": {
           "type": "perk",
           "settings": {
             "icon": "box",
-            "title": "Plašs sortiments",
-            "text": "Pārtika un ikdienas preces"
+            "title": "@velto.content.home.perk_range_title",
+            "text": "@velto.content.home.perk_range_text"
           }
         },
         "p4": {
           "type": "perk",
           "settings": {
             "icon": "lock",
-            "title": "Droša apmaksa",
-            "text": "Ērti un aizsargāti"
+            "title": "@velto.content.home.perk_payment_title",
+            "text": "@velto.content.home.perk_payment_text"
           }
         }
       },
@@ -43,14 +43,14 @@
         "p4"
       ],
       "settings": {
-        "eyebrow": "Interneta veikals Latvijā",
-        "heading_before": "Kvalitatīva produkcija par",
-        "heading_accent": "godīgu cenu",
+        "eyebrow": "@velto.content.home.hero_eyebrow",
+        "heading_before": "@velto.content.home.hero_heading",
+        "heading_accent": "@velto.content.home.hero_accent",
         "heading_after": "",
-        "text": "<p>Pārtika, dzērieni, sadzīves ķīmija un ikdienas preces — rūpīgi atlasītas un vienmēr par godīgu cenu.</p>",
-        "button_label_1": "Iepirkties",
+        "text": "<p>@velto.content.home.hero_text</p>",
+        "button_label_1": "@velto.content.home.hero_button_shop",
         "button_link_1": "shopify://collections/all",
-        "button_label_2": "Kategorijas",
+        "button_label_2": "@velto.content.home.hero_button_categories",
         "button_link_2": "",
         "color_scheme": "scheme-1",
         "showcase_collection": "all"
@@ -59,7 +59,7 @@
     "categories": {
       "type": "velto-categories",
       "settings": {
-        "heading": "Kategorijas",
+        "heading": "@velto.content.home.categories_heading",
         "menu": "main-menu",
         "color_scheme": "scheme-1",
         "padding_top": 44,
@@ -72,28 +72,28 @@
         "m1": {
           "type": "phrase",
           "settings": {
-            "text": "Tikai labākais",
+            "text": "@velto.content.home.marquee_1",
             "link": ""
           }
         },
         "m2": {
           "type": "phrase",
           "settings": {
-            "text": "Rūpīgi atlasīts",
+            "text": "@velto.content.home.marquee_2",
             "link": ""
           }
         },
         "m3": {
           "type": "phrase",
           "settings": {
-            "text": "Godīga cena",
+            "text": "@velto.content.home.marquee_3",
             "link": ""
           }
         },
         "m4": {
           "type": "phrase",
           "settings": {
-            "text": "Kvalitāte bez kompromisiem",
+            "text": "@velto.content.home.marquee_4",
             "link": ""
           }
         }
@@ -114,12 +114,12 @@
       "type": "velto-spotlight",
       "settings": {
         "collection": "jaunumi",
-        "eyebrow": "Jaunumi",
-        "heading_before": "Atklāj",
-        "heading_accent": "interesantāko",
+        "eyebrow": "@velto.content.home.new_eyebrow",
+        "heading_before": "@velto.content.home.new_heading",
+        "heading_accent": "@velto.content.home.new_accent",
         "heading_after": "",
-        "text": "<p>Jaunākās preces mūsu sortimentā — atklāj, kas jauns plauktos.</p>",
-        "button_label": "Visi jaunumi",
+        "text": "<p>@velto.content.home.new_text</p>",
+        "button_label": "@velto.content.home.new_button",
         "show_count": true,
         "products_to_show": 12,
         "reverse": false,
@@ -133,12 +133,12 @@
       "type": "velto-spotlight",
       "settings": {
         "collection": "gatava-kulinarija",
-        "eyebrow": "Ātri un garšīgi",
-        "heading_before": "Vakariņas",
-        "heading_accent": "bez gatavošanas",
+        "eyebrow": "@velto.content.home.ready_eyebrow",
+        "heading_before": "@velto.content.home.ready_heading",
+        "heading_accent": "@velto.content.home.ready_accent",
         "heading_after": "",
-        "text": "<p>Pankūkas, zupas, plovs un citi gatavie ēdieni — atliek tikai uzsildīt.</p>",
-        "button_label": "Skatīt visu",
+        "text": "<p>@velto.content.home.ready_text</p>",
+        "button_label": "@velto.content.home.ready_button",
         "show_count": true,
         "products_to_show": 12,
         "reverse": false,
@@ -153,22 +153,22 @@
         "s1": {
           "type": "step",
           "settings": {
-            "title": "Izvēlies preces",
-            "text": "Vairāk nekā 1300 preču — pārtika, dzērieni un viss mājai."
+            "title": "@velto.content.home.step1_title",
+            "text": "@velto.content.home.step1_text"
           }
         },
         "s2": {
           "type": "step",
           "settings": {
-            "title": "Pasūti līdz otrdienai",
-            "text": "Pievieno grozam un noformē pasūtījumu līdz otrdienas beigām."
+            "title": "@velto.content.home.step2_title",
+            "text": "@velto.content.home.step2_text"
           }
         },
         "s3": {
           "type": "step",
           "settings": {
-            "title": "Saņem piektdien–svētdien",
-            "text": "Piegādes dienu un ērtāko laiku izvēlies pats, noformējot pasūtījumu."
+            "title": "@velto.content.home.step3_title",
+            "text": "@velto.content.home.step3_text"
           }
         }
       },
@@ -178,8 +178,8 @@
         "s3"
       ],
       "settings": {
-        "heading": "Kā iepirkties Velto",
-        "button_label": "Sākt iepirkties",
+        "heading": "@velto.content.home.steps_heading",
+        "button_label": "@velto.content.home.start_shopping",
         "button_link": "shopify://collections/all",
         "color_scheme": "scheme-1",
         "padding_top": 48,
@@ -192,36 +192,36 @@
         "c1": {
           "type": "pick",
           "settings": {
-            "eyebrow": "Cena un kvalitāte",
-            "title": "Lieliska cena",
-            "text": "Labākā cenas un kvalitātes attiecība mūsu sortimentā.",
+            "eyebrow": "@velto.content.home.pick1_eyebrow",
+            "title": "@velto.content.home.pick1_title",
+            "text": "@velto.content.home.pick1_text",
             "link": "/collections/all?filter.p.m.custom.price_category=gid://shopify/FilterSettingGroup/311165259"
           }
         },
         "c2": {
           "type": "pick",
           "settings": {
-            "eyebrow": "Velto izlase",
-            "title": "Ekskluzīvi",
-            "text": "Īpaši atlasītas preces, kuras vērts izmēģināt.",
+            "eyebrow": "@velto.content.home.pick2_eyebrow",
+            "title": "@velto.content.home.pick2_title",
+            "text": "@velto.content.home.pick2_text",
             "link": "/collections/all/exclusive"
           }
         },
         "c3": {
           "type": "pick",
           "settings": {
-            "eyebrow": "Delikateses",
-            "title": "Siera galds",
-            "text": "No aitas piena sieriem līdz itāļu klasikai.",
+            "eyebrow": "@velto.content.home.pick3_eyebrow",
+            "title": "@velto.content.home.pick3_title",
+            "text": "@velto.content.home.pick3_text",
             "link": "/collections/all/cheese"
           }
         },
         "c4": {
           "type": "pick",
           "settings": {
-            "eyebrow": "Īpašiem brīžiem",
-            "title": "Svētku galdam",
-            "text": "Delikateses un gardumi, ar kuriem pārsteigt viesus.",
+            "eyebrow": "@velto.content.home.pick4_eyebrow",
+            "title": "@velto.content.home.pick4_title",
+            "text": "@velto.content.home.pick4_text",
             "link": "/collections/all/christmas"
           }
         }
@@ -233,8 +233,8 @@
         "c4"
       ],
       "settings": {
-        "eyebrow": "Kvalitāte par labu cenu",
-        "heading": "Iepērcies gudri",
+        "eyebrow": "@velto.content.home.curated_eyebrow",
+        "heading": "@velto.content.home.curated_heading",
         "subheading": "",
         "count_label": "prece|preces",
         "color_scheme": "scheme-1",
@@ -245,12 +245,12 @@
     "delivery": {
       "type": "velto-delivery",
       "settings": {
-        "eyebrow": "Kā notiek piegāde",
-        "heading_before": "Pasūti līdz otrdienai —",
-        "heading_accent": "saņem no piektdienas līdz svētdienai",
+        "eyebrow": "@velto.content.home.delivery_eyebrow",
+        "heading_before": "@velto.content.home.delivery_heading",
+        "heading_accent": "@velto.content.home.delivery_accent",
         "heading_after": "",
-        "text": "<p>Pasūtījumus pieņemam līdz otrdienas beigām. Piegāde notiek no piektdienas līdz svētdienai — ērtāko dienu un laiku izvēlies pats, noformējot pasūtījumu.</p>",
-        "button_label": "Sākt iepirkties",
+        "text": "<p>@velto.content.home.delivery_text</p>",
+        "button_label": "@velto.content.home.start_shopping",
         "button_link": "shopify://collections/all",
         "color_scheme": "scheme-1",
         "padding_top": 40,
@@ -262,12 +262,12 @@
       "settings": {
         "collection": "",
         "source_url": "/collections/all/exclusive?sort_by=best-selling",
-        "eyebrow": "Tikai Velto",
-        "heading_before": "Ekskluzīvas",
-        "heading_accent": "preces",
+        "eyebrow": "@velto.content.home.excl_eyebrow",
+        "heading_before": "@velto.content.home.excl_heading",
+        "heading_accent": "@velto.content.home.excl_accent",
         "heading_after": "",
-        "text": "<p>Īpaši atlasīti produkti un delikateses mūsu izlasē — to, ko vērts izmēģināt.</p>",
-        "button_label": "Skatīt visas",
+        "text": "<p>@velto.content.home.excl_text</p>",
+        "button_label": "@velto.content.home.view_all_plural",
         "show_count": true,
         "products_to_show": 12,
         "reverse": true,
@@ -282,49 +282,49 @@
         "t1": {
           "type": "tab",
           "settings": {
-            "label": "Visi",
+            "label": "@velto.content.home.tab_all",
             "link": ""
           }
         },
         "t2": {
           "type": "tab",
           "settings": {
-            "label": "Piena produkti",
+            "label": "@velto.content.home.tab_dairy",
             "link": "shopify://collections/piena-produkti"
           }
         },
         "t3": {
           "type": "tab",
           "settings": {
-            "label": "Gaļa un zivis",
+            "label": "@velto.content.home.tab_meat",
             "link": "shopify://collections/gala-zivis-un-gatava-kulinarija"
           }
         },
         "t4": {
           "type": "tab",
           "settings": {
-            "label": "Gatavā kulinārija",
+            "label": "@velto.content.home.tab_ready",
             "link": "shopify://collections/gatava-kulinarija"
           }
         },
         "t5": {
           "type": "tab",
           "settings": {
-            "label": "Maize",
+            "label": "@velto.content.home.tab_bread",
             "link": "shopify://collections/maize-un-konditoreja"
           }
         },
         "t6": {
           "type": "tab",
           "settings": {
-            "label": "Uzkodas",
+            "label": "@velto.content.home.tab_snacks",
             "link": "shopify://collections/uzkodas"
           }
         },
         "t7": {
           "type": "tab",
           "settings": {
-            "label": "Dzērieni",
+            "label": "@velto.content.home.tab_drinks",
             "link": "shopify://collections/dzerieni-1"
           }
         }
@@ -339,9 +339,9 @@
         "t7"
       ],
       "settings": {
-        "eyebrow": "Tops",
-        "heading": "Populārākās preces",
-        "subheading": "Ko Velto pircēji izvēlas visbiežāk",
+        "eyebrow": "@velto.content.home.best_eyebrow",
+        "heading": "@velto.content.home.best_heading",
+        "subheading": "@velto.content.home.best_subheading",
         "limit": 10,
         "color_scheme": "scheme-1",
         "padding_top": 48,

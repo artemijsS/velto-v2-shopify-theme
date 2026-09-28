@@ -14,13 +14,13 @@
     <div class="velto-section-head">
       <div>
         {%- if section.settings.eyebrow != blank -%}
-          <p class="velto-curated__eyebrow">{{ section.settings.eyebrow }}</p>
+          <p class="velto-curated__eyebrow">{% render 'velto-t', s: section.settings.eyebrow %}</p>
         {%- endif -%}
         {%- if section.settings.heading != blank -%}
-          <h2 class="h2 velto-section-head__title">{{ section.settings.heading }}</h2>
+          <h2 class="h2 velto-section-head__title">{% render 'velto-t', s: section.settings.heading %}</h2>
         {%- endif -%}
         {%- if section.settings.subheading != blank -%}
-          <p class="velto-section-head__sub">{{ section.settings.subheading }}</p>
+          <p class="velto-section-head__sub">{% render 'velto-t', s: section.settings.subheading %}</p>
         {%- endif -%}
       </div>
     </div>
@@ -43,11 +43,11 @@
               <span class="velto-cur__thumb"></span>
             </span>
             {%- if block.settings.eyebrow != blank -%}
-              <span class="velto-cur__eyebrow">{{ block.settings.eyebrow }}</span>
+              <span class="velto-cur__eyebrow">{% render 'velto-t', s: block.settings.eyebrow %}</span>
             {%- endif -%}
-            <span class="velto-cur__title">{{ block.settings.title }}</span>
+            <span class="velto-cur__title">{% render 'velto-t', s: block.settings.title %}</span>
             {%- if block.settings.text != blank -%}
-              <span class="velto-cur__text">{{ block.settings.text }}</span>
+              <span class="velto-cur__text">{% render 'velto-t', s: block.settings.text %}</span>
             {%- endif -%}
             <span class="velto-cur__meta">
               <span class="velto-cur__count" data-count>&nbsp;</span>

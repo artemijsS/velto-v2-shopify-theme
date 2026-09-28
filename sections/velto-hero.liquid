@@ -21,27 +21,27 @@
   <div class="velto-hero__inner page-width">
     <div class="velto-hero__content">
       {%- if section.settings.eyebrow != blank -%}
-        <p class="velto-hero__eyebrow">{{ section.settings.eyebrow }}</p>
+        <p class="velto-hero__eyebrow">{% render 'velto-t', s: section.settings.eyebrow %}</p>
       {%- endif -%}
       <h1 class="velto-hero__title">
-        {{ section.settings.heading_before }}
+        {% render 'velto-t', s: section.settings.heading_before %}
         {%- if section.settings.heading_accent != blank %}
-          <span class="velto-accent">{{ section.settings.heading_accent }}</span>
+          <span class="velto-accent">{% render 'velto-t', s: section.settings.heading_accent %}</span>
         {%- endif %}
-        {{ section.settings.heading_after }}
+        {% render 'velto-t', s: section.settings.heading_after %}
       </h1>
       {%- if section.settings.text != blank -%}
-        <div class="velto-hero__text rte">{{ section.settings.text }}</div>
+        <div class="velto-hero__text rte">{% render 'velto-t', s: section.settings.text %}</div>
       {%- endif -%}
       <div class="velto-hero__buttons">
         {%- if section.settings.button_label_1 != blank -%}
           <a href="{{ section.settings.button_link_1 | default: routes.all_products_collection_url }}" class="button button--primary">
-            {{- section.settings.button_label_1 -}}
+            {%- render 'velto-t', s: section.settings.button_label_1 -%}
           </a>
         {%- endif -%}
         {%- if section.settings.button_label_2 != blank -%}
           <a href="{{ section.settings.button_link_2 | default: '#velto-categories' }}" class="button button--secondary">
-            {{- section.settings.button_label_2 -}}
+            {%- render 'velto-t', s: section.settings.button_label_2 -%}
           </a>
         {%- endif -%}
       </div>
@@ -110,8 +110,8 @@
               {%- endcase -%}
             </span>
             <span class="velto-perk__text">
-              <strong>{{ block.settings.title }}</strong>
-              {%- if block.settings.text != blank -%}<span>{{ block.settings.text }}</span>{%- endif -%}
+              <strong>{% render 'velto-t', s: block.settings.title %}</strong>
+              {%- if block.settings.text != blank -%}<span>{% render 'velto-t', s: block.settings.text %}</span>{%- endif -%}
             </span>
           </li>
         {%- endfor -%}

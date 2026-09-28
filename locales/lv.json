@@ -608,7 +608,9 @@
       "items_other": "[count] preces",
       "view_cart": "Uz grozu",
       "max": "Pieejami tikai [max] gab.",
-      "error": "Neizdevās atjaunināt grozu. Mēģiniet vēlreiz."
+      "error": "Neizdevās atjaunināt grozu. Mēģiniet vēlreiz.",
+      "items_few": "[count] preces",
+      "items_many": "[count] preces"
     },
     "product": {
       "facts": "Pamatinformācija",
@@ -621,6 +623,110 @@
       "delivery_at_checkout": "izvēlies noformējot",
       "empty_text": "Izvēlies preces katalogā — piegāde no piektdienas līdz svētdienai.",
       "bar_total": "Kopā"
+    },
+    "content": {
+      "home": {
+        "hero_eyebrow": "Interneta veikals Latvijā",
+        "hero_heading": "Kvalitatīva produkcija par",
+        "hero_accent": "godīgu cenu",
+        "hero_text": "Pārtika, dzērieni, sadzīves ķīmija un ikdienas preces — rūpīgi atlasītas un vienmēr par godīgu cenu.",
+        "hero_button_shop": "Iepirkties",
+        "hero_button_categories": "Kategorijas",
+        "perk_price_title": "Godīga cena",
+        "perk_price_text": "Bez slēptiem uzcenojumiem",
+        "perk_quality_title": "Pārbaudīta kvalitāte",
+        "perk_quality_text": "Atlasām tikai labāko",
+        "perk_range_title": "Plašs sortiments",
+        "perk_range_text": "Pārtika un ikdienas preces",
+        "perk_payment_title": "Droša apmaksa",
+        "perk_payment_text": "Ērti un aizsargāti",
+        "categories_heading": "Kategorijas",
+        "marquee_1": "Tikai labākais",
+        "marquee_2": "Rūpīgi atlasīts",
+        "marquee_3": "Godīga cena",
+        "marquee_4": "Kvalitāte bez kompromisiem",
+        "new_eyebrow": "Jaunumi",
+        "new_heading": "Atklāj",
+        "new_accent": "interesantāko",
+        "new_text": "Jaunākās preces mūsu sortimentā — atklāj, kas jauns plauktos.",
+        "new_button": "Visi jaunumi",
+        "ready_eyebrow": "Ātri un garšīgi",
+        "ready_heading": "Vakariņas",
+        "ready_accent": "bez gatavošanas",
+        "ready_text": "Pankūkas, zupas, plovs un citi gatavie ēdieni — atliek tikai uzsildīt.",
+        "ready_button": "Skatīt visu",
+        "steps_heading": "Kā iepirkties Velto",
+        "start_shopping": "Sākt iepirkties",
+        "step1_title": "Izvēlies preces",
+        "step1_text": "Vairāk nekā 1300 preču — pārtika, dzērieni un viss mājai.",
+        "step2_title": "Pasūti līdz otrdienai",
+        "step2_text": "Pievieno grozam un noformē pasūtījumu līdz otrdienas beigām.",
+        "step3_title": "Saņem piektdien–svētdien",
+        "step3_text": "Piegādes dienu un ērtāko laiku izvēlies pats, noformējot pasūtījumu.",
+        "curated_eyebrow": "Kvalitāte par labu cenu",
+        "curated_heading": "Iepērcies gudri",
+        "pick1_eyebrow": "Cena un kvalitāte",
+        "pick1_title": "Lieliska cena",
+        "pick1_text": "Labākā cenas un kvalitātes attiecība mūsu sortimentā.",
+        "pick2_eyebrow": "Velto izlase",
+        "pick2_title": "Ekskluzīvi",
+        "pick2_text": "Īpaši atlasītas preces, kuras vērts izmēģināt.",
+        "pick3_eyebrow": "Delikateses",
+        "pick3_title": "Siera galds",
+        "pick3_text": "No aitas piena sieriem līdz itāļu klasikai.",
+        "pick4_eyebrow": "Īpašiem brīžiem",
+        "pick4_title": "Svētku galdam",
+        "pick4_text": "Delikateses un gardumi, ar kuriem pārsteigt viesus.",
+        "delivery_eyebrow": "Kā notiek piegāde",
+        "delivery_heading": "Pasūti līdz otrdienai —",
+        "delivery_accent": "saņem no piektdienas līdz svētdienai",
+        "delivery_text": "Pasūtījumus pieņemam līdz otrdienas beigām. Piegāde notiek no piektdienas līdz svētdienai — ērtāko dienu un laiku izvēlies pats, noformējot pasūtījumu.",
+        "excl_eyebrow": "Tikai Velto",
+        "excl_heading": "Ekskluzīvas",
+        "excl_accent": "preces",
+        "excl_text": "Īpaši atlasīti produkti un delikateses mūsu izlasē — to, ko vērts izmēģināt.",
+        "view_all_plural": "Skatīt visas",
+        "best_eyebrow": "Tops",
+        "best_heading": "Populārākās preces",
+        "best_subheading": "Ko Velto pircēji izvēlas visbiežāk",
+        "tab_all": "Visi",
+        "tab_dairy": "Piena produkti",
+        "tab_meat": "Gaļa un zivis",
+        "tab_ready": "Gatavā kulinārija",
+        "tab_bread": "Maize",
+        "tab_snacks": "Uzkodas",
+        "tab_drinks": "Dzērieni"
+      },
+      "nav": {
+        "quick_new": "Jaunumi",
+        "quick_exclusive": "Ekskluzīvi",
+        "quick_great_price": "Lieliska cena",
+        "quick_ready": "Gatavā kulinārija"
+      },
+      "announcement": {
+        "text": "Pasūti līdz otrdienas beigām — piegāde no piektdienas līdz svētdienai",
+        "short": "Pasūti līdz otrdienai — piegāde pk.–sv."
+      },
+      "footer": {
+        "about": "Interneta veikals ar kvalitatīvu produkciju par godīgām cenām. Sadarbojamies ar vietējiem ražotājiem un piegādātājiem.",
+        "categories": "Kategorijas",
+        "information": "Informācija",
+        "contacts": "Kontakti",
+        "phone_hours": "Darba dienās 10:00–17:00",
+        "company": "SIA ExpressPoint, reģ. nr. 40203433692",
+        "tagline": "Vairāk vērtības jums"
+      },
+      "product": {
+        "related": "Jums varētu patikt"
+      },
+      "collections": {
+        "title": "Kategorijas"
+      },
+      "password": {
+        "heading": "Drīzumā atvērsimies",
+        "text": "Uzzini pirmais, kad atveramies."
+      },
+      "share": "Dalīties"
     }
   }
 }

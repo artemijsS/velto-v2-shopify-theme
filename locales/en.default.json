@@ -594,7 +594,10 @@
       "items_other": "[count] items",
       "view_cart": "View cart",
       "max": "Only [max] available",
-      "error": "Couldn't update the cart. Please try again."
+      "error": "Couldn't update the cart. Please try again.",
+      "items_zero": "[count] items",
+      "items_few": "[count] items",
+      "items_many": "[count] items"
     },
     "product": {
       "facts": "Key facts",
@@ -607,6 +610,110 @@
       "delivery_at_checkout": "chosen at checkout",
       "empty_text": "Pick products in the catalog — delivered Friday to Sunday.",
       "bar_total": "Total"
+    },
+    "content": {
+      "home": {
+        "hero_eyebrow": "Online store in Latvia",
+        "hero_heading": "Quality products at",
+        "hero_accent": "a fair price",
+        "hero_text": "Food, drinks, household goods and everyday essentials — carefully selected and always at a fair price.",
+        "hero_button_shop": "Shop now",
+        "hero_button_categories": "Categories",
+        "perk_price_title": "Fair price",
+        "perk_price_text": "No hidden markups",
+        "perk_quality_title": "Proven quality",
+        "perk_quality_text": "We pick only the best",
+        "perk_range_title": "Wide selection",
+        "perk_range_text": "Groceries and everyday goods",
+        "perk_payment_title": "Secure payment",
+        "perk_payment_text": "Convenient and protected",
+        "categories_heading": "Categories",
+        "marquee_1": "Only the best",
+        "marquee_2": "Carefully selected",
+        "marquee_3": "Fair price",
+        "marquee_4": "Quality without compromise",
+        "new_eyebrow": "New in",
+        "new_heading": "Discover",
+        "new_accent": "what's new",
+        "new_text": "The latest arrivals in our range — see what's new on the shelves.",
+        "new_button": "All new arrivals",
+        "ready_eyebrow": "Quick and tasty",
+        "ready_heading": "Dinner",
+        "ready_accent": "without cooking",
+        "ready_text": "Pancakes, soups, pilaf and other ready meals — just heat and eat.",
+        "ready_button": "View all",
+        "steps_heading": "How to shop at Velto",
+        "start_shopping": "Start shopping",
+        "step1_title": "Choose products",
+        "step1_text": "Over 1300 products — food, drinks and everything for the home.",
+        "step2_title": "Order by Tuesday",
+        "step2_text": "Add to cart and check out by the end of Tuesday.",
+        "step3_title": "Receive Friday–Sunday",
+        "step3_text": "Pick the delivery day and time that suits you at checkout.",
+        "curated_eyebrow": "Quality at a good price",
+        "curated_heading": "Shop smart",
+        "pick1_eyebrow": "Price & quality",
+        "pick1_title": "Great price",
+        "pick1_text": "The best value for money in our range.",
+        "pick2_eyebrow": "Velto selection",
+        "pick2_title": "Exclusive",
+        "pick2_text": "Hand-picked products worth trying.",
+        "pick3_eyebrow": "Delicacies",
+        "pick3_title": "Cheese board",
+        "pick3_text": "From sheep's milk cheeses to Italian classics.",
+        "pick4_eyebrow": "For special moments",
+        "pick4_title": "For the festive table",
+        "pick4_text": "Delicacies and treats to impress your guests.",
+        "delivery_eyebrow": "How delivery works",
+        "delivery_heading": "Order by Tuesday —",
+        "delivery_accent": "get it Friday to Sunday",
+        "delivery_text": "We take orders until the end of Tuesday. Delivery runs Friday to Sunday — you choose the day and time that suit you at checkout.",
+        "excl_eyebrow": "Only at Velto",
+        "excl_heading": "Exclusive",
+        "excl_accent": "products",
+        "excl_text": "Hand-picked products and delicacies from our selection — worth trying.",
+        "view_all_plural": "View all",
+        "best_eyebrow": "Top picks",
+        "best_heading": "Most popular products",
+        "best_subheading": "What Velto customers choose most often",
+        "tab_all": "All",
+        "tab_dairy": "Dairy",
+        "tab_meat": "Meat & fish",
+        "tab_ready": "Ready meals",
+        "tab_bread": "Bread",
+        "tab_snacks": "Snacks",
+        "tab_drinks": "Drinks"
+      },
+      "nav": {
+        "quick_new": "New in",
+        "quick_exclusive": "Exclusive",
+        "quick_great_price": "Great price",
+        "quick_ready": "Ready meals"
+      },
+      "announcement": {
+        "text": "Order by the end of Tuesday — delivery Friday to Sunday",
+        "short": "Order by Tuesday — delivery Fri–Sun"
+      },
+      "footer": {
+        "about": "An online store with quality products at fair prices. We work with local producers and suppliers.",
+        "categories": "Categories",
+        "information": "Information",
+        "contacts": "Contacts",
+        "phone_hours": "Weekdays 10:00–17:00",
+        "company": "SIA ExpressPoint, reg. no. 40203433692",
+        "tagline": "More value for you"
+      },
+      "product": {
+        "related": "You may also like"
+      },
+      "collections": {
+        "title": "Categories"
+      },
+      "password": {
+        "heading": "Opening soon",
+        "text": "Be the first to know when we launch."
+      },
+      "share": "Share"
     }
   }
 }

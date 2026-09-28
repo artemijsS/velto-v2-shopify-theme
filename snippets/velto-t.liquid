@@ -1,0 +1,22 @@
+{%- comment -%}
+  Outputs a text / richtext setting value. A value starting with "@" is a
+  translation key (e.g. "@velto.content.home.hero_eyebrow") and is rendered
+  from the current locale file (lv / ru / en), so section texts switch with
+  the storefront language. Any other value is printed as is.
+  Params: s (string)
+{%- endcomment -%}
+{%- liquid
+  assign plain = s | strip_html | strip
+  assign first = plain | slice: 0
+  if first == '@'
+    assign key = plain | remove_first: '@' | strip
+    assign out = key | t
+    if s contains '<p'
+      echo '<p>' | append: out | append: '</p>'
+    else
+      echo out
+    endif
+  else
+    echo s
+  endif
+-%}

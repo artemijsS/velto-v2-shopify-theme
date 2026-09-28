@@ -27,7 +27,7 @@
             assign qu = section.settings[uk] | replace: 'shopify://collections/', '/collections/'
           -%}
           {%- if ql != blank and qu != blank -%}
-            <li><a class="velto-mnav__chip" href="{{ qu }}" data-velto-quick>{{ ql }}</a></li>
+            <li><a class="velto-mnav__chip" href="{{ qu }}" data-velto-quick>{% render 'velto-t', s: ql %}</a></li>
           {%- endif -%}
         {%- endfor -%}
       </ul>

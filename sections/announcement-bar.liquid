@@ -40,8 +40,8 @@
             >
           {%- endif -%}
           <p class="announcement-bar__message h5">
-            <span class="velto-ann-full{% if section.blocks.first.settings.velto_mobile_text != blank %} has-short{% endif %}">{{ section.blocks.first.settings.text | escape }}</span>
-            {%- if section.blocks.first.settings.velto_mobile_text != blank -%}<span class="velto-ann-short">{{ section.blocks.first.settings.velto_mobile_text | escape }}</span>{%- endif -%}
+            <span class="velto-ann-full{% if section.blocks.first.settings.velto_mobile_text != blank %} has-short{% endif %}">{% render 'velto-t', s: section.blocks.first.settings.text %}</span>
+            {%- if section.blocks.first.settings.velto_mobile_text != blank -%}<span class="velto-ann-short">{% render 'velto-t', s: section.blocks.first.settings.velto_mobile_text %}</span>{%- endif -%}
             {%- if section.blocks.first.settings.link != blank -%}
               {{- 'icon-arrow.svg' | inline_asset_content -}}
             {%- endif -%}
@@ -101,8 +101,8 @@
                       >
                     {%- endif -%}
                     <p class="announcement-bar__message h5">
-                      <span class="velto-ann-full{% if block.settings.velto_mobile_text != blank %} has-short{% endif %}">{{ block.settings.text | escape }}</span>
-            {%- if block.settings.velto_mobile_text != blank -%}<span class="velto-ann-short">{{ block.settings.velto_mobile_text | escape }}</span>{%- endif -%}
+                      <span class="velto-ann-full{% if block.settings.velto_mobile_text != blank %} has-short{% endif %}">{% render 'velto-t', s: block.settings.text %}</span>
+            {%- if block.settings.velto_mobile_text != blank -%}<span class="velto-ann-short">{% render 'velto-t', s: block.settings.velto_mobile_text %}</span>{%- endif -%}
                       {%- if block.settings.link != blank -%}
                         {{- 'icon-arrow.svg' | inline_asset_content -}}
                       {%- endif -%}
