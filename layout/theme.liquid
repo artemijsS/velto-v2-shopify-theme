@@ -481,15 +481,25 @@
       <script src="{{ 'cart-drawer.js' | asset_url }}" defer="defer"></script>
     {%- endif -%}
 
-    <style type="text/css">
-      body .ChoiceList .Choice__Label,
-      body span.Choice__Label,
-      body span[class*="Choice__Label"],
-      body .ChoiceList * {
-        color: #000000 !important;
-        -webkit-text-fill-color: #000000 !important;
-      }
-    </style>
+    <script>
+      document.addEventListener('click', function(event) {
+        if (event.target.closest('.flatpickr-day')) {
+          
+          setTimeout(function() {
+            const shadowHost = document.getElementById('mw-delivery-date-modals');
+            
+            if (shadowHost && shadowHost.shadowRoot) {
+              const labels = shadowHost.shadowRoot.querySelectorAll('.Choice__Label');
+              
+              labels.forEach(function(label) {
+                label.style.setProperty('color', '#000000', 'important');
+              });
+            }
+          }, 100);
+          
+        }
+      }, { capture: true });
+    </script>
 
   </body>
 </html>
