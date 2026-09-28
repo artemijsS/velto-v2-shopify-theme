@@ -100,8 +100,22 @@ document.addEventListener('click', (e) => {
   const pill = e.target.closest('[data-velto-search]');
   if (!pill) return;
   e.preventDefault();
-  const summary = document.querySelector('.header__icons details-modal.header__search summary');
+  // desktop: the icon in .header__icons; mobile: the one next to the burger
+  const all = [...document.querySelectorAll('details-modal.header__search summary')];
+  const desktop = window.matchMedia('(min-width: 990px)').matches;
+  const summary =
+    all.find((el) => (desktop ? el.closest('.header__icons') : !el.closest('.header__icons'))) || all[0];
   if (summary) summary.click();
+});
+
+/* Mobile "Katalogs" chip → opens the drawer menu */
+document.addEventListener('click', (e) => {
+  if (!e.target.closest('[data-velto-open-menu]')) return;
+  e.preventDefault();
+  const summary = document.querySelector('#Details-menu-drawer-container > summary');
+  if (!summary) return;
+  window.scrollTo({ top: 0 });
+  summary.click();
 });
 
 /* Highlight the header quick link that matches the current page.
@@ -124,20 +138,28 @@ document.addEventListener('click', (e) => {
   };
 
   const update = () => {
-    const links = [...document.querySelectorAll('.velto-subnav__quick a')];
+    // desktop sub-nav + mobile chips carry the same links
+    const links = [...document.querySelectorAll('a[data-velto-quick]')];
     let any = false;
     // prefer the most specific match (most query params)
     const scored = links
       .map((a) => ({ a, ok: matches(a.href), n: new URL(a.href, location.origin).searchParams.size || 0 }))
       .filter((x) => x.ok)
       .sort((x, y) => y.n - x.n);
+    const winner = scored.length ? scored[0].a.getAttribute('href') : null;
     links.forEach((a) => {
-      const on = scored.length && scored[0].a === a;
-      a.classList.toggle('is-active', !!on);
+      const on = winner !== null && a.getAttribute('href') === winner;
+      a.classList.toggle('is-active', on);
       if (on) { a.setAttribute('aria-current', 'page'); any = true; } else a.removeAttribute('aria-current');
     });
-    const toggle = document.querySelector('.velto-catalog__toggle');
-    if (toggle) toggle.classList.toggle('is-current', !any && /^\/(\w{2}(-\w{2})?\/)?collections\//.test(location.pathname));
+    const onCollection = !any && /^\/(\w{2}(-\w{2})?\/)?collections\//.test(location.pathname);
+    document
+      .querySelectorAll('.velto-catalog__toggle, .velto-mnav__chip--catalog')
+      .forEach((el) => el.classList.toggle('is-current', onCollection));
+    // keep the active mobile chip in view
+    const chip = document.querySelector('.velto-mnav__chip.is-active');
+    const row = chip && chip.closest('.velto-mnav__chips');
+    if (row) row.scrollLeft = chip.offsetLeft - (row.clientWidth - chip.offsetWidth) / 2;
   };
 
   update();

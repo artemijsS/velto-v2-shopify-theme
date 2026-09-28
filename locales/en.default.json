@@ -563,7 +563,8 @@
       "search_placeholder": "Search 1300+ products…",
       "popular_title": "Popular searches",
       "popular_searches": "milk,cheese,eggs,soup,chips,coffee,butter,bread",
-      "categories_title": "Categories"
+      "categories_title": "Categories",
+      "account": "My account"
     },
     "search": {
       "crumb": "Search",

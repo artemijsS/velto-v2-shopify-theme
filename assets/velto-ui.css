@@ -225,17 +225,6 @@
   }
 }
 
-/* Mobile drawer: comfortable tap targets for the long category list */
-.menu-drawer .menu-drawer__menu-item {
-  padding-top: 1.2rem;
-  padding-bottom: 1.2rem;
-  font-size: 1.6rem;
-}
-
-.menu-drawer .menu-drawer__menu > li + li {
-  border-top: 1px solid rgba(var(--color-foreground), 0.06);
-}
-
 /* ---------- Footer ---------- */
 .footer {
   border-top: 1px solid rgba(var(--color-foreground), 0.08);

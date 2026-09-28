@@ -18,6 +18,7 @@
           "type": "announcement",
           "settings": {
             "text": "Pasūti līdz otrdienas beigām — piegāde no piektdienas līdz svētdienai",
+            "velto_mobile_text": "Pasūti līdz otrdienai — piegāde pk.–sv.",
             "text_alignment": "center",
             "color_scheme": "scheme-1",
             "link": ""

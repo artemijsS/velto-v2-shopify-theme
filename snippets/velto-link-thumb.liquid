@@ -1,0 +1,20 @@
+{%- comment -%}
+  Small square thumbnail for a menu link (collection image, or its first product).
+  Params: link (link), size (px, default 40)
+{%- endcomment -%}
+{%- liquid
+  assign img = nil
+  if link.type == 'collection_link' and link.object
+    assign img = link.object.featured_image
+    if img == blank
+      assign img = link.object.products.first.featured_media.preview_image
+    endif
+  elsif link.type == 'catalog_link'
+    assign img = collections['all'].products.first.featured_media.preview_image
+  endif
+-%}
+<span class="velto-thumb" aria-hidden="true">
+  {%- if img != blank -%}
+    {{ img | image_url: width: 120 | image_tag: loading: 'lazy', sizes: '48px', widths: '96, 120', alt: '' }}
+  {%- endif -%}
+</span>

@@ -40,7 +40,8 @@
             >
           {%- endif -%}
           <p class="announcement-bar__message h5">
-            <span>{{ section.blocks.first.settings.text | escape }}</span>
+            <span class="velto-ann-full{% if section.blocks.first.settings.velto_mobile_text != blank %} has-short{% endif %}">{{ section.blocks.first.settings.text | escape }}</span>
+            {%- if section.blocks.first.settings.velto_mobile_text != blank -%}<span class="velto-ann-short">{{ section.blocks.first.settings.velto_mobile_text | escape }}</span>{%- endif -%}
             {%- if section.blocks.first.settings.link != blank -%}
               {{- 'icon-arrow.svg' | inline_asset_content -}}
             {%- endif -%}
@@ -100,7 +101,8 @@
                       >
                     {%- endif -%}
                     <p class="announcement-bar__message h5">
-                      <span>{{ block.settings.text | escape }}</span>
+                      <span class="velto-ann-full{% if block.settings.velto_mobile_text != blank %} has-short{% endif %}">{{ block.settings.text | escape }}</span>
+            {%- if block.settings.velto_mobile_text != blank -%}<span class="velto-ann-short">{{ block.settings.velto_mobile_text | escape }}</span>{%- endif -%}
                       {%- if block.settings.link != blank -%}
                         {{- 'icon-arrow.svg' | inline_asset_content -}}
                       {%- endif -%}
@@ -239,6 +241,12 @@
           "id": "text",
           "default": "t:sections.announcement-bar.blocks.announcement.settings.text.default",
           "label": "t:sections.announcement-bar.blocks.announcement.settings.text.label"
+        },
+        {
+          "type": "text",
+          "id": "velto_mobile_text",
+          "label": "Īsais teksts mobilajam",
+          "info": "Rāda ekrānos līdz 749px vienā rindā. Tukšs = pilnais teksts."
         },
         {
           "type": "url",

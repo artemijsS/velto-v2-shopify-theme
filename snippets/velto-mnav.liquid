@@ -1,0 +1,36 @@
+{%- comment -%}
+  Velto mobile/tablet header row (<990px): search field + scrollable chips
+  ("Katalogs" opens the drawer, then the header quick links).
+  Params: section (header section)
+{%- endcomment -%}
+<div class="velto-mnav">
+  <div class="page-width velto-mnav__inner">
+    <button type="button" class="velto-mnav__search" data-velto-search>
+      {{- 'icon-search.svg' | inline_asset_content -}}
+      <span>{{ 'velto.nav.search_placeholder' | t }}</span>
+    </button>
+    <nav class="velto-mnav__chips" aria-label="{{ 'velto.nav.quick' | t | escape }}">
+      <ul role="list">
+        {%- if section.settings.menu != blank -%}
+          <li>
+            <button type="button" class="velto-mnav__chip velto-mnav__chip--catalog" data-velto-open-menu>
+              <span class="velto-mnav__burger" aria-hidden="true"><span></span><span></span><span></span></span>
+              {{- 'velto.nav.catalog' | t -}}
+            </button>
+          </li>
+        {%- endif -%}
+        {%- for i in (1..5) -%}
+          {%- liquid
+            assign lk = 'velto_quick_label_' | append: i
+            assign uk = 'velto_quick_url_' | append: i
+            assign ql = section.settings[lk]
+            assign qu = section.settings[uk] | replace: 'shopify://collections/', '/collections/'
+          -%}
+          {%- if ql != blank and qu != blank -%}
+            <li><a class="velto-mnav__chip" href="{{ qu }}" data-velto-quick>{{ ql }}</a></li>
+          {%- endif -%}
+        {%- endfor -%}
+      </ul>
+    </nav>
+  </div>
+</div>

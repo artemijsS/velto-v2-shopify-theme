@@ -589,7 +589,8 @@
       "search_placeholder": "Искать среди 1300+ товаров…",
       "popular_title": "Популярные запросы",
       "popular_searches": "молоко,сыр,яйца,суп,чипсы,кофе,масло,хлеб",
-      "categories_title": "Категории"
+      "categories_title": "Категории",
+      "account": "Мой аккаунт"
     },
     "search": {
       "crumb": "Поиск",
