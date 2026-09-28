@@ -52,7 +52,8 @@ if (!customElements.get('velto-load-more')) {
         try {
           const url = new URL(next, window.location.origin);
           url.searchParams.set('section_id', this.dataset.section);
-          const html = await (await fetch(url)).text();
+          // pass a string: fee / delivery apps wrap fetch and choke on URL objects
+          const html = await (await fetch(url.toString())).text();
           const doc = new DOMParser().parseFromString(html, 'text/html');
           // collection: ul#product-grid > li · search: #product-grid ul.product-grid > li
           const grid =
