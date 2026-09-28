@@ -125,7 +125,7 @@
 .product__info-container .product-form__quantity .quantity__input { font-size: 1.6rem; font-weight: 700; }
 
 .product__info-container product-form .product-form__buttons { max-width: none; }
-.product__info-container product-form .product-form__submit { margin-bottom: 1rem; letter-spacing: 0.12rem; }
+.product__info-container product-form .product-form__submit { margin-bottom: 0; letter-spacing: 0.12rem; font-weight: 700; }
 .product__info-container > div > product-form.product-form { margin: 0; }
 .product__info-container > .product-form__quantity { align-self: start; }
 

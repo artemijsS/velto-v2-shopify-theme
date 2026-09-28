@@ -29,18 +29,12 @@
         "buy_buttons": {
           "type": "buy_buttons",
           "settings": {
-            "show_dynamic_checkout": true,
+            "show_dynamic_checkout": false,
             "show_gift_card_recipient": true
           }
         },
         "description": {
           "type": "description"
-        },
-        "share": {
-          "type": "share",
-          "settings": {
-            "share_label": "Dalīties"
-          }
         },
         "velto_delivery": {
           "type": "custom_liquid",
@@ -71,8 +65,7 @@
         "quantity_selector",
         "buy_buttons",
         "velto_delivery",
-        "description",
-        "share"
+        "description"
       ],
       "settings": {
         "enable_sticky_info": true,

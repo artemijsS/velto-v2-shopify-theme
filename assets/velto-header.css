@@ -467,7 +467,12 @@
     list-style: none;
   }
 
+  .velto-mnav__chips li { display: flex; }
+
   .velto-mnav__chip {
+    vertical-align: top;
+    line-height: 1;
+    margin: 0;
     display: inline-flex;
     align-items: center;
     gap: 0.8rem;
