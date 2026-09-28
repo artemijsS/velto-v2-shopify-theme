@@ -577,6 +577,10 @@
       "popular_title": "Populāri meklējumi",
       "popular_searches": "piens,siers,olas,zupa,čipsi,kafija,sviests,maize",
       "categories_title": "Kategorijas"
+    },
+    "search": {
+      "crumb": "Meklēšana",
+      "title": "Meklēšana"
     }
   }
 }

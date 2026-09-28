@@ -358,3 +358,42 @@
 
 /* JS version replaces classic pagination */
 velto-load-more:defined ~ .pagination-wrapper { display: none; }
+
+/* ================= Search results page ================= */
+.template-search__header.page-width {
+  display: block;
+  text-align: left;
+  padding-top: 0.8rem;
+}
+
+.template-search .velto-search-page__title {
+  margin: 0;
+  word-break: break-word;
+}
+
+.template-search .template-search__search {
+  max-width: 72rem;
+  margin: 2.4rem 0 0;
+}
+
+.velto-search-page__empty {
+  margin: 2rem 0 0;
+  font-size: 1.6rem;
+  color: rgba(var(--color-foreground), 0.75);
+}
+
+.velto-search-page__suggest { margin-top: 3.2rem; }
+
+.velto-search-page__suggest .velto-search-empty__title {
+  margin: 2.4rem 0 1.2rem;
+  font-size: 1.1rem;
+  letter-spacing: 0.25rem;
+  text-transform: uppercase;
+  color: rgba(var(--color-foreground), 0.5);
+}
+
+.velto-search-page__chips { flex-wrap: wrap; overflow: visible; padding: 0; }
+
+.template-search--empty .template-search__header { padding-bottom: 4rem; }
+
+.template-search .facets-container { margin-top: 2.4rem; }

@@ -24,9 +24,13 @@
     <link rel="stylesheet" href="{{ 'velto-logo.css' | asset_url }}">
 
     <title>
-      {{ page_title }}
-      {%- if current_tags %} &ndash; tagged "{{ current_tags | join: ', ' }}"{% endif -%}
-      {%- if current_page != 1 %} &ndash; Page {{ current_page }}{% endif -%}
+      {%- if request.page_type == 'search' and search.performed -%}
+        {{ 'velto.search.title' | t }}: “{{ search.terms | escape }}” ({{ 'velto.products_count' | t: count: search.results_count }})
+      {%- else -%}
+        {{ page_title }}
+      {%- endif -%}
+      {%- if current_tags %} &ndash; {{ current_tags | join: ', ' }}{% endif -%}
+      {%- if current_page != 1 %} &ndash; {{ 'general.pagination.page' | t: number: current_page }}{% endif -%}
       {%- unless page_title contains shop.name %} &ndash; {{ shop.name }}{% endunless -%}
     </title>
 

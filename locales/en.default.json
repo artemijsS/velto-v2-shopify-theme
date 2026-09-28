@@ -564,6 +564,10 @@
       "popular_title": "Popular searches",
       "popular_searches": "milk,cheese,eggs,soup,chips,coffee,butter,bread",
       "categories_title": "Categories"
+    },
+    "search": {
+      "crumb": "Search",
+      "title": "Search"
     }
   }
 }

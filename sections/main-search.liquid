@@ -2,6 +2,9 @@
 {{ 'component-card.css' | asset_url | stylesheet_tag }}
 {{ 'component-price.css' | asset_url | stylesheet_tag }}
 {{ 'component-search.css' | asset_url | stylesheet_tag }}
+{{ 'quick-add.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'product-form.js' | asset_url }}" defer="defer"></script>
+<script src="{{ 'quick-add.js' | asset_url }}" defer="defer"></script>
 
 {%- if section.settings.enable_filtering or section.settings.enable_sorting -%}
   {{ 'component-facets.css' | asset_url | stylesheet_tag }}
@@ -66,13 +69,24 @@
 {% paginate search.results by 24 %}
   <div class="template-search{% unless search.performed and search.results_count > 0 %} template-search--empty{% endunless %} section-{{ section.id }}-padding">
     <div class="template-search__header page-width{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--fade-in{% endif %}">
-      <h1 class="h2 center">
-        {%- if search.performed -%}
-          {{- 'templates.search.title' | t -}}
+      {%- comment -%} Velto: header in the style of the collection hero {%- endcomment -%}
+      <nav class="velto-crumbs" aria-label="Breadcrumb">
+        <a href="{{ routes.root_url }}">{{ 'velto.home' | t }}</a>
+        <span aria-hidden="true">/</span>
+        <span aria-current="page">{{ 'velto.search.crumb' | t }}</span>
+      </nav>
+      <h1 class="velto-coll-hero__title velto-search-page__title">
+        {%- if search.performed and search.terms != blank -%}
+          “{{ search.terms | escape }}”
         {%- else -%}
-          {{- 'general.search.search' | t -}}
+          {{- 'velto.search.title' | t -}}
         {%- endif -%}
       </h1>
+      {%- if search.performed -%}
+        <p class="velto-coll-hero__meta">
+          <span class="velto-coll-hero__count">{{ 'velto.products_count' | t: count: search.results_count }}</span>
+        </p>
+      {%- endif -%}
       <div class="template-search__search">
         {%- if settings.predictive_search_enabled -%}
           <predictive-search data-loading-text="{{ 'accessibility.loading' | t }}">
@@ -86,7 +100,7 @@
                 type="search"
                 name="q"
                 value="{{ search.terms | escape }}"
-                placeholder="{{ 'general.search.search' | t }}"
+                placeholder="{{ 'velto.nav.search_placeholder' | t }}"
                 {%- if settings.predictive_search_enabled -%}
                   role="combobox"
                   aria-expanded="false"
@@ -141,9 +155,28 @@
           {%- endif -%}
         {%- endunless -%}
         {%- if search.results_count == 0 and search.filters == empty -%}
-          <p role="status">{{ 'templates.search.no_results' | t: terms: search.terms }}</p>
+          <p class="velto-search-page__empty" role="status">{{ 'templates.search.no_results' | t: terms: search.terms }}</p>
         {%- endif -%}
       {%- endif -%}
+
+      {%- unless search.performed and search.results_count > 0 -%}
+        <div class="velto-search-page__suggest">
+          {%- assign popular = 'velto.nav.popular_searches' | t | split: ',' -%}
+          <p class="velto-search-empty__title">{{ 'velto.nav.popular_title' | t }}</p>
+          <ul class="velto-chips velto-search-page__chips" role="list">
+            {%- for term in popular -%}
+              {%- assign q = term | strip -%}
+              <li><a class="velto-chip" href="{{ routes.search_url }}?q={{ q | url_encode }}&options%5Bprefix%5D=last">{{ q }}</a></li>
+            {%- endfor -%}
+          </ul>
+          <p class="velto-search-empty__title">{{ 'velto.nav.categories_title' | t }}</p>
+          <ul class="velto-chips velto-search-page__chips" role="list">
+            {%- for link in linklists['main-menu'].links -%}
+              <li><a class="velto-chip" href="{{ link.url }}">{{ link.title | remove: '💙' | strip }}</a></li>
+            {%- endfor -%}
+          </ul>
+        </div>
+      {%- endunless -%}
     </div>
     {%- if search.performed -%}
       {%- if section.settings.enable_sorting
@@ -281,6 +314,8 @@
                           show_rating: section.settings.show_rating,
                           lazy_load: lazy_load,
                           skip_styles: skip_card_product_styles,
+                          quick_add: 'standard',
+                          section_id: section.id,
                           product_view_context: 'search'
                         %}
                         {%- assign skip_card_product_styles = true -%}
@@ -321,6 +356,25 @@
                 {%- endfor -%}
               </ul>
               {%- if paginate.pages > 1 -%}
+                {%- assign velto_shown = paginate.current_offset | plus: search.results.size -%}
+                <velto-load-more
+                  class="velto-more"
+                  data-section="{{ section.id }}"
+                  data-total="{{ paginate.items }}"
+                  data-shown="{{ velto_shown }}"
+                  data-template="{{ 'velto.shown_of' | t: shown: '__SHOWN__', total: '__TOTAL__' | escape }}"
+                  {% if paginate.next %}data-next="{{ paginate.next.url }}"{% endif %}
+                >
+                  <p class="velto-more__label" data-shown>{{ 'velto.shown_of' | t: shown: velto_shown, total: paginate.items }}</p>
+                  <div class="velto-more__bar" aria-hidden="true"><span></span></div>
+                  {%- if paginate.next -%}
+                    <button type="button" class="button button--secondary velto-more__btn">
+                      <span class="velto-more__text">{{ 'velto.load_more' | t }}</span>
+                      <span class="velto-more__spinner" aria-hidden="true"></span>
+                    </button>
+                  {%- endif -%}
+                </velto-load-more>
+                <script src="{{ 'velto-load-more.js' | asset_url }}" defer="defer"></script>
                 {% render 'pagination', paginate: paginate %}
               {%- endif -%}
             </div>
@@ -333,6 +387,8 @@
 {% if section.settings.image_shape == 'arch' %}
   {{ 'mask-arch.svg' | inline_asset_content }}
 {%- endif -%}
+
+{{ 'velto-collection.css' | asset_url | stylesheet_tag }}
 
 {% schema %}
 {

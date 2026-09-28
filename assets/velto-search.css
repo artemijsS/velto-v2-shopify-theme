@@ -12,26 +12,26 @@
 }
 
 /* ---------- input: big pill ---------- */
-.search-modal .search-modal__form { max-width: 82rem; }
+:is(.search-modal, .template-search) .search-modal__form { max-width: 82rem; }
 
-.search-modal .field {
+:is(.search-modal, .template-search) .field {
   --velto-field-radius: 4rem;
 }
 
-.search-modal .field::before,
-.search-modal .field::after {
+:is(.search-modal, .template-search) .field::before,
+:is(.search-modal, .template-search) .field::after {
   border-radius: var(--velto-field-radius) !important;
 }
 
-.search-modal .field::after {
+:is(.search-modal, .template-search) .field::after {
   box-shadow: 0 0 0 1px rgba(var(--color-foreground), 0.22) !important;
 }
 
-.search-modal .field:focus-within::after {
+:is(.search-modal, .template-search) .field:focus-within::after {
   box-shadow: 0 0 0 1px rgb(var(--color-foreground)) !important;
 }
 
-.search-modal .field__input.search__input {
+:is(.search-modal, .template-search) .field__input.search__input {
   height: 5.6rem;
   padding: 0 11rem 0 2.4rem;
   border-radius: var(--velto-field-radius);
@@ -40,13 +40,13 @@
   box-shadow: none;
 }
 
-.search-modal .field__input.search__input:focus { box-shadow: none; outline: none; }
+:is(.search-modal, .template-search) .field__input.search__input:focus { box-shadow: none; outline: none; }
 
 /* hide the floating label, the placeholder says it */
-.search-modal .field__label { display: none; }
-.search-modal .field__input::placeholder { color: rgba(var(--color-foreground), 0.5); opacity: 1; }
+:is(.search-modal, .template-search) .field__label { display: none; }
+:is(.search-modal, .template-search) .field__input::placeholder { color: rgba(var(--color-foreground), 0.5); opacity: 1; }
 
-.search-modal .field__button {
+:is(.search-modal, .template-search) .field__button {
   top: 50%;
   transform: translateY(-50%);
   height: 4.4rem;
@@ -54,27 +54,27 @@
   border-radius: 50%;
 }
 
-.search-modal .field .search__button.field__button {
+:is(.search-modal, .template-search) .field .search__button.field__button {
   right: 0.6rem;
   background: rgb(var(--color-foreground));
   color: rgb(var(--color-background));
 }
 
-.search-modal .search__button .svg-wrapper svg,
-.search-modal .search__button .icon { width: 1.8rem; height: 1.8rem; }
+:is(.search-modal, .template-search) .search__button .svg-wrapper svg,
+:is(.search-modal, .template-search) .search__button .icon { width: 1.8rem; height: 1.8rem; }
 
-.search-modal .reset__button {
+:is(.search-modal, .template-search) .reset__button {
   right: 5.6rem;
   color: rgba(var(--color-foreground), 0.6);
 }
 
-.search-modal .reset__button::after,
-.search-modal .search__button::after { display: none; }
+:is(.search-modal, .template-search) .reset__button::after,
+:is(.search-modal, .template-search) .search__button::after { display: none; }
 
-.search-modal .reset__button:not(.hidden) ~ .search__button { border-left: 0; }
+:is(.search-modal, .template-search) .reset__button:not(.hidden) ~ .search__button { border-left: 0; }
 
 /* close button */
-.search-modal .search-modal__close-button {
+:is(.search-modal, .template-search) .search-modal__close-button {
   width: 4.4rem;
   height: 4.4rem;
   border-radius: 50%;
@@ -83,10 +83,10 @@
   place-items: center;
 }
 
-.search-modal .search-modal__close-button:hover { border-color: rgb(var(--color-foreground)); }
+:is(.search-modal, .template-search) .search-modal__close-button:hover { border-color: rgb(var(--color-foreground)); }
 
 /* ---------- dropdown panel (results + empty state) ---------- */
-.search-modal .predictive-search,
+:is(.search-modal, .template-search) .predictive-search,
 .velto-search-empty {
   top: calc(100% + 1.2rem);
   left: 0;
@@ -101,15 +101,15 @@
   overscroll-behavior: contain;
 }
 
-.header .search-modal .predictive-search { position: absolute; }
+.header :is(.search-modal, .template-search) .predictive-search { position: absolute; }
 
-.search-modal .predictive-search__results-groups-wrapper {
+:is(.search-modal, .template-search) .predictive-search__results-groups-wrapper {
   gap: 2.4rem;
   padding: 2.4rem 2.4rem 1.6rem;
   border-bottom: 1px solid rgba(var(--color-foreground), 0.08);
 }
 
-.search-modal .predictive-search__heading {
+:is(.search-modal, .template-search) .predictive-search__heading {
   margin: 0 0 1.2rem;
   padding: 0;
   border: 0;
@@ -119,38 +119,38 @@
 }
 
 /* suggestions → chips */
-.search-modal .predictive-search__result-group:first-child .predictive-search__results-list {
+:is(.search-modal, .template-search) .predictive-search__result-group:first-child .predictive-search__results-list {
   display: flex;
   flex-wrap: wrap;
   gap: 0.6rem;
 }
 
-.search-modal .predictive-search__result-group:first-child .predictive-search__item {
+:is(.search-modal, .template-search) .predictive-search__result-group:first-child .predictive-search__item {
   padding: 0.8rem 1.4rem;
   border-radius: 4rem;
   border: 1px solid rgba(var(--color-foreground), 0.16);
 }
 
-.search-modal .predictive-search__result-group:first-child .predictive-search__item-heading {
+:is(.search-modal, .template-search) .predictive-search__result-group:first-child .predictive-search__item-heading {
   font-size: 1.4rem;
 }
 
 @media screen and (min-width: 750px) {
-  .search-modal .predictive-search__result-group:first-child { flex: 0 0 22rem; }
+  :is(.search-modal, .template-search) .predictive-search__result-group:first-child { flex: 0 0 22rem; }
 }
 
 /* products → cards (2 columns on desktop) */
-.search-modal #predictive-search-results-products-list {
+:is(.search-modal, .template-search) #predictive-search-results-products-list {
   display: grid;
   grid-template-columns: 1fr;
   gap: 0.8rem;
 }
 
 @media screen and (min-width: 990px) {
-  .search-modal #predictive-search-results-products-list { grid-template-columns: 1fr 1fr; }
+  :is(.search-modal, .template-search) #predictive-search-results-products-list { grid-template-columns: 1fr 1fr; }
 }
 
-.search-modal .predictive-search__item--link-with-thumbnail {
+:is(.search-modal, .template-search) .predictive-search__item--link-with-thumbnail {
   display: grid;
   grid-template-columns: 6.4rem minmax(0, 1fr);
   align-items: center;
@@ -161,15 +161,15 @@
   transition: border-color 0.15s ease, background-color 0.15s ease;
 }
 
-.search-modal .predictive-search__list-item:hover > *,
-.search-modal .predictive-search__list-item[aria-selected='true'] > *,
-.search-modal .predictive-search__item:hover,
-.search-modal .predictive-search__item[aria-selected='true'] {
+:is(.search-modal, .template-search) .predictive-search__list-item:hover > *,
+:is(.search-modal, .template-search) .predictive-search__list-item[aria-selected='true'] > *,
+:is(.search-modal, .template-search) .predictive-search__item:hover,
+:is(.search-modal, .template-search) .predictive-search__item[aria-selected='true'] {
   background: rgba(var(--color-foreground), 0.06);
   border-color: rgba(var(--color-foreground), 0.3);
 }
 
-.search-modal .predictive-search__image {
+:is(.search-modal, .template-search) .predictive-search__image {
   width: 6.4rem;
   height: 6.4rem;
   padding: 0.6rem;
@@ -178,7 +178,7 @@
   object-fit: contain;
 }
 
-.search-modal .predictive-search__item-heading {
+:is(.search-modal, .template-search) .predictive-search__item-heading {
   font-size: 1.4rem;
   font-weight: 600;
   line-height: 1.3;
@@ -188,26 +188,26 @@
   overflow: hidden;
 }
 
-.search-modal .predictive-search__item-vendor {
+:is(.search-modal, .template-search) .predictive-search__item-vendor {
   font-size: 1.1rem;
   color: rgba(var(--color-foreground), 0.5);
 }
 
-.search-modal .predictive-search .price {
+:is(.search-modal, .template-search) .predictive-search .price {
   margin-top: 0.4rem;
 }
 
-.search-modal .predictive-search .price .price-item {
+:is(.search-modal, .template-search) .predictive-search .price .price-item {
   font-size: 1.5rem;
   font-weight: 700;
 }
 
-.search-modal .predictive-search .price .unit-price { font-size: 1.2rem; }
+:is(.search-modal, .template-search) .predictive-search .price .unit-price { font-size: 1.2rem; }
 
 /* "Meklēt “…” →" */
-.search-modal .predictive-search__search-for-button { padding: 0.8rem; }
+:is(.search-modal, .template-search) .predictive-search__search-for-button { padding: 0.8rem; }
 
-.search-modal .predictive-search__item--term {
+:is(.search-modal, .template-search) .predictive-search__item--term {
   justify-content: space-between;
   padding: 1.4rem 1.8rem;
   border-radius: 1rem;
@@ -215,7 +215,7 @@
   font-weight: 600;
 }
 
-.search-modal .predictive-search__item--term:hover { background: rgba(var(--color-foreground), 0.06); }
+:is(.search-modal, .template-search) .predictive-search__item--term:hover { background: rgba(var(--color-foreground), 0.06); }
 
 /* ---------- empty state (before typing) ---------- */
 .velto-search-empty {
@@ -271,12 +271,12 @@ predictive-search[loading] .velto-search-empty { display: none !important; }
 }
 
 @media screen and (max-width: 749px) {
-  .search-modal .predictive-search,
+  :is(.search-modal, .template-search) .predictive-search,
   .velto-search-empty {
     border-radius: 0 0 1.2rem 1.2rem;
     max-height: calc(100vh - 10rem);
   }
-  .search-modal .field__input.search__input { height: 4.8rem; font-size: 1.6rem; }
-  .search-modal .field__button { height: 3.8rem; width: 3.8rem; }
-  .search-modal .reset__button { right: 4.8rem; }
+  :is(.search-modal, .template-search) .field__input.search__input { height: 4.8rem; font-size: 1.6rem; }
+  :is(.search-modal, .template-search) .field__button { height: 3.8rem; width: 3.8rem; }
+  :is(.search-modal, .template-search) .reset__button { right: 4.8rem; }
 }

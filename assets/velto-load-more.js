@@ -54,8 +54,10 @@ if (!customElements.get('velto-load-more')) {
           url.searchParams.set('section_id', this.dataset.section);
           const html = await (await fetch(url)).text();
           const doc = new DOMParser().parseFromString(html, 'text/html');
-          const grid = document.getElementById('product-grid');
-          const items = doc.querySelectorAll('#product-grid > li');
+          // collection: ul#product-grid > li · search: #product-grid ul.product-grid > li
+          const grid =
+            document.querySelector('#product-grid ul.product-grid') || document.getElementById('product-grid');
+          const items = doc.querySelectorAll('ul#product-grid > li, #product-grid ul.product-grid > li');
 
           items.forEach((li, i) => {
             li.style.setProperty('--animation-order', (i % 12) + 1);
