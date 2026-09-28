@@ -480,5 +480,16 @@
     {%- if settings.cart_type == 'drawer' -%}
       <script src="{{ 'cart-drawer.js' | asset_url }}" defer="defer"></script>
     {%- endif -%}
+
+    <script>
+      document.addEventListener('change', function() {
+        setTimeout(function() {
+          document.querySelectorAll('.Choice__Label, span[class*="Choice__Label"]').forEach(l => {
+            l.style.setProperty('color', '#000000', 'important');
+          });
+        }, 50);
+      }, { capture: true });
+    </script>
+
   </body>
 </html>
