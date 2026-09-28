@@ -790,6 +790,16 @@
         "order_label": "Pasūtījuma nr. (ja ir)",
         "faq_more_html": "Atbildes uz citiem jautājumiem atradīsi lapā <a href=\"/pages/par-velto\">Par Velto</a>."
       }
+    },
+    "policies": {
+      "privacy": "Privātuma politika",
+      "refund": "Preču atgriešanas noteikumi",
+      "terms": "Lietošanas un pirkšanas noteikumi",
+      "shipping": "Piegādes noteikumi",
+      "contact": "Kontaktinformācija",
+      "legal": "Juridiskā informācija",
+      "subscription": "Abonēšanas noteikumi",
+      "lv_only": ""
     }
   }
 }

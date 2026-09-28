@@ -27,6 +27,8 @@
       {%- assign velto_ex_tag = settings.velto_badge_exclusive_tag | default: 'exclusive' | downcase -%}
       {%- if request.page_type == 'collection' and collection.handle == 'all' -%}
         {%- if current_tags contains velto_ex_tag -%}{{ 'velto.collection.exclusive_title' | t }}{%- else -%}{{ 'velto.collection.all_title' | t }}{%- endif -%}
+      {%- elsif request.page_type == 'policy' -%}
+        {% render 'velto-policy-title', url: request.path, fallback: page_title %}
       {%- elsif request.page_type == 'cart' -%}
         {{ 'sections.cart.title' | t }}
       {%- elsif request.page_type == 'search' and search.performed -%}
@@ -437,6 +439,30 @@
     </script>
 
     <script src="{{ 'velto-card-qty.js' | asset_url }}" defer="defer"></script>
+    {%- if request.page_type == 'policy' -%}
+      {%- capture velto_policy_title -%}{% render 'velto-policy-title', url: request.path, fallback: '' %}{%- endcapture -%}
+      <script>
+        (() => {
+          const c = document.querySelector('.shopify-policy__container');
+          if (!c) return;
+          document.body.classList.add('velto-policy-page');
+          const h = c.querySelector('.shopify-policy__title h1');
+          const t = {{ velto_policy_title | strip | json }};
+          if (h && t) h.textContent = t;
+          const crumbs = document.createElement('nav');
+          crumbs.className = 'velto-policy__crumbs';
+          crumbs.innerHTML = `<a href="{{ routes.root_url }}">{{ 'velto.home' | t }}</a><span aria-hidden="true">/</span><span></span>`;
+          crumbs.lastChild.textContent = t || (h ? h.textContent : '');
+          c.prepend(crumbs);
+          {%- unless request.locale.iso_code == 'lv' %}
+          const note = document.createElement('p');
+          note.className = 'velto-policy__note';
+          note.textContent = {{ 'velto.policies.lv_only' | t | json }};
+          (c.querySelector('.shopify-policy__title') || c).after(note);
+          {%- endunless %}
+        })();
+      </script>
+    {%- endif -%}
     {%- if template.name == 'product' -%}
       <script>
         window.veltoProductStrings = {

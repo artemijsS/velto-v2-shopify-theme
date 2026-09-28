@@ -638,3 +638,68 @@
 @media (prefers-reduced-motion: reduce) {
   .velto-progress > span { transition: none; }
 }
+
+
+/* ---------- Shopify policy pages ---------- */
+.shopify-policy__container {
+  max-width: 76rem !important;
+  margin: 0 auto;
+  padding: 4rem 1.5rem 8rem !important;
+}
+
+.velto-policy__crumbs {
+  display: flex;
+  gap: 0.8rem;
+  margin-bottom: 2.4rem;
+  font-size: 1.2rem;
+  letter-spacing: 0.08rem;
+  text-transform: uppercase;
+  color: rgba(var(--color-foreground), 0.45);
+}
+
+.velto-policy__crumbs a { color: rgba(var(--color-foreground), 0.7); text-decoration: none; }
+.velto-policy__crumbs span:last-child { color: rgb(var(--color-foreground)); }
+
+.shopify-policy__title { text-align: left !important; }
+
+.shopify-policy__title h1 {
+  margin: 0 0 1.6rem;
+  font-size: clamp(3rem, 4.4vw, 4.8rem);
+  line-height: 1.08;
+  letter-spacing: -0.025em;
+}
+
+.velto-policy__note {
+  display: inline-block;
+  margin: 0 0 2.4rem;
+  padding: 0.8rem 1.4rem;
+  border-radius: 4rem;
+  border: 1px solid rgba(var(--color-foreground), 0.16);
+  font-size: 1.3rem;
+  color: rgba(var(--color-foreground), 0.75);
+}
+
+.shopify-policy__body {
+  padding-top: 2.4rem;
+  border-top: 1px solid rgba(var(--color-foreground), 0.1);
+  font-size: 1.6rem;
+  line-height: 1.75;
+  color: rgba(var(--color-foreground), 0.82);
+}
+
+.shopify-policy__body h2,
+.shopify-policy__body h3 {
+  margin: 4rem 0 1.2rem;
+  color: rgb(var(--color-foreground));
+  font-size: 2.2rem;
+  line-height: 1.25;
+  letter-spacing: -0.01em;
+}
+
+.shopify-policy__body h3 { font-size: 1.8rem; margin-top: 2.8rem; }
+.shopify-policy__body p { margin: 0 0 1.4rem; }
+.shopify-policy__body ul,
+.shopify-policy__body ol { margin: 0 0 1.6rem; padding-left: 2.2rem; }
+.shopify-policy__body li { margin-bottom: 0.6rem; }
+.shopify-policy__body strong { color: rgb(var(--color-foreground)); }
+.shopify-policy__body a { color: rgb(var(--color-foreground)); text-underline-offset: 0.3rem; }

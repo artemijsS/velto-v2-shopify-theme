@@ -777,6 +777,16 @@
         "order_label": "Order no. (if any)",
         "faq_more_html": "More answers on the <a href=\"/en/pages/par-velto\">About Velto</a> page."
       }
+    },
+    "policies": {
+      "privacy": "Privacy policy",
+      "refund": "Returns policy",
+      "terms": "Terms of use and sale",
+      "shipping": "Delivery policy",
+      "contact": "Contact information",
+      "legal": "Legal notice",
+      "subscription": "Subscription policy",
+      "lv_only": "This document is available in Latvian only."
     }
   }
 }

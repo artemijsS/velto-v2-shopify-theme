@@ -156,7 +156,7 @@
           {%- for policy in shop.policies -%}
             {%- if policy != blank and policy.url contains 'shopifyReshowConsentBanner' -%}{%- continue -%}{%- endif -%}
             {%- if policy != blank -%}
-              <li><a href="{{ policy.url }}">{{ policy.title | escape }}</a></li>
+              <li><a href="{{ policy.url }}">{% render 'velto-policy-title', url: policy.url, fallback: policy.title %}</a></li>
             {%- endif -%}
           {%- endfor -%}
           <li><a href="#" data-velto-cookie-prefs>{{ 'velto.footer.cookies' | t }}</a></li>

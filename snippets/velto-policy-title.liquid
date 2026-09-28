@@ -1,0 +1,29 @@
+{%- comment -%}
+  Localized title for a Shopify policy, by its URL handle
+  (Shopify's own titles come out in English for the Latvian storefront).
+  Params: url (policy url or request path), fallback (string)
+{%- endcomment -%}
+{%- liquid
+  assign k = ''
+  if url contains 'privacy-policy'
+    assign k = 'privacy'
+  elsif url contains 'refund-policy'
+    assign k = 'refund'
+  elsif url contains 'terms-of-service'
+    assign k = 'terms'
+  elsif url contains 'shipping-policy'
+    assign k = 'shipping'
+  elsif url contains 'contact-information'
+    assign k = 'contact'
+  elsif url contains 'legal-notice'
+    assign k = 'legal'
+  elsif url contains 'subscription-policy'
+    assign k = 'subscription'
+  endif
+  if k != ''
+    assign key = 'velto.policies.' | append: k
+    echo key | t
+  else
+    echo fallback | escape
+  endif
+-%}
