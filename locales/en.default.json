@@ -619,7 +619,7 @@
       "delivery_at_checkout": "chosen at checkout",
       "empty_text": "Pick products in the catalog — delivered Friday to Sunday.",
       "bar_total": "Total",
-      "small_order_hint": "Add {{ amount }} more and the small order fee will be removed."
+      "small_order_hint": "Add {{ amount }} more and packaging will be free of charge."
     },
     "content": {
       "home": {

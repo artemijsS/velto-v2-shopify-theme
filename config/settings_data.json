@@ -217,7 +217,8 @@
           "shadow": "#0a0a0a"
         }
       }
-    }
+    },
+    "velto_small_order_min": 70
   },
   "presets": {
     "Dawn": {
