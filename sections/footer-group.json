@@ -1,3 +1,12 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "name": "t:sections.footer.name",
   "type": "footer",
@@ -13,7 +22,7 @@
         "categories_menu": "main-menu",
         "categories_limit": 8,
         "info_heading": "@velto.content.footer.information",
-        "info_menu": "footer",
+        "info_menu": "footer-menu-v2",
         "contacts_heading": "@velto.content.footer.contacts",
         "email": "info@expresspoint.lv",
         "phones": "+371 26322465",
