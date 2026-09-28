@@ -15,6 +15,9 @@
 
   .header.header--top-left .header__inline-menu { display: none; }
 
+  /* row 1 above the sub-nav, so dropdowns (language / country) open over it */
+  .header-wrapper > .header { position: relative; z-index: 4; }
+
   .velto-search-pill {
     grid-area: search;
     display: flex;
