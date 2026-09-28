@@ -58,7 +58,34 @@
       assign title = section.settings.quick_filter_label
     endif
   elsif current_tags contains ex_tag
-    assign title = title | append: ' · ' | append: 'velto.badges.exclusive' | t
+    assign ex_label = 'velto.badges.exclusive_filter' | t
+    assign title = title | append: ' · ' | append: ex_label
+  endif
+  comment
+    Exclusive = product tag (theme setting). Tags are not storefront filters,
+    so the chip uses Shopify's tag URL: /collections/<handle>/<tag>.
+  endcomment
+  assign ex_active = false
+  if current_tags contains ex_tag
+    assign ex_active = true
+  endif
+  assign ex_available = ex_active
+  for t in collection.all_tags
+    assign tl = t | downcase
+    if tl == ex_tag
+      assign ex_available = true
+      assign ex_tag_raw = t
+      break
+    endif
+  endfor
+  if ex_tag_raw == blank
+    assign ex_tag_raw = settings.velto_badge_exclusive_tag | default: 'exclusive'
+  endif
+  assign ex_on_url = collection.url | append: '/' | append: ex_tag_raw
+  assign ex_off_url = collection.url
+  assign has_filters = false
+  if qf_count > 0 or qf_active or ex_available
+    assign has_filters = true
   endif
   assign collage = collection.products | where: 'featured_media'
 -%}
@@ -84,6 +111,10 @@
           <span class="velto-coll-hero__dot" aria-hidden="true"></span>
           <span>{{ section.settings.quick_filter_label }}: {{ qf_count }}</span>
         {%- endif -%}
+        {%- if ex_available and ex_active == false -%}
+          <span class="velto-coll-hero__dot" aria-hidden="true" data-velto-ex-meta hidden></span>
+          <span data-velto-ex-meta hidden>{{ 'velto.badges.exclusive_filter' | t }}: <span data-velto-ex-count></span></span>
+        {%- endif -%}
       </p>
 
       {%- if section.settings.show_description and collection.description != blank -%}
@@ -106,7 +137,7 @@
     {%- endif -%}
   </div>
 
-  {%- if parent_link and parent_link.links.size > 0 or qf_count > 0 or qf_active -%}
+  {%- if parent_link and parent_link.links.size > 0 or has_filters -%}
     <div class="page-width">
       <div class="velto-chips-wrap">
         <ul class="velto-chips" role="list">
@@ -122,9 +153,23 @@
                 {%- if qf_active %}<span class="velto-chip__x" aria-hidden="true">×</span>{% endif -%}
               </a>
             </li>
-            {%- if parent_link and parent_link.links.size > 0 -%}
-              <li class="velto-chips__sep" aria-hidden="true"></li>
-            {%- endif -%}
+          {%- endif -%}
+          {%- if ex_available -%}
+            <li>
+              <a
+                class="velto-chip velto-chip--filter velto-chip--exclusive{% if ex_active %} is-active{% endif %}"
+                href="{% if ex_active %}{{ ex_off_url }}{% else %}{{ ex_on_url }}{% endif %}"
+                data-velto-keep-query
+                {% if ex_active %}aria-current="true"{% endif %}
+              >
+                <span class="velto-chip__star" aria-hidden="true">✦</span>
+                {{ 'velto.badges.exclusive_filter' | t }}
+                {%- if ex_active %}<span class="velto-chip__x" aria-hidden="true">×</span>{% endif -%}
+              </a>
+            </li>
+          {%- endif -%}
+          {%- if has_filters and parent_link and parent_link.links.size > 0 -%}
+            <li class="velto-chips__sep" aria-hidden="true"></li>
           {%- endif -%}
 
           {%- if parent_link and parent_link.links.size > 0 -%}
@@ -162,6 +207,30 @@
 
 <script>
   (() => {
+    // exclusive chip: keep the current query (filters, sort) when toggling the tag
+    document.currentScript.previousElementSibling.querySelectorAll('[data-velto-keep-query]').forEach((a) => {
+      const q = new URLSearchParams(location.search);
+      q.delete('page');
+      const qs = q.toString();
+      if (qs) a.href = a.getAttribute('href').split('?')[0] + '?' + qs;
+    });
+
+    // live count of exclusives in this collection (tag views aren't facet counts)
+    const exChip = document.currentScript.previousElementSibling.querySelector('.velto-chip--exclusive:not(.is-active)');
+    const exMeta = document.querySelectorAll('[data-velto-ex-meta]');
+    if (exChip && exMeta.length) {
+      const url = exChip.getAttribute('href').split('?')[0] + '?section_id=main-collection-product-grid';
+      fetch(url).then((r) => r.text()).then((html) => {
+        const doc = new DOMParser().parseFromString(html, 'text/html');
+        const txt = doc.querySelector('#ProductCountDesktop, .product-count__text')?.textContent || '';
+        const n = parseInt(txt.trim().split(/\s+/)[0], 10);
+        if (n > 0) {
+          document.querySelector('[data-velto-ex-count]').textContent = n;
+          exMeta.forEach((el) => (el.hidden = false));
+        }
+      }).catch(() => {});
+    }
+
     // keep the active chip in view on mobile
     const row = document.currentScript.previousElementSibling.querySelector('.velto-chips');
     const active = row && row.querySelector('.velto-chip.is-active:not(.velto-chip--filter)');

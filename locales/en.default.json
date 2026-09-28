@@ -573,7 +573,8 @@
       "exclusive": "Exclusive",
       "great_price": "Great price",
       "exclusive_note": "Specially selected for Velto",
-      "great_price_note": "Best value for its quality"
+      "great_price_note": "Best value for its quality",
+      "exclusive_filter": "Exclusive"
     },
     "collection": {
       "all_title": "All products",

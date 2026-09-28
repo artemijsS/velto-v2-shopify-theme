@@ -32,7 +32,9 @@
       {%- else -%}
         {{ page_title }}
       {%- endif -%}
-      {%- if current_tags and collection.handle != 'all' %} &ndash; {{ current_tags | join: ', ' }}{% endif -%}
+      {%- if current_tags and collection.handle != 'all' -%}
+        {%- if current_tags contains velto_ex_tag %} &ndash; {{ 'velto.badges.exclusive_filter' | t }}{% else %} &ndash; {{ current_tags | join: ', ' }}{% endif -%}
+      {%- endif -%}
       {%- if current_page != 1 %} &ndash; {{ 'general.pagination.page' | t: number: current_page }}{% endif -%}
       {%- unless page_title contains shop.name %} &ndash; {{ shop.name }}{% endunless -%}
     </title>

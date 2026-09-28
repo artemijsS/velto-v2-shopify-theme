@@ -247,6 +247,12 @@
   fill: currentColor;
 }
 
+.velto-chip__star {
+  color: #b89a4e; /* champagne star, as on the Ekskluzīvs badge */
+  font-size: 1.3rem;
+  line-height: 1;
+}
+
 .velto-chip__x {
   margin-left: 0.2rem;
   font-size: 1.8rem;

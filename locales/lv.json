@@ -586,7 +586,8 @@
       "exclusive": "Ekskluzīvs",
       "great_price": "Lieliska cena",
       "exclusive_note": "Īpaši atlasīts Velto sortimentam",
-      "great_price_note": "Labākā cenas un kvalitātes attiecība"
+      "great_price_note": "Labākā cenas un kvalitātes attiecība",
+      "exclusive_filter": "Ekskluzīvi"
     },
     "collection": {
       "all_title": "Visas preces",

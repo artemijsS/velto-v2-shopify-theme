@@ -599,7 +599,8 @@
       "exclusive": "Эксклюзив",
       "great_price": "Отличная цена",
       "exclusive_note": "Специально отобрано для Velto",
-      "great_price_note": "Лучшее соотношение цены и качества"
+      "great_price_note": "Лучшее соотношение цены и качества",
+      "exclusive_filter": "Эксклюзивы"
     },
     "collection": {
       "all_title": "Все товары",
