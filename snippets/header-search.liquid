@@ -1,3 +1,4 @@
+{{ 'velto-search.css' | asset_url | stylesheet_tag }}
 {% comment %}
   Renders a header search modal. Should be used with 'header.liquid'
 
@@ -48,7 +49,7 @@
               type="search"
               name="q"
               value="{{ search.terms | escape }}"
-              placeholder="{{ 'general.search.search' | t }}"
+              placeholder="{{ 'velto.nav.search_placeholder' | t }}"
               {%- if settings.predictive_search_enabled -%}
                 role="combobox"
                 aria-expanded="false"
@@ -88,6 +89,37 @@
             <span class="predictive-search-status visually-hidden" role="status" aria-hidden="true"></span>
           {%- endif -%}
         </form>
+        {%- comment -%} Velto: suggestions shown before typing {%- endcomment -%}
+        <div class="velto-search-empty">
+          {%- assign popular = 'velto.nav.popular_searches' | t | split: ',' -%}
+          {%- if popular.size > 0 -%}
+            <div class="velto-search-empty__block">
+              <p class="velto-search-empty__title">{{ 'velto.nav.popular_title' | t }}</p>
+              <ul class="velto-search-empty__chips" role="list">
+                {%- for term in popular -%}
+                  {%- assign q = term | strip -%}
+                  <li>
+                    <a class="velto-search-empty__chip" href="{{ routes.search_url }}?q={{ q | url_encode }}&options%5Bprefix%5D=last" data-velto-q="{{ q | escape }}">
+                      {{- 'icon-search.svg' | inline_asset_content -}}
+                      {{ q }}
+                    </a>
+                  </li>
+                {%- endfor -%}
+              </ul>
+            </div>
+          {%- endif -%}
+          {%- assign cat_menu = linklists['main-menu'] -%}
+          {%- if cat_menu.links.size > 0 -%}
+            <div class="velto-search-empty__block">
+              <p class="velto-search-empty__title">{{ 'velto.nav.categories_title' | t }}</p>
+              <ul class="velto-search-empty__chips" role="list">
+                {%- for link in cat_menu.links limit: 10 -%}
+                  <li><a class="velto-search-empty__chip" href="{{ link.url }}">{{ link.title | remove: '💙' | strip }}</a></li>
+                {%- endfor -%}
+              </ul>
+            </div>
+          {%- endif -%}
+        </div>
         {%- if settings.predictive_search_enabled -%}
           </predictive-search>
         {%- else -%}
@@ -106,3 +138,19 @@
     </div>
   </details>
 </details-modal>
+
+<script>
+  // Velto: popular-search chips fill the field and show live results
+  // (snippet is rendered twice in the header → bind once)
+  if (!window.__veltoSearchChips) window.__veltoSearchChips = true, document.addEventListener('click', (e) => {
+    const chip = e.target.closest('[data-velto-q]');
+    if (!chip) return;
+    const form = chip.closest('details-modal, .search-modal');
+    const input = form && form.querySelector('input[type="search"]');
+    if (!input) return;
+    e.preventDefault();
+    input.value = chip.dataset.veltoQ;
+    input.dispatchEvent(new Event('input', { bubbles: true }));
+    input.focus();
+  });
+</script>

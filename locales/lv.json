@@ -573,7 +573,10 @@
       "catalog": "Katalogs",
       "view_all": "Skatīt visu",
       "quick": "Ātrās saites",
-      "search_placeholder": "Meklēt starp 1300+ precēm…"
+      "search_placeholder": "Meklēt starp 1300+ precēm…",
+      "popular_title": "Populāri meklējumi",
+      "popular_searches": "piens,siers,olas,zupa,čipsi,kafija,sviests,maize",
+      "categories_title": "Kategorijas"
     }
   }
 }
