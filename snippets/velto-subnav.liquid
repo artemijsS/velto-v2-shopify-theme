@@ -61,7 +61,7 @@
                         endif
                       -%}
                       <li>
-                        <a class="velto-catalog__sub" href="{{ child.url }}">
+                        <a class="velto-catalog__sub{% if child.active or child.child_active %} is-current{% endif %}" href="{{ child.url }}"{% if child.active %} aria-current="page"{% endif %}>
                           <span class="velto-catalog__sub-img">
                             {%- if img != blank -%}
                               {{ img | image_url: width: 120 | image_tag: loading: 'lazy', sizes: '48px', widths: '120', alt: '' }}

@@ -253,7 +253,32 @@
     color: rgb(var(--color-foreground));
   }
 
-  .velto-catalog__cat.is-current { font-weight: 600; }
+  .velto-catalog__cat.is-current {
+    position: relative;
+    background: rgba(var(--color-foreground), 0.06);
+    color: rgb(var(--color-foreground));
+    font-weight: 600;
+  }
+
+  .velto-catalog__cat.is-current::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.8rem;
+    bottom: 0.8rem;
+    width: 3px;
+    border-radius: 3px;
+    background: rgb(var(--color-foreground));
+  }
+
+  .velto-catalog__cat.is-current.is-active { background: rgba(var(--color-foreground), 0.1); }
+
+  .velto-catalog__sub.is-current {
+    border-color: rgb(var(--color-foreground));
+    background: rgba(var(--color-foreground), 0.06);
+    color: rgb(var(--color-foreground));
+    font-weight: 600;
+  }
 
   .velto-catalog__chev svg {
     display: block;
