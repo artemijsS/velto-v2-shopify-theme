@@ -83,7 +83,10 @@
     min-height: 5.2rem;
   }
 
-  .velto-catalog { position: static; }
+  /* custom elements are inline by default → the button sat on the text
+     baseline, ~2.5px lower than the quick-link pills */
+  .velto-catalog { position: static; display: flex; align-items: center; }
+  .velto-subnav__quick { display: flex; align-items: center; }
 
   .velto-catalog__toggle {
     display: inline-flex;
