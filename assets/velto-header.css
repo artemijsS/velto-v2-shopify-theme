@@ -564,6 +564,17 @@
     letter-spacing: -0.01em;
   }
 
+  /* stays opaque in hover/focus states too (Dawn makes it translucent) */
+  .menu-drawer .menu-drawer__close-button,
+  .menu-drawer .menu-drawer__close-button:hover,
+  .menu-drawer .menu-drawer__close-button:focus,
+  .menu-drawer .menu-drawer__close-button:focus-visible {
+    background-color: rgb(var(--color-background));
+    color: rgb(var(--color-foreground));
+  }
+
+  .menu-drawer .menu-drawer__close-button:focus-visible { outline-offset: -3px; }
+
   .velto-dr__all {
     display: flex;
     align-items: center;
