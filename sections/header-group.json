@@ -43,7 +43,15 @@
         "mobile_logo_position": "center",
         "margin_bottom": 0,
         "padding_top": 20,
-        "padding_bottom": 20
+        "padding_bottom": 20,
+        "velto_quick_label_1": "Jaunumi",
+        "velto_quick_url_1": "/collections/jaunumi",
+        "velto_quick_label_2": "Ekskluzīvi",
+        "velto_quick_url_2": "/collections/all/exclusive",
+        "velto_quick_label_3": "Lieliska cena",
+        "velto_quick_url_3": "/collections/all?filter.p.m.custom.price_category=gid://shopify/FilterSettingGroup/311165259",
+        "velto_quick_label_4": "Gatavā kulinārija",
+        "velto_quick_url_4": "/collections/gatava-kulinarija"
       }
     }
   },

@@ -1,0 +1,118 @@
+{%- comment -%}
+  Velto desktop sub-navigation (≥990px), rendered under the header row:
+  [☰ Katalogs] catalog panel (categories left, subcategories right,
+  switching on hover) · quick links · live delivery line.
+  Mobile keeps Dawn's drawer menu.
+
+  Params: menu (link_list), section (header section, for quick-link settings)
+{%- endcomment -%}
+{%- if menu != blank and menu.links.size > 0 -%}
+  <div class="velto-subnav">
+    <div class="page-width velto-subnav__inner">
+      <velto-catalog class="velto-catalog">
+        <button
+          type="button"
+          class="velto-catalog__toggle"
+          aria-expanded="false"
+          aria-controls="VeltoCatalogPanel"
+        >
+          <span class="velto-catalog__burger" aria-hidden="true"><span></span><span></span><span></span></span>
+          {{ 'velto.nav.catalog' | t }}
+        </button>
+
+        <div class="velto-catalog__panel" id="VeltoCatalogPanel" hidden>
+          <ul class="velto-catalog__cats" role="list">
+            {%- for link in menu.links -%}
+              <li>
+                <a
+                  href="{{ link.url }}"
+                  class="velto-catalog__cat{% if forloop.first %} is-active{% endif %}{% if link.active or link.child_active %} is-current{% endif %}"
+                  data-index="{{ forloop.index0 }}"
+                >
+                  <span>{{ link.title | remove: '💙' | strip }}</span>
+                  {%- if link.links.size > 0 -%}
+                    <span class="velto-catalog__chev" aria-hidden="true">{{- 'icon-caret.svg' | inline_asset_content -}}</span>
+                  {%- endif -%}
+                </a>
+              </li>
+            {%- endfor -%}
+          </ul>
+
+          <div class="velto-catalog__panes">
+            {%- for link in menu.links -%}
+              <div class="velto-catalog__pane{% if forloop.first %} is-active{% endif %}" data-index="{{ forloop.index0 }}">
+                <div class="velto-catalog__pane-head">
+                  <p class="velto-catalog__pane-title">{{ link.title | remove: '💙' | strip }}</p>
+                  <a class="velto-catalog__pane-all" href="{{ link.url }}">
+                    {{- 'velto.nav.view_all' | t }} <span aria-hidden="true">→</span>
+                  </a>
+                </div>
+                {%- if link.links.size > 0 -%}
+                  <ul class="velto-catalog__subs" role="list">
+                    {%- for child in link.links -%}
+                      {%- if child.url == link.url -%}{%- continue -%}{%- endif -%}
+                      {%- liquid
+                        assign img = nil
+                        if child.type == 'collection_link' and child.object
+                          assign img = child.object.featured_image
+                          if img == blank
+                            assign img = child.object.products.first.featured_media.preview_image
+                          endif
+                        endif
+                      -%}
+                      <li>
+                        <a class="velto-catalog__sub" href="{{ child.url }}">
+                          <span class="velto-catalog__sub-img">
+                            {%- if img != blank -%}
+                              {{ img | image_url: width: 120 | image_tag: loading: 'lazy', sizes: '48px', widths: '120', alt: '' }}
+                            {%- endif -%}
+                          </span>
+                          <span class="velto-catalog__sub-title">{{ child.title }}</span>
+                        </a>
+                      </li>
+                    {%- endfor -%}
+                  </ul>
+                {%- else -%}
+                  <p class="velto-catalog__empty">
+                    <a class="button button--secondary" href="{{ link.url }}">{{ 'velto.nav.view_all' | t }}</a>
+                  </p>
+                {%- endif -%}
+              </div>
+            {%- endfor -%}
+          </div>
+        </div>
+      </velto-catalog>
+
+      <nav class="velto-subnav__quick" aria-label="{{ 'velto.nav.quick' | t | escape }}">
+        <ul role="list">
+          {%- for i in (1..5) -%}
+            {%- liquid
+              assign lk = 'velto_quick_label_' | append: i
+              assign uk = 'velto_quick_url_' | append: i
+              assign ql = section.settings[lk]
+              assign qu = section.settings[uk]
+            -%}
+            {%- if ql != blank and qu != blank -%}
+              <li><a href="{{ qu }}">{{ ql }}</a></li>
+            {%- endif -%}
+          {%- endfor -%}
+        </ul>
+      </nav>
+
+      {%- if settings.velto_delivery_enable -%}
+        <velto-delivery
+          class="velto-subnav__deliv"
+          data-cutoff-day="{{ settings.velto_cutoff_day }}"
+          data-cutoff-time="{{ settings.velto_cutoff_time }}"
+          data-delivery-days="{{ settings.velto_delivery_days }}"
+        >
+          <span class="velto-subnav__deliv-icon" aria-hidden="true">{{- 'icon-truck.svg' | inline_asset_content -}}</span>
+          <span>{{ 'velto.delivery.order' | t }} <strong data-v="deadline"></strong></span>
+        </velto-delivery>
+        <script src="{{ 'velto-delivery.js' | asset_url }}" defer="defer"></script>
+      {%- endif -%}
+    </div>
+  </div>
+  <div class="velto-catalog__backdrop" hidden></div>
+  <script src="{{ 'velto-catalog.js' | asset_url }}" defer="defer"></script>
+{%- endif -%}

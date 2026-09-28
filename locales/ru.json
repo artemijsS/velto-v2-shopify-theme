@@ -581,6 +581,12 @@
       "email": "E-mail",
       "phone": "Телефон",
       "cookies": "Настройки cookie"
+    },
+    "nav": {
+      "catalog": "Каталог",
+      "view_all": "Смотреть все",
+      "quick": "Быстрые ссылки",
+      "search_placeholder": "Искать среди 1300+ товаров…"
     }
   }
 }

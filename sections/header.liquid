@@ -1,3 +1,4 @@
+{{ 'velto-header.css' | asset_url | stylesheet_tag }}
 <link rel="stylesheet" href="{{ 'component-list-menu.css' | asset_url }}" media="print" onload="this.media='all'">
 <link rel="stylesheet" href="{{ 'component-search.css' | asset_url }}" media="print" onload="this.media='all'">
 <link rel="stylesheet" href="{{ 'component-menu-drawer.css' | asset_url }}" media="print" onload="this.media='all'">
@@ -225,6 +226,13 @@
       {%- endif -%}
     {%- endif -%}
 
+    {%- comment -%} Velto: desktop search field (opens the search modal) {%- endcomment -%}
+    <button type="button" class="velto-search-pill" data-velto-search aria-label="{{ 'general.search.search' | t | escape }}">
+      {{- 'icon-search.svg' | inline_asset_content -}}
+      <span class="velto-search-pill__text">{{ 'velto.nav.search_placeholder' | t }}</span>
+      <span class="velto-search-pill__kbd" aria-hidden="true">{{ 'general.search.search' | t }}</span>
+    </button>
+
     {%- liquid
       if section.settings.menu != blank
         if section.settings.menu_type_desktop == 'dropdown'
@@ -310,6 +318,7 @@
       </a>
     </div>
   </header>
+  {%- render 'velto-subnav', menu: section.settings.menu, section: section -%}
 </{{ header_tag }}>
 
 {%- if settings.cart_type == 'notification' -%}
@@ -669,6 +678,68 @@
       "unit": "px",
       "label": "t:sections.all.padding.padding_bottom",
       "default": 20
+    },
+    {
+      "type": "header",
+      "content": "Velto: ātrās saites (datorā)"
+    },
+    {
+      "type": "text",
+      "id": "velto_quick_label_1",
+      "label": "Saite 1 — nosaukums",
+      "default": "Jaunumi"
+    },
+    {
+      "type": "text",
+      "id": "velto_quick_url_1",
+      "label": "Saite 1 — adrese",
+      "default": "shopify://collections/jaunumi"
+    },
+    {
+      "type": "text",
+      "id": "velto_quick_label_2",
+      "label": "Saite 2 — nosaukums",
+      "default": "Ekskluzīvi"
+    },
+    {
+      "type": "text",
+      "id": "velto_quick_url_2",
+      "label": "Saite 2 — adrese",
+      "default": "/collections/all/exclusive"
+    },
+    {
+      "type": "text",
+      "id": "velto_quick_label_3",
+      "label": "Saite 3 — nosaukums",
+      "default": "Lieliska cena"
+    },
+    {
+      "type": "text",
+      "id": "velto_quick_url_3",
+      "label": "Saite 3 — adrese",
+      "default": "/collections/all?filter.p.m.custom.price_category=gid://shopify/FilterSettingGroup/311165259"
+    },
+    {
+      "type": "text",
+      "id": "velto_quick_label_4",
+      "label": "Saite 4 — nosaukums",
+      "default": "Gatavā kulinārija"
+    },
+    {
+      "type": "text",
+      "id": "velto_quick_url_4",
+      "label": "Saite 4 — adrese",
+      "default": "shopify://collections/gatava-kulinarija"
+    },
+    {
+      "type": "text",
+      "id": "velto_quick_label_5",
+      "label": "Saite 5 — nosaukums"
+    },
+    {
+      "type": "text",
+      "id": "velto_quick_url_5",
+      "label": "Saite 5 — adrese"
     }
   ],
   "blocks": [

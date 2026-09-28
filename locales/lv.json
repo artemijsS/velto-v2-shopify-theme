@@ -568,6 +568,12 @@
       "email": "E-pasts",
       "phone": "Tālrunis",
       "cookies": "Sīkdatņu iestatījumi"
+    },
+    "nav": {
+      "catalog": "Katalogs",
+      "view_all": "Skatīt visu",
+      "quick": "Ātrās saites",
+      "search_placeholder": "Meklēt starp 1300+ precēm…"
     }
   }
 }

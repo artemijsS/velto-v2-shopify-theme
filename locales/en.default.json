@@ -555,6 +555,12 @@
       "email": "Email",
       "phone": "Phone",
       "cookies": "Cookie preferences"
+    },
+    "nav": {
+      "catalog": "Catalog",
+      "view_all": "View all",
+      "quick": "Quick links",
+      "search_placeholder": "Search 1300+ products…"
     }
   }
 }
