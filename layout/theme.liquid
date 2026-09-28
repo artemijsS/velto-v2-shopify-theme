@@ -27,6 +27,8 @@
       {%- assign velto_ex_tag = settings.velto_badge_exclusive_tag | default: 'exclusive' | downcase -%}
       {%- if request.page_type == 'collection' and collection.handle == 'all' -%}
         {%- if current_tags contains velto_ex_tag -%}{{ 'velto.collection.exclusive_title' | t }}{%- else -%}{{ 'velto.collection.all_title' | t }}{%- endif -%}
+      {%- elsif request.page_type == 'cart' -%}
+        {{ 'sections.cart.title' | t }}
       {%- elsif request.page_type == 'search' and search.performed -%}
         {{ 'velto.search.title' | t }}: “{{ search.terms | escape }}” ({{ 'velto.products_count' | t: count: search.results_count }})
       {%- else -%}
@@ -300,6 +302,7 @@
     <link rel="stylesheet" href="{{ 'velto-content-tables.css' | asset_url }}">
     <link rel="stylesheet" href="{{ 'velto-ui.css' | asset_url }}">
     {%- if template.name == 'product' -%}<link rel="stylesheet" href="{{ 'velto-product.css' | asset_url }}">{%- endif -%}
+    {%- if template.name == 'cart' -%}<link rel="stylesheet" href="{{ 'velto-cart.css' | asset_url }}">{%- endif -%}
     <link rel="stylesheet" href="{{ 'velto-cookies.css' | asset_url }}">
     <link rel="stylesheet" href="{{ 'component-cart-items.css' | asset_url }}" media="print" onload="this.media='all'">
 

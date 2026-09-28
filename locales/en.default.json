@@ -599,6 +599,14 @@
     "product": {
       "facts": "Key facts",
       "about": "Description"
+    },
+    "cart": {
+      "summary": "Order summary",
+      "items": "Items",
+      "delivery": "Delivery",
+      "delivery_at_checkout": "chosen at checkout",
+      "empty_text": "Pick products in the catalog — delivered Friday to Sunday.",
+      "bar_total": "Total"
     }
   }
 }

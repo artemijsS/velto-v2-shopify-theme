@@ -58,12 +58,42 @@
                   {%- endif -%}
                 </div>
 
+                <h2 class="velto-sum__title">{{ 'velto.cart.summary' | t }}</h2>
+                <dl class="velto-sum__rows">
+                  <div>
+                    <dt>{{ 'velto.cart.items' | t }} ({{ cart.item_count }})</dt>
+                    <dd>{{ cart.items_subtotal_price | money }}</dd>
+                  </div>
+                  {%- if cart.total_discount > 0 -%}
+                    <div class="velto-sum__discount">
+                      <dt>{{ 'customer.order.discount' | t }}</dt>
+                      <dd>−{{ cart.total_discount | money }}</dd>
+                    </div>
+                  {%- endif -%}
+                  <div>
+                    <dt>{{ 'velto.cart.delivery' | t }}</dt>
+                    <dd class="velto-sum__muted">{{ 'velto.cart.delivery_at_checkout' | t }}</dd>
+                  </div>
+                </dl>
+
                 <div class="totals">
                   <h2 class="totals__total">{{ 'sections.cart.estimated_total' | t }}</h2>
-                  <p class="totals__total-value">{{ cart.total_price | money_with_currency }}</p>
+                  <p class="totals__total-value">{{ cart.total_price | money }}</p>
                 </div>
 
-              {% render 'velto-delivery-info' %}
+                {% render 'velto-delivery-info' %}
+
+                {%- unless cart == empty -%}
+                  <div class="velto-cart-bar" aria-hidden="true">
+                    <div class="velto-cart-bar__total">
+                      <span>{{ 'velto.cart.bar_total' | t }}</span>
+                      <strong>{{ cart.total_price | money }}</strong>
+                    </div>
+                    <button type="submit" name="checkout" form="cart" class="velto-cart-bar__btn" tabindex="-1">
+                      {{ 'sections.cart.checkout' | t }}
+                    </button>
+                  </div>
+                {%- endunless -%}
                 <small class="tax-note caption-large rte">
                   {%- if cart.duties_included and cart.taxes_included -%}
                     {%- if shop.shipping_policy.body == blank -%}
@@ -120,10 +150,13 @@
                 </button>
               </div>
 
-              {%- if additional_checkout_buttons -%}
-                <div class="cart__dynamic-checkout-buttons additional-checkout-buttons">
-                  {{ content_for_additional_checkout_buttons }}
-                </div>
+              {%- comment -%} express checkout buttons intentionally not shown (Velto) {%- endcomment -%}
+              {%- if shop.enabled_payment_types.size > 0 -%}
+                <ul class="velto-sum__pay list-unstyled" role="list">
+                  {%- for type in shop.enabled_payment_types -%}
+                    <li>{{ type | payment_type_svg_tag: class: 'icon icon--full-color' }}</li>
+                  {%- endfor -%}
+                </ul>
               {%- endif -%}
           {%- endcase -%}
         {% endfor %}
@@ -133,6 +166,27 @@
     </div>
   </div>
 </div>
+
+<script>
+  /* mobile: fixed "Kopā · Noformēt" bar while the real checkout button is below the fold */
+  (() => {
+    if (window.__veltoCartBar) return;
+    window.__veltoCartBar = true;
+    let t;
+    const check = () => {
+      t = null;
+      const cta = document.getElementById('checkout');
+      const show = !!cta && !cta.disabled && cta.getBoundingClientRect().top > window.innerHeight - 20;
+      document.body.classList.toggle('velto-cart-bar-on', show);
+    };
+    const later = () => { if (!t) t = setTimeout(check, 60); };
+    window.addEventListener('scroll', later, { passive: true });
+    window.addEventListener('resize', later);
+    document.addEventListener('DOMContentLoaded', check);
+    new MutationObserver(later).observe(document.getElementById('main-cart-footer'), { childList: true, subtree: true });
+    check();
+  })();
+</script>
 
 {% schema %}
 {

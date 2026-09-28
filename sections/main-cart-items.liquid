@@ -38,10 +38,25 @@
     </div>
 
     <div class="cart__warnings">
+      <span class="velto-cart-empty__icon" aria-hidden="true">{{- 'icon-cart-empty.svg' | inline_asset_content -}}</span>
       <h1 class="cart__empty-text">{{ 'sections.cart.empty' | t }}</h1>
+      <p class="velto-cart-empty__text">{{ 'velto.cart.empty_text' | t }}</p>
       <a href="{{ routes.all_products_collection_url }}" class="button">
         {{ 'general.continue_shopping' | t }}
       </a>
+      {%- assign vmenu = linklists['main-menu'] -%}
+      {%- if vmenu.links.size > 0 -%}
+        <ul class="velto-cart-empty__cats" role="list">
+          {%- for link in vmenu.links limit: 8 -%}
+            <li>
+              <a href="{{ link.url }}">
+                {%- render 'velto-link-thumb', link: link -%}
+                <span>{{ link.title | remove: '💙' | strip }}</span>
+              </a>
+            </li>
+          {%- endfor -%}
+        </ul>
+      {%- endif -%}
 
       {%- if shop.customer_accounts_enabled and customer == null -%}
         <h2 class="cart__login-title">{{ 'sections.cart.login.title' | t }}</h2>
