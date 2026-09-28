@@ -24,7 +24,7 @@
               -%}
               <li class="velto-marquee__item"{% if hidden %} aria-hidden="true"{% endif %} {% if i == 1 and r == 1 %}{{ block.shopify_attributes }}{% endif %}>
                 {%- if block.settings.link != blank -%}
-                  <a href="{{ block.settings.link }}"{% if hidden %} tabindex="-1"{% endif %}>{% render 'velto-t', s: block.settings.text %}</a>
+                  <a href="{% render 'velto-url', url: block.settings.link %}"{% if hidden %} tabindex="-1"{% endif %}>{% render 'velto-t', s: block.settings.text %}</a>
                 {%- else -%}
                   {% render 'velto-t', s: block.settings.text %}
                 {%- endif -%}

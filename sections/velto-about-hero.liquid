@@ -33,12 +33,12 @@
       {%- endif -%}
       <div class="velto-ahero__buttons">
         {%- if section.settings.button_label_1 != blank -%}
-          <a class="button button--primary" href="{{ section.settings.button_link_1 | default: routes.all_products_collection_url }}">
+          <a class="button button--primary" href="{%- capture vu -%}{{ section.settings.button_link_1 | default: routes.all_products_collection_url }}{%- endcapture -%}{% render 'velto-url', url: vu %}">
             {%- render 'velto-t', s: section.settings.button_label_1 -%}
           </a>
         {%- endif -%}
         {%- if section.settings.button_label_2 != blank -%}
-          <a class="button button--secondary" href="{{ section.settings.button_link_2 | default: '#velto-delivery' }}">
+          <a class="button button--secondary" href="{%- capture vu -%}{{ section.settings.button_link_2 | default: '#velto-delivery' }}{%- endcapture -%}{% render 'velto-url', url: vu %}">
             {%- render 'velto-t', s: section.settings.button_label_2 -%}
           </a>
         {%- endif -%}

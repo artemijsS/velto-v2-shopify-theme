@@ -29,6 +29,9 @@
       {%- for block in section.blocks -%}
         {%- liquid
           assign url = block.settings.link | default: routes.all_products_collection_url
+          capture url
+            render 'velto-url', url: url
+          endcapture
           if url contains '?'
             assign data_url = url | append: '&sort_by=best-selling&section_id=main-collection-product-grid'
           else
@@ -63,9 +66,16 @@
 <script>
   (() => {
     const root = document.currentScript.previousElementSibling;
-    const label = {{ section.settings.count_label | json }};
-    const [one, many] = label.split('|').map((s) => s.trim());
-    const word = (n) => (n % 10 === 1 && n % 100 !== 11 ? one : many || one);
+    const forms = {
+      zero: {{ 'velto.qa.items_zero' | t | json }},
+      one: {{ 'velto.qa.items_one' | t | json }},
+      few: {{ 'velto.qa.items_few' | t | json }},
+      many: {{ 'velto.qa.items_many' | t | json }},
+      other: {{ 'velto.qa.items_other' | t | json }},
+    };
+    let rules;
+    try { rules = new Intl.PluralRules(document.documentElement.lang || 'lv'); } catch (e) { rules = { select: () => 'other' }; }
+    const label = (n) => (forms[rules.select(n)] || forms.other).replace('[count]', n);
 
     const load = () =>
       root.querySelectorAll('.velto-cur[data-src]').forEach(async (a) => {
@@ -74,7 +84,7 @@
           const doc = new DOMParser().parseFromString(html, 'text/html');
           const txt = doc.querySelector('#ProductCountDesktop, .product-count__text')?.textContent || '';
           const n = parseInt(txt.trim().split(/\s+/)[0], 10);
-          if (!isNaN(n)) a.querySelector('[data-count]').textContent = `${n} ${word(n)}`;
+          if (!isNaN(n)) a.querySelector('[data-count]').textContent = label(n);
 
           const imgs = [...doc.querySelectorAll('.product-grid .card__media img')].slice(0, 3);
           const slots = a.querySelectorAll('.velto-cur__thumb');

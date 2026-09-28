@@ -18,6 +18,11 @@
   endif
   assign count = coll.products_count
   assign src = section.settings.source_url | strip
+  if src != blank
+    capture src
+      render 'velto-url', url: src
+    endcapture
+  endif
   assign link = coll.url
   if src != blank
     assign link = src

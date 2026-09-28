@@ -1,0 +1,23 @@
+{%- comment -%}
+  Locale-aware internal URL. Plain paths typed into settings ("/collections/all/exclusive",
+  "shopify://collections/jaunumi") get the current storefront language prefix
+  (/ru, /en) so links and Section Rendering fetches stay in that language.
+  Already-localized paths, anchors, external and protocol-relative URLs pass through.
+  Params: url (string)
+{%- endcomment -%}
+{%- liquid
+  assign u = url | strip | replace: 'shopify://collections/', '/collections/' | replace: 'shopify://pages/', '/pages/' | replace: 'shopify://products/', '/products/' | replace: 'shopify://blogs/', '/blogs/' | replace: 'shopify://policies/', '/policies/'
+  assign root = routes.root_url
+  if root != '/' and u != blank
+    assign first = u | slice: 0
+    assign first2 = u | slice: 0, 2
+    assign root_slash = root | append: '/'
+    assign root_q = root | append: '?'
+    assign head = u | slice: 0, root_slash.size
+    assign head_q = u | slice: 0, root_q.size
+    if first == '/' and first2 != '//' and u != root and head != root_slash and head_q != root_q
+      assign u = root | append: u
+    endif
+  endif
+  echo u
+-%}

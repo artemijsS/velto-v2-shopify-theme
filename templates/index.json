@@ -62,7 +62,8 @@
         "button_label_2": "@velto.content.home.hero_button_categories",
         "button_link_2": "",
         "color_scheme": "scheme-1",
-        "showcase_collection": "all"
+        "showcase_collection": "all",
+        "showcase_label": "@velto.content.home.best_heading"
       }
     },
     "categories": {
