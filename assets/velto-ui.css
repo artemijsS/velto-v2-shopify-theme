@@ -608,3 +608,33 @@
 
 /* product breadcrumbs make no sense inside the quick-add modal */
 .quick-add-modal .velto-pcrumbs { display: none; }
+
+/* ---------- page loading bar ---------- */
+.velto-progress {
+  position: fixed;
+  z-index: 10000;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.velto-progress.is-on { opacity: 1; }
+.velto-progress.is-done { opacity: 0; transition-delay: 0.15s; }
+
+.velto-progress > span {
+  display: block;
+  height: 100%;
+  background: rgb(var(--color-foreground, 255, 255, 255));
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.7), 0 0 4px rgba(255, 255, 255, 0.6);
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 0.25s ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .velto-progress > span { transition: none; }
+}
