@@ -69,7 +69,11 @@
   .velto-subnav {
     display: block;
     position: relative;
+    z-index: 3; /* above the page-dim backdrop (z 2): otherwise the backdrop
+                   covers the Katalogs button, hover "leaves" it and the
+                   panel flickers open/close in a loop */
     border-top: 1px solid rgba(var(--color-foreground), 0.08);
+    background: rgb(var(--color-background));
   }
 
   .velto-subnav__inner {
