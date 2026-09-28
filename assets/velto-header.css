@@ -191,7 +191,13 @@
   .velto-catalog.is-open .velto-catalog__panel {
     opacity: 1;
     transform: none;
+    pointer-events: auto;
   }
+
+  /* display:grid above would otherwise override the [hidden] attribute and
+     leave an invisible panel on top of the page, swallowing clicks */
+  .velto-catalog__panel[hidden] { display: none; }
+  .velto-catalog:not(.is-open) .velto-catalog__panel { pointer-events: none; }
 
   .velto-catalog__cats,
   .velto-catalog__panes {
@@ -326,8 +332,9 @@
     padding: 10%;
   }
 
-  /* dim the page under the open panel */
-  .velto-catalog__backdrop {
+  /* dim the page under the open panel
+     (div.… beats Dawn's `div:empty { display: none }`) */
+  div.velto-catalog__backdrop {
     display: block;
     position: fixed;
     inset: 0;
@@ -337,7 +344,7 @@
     transition: opacity 0.2s ease;
   }
 
-  .velto-catalog__backdrop[hidden] { display: none; }
+  div.velto-catalog__backdrop[hidden] { display: none; }
   body.velto-catalog-open .velto-catalog__backdrop { opacity: 1; }
   body.velto-catalog-open .section-header { z-index: 4; }
 }

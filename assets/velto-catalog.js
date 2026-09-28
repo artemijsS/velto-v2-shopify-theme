@@ -68,10 +68,12 @@ if (!customElements.get('velto-catalog')) {
         const top = this.closest('.velto-subnav')?.getBoundingClientRect().bottom || 0;
         this.panel.style.setProperty('--velto-catalog-top', `${Math.max(0, Math.round(top))}px`);
         if (this.backdrop) this.backdrop.hidden = false;
-        requestAnimationFrame(() => {
-          this.classList.add('is-open');
-          document.body.classList.add('velto-catalog-open');
-        });
+        // force a reflow so the fade-in transition runs, then show —
+        // no requestAnimationFrame (it can be deferred in background tabs,
+        // leaving an "open" but invisible panel)
+        void this.panel.offsetHeight;
+        this.classList.add('is-open');
+        document.body.classList.add('velto-catalog-open');
         this.toggle.setAttribute('aria-expanded', 'true');
         this.openedAt = Date.now();
       }
