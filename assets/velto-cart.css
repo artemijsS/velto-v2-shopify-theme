@@ -15,6 +15,15 @@ cart-items .title-wrapper-with-link .underlined-link { font-size: 1.4rem; }
 
 .cart-items { border-spacing: 0; }
 
+/* the table would shrink to its content (rows are grids) — always full width */
+.cart__contents,
+.cart__items,
+.cart__items .js-contents,
+table.cart-items,
+table.cart-items tbody { display: block; width: 100%; }
+.cart-items .cart-item { width: 100%; }
+cart-items .cart__items { border: 0; padding-bottom: 0; }
+
 .cart-items .cart-item {
   display: grid;
   grid-template-columns: 8.8rem minmax(0, 1fr) auto;
@@ -217,9 +226,11 @@ cart-items .title-wrapper-with-link .underlined-link { font-size: 1.4rem; }
     grid-template-columns: minmax(0, 1fr) 40rem;
     column-gap: 4.8rem;
     align-items: start;
+    width: 100%;
     max-width: var(--page-width);
     margin: 0 auto;
     padding: 0 5rem;
+    box-sizing: border-box;
   }
 
   #MainContent:has(#main-cart-footer:not(.is-empty)) > .shopify-section { grid-column: 1; }
