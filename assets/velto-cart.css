@@ -133,7 +133,8 @@ cart-items .cart__items { border: 0; padding-bottom: 0; }
 }
 
 /* ---------- summary card ---------- */
-#main-cart-footer .cart__footer { display: block; padding-top: 0; }
+#main-cart-footer:not(.is-empty) .cart__footer { display: block; padding-top: 0; }
+#main-cart-footer.is-empty { display: none; }
 
 #main-cart-footer .cart__blocks {
   width: 100%;
