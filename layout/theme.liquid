@@ -404,6 +404,22 @@
         step_error: `{{- 'sections.quick_order_list.step_error' | t: step: '[step]' }}`,
       };
 
+      window.veltoQAStrings = {
+        added: `{{ 'velto.qa.added' | t }}`,
+        updated: `{{ 'velto.qa.updated' | t }}`,
+        removed: `{{ 'velto.qa.removed' | t }}`,
+        items_zero: `{{ 'velto.qa.items_zero' | t | default: '' }}`,
+        items_one: `{{ 'velto.qa.items_one' | t }}`,
+        items_few: `{{ 'velto.qa.items_few' | t | default: '' }}`,
+        items_many: `{{ 'velto.qa.items_many' | t | default: '' }}`,
+        items_other: `{{ 'velto.qa.items_other' | t }}`,
+        view_cart: `{{ 'velto.qa.view_cart' | t }}`,
+        max: `{{ 'velto.qa.max' | t }}`,
+        error: `{{ 'velto.qa.error' | t }}`,
+        money_format: {{ shop.money_format | json }},
+      };
+      window.veltoCartQty = { {%- for item in cart.items -%}"{{ item.variant_id }}":{{ item.quantity }}{%- unless forloop.last -%},{%- endunless -%}{%- endfor -%} };
+
       window.accessibilityStrings = {
         imageAvailable: `{{ 'products.product.media.image_available' | t: index: '[index]' }}`,
         shareSuccess: `{{ 'general.share.success_message' | t }}`,
@@ -414,6 +430,8 @@
         countrySelectorSearchCount: `{{ 'localization.country_results_count' | t: count: '[count]' }}`,
       };
     </script>
+
+    <script src="{{ 'velto-card-qty.js' | asset_url }}" defer="defer"></script>
 
     {%- if settings.predictive_search_enabled -%}
       <script src="{{ 'predictive-search.js' | asset_url }}" defer="defer"></script>

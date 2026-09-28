@@ -374,3 +374,245 @@
 @media screen and (max-width: 749px) {
   .velto-pbadges--page { flex-direction: column; gap: 0.8rem; }
 }
+
+/* ---------- Card quantity add-to-cart (velto-qa) ---------- */
+.velto-qa {
+  position: relative;
+  z-index: 1;
+  display: block;
+  height: 4rem;
+}
+
+.velto-qa__add,
+.velto-qa__stepper {
+  position: absolute;
+  inset: 0;
+  transition: opacity 0.18s ease, transform 0.18s ease;
+}
+
+.velto-qa__add {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.8rem;
+  width: 100%;
+  padding: 0 0.8rem;
+  border: 1px solid rgba(var(--color-foreground), 0.9);
+  background: transparent;
+  color: rgb(var(--color-foreground));
+  font-family: var(--font-body-family);
+  font-size: 1.2rem;
+  font-weight: 600;
+  letter-spacing: 0.12rem;
+  text-transform: uppercase;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.velto-qa__add:hover {
+  background: rgb(var(--color-foreground));
+  color: rgb(var(--color-background));
+}
+
+.velto-qa__add-icon svg,
+.velto-qa__btn svg {
+  display: block;
+  width: 1.2rem;
+  height: 1.2rem;
+}
+
+.velto-qa__stepper {
+  display: grid;
+  grid-template-columns: 4rem minmax(0, 1fr) 4rem;
+  align-items: stretch;
+  background: rgb(var(--color-foreground));
+  color: rgb(var(--color-background));
+  opacity: 0;
+  visibility: hidden;
+  transform: scale(0.96);
+}
+
+.velto-qa.is-in-cart .velto-qa__add {
+  opacity: 0;
+  visibility: hidden;
+  transform: scale(0.96);
+}
+
+.velto-qa.is-in-cart .velto-qa__stepper {
+  opacity: 1;
+  visibility: visible;
+  transform: none;
+}
+
+.velto-qa__btn {
+  display: grid;
+  place-items: center;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+
+.velto-qa__btn:hover:not([disabled]) { background: rgba(var(--color-background), 0.1); }
+.velto-qa__btn[disabled] { opacity: 0.3; cursor: default; }
+.velto-qa__btn svg { width: 1.3rem; height: 1.3rem; }
+.velto-qa__i-trash svg { width: 1.6rem; height: 1.6rem; }
+
+.velto-qa__i-trash,
+.velto-qa.is-min .velto-qa__i-minus { display: none; }
+.velto-qa.is-min .velto-qa__i-trash { display: block; }
+
+.velto-qa__input {
+  width: 100%;
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  color: inherit;
+  font-family: var(--font-body-family);
+  font-size: 1.5rem;
+  font-weight: 700;
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+  -moz-appearance: textfield;
+  appearance: textfield;
+}
+
+.velto-qa__input::-webkit-outer-spin-button,
+.velto-qa__input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+.velto-qa__input:focus { outline: none; box-shadow: none; background: rgba(var(--color-background), 0.08); }
+
+.velto-qa__add:focus-visible,
+.velto-qa__btn:focus-visible {
+  outline: 2px solid rgb(var(--color-foreground));
+  outline-offset: 2px;
+}
+
+.velto-qa__btn:focus-visible { outline-color: rgb(var(--color-background)); outline-offset: -4px; }
+
+/* request in flight: thin progress line under the stepper */
+.velto-qa::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -0.4rem;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, rgb(var(--color-foreground)), transparent);
+  background-size: 50% 100%;
+  background-repeat: no-repeat;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.velto-qa.is-busy::after {
+  opacity: 0.7;
+  animation: velto-qa-busy 0.9s linear infinite;
+}
+
+@keyframes velto-qa-busy {
+  from { background-position: -50% 0; }
+  to { background-position: 150% 0; }
+}
+
+@media screen and (max-width: 749px) {
+  .velto-qa { height: 3.8rem; }
+  .velto-qa__add { font-size: 1.1rem; letter-spacing: 0.04rem; gap: 0.6rem; }
+  .velto-qa__stepper { grid-template-columns: 3.6rem minmax(0, 1fr) 3.6rem; }
+}
+
+/* cart bubble bump after a card update */
+#cart-icon-bubble.velto-bump .cart-count-bubble { animation: velto-bump 0.45s cubic-bezier(0.3, 1.6, 0.5, 1); }
+
+@keyframes velto-bump {
+  0% { transform: scale(1); }
+  40% { transform: scale(1.35); }
+  100% { transform: scale(1); }
+}
+
+/* ---------- Toast (cart feedback) ---------- */
+.velto-toast {
+  position: fixed;
+  z-index: 1000;
+  left: 50%;
+  bottom: calc(2.4rem + env(safe-area-inset-bottom, 0px));
+  display: flex;
+  align-items: center;
+  gap: 1.4rem;
+  width: max-content;
+  max-width: calc(100vw - 3.2rem);
+  padding: 1rem 1rem 1rem 1.2rem;
+  border: 1px solid rgba(var(--color-foreground), 0.14);
+  border-radius: 1.2rem;
+  background: #161616;
+  color: rgb(var(--color-foreground));
+  box-shadow: 0 2rem 5rem rgba(0, 0, 0, 0.55);
+  opacity: 0;
+  visibility: hidden;
+  transform: translate(-50%, 1.2rem);
+  transition: opacity 0.22s ease, transform 0.22s ease, visibility 0.22s;
+}
+
+.velto-toast.is-visible {
+  opacity: 1;
+  visibility: visible;
+  transform: translate(-50%, 0);
+}
+
+.velto-toast__icon {
+  flex: 0 0 auto;
+  display: grid;
+  place-items: center;
+  width: 3.2rem;
+  height: 3.2rem;
+  border-radius: 50%;
+  background: rgb(var(--color-foreground));
+  color: rgb(var(--color-background));
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.velto-toast.is-error .velto-toast__icon { background: #c9a14a; color: #111; }
+
+.velto-toast__body {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  line-height: 1.3;
+}
+
+.velto-toast__title { font-size: 1.4rem; font-weight: 600; }
+.velto-toast__meta { font-size: 1.3rem; color: rgba(var(--color-foreground), 0.6); font-variant-numeric: tabular-nums; }
+.velto-toast__meta:empty { display: none; }
+
+.velto-toast__link {
+  flex: 0 0 auto;
+  margin-left: 0.8rem;
+  padding: 0 1.6rem;
+  height: 3.8rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  background: rgb(var(--color-foreground));
+  color: rgb(var(--color-background));
+  font-size: 1.2rem;
+  font-weight: 700;
+  letter-spacing: 0.1rem;
+  text-transform: uppercase;
+  text-decoration: none;
+  border-radius: 0.8rem;
+}
+
+.velto-toast__link[hidden] { display: none; }
+
+@media screen and (max-width: 749px) {
+  .velto-toast {
+    width: calc(100vw - 3.2rem);
+    bottom: calc(1.6rem + env(safe-area-inset-bottom, 0px));
+  }
+  .velto-toast__link { padding: 0 1.2rem; margin-left: auto; }
+}

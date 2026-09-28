@@ -300,7 +300,15 @@
                   assign qty_rules = true
                 endif
               -%}
-              {%- if card_product.variants_count > 1 or qty_rules -%}
+              {%- liquid
+                assign use_modal = false
+                if card_product.variants_count > 1
+                  assign use_modal = true
+                elsif qty_rules and horizontal_quick_add
+                  assign use_modal = true
+                endif
+              -%}
+              {%- if use_modal -%}
                 <modal-opener data-modal="#QuickAdd-{{ card_product.id }}">
                   <button
                     id="{{ product_form_id }}-submit"
@@ -339,7 +347,7 @@
                     <div id="QuickAddInfo-{{ card_product.id }}" class="quick-add-modal__content-info"></div>
                   </div>
                 </quick-add-modal>
-              {%- else -%}
+              {%- elsif horizontal_quick_add -%}
                 <product-form data-section-id="{{ section.id }}">
                   {%- form 'product',
                     card_product,
@@ -389,6 +397,8 @@
                     </button>
                   {%- endform -%}
                 </product-form>
+              {%- else -%}
+                {%- render 'velto-card-qty', product: card_product -%}
               {%- endif -%}
             </div>
           {% elsif quick_add == 'bulk' %}

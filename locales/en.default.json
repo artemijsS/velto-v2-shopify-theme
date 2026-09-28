@@ -579,6 +579,21 @@
     "collection": {
       "all_title": "All products",
       "exclusive_title": "Exclusive products"
+    },
+    "qa": {
+      "add": "Add",
+      "add_aria": "Add to cart: {{ title }}",
+      "qty": "Quantity",
+      "decrease": "Decrease",
+      "increase": "Increase",
+      "added": "Added to cart",
+      "updated": "Cart updated",
+      "removed": "Removed from cart",
+      "items_one": "[count] item",
+      "items_other": "[count] items",
+      "view_cart": "View cart",
+      "max": "Only [max] available",
+      "error": "Couldn't update the cart. Please try again."
     }
   }
 }

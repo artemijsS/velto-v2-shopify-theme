@@ -592,6 +592,22 @@
     "collection": {
       "all_title": "Visas preces",
       "exclusive_title": "Ekskluzīvās preces"
+    },
+    "qa": {
+      "add": "Pievienot",
+      "add_aria": "Pievienot grozam: {{ title }}",
+      "qty": "Daudzums",
+      "decrease": "Samazināt",
+      "increase": "Palielināt",
+      "added": "Pievienots grozam",
+      "updated": "Grozs atjaunināts",
+      "removed": "Izņemts no groza",
+      "items_zero": "[count] preces",
+      "items_one": "[count] prece",
+      "items_other": "[count] preces",
+      "view_cart": "Uz grozu",
+      "max": "Pieejami tikai [max] gab.",
+      "error": "Neizdevās atjaunināt grozu. Mēģiniet vēlreiz."
     }
   }
 }

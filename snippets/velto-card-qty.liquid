@@ -1,0 +1,75 @@
+{%- comment -%}
+  Velto — add-to-cart with quantity right on the product card (single-variant products).
+  "Pievienot" → becomes a [− N +] stepper synced with the cart; the number can be typed.
+  Logic: assets/velto-card-qty.js (loaded globally in layout/theme.liquid).
+
+  Params: product (product)
+{%- endcomment -%}
+{%- liquid
+  assign v = product.selected_or_first_available_variant
+  assign in_cart = 0
+  for item in cart.items
+    if item.variant_id == v.id
+      assign in_cart = in_cart | plus: item.quantity
+    endif
+  endfor
+
+  assign q_min = v.quantity_rule.min | default: 1
+  assign q_step = v.quantity_rule.increment | default: 1
+  assign q_max = v.quantity_rule.max
+  if v.inventory_management == 'shopify' and v.inventory_policy == 'deny'
+    if q_max == null or v.inventory_quantity < q_max
+      assign q_max = v.inventory_quantity
+    endif
+  endif
+  assign ptitle = product.title | escape
+-%}
+{%- if v.available -%}
+  <velto-qa
+    class="velto-qa{% if in_cart > 0 %} is-in-cart{% endif %}{% if in_cart <= q_min %} is-min{% endif %}"
+    data-variant="{{ v.id }}"
+    data-min="{{ q_min }}"
+    data-step="{{ q_step }}"
+    {% if q_max != null %}data-max="{{ q_max }}"{% endif %}
+    data-title="{{ ptitle }}"
+  >
+    <button
+      type="button"
+      class="velto-qa__add"
+      data-qa="add"
+      aria-label="{{ 'velto.qa.add_aria' | t: title: ptitle }}"
+    >
+      <span class="velto-qa__add-icon" aria-hidden="true">{{- 'icon-plus.svg' | inline_asset_content -}}</span>
+      <span>{{ 'velto.qa.add' | t }}</span>
+    </button>
+    <div class="velto-qa__stepper" role="group" aria-label="{{ 'velto.qa.qty' | t }}: {{ ptitle }}">
+      <button type="button" class="velto-qa__btn velto-qa__btn--dec" data-qa="dec" aria-label="{{ 'velto.qa.decrease' | t }}">
+        <span class="velto-qa__i-minus" aria-hidden="true">{{- 'icon-minus.svg' | inline_asset_content -}}</span>
+        <span class="velto-qa__i-trash" aria-hidden="true"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 5.5h13M8 5.5V4a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v1.5M5.5 5.5l.7 10.1A1.5 1.5 0 0 0 7.7 17h4.6a1.5 1.5 0 0 0 1.5-1.4l.7-10.1M8.5 9v5M11.5 9v5"/></svg></span>
+      </button>
+      <input
+        class="velto-qa__input"
+        type="number"
+        inputmode="numeric"
+        min="0"
+        step="{{ q_step }}"
+        {% if q_max != null %}max="{{ q_max }}"{% endif %}
+        value="{{ in_cart }}"
+        aria-label="{{ 'velto.qa.qty' | t }}"
+      >
+      <button
+        type="button"
+        class="velto-qa__btn velto-qa__btn--inc"
+        data-qa="inc"
+        aria-label="{{ 'velto.qa.increase' | t }}"
+        {% if q_max != null and in_cart >= q_max %}disabled{% endif %}
+      >
+        {{- 'icon-plus.svg' | inline_asset_content -}}
+      </button>
+    </div>
+  </velto-qa>
+{%- else -%}
+  <button type="button" class="quick-add__submit button button--full-width button--secondary" disabled>
+    <span>{{ 'products.product.sold_out' | t }}</span>
+  </button>
+{%- endif -%}
