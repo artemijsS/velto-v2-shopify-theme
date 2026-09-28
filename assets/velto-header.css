@@ -153,6 +153,18 @@
     color: rgb(var(--color-foreground));
   }
 
+  /* current page */
+  .velto-subnav__quick a.is-active {
+    background: rgb(var(--color-foreground));
+    color: rgb(var(--color-background));
+    font-weight: 600;
+  }
+
+  /* on a category page that isn't a quick link: outline ring on Katalogs */
+  .velto-catalog__toggle.is-current {
+    box-shadow: 0 0 0 2px rgb(var(--color-background)), 0 0 0 3.5px rgba(var(--color-foreground), 0.6);
+  }
+
   /* delivery */
   .velto-subnav__deliv {
     display: inline-flex;

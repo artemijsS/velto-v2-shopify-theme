@@ -103,3 +103,49 @@ document.addEventListener('click', (e) => {
   const summary = document.querySelector('.header__icons details-modal.header__search summary');
   if (summary) summary.click();
 });
+
+/* Highlight the header quick link that matches the current page.
+   Match = same path + every query param of the link present with the same
+   (decoded) value — so extra params (sort, page, other filters) still match.
+   If no quick link matches but we're on a collection page, the "Katalogs"
+   button gets the active state instead. Re-checked after facet filtering
+   (history.pushState) and back/forward. */
+(() => {
+  const norm = (p) => decodeURIComponent(p).replace(/\/+$/, '').toLowerCase() || '/';
+
+  const matches = (href) => {
+    const u = new URL(href, location.origin);
+    if (norm(u.pathname) !== norm(location.pathname)) return false;
+    const here = new URLSearchParams(location.search);
+    for (const [k, v] of u.searchParams) {
+      if (!here.getAll(k).includes(v)) return false;
+    }
+    return true;
+  };
+
+  const update = () => {
+    const links = [...document.querySelectorAll('.velto-subnav__quick a')];
+    let any = false;
+    // prefer the most specific match (most query params)
+    const scored = links
+      .map((a) => ({ a, ok: matches(a.href), n: new URL(a.href, location.origin).searchParams.size || 0 }))
+      .filter((x) => x.ok)
+      .sort((x, y) => y.n - x.n);
+    links.forEach((a) => {
+      const on = scored.length && scored[0].a === a;
+      a.classList.toggle('is-active', !!on);
+      if (on) { a.setAttribute('aria-current', 'page'); any = true; } else a.removeAttribute('aria-current');
+    });
+    const toggle = document.querySelector('.velto-catalog__toggle');
+    if (toggle) toggle.classList.toggle('is-current', !any && /^\/(\w{2}(-\w{2})?\/)?collections\//.test(location.pathname));
+  };
+
+  update();
+  window.addEventListener('popstate', update);
+  const push = history.pushState;
+  history.pushState = function (...args) {
+    const r = push.apply(this, args);
+    update();
+    return r;
+  };
+})();

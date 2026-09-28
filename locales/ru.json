@@ -600,6 +600,10 @@
       "great_price": "Отличная цена",
       "exclusive_note": "Специально отобрано для Velto",
       "great_price_note": "Лучшее соотношение цены и качества"
+    },
+    "collection": {
+      "all_title": "Все товары",
+      "exclusive_title": "Эксклюзивные товары"
     }
   }
 }

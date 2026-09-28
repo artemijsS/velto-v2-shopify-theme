@@ -44,6 +44,22 @@
     endfor
   endif
 
+  comment
+    Friendly titles for Shopify's built-in "all" collection (title "Products")
+    and its tag / quick-filter views.
+  endcomment
+  assign ex_tag = settings.velto_badge_exclusive_tag | default: 'exclusive' | downcase
+  assign title = collection.title | remove: '💙' | strip
+  if collection.handle == 'all'
+    assign title = 'velto.collection.all_title' | t
+    if current_tags contains ex_tag
+      assign title = 'velto.collection.exclusive_title' | t
+    elsif qf_active
+      assign title = section.settings.quick_filter_label
+    endif
+  elsif current_tags contains ex_tag
+    assign title = title | append: ' · ' | append: 'velto.badges.exclusive' | t
+  endif
   assign collage = collection.products | where: 'featured_media'
 -%}
 
@@ -57,10 +73,10 @@
           <a href="{{ parent_link.url }}">{{ parent_link.title | remove: '💙' | strip }}</a>
         {%- endif -%}
         <span aria-hidden="true">/</span>
-        <span aria-current="page">{{ collection.title | remove: '💙' | strip }}</span>
+        <span aria-current="page">{{ title }}</span>
       </nav>
 
-      <h1 class="velto-coll-hero__title">{{ collection.title | remove: '💙' | strip }}</h1>
+      <h1 class="velto-coll-hero__title">{{ title }}</h1>
 
       <p class="velto-coll-hero__meta">
         <span class="velto-coll-hero__count">{{ 'velto.products_count' | t: count: collection.products_count }}</span>

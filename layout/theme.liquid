@@ -24,12 +24,15 @@
     <link rel="stylesheet" href="{{ 'velto-logo.css' | asset_url }}">
 
     <title>
-      {%- if request.page_type == 'search' and search.performed -%}
+      {%- assign velto_ex_tag = settings.velto_badge_exclusive_tag | default: 'exclusive' | downcase -%}
+      {%- if request.page_type == 'collection' and collection.handle == 'all' -%}
+        {%- if current_tags contains velto_ex_tag -%}{{ 'velto.collection.exclusive_title' | t }}{%- else -%}{{ 'velto.collection.all_title' | t }}{%- endif -%}
+      {%- elsif request.page_type == 'search' and search.performed -%}
         {{ 'velto.search.title' | t }}: “{{ search.terms | escape }}” ({{ 'velto.products_count' | t: count: search.results_count }})
       {%- else -%}
         {{ page_title }}
       {%- endif -%}
-      {%- if current_tags %} &ndash; {{ current_tags | join: ', ' }}{% endif -%}
+      {%- if current_tags and collection.handle != 'all' %} &ndash; {{ current_tags | join: ', ' }}{% endif -%}
       {%- if current_page != 1 %} &ndash; {{ 'general.pagination.page' | t: number: current_page }}{% endif -%}
       {%- unless page_title contains shop.name %} &ndash; {{ shop.name }}{% endunless -%}
     </title>
