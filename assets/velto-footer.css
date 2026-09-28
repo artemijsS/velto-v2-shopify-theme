@@ -323,3 +323,27 @@
 .velto-footer__watermark .velto-logo { height: auto !important; }
 .velto-footer__watermark .velto-logo rect,
 .velto-footer__watermark .velto-logo__tagline { display: none; }
+
+
+/* ---------- credit: by Artemijss ---------- */
+.velto-footer__credit {
+  display: flex;
+  justify-content: center;
+  margin-top: 2.4rem;
+}
+
+@media screen and (min-width: 750px) {
+  .velto-footer__credit { justify-content: flex-end; margin-top: 1.6rem; }
+}
+
+.velto-credit {
+  display: inline-flex;
+  color: rgb(var(--color-foreground));
+  opacity: 0.45;
+  transition: opacity 0.2s ease;
+}
+
+.velto-credit:hover,
+.velto-credit:focus-visible { opacity: 1; }
+
+.velto-credit__logo { display: block; width: 10rem; height: auto; }
