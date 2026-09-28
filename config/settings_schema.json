@@ -1530,5 +1530,36 @@
         "info": "Piektdiena–svētdiena = 5,6,7"
       }
     ]
+  },
+  {
+    "name": "Velto marķējumi",
+    "settings": [
+      {
+        "type": "paragraph",
+        "content": "Marķējumi uz preču kartītēm un produkta lapā."
+      },
+      {
+        "type": "checkbox",
+        "id": "velto_badges_enable",
+        "label": "Rādīt marķējumus",
+        "default": true
+      },
+      {
+        "type": "text",
+        "id": "velto_badge_exclusive_tag",
+        "label": "\"Ekskluzīvs\" — produkta tags",
+        "default": "exclusive"
+      },
+      {
+        "type": "range",
+        "id": "velto_badge_price_min",
+        "min": 1,
+        "max": 5,
+        "step": 1,
+        "label": "\"Lieliska cena\" — minimālā cenas kategorija (custom.price_category)",
+        "default": 4,
+        "info": "Filtrs \"Lieliska cena\" apvieno vērtības 4 un 5."
+      }
+    ]
   }
 ]

@@ -47,11 +47,18 @@
           "settings": {
             "custom_liquid": "{% render 'velto-delivery-info' %}"
           }
+        },
+        "velto_badges": {
+          "type": "custom_liquid",
+          "settings": {
+            "custom_liquid": "{% render 'velto-product-badges', product: product, style: 'page' %}"
+          }
         }
       },
       "block_order": [
         "vendor",
         "title",
+        "velto_badges",
         "price",
         "variant_picker",
         "quantity_selector",

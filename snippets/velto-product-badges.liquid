@@ -1,0 +1,68 @@
+{%- comment -%}
+  Velto product badges — "Ekskluzīvs" and "Lieliska cena".
+  Rules (theme settings → "Velto marķējumi"):
+    exclusive  : product has the tag settings.velto_badge_exclusive_tag (default "exclusive")
+    great price: metafield custom.price_category ≥ settings.velto_badge_price_min (default 4)
+                 — the same values the storefront filter "Cenas kategorija → Lieliska cena" groups
+
+  Usage:
+    {% render 'velto-product-badges', product: card_product, style: 'card' %}  – over the card image
+    {% render 'velto-product-badges', product: product, style: 'page' %}       – product page, with explanations
+{%- endcomment -%}
+{%- if settings.velto_badges_enable -%}
+  {%- liquid
+    assign ex_tag = settings.velto_badge_exclusive_tag | default: 'exclusive' | strip | downcase
+    assign is_exclusive = false
+    for t in product.tags
+      assign tl = t | downcase
+      if tl == ex_tag
+        assign is_exclusive = true
+        break
+      endif
+    endfor
+
+    assign pc = product.metafields.custom.price_category.value | plus: 0
+    assign pmin = settings.velto_badge_price_min | plus: 0
+    assign is_great = false
+    if pmin > 0 and pc >= pmin
+      assign is_great = true
+    endif
+  -%}
+  {%- if is_exclusive or is_great -%}
+    {%- if style == 'page' -%}
+      <ul class="velto-pbadges velto-pbadges--page" role="list">
+        {%- if is_exclusive -%}
+          <li class="velto-pbadge velto-pbadge--exclusive">
+            <span class="velto-pbadge__pill">
+              <span class="velto-pbadge__icon" aria-hidden="true">✦</span>
+              {{- 'velto.badges.exclusive' | t -}}
+            </span>
+            <span class="velto-pbadge__note">{{ 'velto.badges.exclusive_note' | t }}</span>
+          </li>
+        {%- endif -%}
+        {%- if is_great -%}
+          <li class="velto-pbadge velto-pbadge--price">
+            <span class="velto-pbadge__pill">
+              <span class="velto-pbadge__icon" aria-hidden="true">{{- 'icon-price-tag.svg' | inline_asset_content -}}</span>
+              {{- 'velto.badges.great_price' | t -}}
+            </span>
+            <span class="velto-pbadge__note">{{ 'velto.badges.great_price_note' | t }}</span>
+          </li>
+        {%- endif -%}
+      </ul>
+    {%- else -%}
+      <ul class="velto-pbadges velto-pbadges--card" role="list">
+        {%- if is_exclusive -%}
+          <li class="velto-pbadge velto-pbadge--exclusive">
+            <span class="velto-pbadge__icon" aria-hidden="true">✦</span>{{ 'velto.badges.exclusive' | t }}
+          </li>
+        {%- endif -%}
+        {%- if is_great -%}
+          <li class="velto-pbadge velto-pbadge--price">
+            <span class="velto-pbadge__icon" aria-hidden="true">{{- 'icon-price-tag.svg' | inline_asset_content -}}</span>{{ 'velto.badges.great_price' | t }}
+          </li>
+        {%- endif -%}
+      </ul>
+    {%- endif -%}
+  {%- endif -%}
+{%- endif -%}

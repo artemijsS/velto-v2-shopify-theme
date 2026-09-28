@@ -568,6 +568,12 @@
     "search": {
       "crumb": "Search",
       "title": "Search"
+    },
+    "badges": {
+      "exclusive": "Exclusive",
+      "great_price": "Great price",
+      "exclusive_note": "Specially selected for Velto",
+      "great_price_note": "Best value for its quality"
     }
   }
 }

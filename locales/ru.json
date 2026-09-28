@@ -594,6 +594,12 @@
     "search": {
       "crumb": "Поиск",
       "title": "Поиск"
+    },
+    "badges": {
+      "exclusive": "Эксклюзив",
+      "great_price": "Отличная цена",
+      "exclusive_note": "Специально отобрано для Velto",
+      "great_price_note": "Лучшее соотношение цены и качества"
     }
   }
 }

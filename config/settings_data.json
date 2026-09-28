@@ -194,7 +194,10 @@
       "velto_delivery_enable": true,
       "velto_cutoff_day": "2",
       "velto_cutoff_time": "23:59",
-      "velto_delivery_days": "5,6,7"
+      "velto_delivery_days": "5,6,7",
+      "velto_badges_enable": true,
+      "velto_badge_exclusive_tag": "exclusive",
+      "velto_badge_price_min": 4
     }
   }
 }
