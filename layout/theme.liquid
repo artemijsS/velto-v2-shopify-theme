@@ -481,15 +481,15 @@
       <script src="{{ 'cart-drawer.js' | asset_url }}" defer="defer"></script>
     {%- endif -%}
 
-    <script>
-      document.addEventListener('change', function() {
-        setTimeout(function() {
-          document.querySelectorAll('.Choice__Label, span[class*="Choice__Label"]').forEach(l => {
-            l.style.setProperty('color', '#000000', 'important');
-          });
-        }, 50);
-      }, { capture: true });
-    </script>
+    <style type="text/css">
+      body .ChoiceList .Choice__Label,
+      body span.Choice__Label,
+      body span[class*="Choice__Label"],
+      body .ChoiceList * {
+        color: #000000 !important;
+        -webkit-text-fill-color: #000000 !important;
+      }
+    </style>
 
   </body>
 </html>
