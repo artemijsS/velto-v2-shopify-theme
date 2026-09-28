@@ -631,7 +631,8 @@
       "delivery": "Piegāde",
       "delivery_at_checkout": "izvēlies noformējot",
       "empty_text": "Izvēlies preces katalogā — piegāde no piektdienas līdz svētdienai.",
-      "bar_total": "Kopā"
+      "bar_total": "Kopā",
+      "small_order_hint": "Pievieno preces vēl par {{ amount }}, un maksa par mazo pasūtījumu tiks noņemta."
     },
     "content": {
       "home": {

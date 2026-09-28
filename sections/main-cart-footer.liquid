@@ -59,11 +59,32 @@
                 </div>
 
                 <h2 class="velto-sum__title">{{ 'velto.cart.summary' | t }}</h2>
+                {%- liquid
+                  assign fee_total = 0
+                  assign fee_qty = 0
+                  for item in cart.items
+                    if item.product.type == 'mws_fee_generated' or item.properties['_mws_fee'] != blank
+                      assign fee_total = fee_total | plus: item.final_line_price
+                      assign fee_qty = fee_qty | plus: item.quantity
+                    endif
+                  endfor
+                  assign goods_qty = cart.item_count | minus: fee_qty
+                  assign goods_sub = cart.items_subtotal_price | minus: fee_total
+                  assign small_min = settings.velto_small_order_min | default: 0 | times: 100
+                -%}
                 <dl class="velto-sum__rows">
                   <div>
-                    <dt>{{ 'velto.cart.items' | t }} ({{ cart.item_count }})</dt>
-                    <dd>{{ cart.items_subtotal_price | money }}</dd>
+                    <dt>{{ 'velto.cart.items' | t }} ({{ goods_qty }})</dt>
+                    <dd>{{ goods_sub | money }}</dd>
                   </div>
+                  {%- for item in cart.items -%}
+                    {%- if item.product.type == 'mws_fee_generated' or item.properties['_mws_fee'] != blank -%}
+                      <div class="velto-sum__fee">
+                        <dt>{{ item.product.title | escape }}{% if item.quantity > 1 %} × {{ item.quantity }}{% endif %}</dt>
+                        <dd>{{ item.final_line_price | money }}</dd>
+                      </div>
+                    {%- endif -%}
+                  {%- endfor -%}
                   {%- if cart.total_discount > 0 -%}
                     <div class="velto-sum__discount">
                       <dt>{{ 'customer.order.discount' | t }}</dt>
@@ -75,6 +96,14 @@
                     <dd class="velto-sum__muted">{{ 'velto.cart.delivery_at_checkout' | t }}</dd>
                   </div>
                 </dl>
+
+                {%- if small_min > 0 and goods_sub > 0 and goods_sub < small_min -%}
+                  {%- assign missing = small_min | minus: goods_sub | money -%}
+                  <p class="velto-sum__hint">
+                    <span class="velto-sum__hint-bar" style="--p: {{ goods_sub | times: 100 | divided_by: small_min }}%"></span>
+                    {{ 'velto.cart.small_order_hint' | t: amount: missing }}
+                  </p>
+                {%- endif -%}
 
                 <div class="totals">
                   <h2 class="totals__total">{{ 'sections.cart.estimated_total' | t }}</h2>
@@ -166,6 +195,44 @@
     </div>
   </div>
 </div>
+
+<script>
+  /* Upcharge Fees adds / removes its fee lines after cart changes and draws
+     its own list above the summary (hidden by CSS). When that list changes,
+     re-render the summary and the header bubble from the server. */
+  (() => {
+    if (window.__veltoFeeSync) return;
+    window.__veltoFeeSync = true;
+    const footer = document.getElementById('main-cart-footer');
+    const blocks = footer && footer.querySelector('.cart__blocks');
+    if (!blocks) return;
+    let t, busy = false;
+    const refresh = async () => {
+      if (busy) return;
+      busy = true;
+      try {
+        const id = footer.dataset.id;
+        const [html, bubble] = await Promise.all([
+          fetch(`${location.pathname}?section_id=${id}`).then((r) => r.text()),
+          fetch(`${location.pathname}?section_id=cart-icon-bubble`).then((r) => r.text()),
+        ]);
+        const doc = new DOMParser().parseFromString(html, 'text/html');
+        const fresh = doc.querySelector('#main-cart-footer .js-contents');
+        const cur = footer.querySelector('.js-contents');
+        if (fresh && cur) cur.innerHTML = fresh.innerHTML;
+        const b = document.getElementById('cart-icon-bubble');
+        const src = new DOMParser().parseFromString(bubble, 'text/html').querySelector('.shopify-section');
+        if (b && src) b.innerHTML = src.innerHTML;
+      } catch (e) {}
+      busy = false;
+    };
+    new MutationObserver((muts) => {
+      if (muts.every((m) => m.target.closest && m.target.closest('.js-contents'))) return;
+      clearTimeout(t);
+      t = setTimeout(refresh, 350);
+    }).observe(blocks, { childList: true, subtree: true, characterData: true });
+  })();
+</script>
 
 <script>
   /* mobile: fixed "Kopā · Noformēt" bar while the real checkout button is below the fold */

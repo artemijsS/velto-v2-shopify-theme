@@ -40,6 +40,10 @@
     }).replace(/<[^>]*>/g, '');
   };
 
+  // fee lines added by the Upcharge Fees app are not goods
+  const isFee = (i) => (i.properties && i.properties._mws_fee) || i.product_type === 'mws_fee_generated';
+  const goodsCount = (cart) => cart.items.reduce((s, i) => (isFee(i) ? s : s + i.quantity), 0);
+
   const cartQty = (cart, id) =>
     cart.items.reduce((s, i) => (String(i.variant_id) === String(id) ? s + i.quantity : s), 0);
 
@@ -86,9 +90,9 @@
     toastEl.querySelector('.velto-toast__icon').textContent = isError ? '!' : '✓';
     toastEl.querySelector('.velto-toast__title').textContent = title;
     toastEl.querySelector('.velto-toast__meta').textContent = cart
-      ? `${itemsLabel(cart.item_count)} · ${formatMoney(cart.total_price)}`
+      ? `${itemsLabel(goodsCount(cart))} · ${formatMoney(cart.total_price)}`
       : '';
-    toastEl.querySelector('.velto-toast__link').hidden = !cart || cart.item_count === 0;
+    toastEl.querySelector('.velto-toast__link').hidden = !cart || goodsCount(cart) === 0;
     requestAnimationFrame(() => toastEl.classList.add('is-visible'));
     hideLater(isError ? 4200 : 3200);
   };

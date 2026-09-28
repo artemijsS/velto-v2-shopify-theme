@@ -367,3 +367,33 @@ cart-items.is-empty .cart__empty-text { margin: 0 0 0.8rem; font-size: 3rem; let
 }
 
 .velto-cart-empty__cats .velto-thumb img { width: 100%; height: 100%; object-fit: contain; padding: 12%; }
+
+
+/* ---------- Upcharge Fees ---------- */
+/* the app's own list above the summary — the summary lists the fees itself */
+#main-cart-footer .cart__blocks > [data-fee-hidden-group] { display: none !important; }
+
+.velto-sum__rows .velto-sum__fee dt { color: rgba(var(--color-foreground), 0.6); }
+.velto-sum__rows .velto-sum__fee dd { font-weight: 500; color: rgba(var(--color-foreground), 0.8); }
+
+.velto-sum__hint {
+  position: relative;
+  margin: 1.4rem 0 0;
+  padding: 1.2rem 1.4rem 1.6rem;
+  border-radius: 1rem;
+  background: rgba(var(--color-foreground), 0.06);
+  font-size: 1.3rem;
+  line-height: 1.45;
+  color: rgba(var(--color-foreground), 0.85);
+  overflow: hidden;
+}
+
+.velto-sum__hint-bar {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  height: 3px;
+  width: var(--p, 0%);
+  background: rgb(var(--color-foreground));
+  border-radius: 0 3px 3px 0;
+}

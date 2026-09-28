@@ -1528,6 +1528,13 @@
         "label": "Piegādes dienas (1=P … 7=Sv, ar komatu)",
         "default": "5,6,7",
         "info": "Piektdiena–svētdiena = 5,6,7"
+      },
+      {
+        "type": "number",
+        "id": "velto_small_order_min",
+        "label": "Mazā pasūtījuma robeža (EUR)",
+        "info": "Grozā rāda, cik vēl jāpievieno, lai nebūtu maksas par mazo pasūtījumu (Upcharge Fees). 0 = nerādīt.",
+        "default": 5
       }
     ]
   },
