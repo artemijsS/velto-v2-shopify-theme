@@ -27,7 +27,7 @@
         "email": "info@expresspoint.lv",
         "phones": "+371 26322465",
         "phone_hours": "@velto.content.footer.phone_hours",
-        "pickup_heading": "Izsniegšanas punkts",
+        "pickup_heading": "",
         "pickup_address": "",
         "pickup_hours": "",
         "company": "@velto.content.footer.company",
