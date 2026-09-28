@@ -605,3 +605,6 @@
   }
   .velto-toast__link { padding: 0 1.2rem; margin-left: auto; }
 }
+
+/* product breadcrumbs make no sense inside the quick-add modal */
+.quick-add-modal .velto-pcrumbs { display: none; }

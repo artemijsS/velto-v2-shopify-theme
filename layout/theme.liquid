@@ -299,6 +299,7 @@
     <link rel="stylesheet" href="{{ 'velto-buttons.css' | asset_url }}">
     <link rel="stylesheet" href="{{ 'velto-content-tables.css' | asset_url }}">
     <link rel="stylesheet" href="{{ 'velto-ui.css' | asset_url }}">
+    {%- if template.name == 'product' -%}<link rel="stylesheet" href="{{ 'velto-product.css' | asset_url }}">{%- endif -%}
     <link rel="stylesheet" href="{{ 'velto-cookies.css' | asset_url }}">
     <link rel="stylesheet" href="{{ 'component-cart-items.css' | asset_url }}" media="print" onload="this.media='all'">
 
@@ -432,6 +433,15 @@
     </script>
 
     <script src="{{ 'velto-card-qty.js' | asset_url }}" defer="defer"></script>
+    {%- if template.name == 'product' -%}
+      <script>
+        window.veltoProductStrings = {
+          about: `{{ 'velto.product.about' | t }}`,
+          add: `{{ 'products.product.add_to_cart' | t }}`,
+        };
+      </script>
+      <script src="{{ 'velto-product.js' | asset_url }}" defer="defer"></script>
+    {%- endif -%}
 
     {%- if settings.predictive_search_enabled -%}
       <script src="{{ 'predictive-search.js' | asset_url }}" defer="defer"></script>

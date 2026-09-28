@@ -595,6 +595,10 @@
       "view_cart": "View cart",
       "max": "Only [max] available",
       "error": "Couldn't update the cart. Please try again."
+    },
+    "product": {
+      "facts": "Key facts",
+      "about": "Description"
     }
   }
 }

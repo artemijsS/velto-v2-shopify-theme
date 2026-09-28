@@ -1,0 +1,51 @@
+{%- comment -%}
+  Breadcrumbs on the product page: Sākums / <category> / <subcategory>.
+  The category comes from the collection the visitor came through (/collections/x/products/y),
+  otherwise from the first main-menu entry that contains one of the product's collections.
+  Params: product
+{%- endcomment -%}
+{%- liquid
+  assign menu = linklists['main-menu']
+  assign ids = product.collections | map: 'id'
+  assign p_link = nil
+  assign c_link = nil
+
+  for link in menu.links
+    for child in link.links
+      if child.type == 'collection_link' and child.object and child.url != link.url
+        if collection and child.object.id == collection.id
+          assign p_link = link
+          assign c_link = child
+          break
+        endif
+        if c_link == nil and ids contains child.object.id
+          assign p_link = link
+          assign c_link = child
+        endif
+      endif
+    endfor
+    if collection and c_link and c_link.object.id == collection.id
+      break
+    endif
+  endfor
+
+  if p_link == nil
+    for link in menu.links
+      if link.type == 'collection_link' and link.object and ids contains link.object.id
+        assign p_link = link
+        break
+      endif
+    endfor
+  endif
+-%}
+<nav class="velto-pcrumbs" aria-label="{{ 'velto.home' | t }}">
+  <a href="{{ routes.root_url }}">{{ 'velto.home' | t }}</a>
+  {%- if p_link -%}
+    <span aria-hidden="true">/</span>
+    <a href="{{ p_link.url }}">{{ p_link.title | remove: '💙' | strip }}</a>
+  {%- endif -%}
+  {%- if c_link -%}
+    <span aria-hidden="true">/</span>
+    <a href="{{ c_link.url }}">{{ c_link.title }}</a>
+  {%- endif -%}
+</nav>

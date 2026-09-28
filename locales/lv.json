@@ -609,6 +609,10 @@
       "view_cart": "Uz grozu",
       "max": "Pieejami tikai [max] gab.",
       "error": "Neizdevās atjaunināt grozu. Mēģiniet vēlreiz."
+    },
+    "product": {
+      "facts": "Pamatinformācija",
+      "about": "Apraksts"
     }
   }
 }
