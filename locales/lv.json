@@ -766,6 +766,20 @@
         "a6": "Raksti uz info@expresspoint.lv vai zvani +371 26322465 darba dienās no 10:00 līdz 17:00.",
         "contact_heading": "Vai ir jautājumi?",
         "contact_text": "Labprāt palīdzēsim ar pasūtījumu, piegādi vai precēm — sazinies ar mums jebkurā ērtā veidā."
+      },
+      "contact": {
+        "eyebrow": "Kontakti",
+        "heading": "Sazinies ar mums",
+        "intro": "Jautājums par pasūtījumu, piegādi vai precēm? Raksti, zvani vai aizpildi formu — atbildēsim pēc iespējas ātrāk.",
+        "email_hint": "Atbildam 1–2 darba dienu laikā",
+        "social_label": "Seko mums",
+        "company_label": "Rekvizīti",
+        "form_heading": "Uzraksti mums",
+        "form_text": "Aizpildi formu, un mēs ar tevi sazināsimies.",
+        "topic_label": "Tēma",
+        "topics": "Pasūtījums, Piegāde, Preces, Sadarbība, Cits",
+        "order_label": "Pasūtījuma nr. (ja ir)",
+        "faq_more_html": "Atbildes uz citiem jautājumiem atradīsi lapā <a href=\"/pages/par-velto\">Par Velto</a>."
       }
     }
   }

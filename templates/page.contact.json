@@ -1,25 +1,48 @@
 {
   "sections": {
-    "main": {
-      "type": "main-page",
+    "contact": {
+      "type": "velto-contact",
       "settings": {
-        "padding_top": 36,
-        "padding_bottom": 36
-      }
-    },
-    "form": {
-      "type": "contact-form",
-      "settings": {
-        "heading": "",
-        "heading_size": "h1",
+        "eyebrow": "@velto.content.contact.eyebrow",
+        "heading": "@velto.content.contact.heading",
+        "text": "<p>@velto.content.contact.intro</p>",
+        "show_page_content": false,
+        "email": "info@expresspoint.lv",
+        "email_hint": "@velto.content.contact.email_hint",
+        "phone": "+371 26322465",
+        "hours": "@velto.content.footer.phone_hours",
+        "social_label": "@velto.content.contact.social_label",
+        "company_label": "@velto.content.contact.company_label",
+        "company": "@velto.content.footer.company",
+        "form_heading": "@velto.content.contact.form_heading",
+        "form_text": "@velto.content.contact.form_text",
+        "topic_label": "@velto.content.contact.topic_label",
+        "topics": "@velto.content.contact.topics",
+        "order_label": "@velto.content.contact.order_label",
         "color_scheme": "scheme-1",
         "padding_top": 36,
-        "padding_bottom": 36
+        "padding_bottom": 40
+      }
+    },
+    "faq": {
+      "type": "velto-faq",
+      "blocks": {
+        "q1": { "type": "question", "settings": { "question": "@velto.content.about.q1", "answer": "<p>@velto.content.about.a1</p>" } },
+        "q2": { "type": "question", "settings": { "question": "@velto.content.about.q2", "answer": "<p>@velto.content.about.a2</p>" } },
+        "q3": { "type": "question", "settings": { "question": "@velto.content.about.q3", "answer": "<p>@velto.content.about.a3</p>" } },
+        "q4": { "type": "question", "settings": { "question": "@velto.content.about.q4", "answer": "<p>@velto.content.about.a4</p>" } }
+      },
+      "block_order": ["q1", "q2", "q3", "q4"],
+      "settings": {
+        "eyebrow": "@velto.content.about.faq_eyebrow",
+        "heading": "@velto.content.about.faq_heading",
+        "text": "<p>@velto.content.contact.faq_more_html</p>",
+        "open_first": false,
+        "color_scheme": "scheme-1",
+        "padding_top": 32,
+        "padding_bottom": 72
       }
     }
   },
-  "order": [
-    "main",
-    "form"
-  ]
+  "order": ["contact", "faq"]
 }
