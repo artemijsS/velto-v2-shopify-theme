@@ -1,0 +1,85 @@
+{%- comment -%}
+  Velto — About page: "why us" value cards (blocks with icon, title, text).
+{%- endcomment -%}
+{{ 'velto-home.css' | asset_url | stylesheet_tag }}
+{{ 'velto-about.css' | asset_url | stylesheet_tag }}
+
+<section
+  class="velto-avalues color-{{ section.settings.color_scheme }}"
+  style="--velto-a-pt: {{ section.settings.padding_top }}px; --velto-a-pb: {{ section.settings.padding_bottom }}px;"
+>
+  <div class="page-width">
+    <div class="velto-a-head">
+      {%- if section.settings.eyebrow != blank -%}
+        <p class="velto-a-eyebrow">{% render 'velto-t', s: section.settings.eyebrow %}</p>
+      {%- endif -%}
+      {%- if section.settings.heading != blank -%}
+        <h2 class="velto-a-title">{% render 'velto-t', s: section.settings.heading %}</h2>
+      {%- endif -%}
+    </div>
+
+    <ul class="velto-avalues__grid" role="list">
+      {%- for block in section.blocks -%}
+        <li class="velto-value" {{ block.shopify_attributes }}>
+          <div class="velto-value__top">
+            <span class="velto-value__icon" aria-hidden="true">
+              {%- case block.settings.icon -%}
+                {%- when 'tag' -%}{{- 'icon-price-tag.svg' | inline_asset_content -}}
+                {%- when 'check' -%}{{- 'icon-checkmark.svg' | inline_asset_content -}}
+                {%- when 'truck' -%}{{- 'icon-truck.svg' | inline_asset_content -}}
+                {%- when 'leaf' -%}{{- 'icon-leaf.svg' | inline_asset_content -}}
+                {%- when 'lock' -%}{{- 'icon-padlock.svg' | inline_asset_content -}}
+                {%- when 'pin' -%}{{- 'icon-map-pin.svg' | inline_asset_content -}}
+                {%- else -%}{{- 'icon-box.svg' | inline_asset_content -}}
+              {%- endcase -%}
+            </span>
+            <span class="velto-value__num">{{ forloop.index | prepend: '0' | slice: -2, 2 }}</span>
+          </div>
+          <h3 class="velto-value__title">{% render 'velto-t', s: block.settings.title %}</h3>
+          <p class="velto-value__text">{% render 'velto-t', s: block.settings.text %}</p>
+        </li>
+      {%- endfor -%}
+    </ul>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Velto: Kāpēc mēs",
+  "tag": "div",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Virsraksts (mazais)" },
+    { "type": "text", "id": "heading", "label": "Virsraksts" },
+    { "type": "color_scheme", "id": "color_scheme", "label": "t:sections.all.colors.label", "default": "scheme-1" },
+    { "type": "range", "id": "padding_top", "min": 0, "max": 120, "step": 4, "unit": "px", "label": "t:sections.all.padding.padding_top", "default": 40 },
+    { "type": "range", "id": "padding_bottom", "min": 0, "max": 120, "step": 4, "unit": "px", "label": "t:sections.all.padding.padding_bottom", "default": 40 }
+  ],
+  "blocks": [
+    {
+      "type": "value",
+      "name": "Vērtība",
+      "limit": 6,
+      "settings": [
+        {
+          "type": "select",
+          "id": "icon",
+          "label": "Ikona",
+          "default": "check",
+          "options": [
+            { "value": "tag", "label": "Cena" },
+            { "value": "check", "label": "Ķeksītis" },
+            { "value": "truck", "label": "Piegāde" },
+            { "value": "leaf", "label": "Lapa" },
+            { "value": "lock", "label": "Slēdzene" },
+            { "value": "pin", "label": "Vieta" },
+            { "value": "box", "label": "Kaste" }
+          ]
+        },
+        { "type": "text", "id": "title", "label": "Virsraksts" },
+        { "type": "textarea", "id": "text", "label": "Teksts" }
+      ]
+    }
+  ],
+  "presets": [{ "name": "Velto: Kāpēc mēs" }]
+}
+{% endschema %}

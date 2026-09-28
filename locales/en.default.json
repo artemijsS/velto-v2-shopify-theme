@@ -713,7 +713,47 @@
         "heading": "Opening soon",
         "text": "Be the first to know when we launch."
       },
-      "share": "Share"
+      "share": "Share",
+      "about": {
+        "eyebrow": "About Velto",
+        "heading": "Quality products",
+        "accent": "at a fair price",
+        "lead": "Velto is a Latvian online store where every product is carefully chosen, so you get good quality at a sensible price — without unnecessary markups.",
+        "stat_products": "products in our range",
+        "stat_days_value": "Fri–Sun",
+        "stat_days": "delivery every week — you pick the day and time",
+        "stat_local": "we work with local producers",
+        "stat_online": "order online any time",
+        "values_eyebrow": "Why Velto",
+        "values_heading": "Good products shouldn't be expensive",
+        "v1_title": "Fair price",
+        "v1_text": "We keep markups low and prices easy to understand. Products with especially good value are marked “Great price”.",
+        "v2_title": "Carefully selected",
+        "v2_text": "We stock what we'd happily buy ourselves — trusted brands and products we believe in.",
+        "v3_title": "Local producers",
+        "v3_text": "We work with Latvian producers and suppliers — a shorter way to your table and support for local businesses.",
+        "v4_title": "Convenient delivery",
+        "v4_text": "Order by Tuesday and get it on Friday, Saturday or Sunday — you choose the day and time.",
+        "story_eyebrow": "Our story",
+        "story_heading": "Who we are",
+        "faq_eyebrow": "FAQ",
+        "faq_heading": "Frequently asked questions",
+        "faq_intro": "Didn't find an answer? Write or call us — we'll help.",
+        "q1": "What is the order deadline?",
+        "a1": "We take orders until the end of Tuesday (23:59). Orders placed later go into the following week’s delivery.",
+        "q2": "When will I receive my order?",
+        "a2": "Delivery takes place at the end of the same week — Friday to Sunday. You choose the exact day and time at checkout.",
+        "q3": "How can I pay?",
+        "a3": "Payment is made securely online at checkout. The available payment methods are shown on the checkout page.",
+        "q4": "What does “Great price” mean?",
+        "a4": "It’s our mark for products with especially good value for money. You’ll find them all under the “Great price” quick link in the menu.",
+        "q5": "What is “Exclusive”?",
+        "a5": "Hand-picked products and delicacies we recommend trying. They are marked with ✦ and collected under “Exclusive”.",
+        "q6": "How can I contact you?",
+        "a6": "Email info@expresspoint.lv or call +371 26322465 on weekdays from 10:00 to 17:00.",
+        "contact_heading": "Have a question?",
+        "contact_text": "We're happy to help with orders, delivery or products — reach us whichever way suits you."
+      }
     }
   }
 }

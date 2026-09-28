@@ -1,0 +1,83 @@
+{%- comment -%}
+  Velto — FAQ accordion (blocks: question + answer) with FAQPage structured data.
+{%- endcomment -%}
+{{ 'velto-home.css' | asset_url | stylesheet_tag }}
+{{ 'velto-about.css' | asset_url | stylesheet_tag }}
+
+{%- if section.blocks.size > 0 -%}
+  <section
+    class="velto-faq color-{{ section.settings.color_scheme }}"
+    style="--velto-a-pt: {{ section.settings.padding_top }}px; --velto-a-pb: {{ section.settings.padding_bottom }}px;"
+  >
+    <div class="page-width velto-faq__grid">
+      <div class="velto-faq__head">
+        {%- if section.settings.eyebrow != blank -%}
+          <p class="velto-a-eyebrow">{% render 'velto-t', s: section.settings.eyebrow %}</p>
+        {%- endif -%}
+        {%- if section.settings.heading != blank -%}
+          <h2 class="velto-a-title">{% render 'velto-t', s: section.settings.heading %}</h2>
+        {%- endif -%}
+        {%- if section.settings.text != blank -%}
+          <div class="velto-faq__intro rte">{% render 'velto-t', s: section.settings.text %}</div>
+        {%- endif -%}
+      </div>
+
+      <div class="velto-faq__list">
+        {%- for block in section.blocks -%}
+          <details class="velto-faq__item" {{ block.shopify_attributes }}{% if forloop.first and section.settings.open_first %} open{% endif %}>
+            <summary>
+              <span>{% render 'velto-t', s: block.settings.question %}</span>
+              <span class="velto-faq__plus" aria-hidden="true"></span>
+            </summary>
+            <div class="velto-faq__answer rte">{% render 'velto-t', s: block.settings.answer %}</div>
+          </details>
+        {%- endfor -%}
+      </div>
+    </div>
+  </section>
+
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {%- for block in section.blocks -%}
+          {%- capture q -%}{%- render 'velto-t', s: block.settings.question -%}{%- endcapture -%}
+          {%- capture a -%}{%- render 'velto-t', s: block.settings.answer -%}{%- endcapture -%}
+          {
+            "@type": "Question",
+            "name": {{ q | strip_html | strip | json }},
+            "acceptedAnswer": { "@type": "Answer", "text": {{ a | strip_html | strip | json }} }
+          }{%- unless forloop.last -%},{%- endunless -%}
+        {%- endfor -%}
+      ]
+    }
+  </script>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Velto: BUJ",
+  "tag": "div",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Virsraksts (mazais)" },
+    { "type": "text", "id": "heading", "label": "Virsraksts" },
+    { "type": "richtext", "id": "text", "label": "Ievads" },
+    { "type": "checkbox", "id": "open_first", "label": "Pirmais jautājums atvērts", "default": true },
+    { "type": "color_scheme", "id": "color_scheme", "label": "t:sections.all.colors.label", "default": "scheme-1" },
+    { "type": "range", "id": "padding_top", "min": 0, "max": 120, "step": 4, "unit": "px", "label": "t:sections.all.padding.padding_top", "default": 40 },
+    { "type": "range", "id": "padding_bottom", "min": 0, "max": 120, "step": 4, "unit": "px", "label": "t:sections.all.padding.padding_bottom", "default": 40 }
+  ],
+  "blocks": [
+    {
+      "type": "question",
+      "name": "Jautājums",
+      "settings": [
+        { "type": "text", "id": "question", "label": "Jautājums" },
+        { "type": "richtext", "id": "answer", "label": "Atbilde" }
+      ]
+    }
+  ],
+  "presets": [{ "name": "Velto: BUJ" }]
+}
+{% endschema %}

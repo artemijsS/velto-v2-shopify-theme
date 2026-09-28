@@ -1,0 +1,103 @@
+{%- comment -%}
+  Velto — About page hero: who we are in one screen.
+  Left: eyebrow, big heading with accent, lead text, two buttons.
+  Right: stat cards (blocks). A stat value "auto:products" shows the live
+  catalogue size rounded down to hundreds ("1300+").
+  All texts accept "@translation.key" values (see snippets/velto-t.liquid).
+{%- endcomment -%}
+{{ 'velto-home.css' | asset_url | stylesheet_tag }}
+{{ 'velto-about.css' | asset_url | stylesheet_tag }}
+
+<section
+  class="velto-ahero color-{{ section.settings.color_scheme }}"
+  style="--velto-a-pt: {{ section.settings.padding_top }}px; --velto-a-pb: {{ section.settings.padding_bottom }}px;"
+>
+  <div class="page-width velto-ahero__grid">
+    <div class="velto-ahero__copy">
+      <nav class="velto-ahero__crumbs" aria-label="{{ 'velto.home' | t }}">
+        <a href="{{ routes.root_url }}">{{ 'velto.home' | t }}</a>
+        <span aria-hidden="true">/</span>
+        <span>{{ page.title | default: shop.name }}</span>
+      </nav>
+      {%- if section.settings.eyebrow != blank -%}
+        <p class="velto-ahero__eyebrow">{% render 'velto-t', s: section.settings.eyebrow %}</p>
+      {%- endif -%}
+      <h1 class="velto-ahero__title">
+        {% render 'velto-t', s: section.settings.heading_before %}
+        {%- if section.settings.heading_accent != blank %}
+          <span class="velto-accent">{% render 'velto-t', s: section.settings.heading_accent %}</span>
+        {%- endif -%}
+      </h1>
+      {%- if section.settings.text != blank -%}
+        <div class="velto-ahero__text rte">{% render 'velto-t', s: section.settings.text %}</div>
+      {%- endif -%}
+      <div class="velto-ahero__buttons">
+        {%- if section.settings.button_label_1 != blank -%}
+          <a class="button button--primary" href="{{ section.settings.button_link_1 | default: routes.all_products_collection_url }}">
+            {%- render 'velto-t', s: section.settings.button_label_1 -%}
+          </a>
+        {%- endif -%}
+        {%- if section.settings.button_label_2 != blank -%}
+          <a class="button button--secondary" href="{{ section.settings.button_link_2 | default: '#velto-delivery' }}">
+            {%- render 'velto-t', s: section.settings.button_label_2 -%}
+          </a>
+        {%- endif -%}
+      </div>
+    </div>
+
+    {%- if section.blocks.size > 0 -%}
+      <ul class="velto-ahero__stats" role="list">
+        {%- for block in section.blocks -%}
+          {%- liquid
+            assign v = block.settings.value
+            if v == 'auto:products'
+              assign n = collections['all'].products_count | divided_by: 100 | times: 100
+              if n < 100
+                assign v = collections['all'].products_count
+              else
+                assign v = n | append: '+'
+              endif
+            endif
+          -%}
+          <li class="velto-stat" {{ block.shopify_attributes }}>
+            <span class="velto-stat__value">{% render 'velto-t', s: v %}</span>
+            <span class="velto-stat__label">{% render 'velto-t', s: block.settings.label %}</span>
+          </li>
+        {%- endfor -%}
+      </ul>
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Velto: Par mums — hero",
+  "tag": "div",
+  "class": "section-velto-ahero",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Virsraksts (mazais)" },
+    { "type": "text", "id": "heading_before", "label": "Virsraksts" },
+    { "type": "text", "id": "heading_accent", "label": "Virsraksta akcents (pasvītrots)" },
+    { "type": "richtext", "id": "text", "label": "Teksts" },
+    { "type": "text", "id": "button_label_1", "label": "Poga 1" },
+    { "type": "url", "id": "button_link_1", "label": "Poga 1 saite" },
+    { "type": "text", "id": "button_label_2", "label": "Poga 2" },
+    { "type": "text", "id": "button_link_2", "label": "Poga 2 saite", "info": "Piemēram #velto-delivery (piegādes bloks šajā lapā)" },
+    { "type": "color_scheme", "id": "color_scheme", "label": "t:sections.all.colors.label", "default": "scheme-1" },
+    { "type": "range", "id": "padding_top", "min": 0, "max": 120, "step": 4, "unit": "px", "label": "t:sections.all.padding.padding_top", "default": 40 },
+    { "type": "range", "id": "padding_bottom", "min": 0, "max": 120, "step": 4, "unit": "px", "label": "t:sections.all.padding.padding_bottom", "default": 40 }
+  ],
+  "blocks": [
+    {
+      "type": "stat",
+      "name": "Skaitlis",
+      "limit": 4,
+      "settings": [
+        { "type": "text", "id": "value", "label": "Vērtība", "info": "auto:products = preču skaits katalogā" },
+        { "type": "text", "id": "label", "label": "Paraksts" }
+      ]
+    }
+  ],
+  "presets": [{ "name": "Velto: Par mums — hero" }]
+}
+{% endschema %}

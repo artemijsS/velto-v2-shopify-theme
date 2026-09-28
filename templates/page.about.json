@@ -1,0 +1,145 @@
+{
+  "sections": {
+    "hero": {
+      "type": "velto-about-hero",
+      "blocks": {
+        "st1": { "type": "stat", "settings": { "value": "auto:products", "label": "@velto.content.about.stat_products" } },
+        "st2": { "type": "stat", "settings": { "value": "@velto.content.about.stat_days_value", "label": "@velto.content.about.stat_days" } },
+        "st3": { "type": "stat", "settings": { "value": "LV", "label": "@velto.content.about.stat_local" } },
+        "st4": { "type": "stat", "settings": { "value": "24/7", "label": "@velto.content.about.stat_online" } }
+      },
+      "block_order": ["st1", "st2", "st3", "st4"],
+      "settings": {
+        "eyebrow": "@velto.content.about.eyebrow",
+        "heading_before": "@velto.content.about.heading",
+        "heading_accent": "@velto.content.about.accent",
+        "text": "<p>@velto.content.about.lead</p>",
+        "button_label_1": "@velto.content.home.hero_button_shop",
+        "button_link_1": "shopify://collections/all",
+        "button_label_2": "@velto.content.home.delivery_eyebrow",
+        "button_link_2": "#velto-delivery",
+        "color_scheme": "scheme-1",
+        "padding_top": 40,
+        "padding_bottom": 48
+      }
+    },
+    "values": {
+      "type": "velto-about-values",
+      "blocks": {
+        "v1": { "type": "value", "settings": { "icon": "tag", "title": "@velto.content.about.v1_title", "text": "@velto.content.about.v1_text" } },
+        "v2": { "type": "value", "settings": { "icon": "check", "title": "@velto.content.about.v2_title", "text": "@velto.content.about.v2_text" } },
+        "v3": { "type": "value", "settings": { "icon": "leaf", "title": "@velto.content.about.v3_title", "text": "@velto.content.about.v3_text" } },
+        "v4": { "type": "value", "settings": { "icon": "truck", "title": "@velto.content.about.v4_title", "text": "@velto.content.about.v4_text" } }
+      },
+      "block_order": ["v1", "v2", "v3", "v4"],
+      "settings": {
+        "eyebrow": "@velto.content.about.values_eyebrow",
+        "heading": "@velto.content.about.values_heading",
+        "color_scheme": "scheme-1",
+        "padding_top": 32,
+        "padding_bottom": 32
+      }
+    },
+    "story": {
+      "type": "velto-about-story",
+      "settings": {
+        "eyebrow": "@velto.content.about.story_eyebrow",
+        "heading": "@velto.content.about.story_heading",
+        "signature": "@velto.content.footer.tagline",
+        "fallback": "",
+        "color_scheme": "scheme-1",
+        "padding_top": 32,
+        "padding_bottom": 32
+      }
+    },
+    "delivery": {
+      "type": "velto-delivery",
+      "settings": {
+        "eyebrow": "@velto.content.home.delivery_eyebrow",
+        "heading_before": "@velto.content.home.delivery_heading",
+        "heading_accent": "@velto.content.home.delivery_accent",
+        "heading_after": "",
+        "text": "<p>@velto.content.home.delivery_text</p>",
+        "button_label": "@velto.content.home.start_shopping",
+        "button_link": "shopify://collections/all",
+        "color_scheme": "scheme-1",
+        "padding_top": 32,
+        "padding_bottom": 16
+      }
+    },
+    "steps": {
+      "type": "velto-steps",
+      "blocks": {
+        "s1": { "type": "step", "settings": { "title": "@velto.content.home.step1_title", "text": "@velto.content.home.step1_text" } },
+        "s2": { "type": "step", "settings": { "title": "@velto.content.home.step2_title", "text": "@velto.content.home.step2_text" } },
+        "s3": { "type": "step", "settings": { "title": "@velto.content.home.step3_title", "text": "@velto.content.home.step3_text" } }
+      },
+      "block_order": ["s1", "s2", "s3"],
+      "settings": {
+        "heading": "@velto.content.home.steps_heading",
+        "button_label": "",
+        "button_link": "shopify://collections/all",
+        "color_scheme": "scheme-1",
+        "padding_top": 32,
+        "padding_bottom": 40
+      }
+    },
+    "excl": {
+      "type": "velto-spotlight",
+      "settings": {
+        "collection": "",
+        "source_url": "/collections/all/exclusive?sort_by=best-selling",
+        "eyebrow": "@velto.content.home.excl_eyebrow",
+        "heading_before": "@velto.content.home.excl_heading",
+        "heading_accent": "@velto.content.home.excl_accent",
+        "heading_after": "",
+        "text": "<p>@velto.content.home.excl_text</p>",
+        "button_label": "@velto.content.home.view_all_plural",
+        "show_count": true,
+        "products_to_show": 12,
+        "reverse": false,
+        "color_scheme": "scheme-2",
+        "padding_top": 24,
+        "padding_bottom": 24
+      }
+    },
+    "faq": {
+      "type": "velto-faq",
+      "blocks": {
+        "q1": { "type": "question", "settings": { "question": "@velto.content.about.q1", "answer": "<p>@velto.content.about.a1</p>" } },
+        "q2": { "type": "question", "settings": { "question": "@velto.content.about.q2", "answer": "<p>@velto.content.about.a2</p>" } },
+        "q3": { "type": "question", "settings": { "question": "@velto.content.about.q3", "answer": "<p>@velto.content.about.a3</p>" } },
+        "q4": { "type": "question", "settings": { "question": "@velto.content.about.q4", "answer": "<p>@velto.content.about.a4</p>" } },
+        "q5": { "type": "question", "settings": { "question": "@velto.content.about.q5", "answer": "<p>@velto.content.about.a5</p>" } },
+        "q6": { "type": "question", "settings": { "question": "@velto.content.about.q6", "answer": "<p>@velto.content.about.a6</p>" } }
+      },
+      "block_order": ["q1", "q2", "q3", "q4", "q5", "q6"],
+      "settings": {
+        "eyebrow": "@velto.content.about.faq_eyebrow",
+        "heading": "@velto.content.about.faq_heading",
+        "text": "<p>@velto.content.about.faq_intro</p>",
+        "open_first": true,
+        "color_scheme": "scheme-1",
+        "padding_top": 48,
+        "padding_bottom": 32
+      }
+    },
+    "contact": {
+      "type": "velto-about-contact",
+      "settings": {
+        "heading": "@velto.content.about.contact_heading",
+        "text": "<p>@velto.content.about.contact_text</p>",
+        "button_label": "@velto.content.home.start_shopping",
+        "button_link": "shopify://collections/all",
+        "email": "info@expresspoint.lv",
+        "phone": "+371 26322465",
+        "hours": "@velto.content.footer.phone_hours",
+        "company": "@velto.content.footer.company",
+        "color_scheme": "scheme-1",
+        "padding_top": 24,
+        "padding_bottom": 72
+      }
+    }
+  },
+  "order": ["hero", "values", "story", "delivery", "steps", "excl", "faq", "contact"]
+}

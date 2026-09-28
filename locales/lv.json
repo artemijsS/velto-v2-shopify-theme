@@ -726,7 +726,47 @@
         "heading": "Drīzumā atvērsimies",
         "text": "Uzzini pirmais, kad atveramies."
       },
-      "share": "Dalīties"
+      "share": "Dalīties",
+      "about": {
+        "eyebrow": "Par Velto",
+        "heading": "Kvalitatīvas preces",
+        "accent": "par godīgu cenu",
+        "lead": "Velto ir Latvijas interneta veikals, kurā katru preci izvēlamies rūpīgi — lai tu saņemtu labu kvalitāti par saprātīgu cenu, bez liekiem uzcenojumiem.",
+        "stat_products": "preču mūsu sortimentā",
+        "stat_days_value": "Pk–Sv",
+        "stat_days": "piegāde katru nedēļu — dienu un laiku izvēlies pats",
+        "stat_local": "sadarbojamies ar vietējiem ražotājiem",
+        "stat_online": "pasūti tiešsaistē jebkurā laikā",
+        "values_eyebrow": "Kāpēc Velto",
+        "values_heading": "Labām precēm nav jābūt dārgām",
+        "v1_title": "Godīga cena",
+        "v1_text": "Turam uzcenojumus zemus un cenas — saprotamas. Preces ar īpaši labu cenas un kvalitātes attiecību atzīmējam ar „Lieliska cena”.",
+        "v2_title": "Rūpīgi atlasīts",
+        "v2_text": "Sortimentā ieliekam to, ko paši labprāt pirktu — pārbaudītus zīmolus un produktus, kuriem uzticamies.",
+        "v3_title": "Vietējie ražotāji",
+        "v3_text": "Sadarbojamies ar Latvijas ražotājiem un piegādātājiem — īsāks ceļš līdz tavam galdam un atbalsts vietējiem.",
+        "v4_title": "Ērta piegāde",
+        "v4_text": "Pasūti līdz otrdienai un saņem piektdien, sestdien vai svētdien — dienu un laiku izvēlies pats.",
+        "story_eyebrow": "Mūsu stāsts",
+        "story_heading": "Kas ir Velto",
+        "faq_eyebrow": "BUJ",
+        "faq_heading": "Biežāk uzdotie jautājumi",
+        "faq_intro": "Neatradi atbildi? Raksti vai zvani mums — palīdzēsim.",
+        "q1": "Līdz kuram laikam var veikt pasūtījumu?",
+        "a1": "Pasūtījumus pieņemam līdz otrdienas beigām (23:59). Pēc tam veiktie pasūtījumi tiek iekļauti nākamās nedēļas piegādē.",
+        "q2": "Kad es saņemšu pasūtījumu?",
+        "a2": "Piegāde notiek tās pašas nedēļas nogalē — no piektdienas līdz svētdienai. Konkrētu dienu un laiku izvēlies, noformējot pasūtījumu.",
+        "q3": "Kā es varu samaksāt?",
+        "a3": "Apmaksu veic droši tiešsaistē, noformējot pasūtījumu. Pieejamie maksājumu veidi ir redzami noformēšanas lapā.",
+        "q4": "Ko nozīmē atzīme „Lieliska cena”?",
+        "a4": "Tā ir mūsu atzīme precēm ar īpaši labu cenas un kvalitātes attiecību. Visas šīs preces atradīsi ātrajā saitē „Lieliska cena” izvēlnē.",
+        "q5": "Kas ir „Ekskluzīvi”?",
+        "a5": "Īpaši atlasītas preces un delikateses, kuras iesakām izmēģināt. Tās atzīmētas ar ✦ un apkopotas sadaļā „Ekskluzīvi”.",
+        "q6": "Kā ar jums sazināties?",
+        "a6": "Raksti uz info@expresspoint.lv vai zvani +371 26322465 darba dienās no 10:00 līdz 17:00.",
+        "contact_heading": "Vai ir jautājumi?",
+        "contact_text": "Labprāt palīdzēsim ar pasūtījumu, piegādi vai precēm — sazinies ar mums jebkurā ērtā veidā."
+      }
     }
   }
 }
