@@ -96,7 +96,7 @@
         const items = await fetchList(url);
         if (my !== token) return;
         grid.innerHTML = items.join('');
-        grid.querySelectorAll('li').forEach((li, i) => {
+        grid.querySelectorAll(':scope > li').forEach((li, i) => {
           li.className = 'velto-best__item';
           li.style.setProperty('--i', i);
           li.dataset.rank = String(i + 1).padStart(2, '0');
