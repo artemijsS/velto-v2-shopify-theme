@@ -403,3 +403,49 @@ velto-load-more:defined ~ .pagination-wrapper { display: none; }
 .template-search--empty .template-search__header { padding-bottom: 4rem; }
 
 .template-search .facets-container { margin-top: 2.4rem; }
+
+/* ================= Tablet (iPad) — compact hero =================
+   On tablets the header + full hero filled almost the whole screen and the
+   products started below the fold. Here: no collage, tighter spacing, a
+   smaller title and the chips in one swipeable row instead of wrapping.
+   Applies to 750–1199px and to any touch screen without hover
+   (e.g. iPad Pro in landscape). */
+@media screen and (min-width: 750px) and (max-width: 1199px),
+  screen and (min-width: 750px) and (hover: none) and (pointer: coarse) {
+  .velto-coll-hero__inner {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0;
+    padding-top: 1.6rem;
+    padding-bottom: 1.4rem;
+  }
+
+  .velto-coll-hero__collage { display: none; }
+
+  .velto-crumbs { margin-bottom: 0.8rem; }
+
+  .velto-coll-hero__title { font-size: clamp(3rem, 4.2vw, 4.4rem); }
+
+  .velto-coll-hero__meta { margin-top: 0.6rem; }
+
+  .velto-coll-hero__desc {
+    margin-top: 0.8rem;
+    font-size: 1.4rem;
+    line-height: 1.5;
+    -webkit-line-clamp: 2;
+  }
+
+  .velto-chips-wrap {
+    padding-bottom: 1.4rem;
+    -webkit-mask-image: linear-gradient(90deg, #000 90%, transparent);
+    mask-image: linear-gradient(90deg, #000 90%, transparent);
+  }
+
+  .velto-chips {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    padding-right: 4rem;
+  }
+
+  .velto-chip { height: 4rem; }
+}

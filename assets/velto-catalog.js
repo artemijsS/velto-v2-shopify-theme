@@ -28,12 +28,33 @@ if (!customElements.get('velto-catalog')) {
         this.toggle.addEventListener('mouseleave', () => clearTimeout(this.openTimer));
 
         this.addEventListener('mouseleave', () => {
+          if (this.lastPointer === 'touch' || this.lastPointer === 'pen') return; // closes via backdrop / toggle
           this.closeTimer = setTimeout(() => this.close(), 250);
         });
         this.addEventListener('mouseenter', () => clearTimeout(this.closeTimer));
 
+        // Touch (iPad etc.): there is no hover, so the first tap on a category
+        // with subcategories only opens its pane; a second tap on the same
+        // category follows the link. Mouse clicks navigate straight away.
+        this.lastPointer = '';
+        this.armed = -1;
+        this.addEventListener('pointerdown', (e) => (this.lastPointer = e.pointerType), true);
+        const isTouch = () =>
+          this.lastPointer === 'touch' ||
+          this.lastPointer === 'pen' ||
+          (!this.lastPointer && window.matchMedia('(hover: none)').matches);
+
         this.cats.forEach((a) => {
           const activate = () => this.activate(+a.dataset.index);
+          a.addEventListener('click', (e) => {
+            const i = +a.dataset.index;
+            if (!isTouch() || !a.querySelector('.velto-catalog__chev')) return;
+            if (this.armed === i) return; // second tap → navigate
+            e.preventDefault();
+            clearTimeout(this.catTimer);
+            this.armed = i;
+            this.activate(i);
+          });
           a.addEventListener('mouseenter', () => {
             clearTimeout(this.catTimer);
             this.catTimer = setTimeout(activate, 60);
@@ -63,6 +84,7 @@ if (!customElements.get('velto-catalog')) {
         if (this.isOpen) return;
         const current = this.cats.findIndex((c) => c.classList.contains('is-current'));
         this.activate(current > -1 ? current : 0);
+        this.armed = -1;
         this.panel.hidden = false;
         // fit the panel between the header and the bottom of the window
         const top = this.closest('.velto-subnav')?.getBoundingClientRect().bottom || 0;
