@@ -119,24 +119,24 @@
 }
 
 /* suggestions → chips */
-:is(.search-modal, .template-search) .predictive-search__result-group:first-child .predictive-search__results-list {
+:is(.search-modal, .template-search) #predictive-search-results-queries-list {
   display: flex;
   flex-wrap: wrap;
   gap: 0.6rem;
 }
 
-:is(.search-modal, .template-search) .predictive-search__result-group:first-child .predictive-search__item {
+:is(.search-modal, .template-search) #predictive-search-results-queries-list .predictive-search__item {
   padding: 0.8rem 1.4rem;
   border-radius: 4rem;
   border: 1px solid rgba(var(--color-foreground), 0.16);
 }
 
-:is(.search-modal, .template-search) .predictive-search__result-group:first-child .predictive-search__item-heading {
+:is(.search-modal, .template-search) #predictive-search-results-queries-list .predictive-search__item-heading {
   font-size: 1.4rem;
 }
 
 @media screen and (min-width: 750px) {
-  :is(.search-modal, .template-search) .predictive-search__result-group:first-child { flex: 0 0 22rem; }
+  :is(.search-modal, .template-search) .predictive-search__result-group:has(#predictive-search-results-queries-list):not(:only-child) { flex: 0 0 22rem; }
 }
 
 /* products → cards (2 columns on desktop) */
@@ -279,4 +279,10 @@ predictive-search[loading] .velto-search-empty { display: none !important; }
   :is(.search-modal, .template-search) .field__input.search__input { height: 4.8rem; font-size: 1.6rem; }
   :is(.search-modal, .template-search) .field__button { height: 3.8rem; width: 3.8rem; }
   :is(.search-modal, .template-search) .reset__button { right: 4.8rem; }
+}
+
+/* products group always takes the remaining width (also when it is the first / only group) */
+:is(.search-modal, .template-search) .predictive-search__result-group:has(#predictive-search-results-products-list) {
+  flex: 1 1 auto;
+  min-width: 0;
 }
