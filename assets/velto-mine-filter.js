@@ -64,7 +64,20 @@
       };
       document.addEventListener('change', leave, true);
       document.addEventListener('click', (e) => e.target.closest && e.target.closest('facet-remove, .active-facets a') && leave(e), true);
-      if (new URLSearchParams(location.search).get('mine') === '1') this.enable(true);
+      // "Mani pirkumi" works on the whole category — it can't be combined with
+      // filters / the "Lieliska cena" & "Ekskluzīvi" views: those reset it
+      if (new URLSearchParams(location.search).get('mine') === '1') {
+        if (this.filtered()) this.setUrl(false);
+        else this.enable(true);
+      }
+    }
+
+    /* filters, a price-category quick filter or a tag view (/collections/x/tag) */
+    filtered() {
+      const q = new URLSearchParams(location.search);
+      if ([...q.keys()].some((k) => k.startsWith('filter.'))) return true;
+      const rest = location.pathname.split('/collections/')[1] || '';
+      return rest.split('/').filter(Boolean).length > 1;
     }
 
     setUrl(on) {
@@ -154,6 +167,11 @@
     }
 
     async enable(fromUrl) {
+      // switched on in a filtered view: open the whole category instead
+      if (!fromUrl && this.filtered() && this.dataset.url) {
+        location.href = `${this.dataset.url}?mine=1`;
+        return;
+      }
       this.on = true;
       this.btn.setAttribute('aria-pressed', 'true');
       this.section.classList.add('velto-mf-on');

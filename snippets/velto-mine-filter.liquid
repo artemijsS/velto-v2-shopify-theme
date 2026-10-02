@@ -18,6 +18,7 @@
       class="velto-mf"
       data-src="{{ mine_page | strip }}?view=mine-data"
       data-coll="{{ collection.handle }}"
+      data-url="{% render 'velto-url', url: collection.url %}"
       data-all="{% if collection.handle == 'all' or collection.handle == blank %}true{% endif %}"
       data-root="{{ routes.root_url }}"
     >

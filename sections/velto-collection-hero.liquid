@@ -213,6 +213,7 @@
     document.currentScript.previousElementSibling.querySelectorAll('[data-velto-keep-query]').forEach((a) => {
       const q = new URLSearchParams(location.search);
       q.delete('page');
+      q.delete('mine');
       const qs = q.toString();
       if (qs) a.href = a.getAttribute('href').split('?')[0] + '?' + qs;
     });
