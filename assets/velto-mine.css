@@ -10,6 +10,7 @@
 }
 
 .velto-mine__app { display: grid; gap: 2.4rem; }
+.velto-mine [hidden] { display: none !important; }
 
 .velto-mine__label {
   margin: 0;

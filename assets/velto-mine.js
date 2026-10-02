@@ -32,7 +32,15 @@
     }
 
     async init() {
-      const d = JSON.parse(this.querySelector('[data-mine-data]').textContent);
+      const raw = this.querySelector('[data-mine-data]').textContent;
+      let d;
+      try {
+        d = JSON.parse(raw);
+      } catch (e) {
+        // never lose the orders because of one malformed field
+        console.error('[velto-mine] data', e);
+        d = JSON.parse(raw.replace(/"cats":\s*\{[\s\S]*?\},\s*"s":/, '"cats": {}, "s":'));
+      }
       const C = window.veltoCart || {};
       this.C = C;
       this.S = Object.assign({}, C.S || {}, d.s);

@@ -190,8 +190,7 @@
                                 if cjson != blank
                                   echo ','
                                 endif
-                                echo p.id | json
-                                echo ':'
+                                echo '"' | append: p.id | append: '":'
                                 echo ctitle | json
                               endcapture
                             endif

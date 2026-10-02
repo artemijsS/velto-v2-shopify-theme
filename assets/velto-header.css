@@ -738,6 +738,8 @@
 }
 
 .velto-subnav__quick a.velto-mine-link:hover { box-shadow: inset 0 0 0 1px rgb(var(--color-foreground)); }
+.velto-subnav__quick a.velto-mine-link.is-active { color: rgb(var(--color-background)); box-shadow: none; }
+.velto-mnav__chip.velto-mnav__chip--mine.is-active { color: rgb(var(--color-background)); border-color: rgb(var(--color-foreground)); }
 
 .velto-mnav__chip.velto-mnav__chip--mine {
   gap: 0.6rem;
