@@ -7,7 +7,18 @@
 (() => {
   if (customElements.get('velto-qa')) return;
 
-  const S = window.veltoQAStrings || {};
+  // translations come HTML-escaped from the `t` filter (' → &#39;) — decode for textContent
+  const unesc = (o) => {
+    const ta = document.createElement('textarea');
+    Object.keys(o || {}).forEach((k) => {
+      if (typeof o[k] === 'string' && o[k].includes('&')) {
+        ta.innerHTML = o[k];
+        o[k] = ta.value;
+      }
+    });
+    return o;
+  };
+  const S = unesc(window.veltoQAStrings || {});
   const map = (window.veltoCartQty = window.veltoCartQty || {});
   const lang = (document.documentElement.lang || 'lv').split('-')[0];
   let plural;

@@ -6,6 +6,17 @@
 (() => {
   if (customElements.get('velto-mine')) return;
 
+  // translations come HTML-escaped from the `t` filter (' → &#39;) — decode for textContent
+  const unesc = (o) => {
+    const ta = document.createElement('textarea');
+    Object.keys(o || {}).forEach((k) => {
+      if (typeof o[k] === 'string' && o[k].includes('&')) {
+        ta.innerHTML = o[k];
+        o[k] = ta.value;
+      }
+    });
+    return o;
+  };
   const RANGES = [50, 100, 250];
   const esc = (s) =>
     String(s == null ? '' : s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]);
@@ -35,7 +46,7 @@
       const d = this.parse(this.querySelector('[data-mine-data]').textContent);
       const C = window.veltoCart || {};
       this.C = C;
-      this.S = Object.assign({}, C.S || {}, d.s);
+      this.S = unesc(Object.assign({}, C.S || {}, d.s));
       this.lang = (d.s.lang || document.documentElement.lang || 'lv').split('-')[0];
       this.root = (d.root || '/').replace(/\/$/, '');
       this.money = C.money || ((c) => (c / 100).toFixed(2).replace('.', ',') + ' €');
@@ -298,17 +309,11 @@
       } catch (e) {
         rel = this.fmtDate(v[0].date);
       }
-      let since;
-      try {
-        since = new Intl.DateTimeFormat(this.lang, { month: 'long', year: 'numeric' }).format(first);
-      } catch (e) {
-        since = first.getFullYear();
-      }
       const tile = (label, value, sub) =>
         `<div class="velto-mine__stat"><p class="velto-mine__label">${esc(label)}</p><p class="velto-mine__stat-v">${esc(value)}</p><p class="velto-mine__stat-sub">${esc(sub)}</p></div>`;
       const el = this.slot('stats');
       el.innerHTML =
-        tile(this.S.stat_orders, v.length, this.S.stat_since.replace('[date]', since)) +
+        tile(this.S.stat_orders, v.length, this.S.stat_first.replace('[date]', this.fmtDate(first, true))) +
         tile(this.S.stat_spent, this.money(spent), this.S.stat_avg.replace('[amount]', this.money(Math.round(spent / v.length)))) +
         tile(this.S.stat_items, qty, this.S.distinct.replace('[count]', this.items.length)) +
         tile(this.S.last_order, rel, this.fmtDate(v[0].date, true));

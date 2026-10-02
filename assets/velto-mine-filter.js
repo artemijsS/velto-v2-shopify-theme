@@ -38,6 +38,17 @@
   else place();
   matchMedia('(min-width: 750px)').addEventListener('change', place);
 
+  // translations come HTML-escaped from the `t` filter (' → &#39;) — decode for textContent
+  const unesc = (o) => {
+    const ta = document.createElement('textarea');
+    Object.keys(o || {}).forEach((k) => {
+      if (typeof o[k] === 'string' && o[k].includes('&')) {
+        ta.innerHTML = o[k];
+        o[k] = ta.value;
+      }
+    });
+    return o;
+  };
   const CACHE = 'velto:mine-data';
   const TTL = 10 * 60 * 1000;
   const MAX_CARDS = 60;
@@ -53,7 +64,7 @@
     connectedCallback() {
       if (this._init) return;
       this._init = true;
-      this.S = JSON.parse(this.querySelector('[data-mf-strings]').textContent);
+      this.S = unesc(JSON.parse(this.querySelector('[data-mf-strings]').textContent));
       this.btn = this.querySelector('[data-mf-toggle]');
       this.root = (this.dataset.root || '/').replace(/\/$/, '');
       this.section = this.closest('.shopify-section') || document.body;

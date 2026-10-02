@@ -22,7 +22,7 @@
       data-all="{% if collection.handle == 'all' or collection.handle == blank %}true{% endif %}"
       data-root="{{ routes.root_url }}"
     >
-      <button type="button" class="velto-mf__toggle" aria-pressed="false" title="{{ 'velto.mine.filter_hint' | t | escape }}" data-mf-toggle>
+      <button type="button" class="velto-mf__toggle" aria-pressed="false" title="{{ 'velto.mine.filter_hint' | t }}" data-mf-toggle>
         <span class="velto-mf__icon">{{ icon }}</span>
         <span class="velto-mf__label">{{ 'velto.mine.nav_label' | t }}</span>
       </button>
@@ -45,7 +45,7 @@
       endcapture
       assign enc = back | url_encode
     -%}
-    <a class="velto-mf velto-mf__toggle" href="/customer_authentication/login?locale={{ request.locale.iso_code }}&return_to={{ enc }}" title="{{ 'velto.mine.filter_guest' | t | escape }}">
+    <a class="velto-mf velto-mf__toggle" href="/customer_authentication/login?locale={{ request.locale.iso_code }}&return_to={{ enc }}" title="{{ 'velto.mine.filter_guest' | t }}">
       <span class="velto-mf__icon">{{ icon }}</span>
       <span class="velto-mf__label">{{ 'velto.mine.nav_label' | t }}</span>
     </a>

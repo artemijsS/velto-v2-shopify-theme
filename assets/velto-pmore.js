@@ -14,7 +14,18 @@
   const pid = String(root.dataset.pid);
   const limit = parseInt(root.dataset.limit) || 12;
   const base = root.dataset.root || '';
-  const S = JSON.parse(root.querySelector('[data-pmore-strings]').textContent);
+  // translations come HTML-escaped from the `t` filter (' → &#39;) — decode for textContent
+  const unesc = (o) => {
+    const ta = document.createElement('textarea');
+    Object.keys(o || {}).forEach((k) => {
+      if (typeof o[k] === 'string' && o[k].includes('&')) {
+        ta.innerHTML = o[k];
+        o[k] = ta.value;
+      }
+    });
+    return o;
+  };
+  const S = unesc(JSON.parse(root.querySelector('[data-pmore-strings]').textContent));
   const RECENT = 'velto:recent';
   const MINE = 'velto:mine-data';
   const TTL = 10 * 60 * 1000;

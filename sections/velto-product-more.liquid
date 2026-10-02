@@ -83,7 +83,7 @@
         <a class="velto-pmore__all" href="{{ cat_url | strip }}">{{ 'velto.pmore.see_all' | t }} <span aria-hidden="true">→</span></a>
         {{ arrows }}
       </div>
-      <ul class="velto-pmore__list" role="list" aria-label="{{ 'velto.pmore.category' | t: name: cat_name | escape }}"></ul>
+      <ul class="velto-pmore__list" role="list" aria-label="{{ 'velto.pmore.category' | t: name: cat_name }}"></ul>
     </section>
   {%- endif -%}
 
@@ -94,7 +94,7 @@
         <a class="velto-pmore__all" href="{{ mine_page | strip }}">{{ 'velto.pmore.mine_all' | t }} <span aria-hidden="true">→</span></a>
         {{ arrows }}
       </div>
-      <ul class="velto-pmore__list" role="list" aria-label="{{ 'velto.pmore.mine' | t | escape }}"></ul>
+      <ul class="velto-pmore__list" role="list" aria-label="{{ 'velto.pmore.mine' | t }}"></ul>
     </section>
   {%- endif -%}
 
@@ -106,7 +106,7 @@
         <a class="velto-pmore__all" href="{{ brand_url }}">{{ 'velto.pmore.see_all' | t }} <span aria-hidden="true">→</span></a>
         {{ arrows }}
       </div>
-      <ul class="velto-pmore__list" role="list" aria-label="{{ 'velto.pmore.brand' | t: brand: product.vendor | escape }}"></ul>
+      <ul class="velto-pmore__list" role="list" aria-label="{{ 'velto.pmore.brand' | t: brand: product.vendor }}"></ul>
     </section>
   {%- endif -%}
 
@@ -116,7 +116,7 @@
         <h2 class="velto-pmore__title">{{ 'velto.pmore.recent' | t }}</h2>
         {{ arrows }}
       </div>
-      <ul class="velto-pmore__list" role="list" aria-label="{{ 'velto.pmore.recent' | t | escape }}"></ul>
+      <ul class="velto-pmore__list" role="list" aria-label="{{ 'velto.pmore.recent' | t }}"></ul>
     </section>
   {%- endif -%}
 
