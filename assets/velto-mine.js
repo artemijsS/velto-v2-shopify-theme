@@ -6,6 +6,7 @@
 (() => {
   if (customElements.get('velto-mine')) return;
 
+  const RANGES = [50, 100, 250];
   const esc = (s) =>
     String(s == null ? '' : s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]);
   const ICON_REORDER =
@@ -20,16 +21,18 @@
       else document.addEventListener('DOMContentLoaded', go, { once: true });
     }
 
-    async init() {
-      const raw = this.querySelector('[data-mine-data]').textContent;
-      let d;
+    parse(raw) {
       try {
-        d = JSON.parse(raw);
+        return JSON.parse(raw);
       } catch (e) {
         // never lose the orders because of one malformed field
         console.error('[velto-mine] data', e);
-        d = JSON.parse(raw.replace(/"cats":\s*\{[\s\S]*?\},\s*"s":/, '"cats": {}, "s":'));
+        return JSON.parse(raw.replace(/"cats":\s*\{[\s\S]*?\},\s*"s":/, '"cats": {}, "s":'));
       }
+    }
+
+    async init() {
+      const d = this.parse(this.querySelector('[data-mine-data]').textContent);
       const C = window.veltoCart || {};
       this.C = C;
       this.S = Object.assign({}, C.S || {}, d.s);
@@ -38,24 +41,86 @@
       this.money = C.money || ((c) => (c / 100).toFixed(2).replace('.', ',') + ' €');
       this.variants = d.variants || {};
       this.cats = d.cats || {};
-      const orders = (d.orders || []).map((o) => Object.assign(o, { date: new Date(o.d) }));
-      orders.sort((a, b) => b.date - a.date);
-      this.orders = orders;
-      this.valid = orders.filter((o) => !o.x);
+      this.sid = d.sid;
+      this.all = (d.orders || []).map((o) => Object.assign(o, { date: new Date(o.d) }));
+      this.total = Math.max(d.total || 0, this.all.length);
+      this.pages = { 1: true };
+
+      // how many orders to analyse: 50 (one page, already here) / 100 / 250
+      let range = 50;
+      try {
+        range = parseInt(localStorage.getItem('velto:mine-range')) || 50;
+      } catch (e) {}
+      this.range = RANGES.includes(range) ? range : 50;
+      if (this.range > 50 && this.total > 50) await this.ensure(this.range);
+
+      this.slot('period').addEventListener('click', (e) => {
+        const b = e.target.closest('[data-range]');
+        if (b && !b.classList.contains('is-active')) this.setRange(parseInt(b.dataset.range), b);
+      });
+
+      this.render();
+      if (C.refresh) C.refresh();
+    }
+
+    render() {
+      this.all.sort((a, b) => b.date - a.date);
+      this.orders = this.all.slice(0, this.range);
+      this.valid = this.orders.filter((o) => !o.x);
 
       if (!this.valid.length) {
-        this.slot('empty').hidden = false;
+        this.querySelectorAll('[data-slot]').forEach((s) => (s.hidden = s.dataset.slot !== 'empty'));
         return;
       }
-
+      this.slot('empty').hidden = true;
       this.aggregate();
       this.renderLast();
-      this.renderPeriod(orders.length >= 50);
+      this.renderPeriod();
       this.renderStats();
       if (this.valid.length >= 2) this.renderInsights();
-      this.renderAgain();
+      else this.slot('insights').hidden = true;
       this.renderHistory();
-      if (C.refresh) C.refresh();
+      this.renderAgain();
+    }
+
+    /* older orders: the same section, next pages (Section Rendering API) */
+    loadPage(p) {
+      const url = `${location.pathname}?section_id=${encodeURIComponent(this.sid)}&page=${p}`;
+      return fetch(url)
+        .then((r) => r.text())
+        .then((html) => {
+          const s = new DOMParser().parseFromString(html, 'text/html').querySelector('[data-mine-data]');
+          if (!s) return;
+          const d = this.parse(s.textContent);
+          Object.assign(this.variants, d.variants || {});
+          Object.assign(this.cats, d.cats || {});
+          const have = new Set(this.all.map((o) => o.n));
+          (d.orders || []).forEach((o) => {
+            if (have.has(o.n)) return;
+            o.date = new Date(o.d);
+            this.all.push(o);
+          });
+          this.pages[p] = true;
+        });
+    }
+
+    ensure(range) {
+      const need = Math.ceil(Math.min(range, this.total) / 50);
+      const jobs = [];
+      for (let p = 2; p <= need; p++) if (!this.pages[p]) jobs.push(this.loadPage(p));
+      return Promise.all(jobs).catch((e) => console.error('[velto-mine] load', e));
+    }
+
+    async setRange(n, btn) {
+      btn.classList.add('is-busy');
+      this.slot('period').setAttribute('aria-busy', 'true');
+      await this.ensure(n);
+      this.range = n;
+      try {
+        localStorage.setItem('velto:mine-range', n);
+      } catch (e) {}
+      this.slot('period').removeAttribute('aria-busy');
+      this.render();
     }
 
     slot(name) {
@@ -193,16 +258,30 @@
     }
 
     /* ---------- the period the numbers cover ---------- */
-    renderPeriod(capped) {
+    renderPeriod() {
       const v = this.valid;
       const el = this.slot('period');
       const from = this.fmtDate(v[v.length - 1].date, true);
       const to = this.fmtDate(v[0].date, true);
-      el.innerHTML =
-        '<svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="3" y="4.5" width="14" height="12.5" rx="2"/><path d="M3 8.5h14M7 2.5v4M13 2.5v4" stroke-linecap="round"/></svg>' +
-        `<span>${esc(this.S.period.replace('[from]', from).replace('[to]', to).replace('[count]', v.length))}${
-          capped ? ' · ' + esc(this.S.period_cap) : ''
-        }</span>`;
+      const shown = this.orders.length;
+      let text = this.S.period.replace('[from]', from).replace('[to]', to).replace('[count]', v.length);
+      if (this.total > shown) text += ' ' + this.S.period_cap.replace('[total]', this.total);
+      let html =
+        '<span class="velto-mine__period-text"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="3" y="4.5" width="14" height="12.5" rx="2"/><path d="M3 8.5h14M7 2.5v4M13 2.5v4" stroke-linecap="round"/></svg>' +
+        `<span>${esc(text)}</span></span>`;
+      if (this.total > 50) {
+        const opts = RANGES.filter((n, i) => i === 0 || this.total > RANGES[i - 1]);
+        html +=
+          `<span class="velto-mine__range" role="group" aria-label="${esc(this.S.range_label)}"><span>${esc(this.S.range_label)}</span>` +
+          opts
+            .map((n) => {
+              const label = n >= this.total ? `${this.S.range_all} (${this.total})` : n;
+              return `<button type="button" data-range="${n}"${n === this.range ? ' class="is-active" aria-pressed="true"' : ' aria-pressed="false"'}>${esc(label)}</button>`;
+            })
+            .join('') +
+          '</span>';
+      }
+      el.innerHTML = html;
       el.hidden = false;
     }
 
@@ -346,8 +425,9 @@
           </div>`);
       }
 
-      if (!cards.length) return;
       const el = this.slot('insights');
+      el.hidden = true;
+      if (!cards.length) return;
       el.innerHTML = cards.join('');
       el.dataset.count = cards.length;
       el.hidden = false;
@@ -362,7 +442,7 @@
       const input = el.querySelector('[data-filter]');
       const tpl = this.querySelector('template[data-qa-tpl]');
       const PAGE = 24;
-      let sort = 'freq';
+      const st = (this._again = this._again || { sort: 'freq' });
       let shown = PAGE;
 
       const rows = this.items.map((a) => {
@@ -416,27 +496,34 @@
         const avail = (r) => (this.variants[r.a.v] && this.variants[r.a.v].a ? 0 : 1);
         const list2 = rows
           .filter((r) => !q || r.key.includes(q))
-          .sort((x, y) => avail(x) - avail(y) || sorters[sort](x, y));
+          .sort((x, y) => avail(x) - avail(y) || sorters[st.sort](x, y));
         list.replaceChildren(...list2.slice(0, shown).map((r) => r.li));
         more.hidden = list2.length <= shown;
         none.hidden = list2.length > 0;
       };
 
-      el.querySelectorAll('[data-sort]').forEach((b) =>
-        b.addEventListener('click', () => {
-          sort = b.dataset.sort;
-          el.querySelectorAll('[data-sort]').forEach((x) => x.classList.toggle('is-active', x === b));
-          draw();
-        })
-      );
-      input.addEventListener('input', () => {
-        shown = PAGE;
+      this._drawAgain = (reset) => {
+        if (reset) shown = PAGE;
         draw();
-      });
-      more.addEventListener('click', () => {
+      };
+      if (!st.bound) {
+        st.bound = true;
+        el.querySelectorAll('[data-sort]').forEach((b) =>
+          b.addEventListener('click', () => {
+            st.sort = b.dataset.sort;
+            el.querySelectorAll('[data-sort]').forEach((x) => x.classList.toggle('is-active', x === b));
+            this._drawAgain();
+          })
+        );
+        input.addEventListener('input', () => this._drawAgain(true));
+        more.addEventListener('click', () => {
+          this._againMore();
+        });
+      }
+      this._againMore = () => {
         shown += PAGE;
         draw();
-      });
+      };
       draw();
       el.hidden = false;
     }
@@ -472,6 +559,7 @@
         act.appendChild(this.reorderBtn(o, this.S.reorder_short, 'velto-mine__btn--ghost'));
         return li;
       });
+      el.querySelectorAll(':scope > .velto-mine__more').forEach((b) => b.remove());
       const btn = document.createElement('button');
       btn.type = 'button';
       btn.className = 'velto-mine__more';

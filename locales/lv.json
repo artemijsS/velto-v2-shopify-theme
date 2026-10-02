@@ -842,9 +842,11 @@
       "empty_text": "Pēc pirmā pasūtījuma šeit varēsi to atkārtot ar vienu klikšķi un redzēt, ko pērc visbiežāk.",
       "to_catalog": "Uz katalogu",
       "period": "Dati par periodu [from] – [to] · pasūtījumi: [count]",
-      "period_cap": "ņemti vērā pēdējie 50",
+      "period_cap": "no [total]",
       "cat_hint": "Pēc nopirkto preču skaita",
-      "month_hint": "Pēdējie 6 mēneši"
+      "month_hint": "Pēdējie 6 mēneši",
+      "range_label": "Rādīt pēdējos:",
+      "range_all": "Visus"
     }
   }
 }

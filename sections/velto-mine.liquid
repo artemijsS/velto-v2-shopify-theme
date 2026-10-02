@@ -123,6 +123,7 @@
           "orders": [
             {%- if customer -%}
               {%- paginate customer.orders by 50 -%}
+                {%- assign mine_total = paginate.items -%}
                 {%- for order in customer.orders -%}
                   {%- unless forloop.first -%},{%- endunless -%}
                   {"n":{{ order.name | json }},"d":{{ order.created_at | date: '%Y-%m-%dT%H:%M:%S%z' | json }},"t":{{ order.total_price | default: 0 }},"x":{% if order.cancelled %}true{% else %}false{% endif %},"u":{{ order.customer_url | json }},"i":[
@@ -135,7 +136,7 @@
                         assign img = li.image | default: li.product.featured_image
                       -%}
                       {%- unless first -%},{%- endunless -%}{%- assign first = false -%}
-                      {"v":{{ li.variant_id | default: 0 }},"q":{{ li.quantity }},"p":{{ li.final_price }},"t":{{ li.title | json }},"img":{% if img %}{{ img | image_url: width: 160 | json }}{% else %}null{% endif %}}
+                      {"v":{{ li.variant_id | default: 0 }},"q":{{ li.quantity }},"p":{{ li.final_price }}{% unless li.variant and li.product %},"t":{{ li.title | json }},"img":{% if img %}{{ img | image_url: width: 160 | json }}{% else %}null{% endif %}{% endunless %}}
                       {%- liquid
                         assign v = li.variant
                         assign key = ',' | append: li.variant_id | append: ','
@@ -247,6 +248,8 @@
               {%- endpaginate -%}
             {%- endif -%}
           ],
+          "total": {{ mine_total | default: 0 }},
+          "sid": {{ section.id | json }},
           "variants": { {{- vjson -}} },
           "cats": { {{- cjson -}} },
           "s": {
@@ -275,6 +278,8 @@
             "other": {{ 'velto.mine.other' | t | json }},
             "period": {{ 'velto.mine.period' | t | json }},
             "period_cap": {{ 'velto.mine.period_cap' | t | json }},
+            "range_label": {{ 'velto.mine.range_label' | t | json }},
+            "range_all": {{ 'velto.mine.range_all' | t | json }},
             "cat_hint": {{ 'velto.mine.cat_hint' | t | json }},
             "month_hint": {{ 'velto.mine.month_hint' | t | json }}
           }

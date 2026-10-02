@@ -550,3 +550,28 @@ a.velto-mine__bar-row:hover .velto-mine__bar-name { text-decoration: underline; 
 }
 
 .velto-mine__period svg { width: 1.6rem; height: 1.6rem; flex: 0 0 auto; }
+
+.velto-mine__period { flex-wrap: wrap; justify-content: space-between; gap: 1rem 2rem; }
+.velto-mine__period-text { display: flex; align-items: center; gap: 0.8rem; }
+.velto-mine__period[aria-busy] { cursor: progress; }
+
+.velto-mine__range { display: inline-flex; align-items: center; gap: 0.4rem; }
+.velto-mine__range > span { margin-right: 0.4rem; }
+
+.velto-mine__range button {
+  min-height: 3.2rem;
+  padding: 0 1.2rem;
+  border: 1px solid rgba(var(--color-foreground), 0.2);
+  border-radius: 4rem;
+  background: transparent;
+  color: rgba(var(--color-foreground), 0.8);
+  font-family: var(--font-body-family);
+  font-size: 1.25rem;
+  font-weight: 600;
+  cursor: pointer;
+  touch-action: manipulation;
+}
+
+.velto-mine__range button:hover { border-color: rgb(var(--color-foreground)); }
+.velto-mine__range button.is-active { border-color: rgb(var(--color-foreground)); background: rgb(var(--color-foreground)); color: rgb(var(--color-background)); }
+.velto-mine__range button.is-busy { opacity: 0.5; cursor: progress; }

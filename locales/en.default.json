@@ -829,9 +829,11 @@
       "empty_text": "After your first order you'll be able to repeat it in one tap here and see what you buy most.",
       "to_catalog": "Browse the catalogue",
       "period": "Data for [from] – [to] · orders: [count]",
-      "period_cap": "latest 50 included",
+      "period_cap": "of [total]",
       "cat_hint": "By number of items bought",
-      "month_hint": "Last 6 months"
+      "month_hint": "Last 6 months",
+      "range_label": "Show latest:",
+      "range_all": "All"
     }
   }
 }
