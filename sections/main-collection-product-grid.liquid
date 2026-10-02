@@ -121,6 +121,9 @@
           </aside>
         {%- endif -%}
 
+        {%- if settings.velto_mine_enable -%}
+          {% render 'velto-mine-filter', collection: collection %}
+        {%- endif -%}
         <div
           class="product-grid-container{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}"
           id="ProductGridContainer"

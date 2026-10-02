@@ -846,7 +846,15 @@
       "cat_hint": "Pēc nopirkto preču skaita",
       "month_hint": "Pēdējie 6 mēneši",
       "range_label": "Rādīt pēdējos:",
-      "range_all": "Visus"
+      "range_all": "Visus",
+      "filter_hint": "Tikai tas, ko jau esi pircis — biežāk pirktie pirmie",
+      "filter_status": "Tavi pirkumi šajā kategorijā: [count]",
+      "filter_empty": "Šajā kategorijā vēl neesi neko pircis.",
+      "filter_loading": "Meklējam tavus pirkumus…",
+      "filter_error": "Neizdevās ielādēt pirkumus. Mēģini vēlreiz.",
+      "filter_show_all": "Rādīt visas preces",
+      "filter_guest": "Pieslēdzies, lai redzētu tikai savas pirktās preces",
+      "bought_times": "Pirkts [count]×"
     }
   }
 }

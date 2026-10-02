@@ -833,7 +833,15 @@
       "cat_hint": "By number of items bought",
       "month_hint": "Last 6 months",
       "range_label": "Show latest:",
-      "range_all": "All"
+      "range_all": "All",
+      "filter_hint": "Only what you've bought before — most frequent first",
+      "filter_status": "Your purchases in this category: [count]",
+      "filter_empty": "You haven't bought anything in this category yet.",
+      "filter_loading": "Finding your purchases…",
+      "filter_error": "Couldn't load your purchases. Please try again.",
+      "filter_show_all": "Show all products",
+      "filter_guest": "Sign in to see only the products you buy",
+      "bought_times": "Bought [count]×"
     }
   }
 }

@@ -208,6 +208,8 @@
                             echo p.title | json
                             echo ',"vt":'
                             echo vt | json
+                            echo ',"col":'
+                            echo p.collections | map: 'handle' | json
                             echo ',"u":'
                             echo p.url | json
                             echo ',"img":'

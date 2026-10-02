@@ -1,0 +1,126 @@
+/* Velto — "Mani pirkumi" filter on collection pages. */
+
+.velto-mf {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.8rem 1.4rem;
+  margin-bottom: 1.6rem;
+}
+
+.velto-mf velto-mine-filter { display: contents; }
+
+.velto-mf__toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.8rem;
+  min-height: 4.4rem;
+  padding: 0 0.8rem 0 1.4rem;
+  border: 1px solid rgba(var(--color-foreground), 0.35);
+  border-radius: 4rem;
+  background: transparent;
+  color: rgb(var(--color-foreground));
+  font-family: var(--font-body-family);
+  font-size: 1.4rem;
+  font-weight: 700;
+  text-decoration: none;
+  cursor: pointer;
+  touch-action: manipulation;
+  transition: background-color 0.18s ease, color 0.18s ease, border-color 0.18s ease;
+}
+
+.velto-mf__toggle:hover { border-color: rgb(var(--color-foreground)); }
+.velto-mf__icon { display: inline-grid; place-items: center; }
+.velto-mf__icon svg { width: 1.6rem; height: 1.6rem; }
+
+/* small switch at the end of the pill */
+.velto-mf__switch {
+  position: relative;
+  width: 3.4rem;
+  height: 2rem;
+  margin-left: 0.4rem;
+  border-radius: 2rem;
+  background: rgba(var(--color-foreground), 0.18);
+  transition: background-color 0.18s ease;
+}
+
+.velto-mf__switch::after {
+  content: '';
+  position: absolute;
+  top: 0.3rem;
+  left: 0.3rem;
+  width: 1.4rem;
+  height: 1.4rem;
+  border-radius: 50%;
+  background: rgb(var(--color-foreground));
+  transition: transform 0.18s ease, background-color 0.18s ease;
+}
+
+.velto-mf__toggle[aria-pressed='true'] {
+  border-color: rgb(var(--color-foreground));
+  background: rgb(var(--color-foreground));
+  color: rgb(var(--color-background));
+}
+
+.velto-mf__toggle[aria-pressed='true'] .velto-mf__switch { background: rgba(var(--color-background), 0.25); }
+.velto-mf__toggle[aria-pressed='true'] .velto-mf__switch::after { transform: translateX(1.4rem); background: rgb(var(--color-background)); }
+
+.velto-mf__hint { margin: 0; font-size: 1.3rem; color: rgba(var(--color-foreground), 0.6); }
+
+.velto-mf__link {
+  padding: 0;
+  border: 0;
+  background: none;
+  color: rgb(var(--color-foreground));
+  font: inherit;
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 0.3rem;
+  cursor: pointer;
+}
+
+/* filter on: hide the regular grid, filters and paging */
+.velto-mf-on .facets-wrapper,
+.velto-mf-on .facets-container,
+.velto-mf-on facet-filters-form,
+.velto-mf-on .facets-vertical > aside,
+.velto-mf-on #ProductGridContainer > .collection:not(.velto-mf__results),
+.velto-mf-on velto-load-more,
+.velto-mf-on .pagination-wrapper { display: none !important; }
+
+.velto-mf__results { position: relative; }
+
+/* "Pirkts 5×" on the card */
+.velto-mf__badge {
+  position: absolute;
+  z-index: 2;
+  top: 0.8rem;
+  left: 0.8rem;
+  padding: 0.3rem 0.8rem;
+  border-radius: 4rem;
+  background: #111;
+  color: #fff;
+  font-size: 1.1rem;
+  font-weight: 700;
+  pointer-events: none;
+}
+
+/* loading placeholders */
+.velto-mf__loading {
+  aspect-ratio: 3 / 5;
+  border-radius: var(--product-card-corner-radius, 1.2rem);
+  background: linear-gradient(90deg, rgba(var(--color-foreground), 0.05), rgba(var(--color-foreground), 0.1), rgba(var(--color-foreground), 0.05));
+  background-size: 200% 100%;
+  animation: velto-mf-shimmer 1.2s linear infinite;
+  list-style: none;
+}
+
+@keyframes velto-mf-shimmer {
+  from { background-position: 100% 0; }
+  to { background-position: -100% 0; }
+}
+
+@media screen and (max-width: 749px) {
+  .velto-mf__toggle { flex: 0 0 auto; }
+  .velto-mf__hint { flex: 1 1 14rem; }
+}
