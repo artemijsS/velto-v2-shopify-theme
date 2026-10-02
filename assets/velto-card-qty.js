@@ -248,6 +248,19 @@
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', hook);
   else hook();
 
+  /* product page / quick-add modal: replace Dawn's top "added to cart" popup
+     with the same small bottom toast the product cards use */
+  customElements.whenDefined('cart-notification').then(() => {
+    const C = customElements.get('cart-notification');
+    if (!C || C.prototype.__velto) return;
+    C.prototype.__velto = true;
+    C.prototype.renderContents = function (state) {
+      this.cartItemKey = state && state.key;
+      renderBubble(state && state.sections);
+      refresh().then((cart) => toast(S.added || '✓', cart || null));
+    };
+  });
+
   /* back/forward cache restores a stale page */
   window.addEventListener('pageshow', (e) => e.persisted && refresh());
 })();
