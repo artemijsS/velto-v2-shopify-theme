@@ -732,6 +732,7 @@
 .velto-subnav__quick a.velto-mine-link {
   gap: 0.7rem;
   margin-right: 0.4rem;
+  white-space: nowrap;
   box-shadow: inset 0 0 0 1px rgba(var(--color-foreground), 0.35);
   color: rgb(var(--color-foreground));
   font-weight: 600;

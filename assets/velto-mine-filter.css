@@ -1,59 +1,57 @@
-/* Velto — "Mani pirkumi" filter on collection pages. */
+/* Velto — "Mani pirkumi" toggle in the collection filter row. */
 
-.velto-mf {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 0.8rem 1.4rem;
-  margin-bottom: 1.6rem;
-}
+.velto-mf-home { margin-bottom: 1.6rem; }
+.velto-mf-home[hidden] { display: none; }
 
-.velto-mf velto-mine-filter { display: contents; }
+velto-mine-filter.velto-mf { display: inline-flex; flex: 0 0 auto; }
 
 .velto-mf__toggle {
   display: inline-flex;
   align-items: center;
-  gap: 0.8rem;
-  min-height: 4.4rem;
-  padding: 0 0.8rem 0 1.4rem;
-  border: 1px solid rgba(var(--color-foreground), 0.35);
+  gap: 0.7rem;
+  height: 3.6rem;
+  padding: 0 0.5rem 0 1.2rem;
+  border: 1px solid rgba(var(--color-foreground), 0.22);
   border-radius: 4rem;
-  background: transparent;
+  background: rgba(var(--color-foreground), 0.04);
   color: rgb(var(--color-foreground));
   font-family: var(--font-body-family);
-  font-size: 1.4rem;
-  font-weight: 700;
+  font-size: 1.3rem;
+  font-weight: 600;
+  line-height: 1;
+  white-space: nowrap;
   text-decoration: none;
   cursor: pointer;
   touch-action: manipulation;
   transition: background-color 0.18s ease, color 0.18s ease, border-color 0.18s ease;
 }
 
-.velto-mf__toggle:hover { border-color: rgb(var(--color-foreground)); }
+.velto-mf__toggle:hover { border-color: rgba(var(--color-foreground), 0.6); }
 .velto-mf__icon { display: inline-grid; place-items: center; }
-.velto-mf__icon svg { width: 1.6rem; height: 1.6rem; }
+.velto-mf__icon svg { width: 1.5rem; height: 1.5rem; }
 
-/* small switch at the end of the pill */
+/* mini switch */
 .velto-mf__switch {
   position: relative;
-  width: 3.4rem;
-  height: 2rem;
-  margin-left: 0.4rem;
+  flex: 0 0 auto;
+  width: 3rem;
+  height: 2.6rem;
   border-radius: 2rem;
-  background: rgba(var(--color-foreground), 0.18);
+  background: rgba(var(--color-foreground), 0.12);
   transition: background-color 0.18s ease;
 }
 
 .velto-mf__switch::after {
   content: '';
   position: absolute;
-  top: 0.3rem;
-  left: 0.3rem;
-  width: 1.4rem;
-  height: 1.4rem;
+  top: 50%;
+  left: 0.4rem;
+  width: 1.2rem;
+  height: 1.2rem;
+  margin-top: -0.6rem;
   border-radius: 50%;
-  background: rgb(var(--color-foreground));
-  transition: transform 0.18s ease, background-color 0.18s ease;
+  background: rgba(var(--color-foreground), 0.55);
+  transition: transform 0.2s ease, background-color 0.2s ease;
 }
 
 .velto-mf__toggle[aria-pressed='true'] {
@@ -62,10 +60,35 @@
   color: rgb(var(--color-background));
 }
 
-.velto-mf__toggle[aria-pressed='true'] .velto-mf__switch { background: rgba(var(--color-background), 0.25); }
-.velto-mf__toggle[aria-pressed='true'] .velto-mf__switch::after { transform: translateX(1.4rem); background: rgb(var(--color-background)); }
+.velto-mf__toggle[aria-pressed='true'] .velto-mf__switch { background: rgba(var(--color-background), 0.16); }
+.velto-mf__toggle[aria-pressed='true'] .velto-mf__switch::after { transform: translateX(1rem); background: rgb(var(--color-background)); }
 
-.velto-mf__hint { margin: 0; font-size: 1.3rem; color: rgba(var(--color-foreground), 0.6); }
+/* desktop: first item of the filter row, divided from "Filtri" */
+.facets__wrapper > .velto-mf[data-place='desk'] {
+  align-self: center;
+  margin-right: 1.4rem;
+  padding-right: 1.6rem;
+  border-right: 1px solid rgba(var(--color-foreground), 0.12);
+}
+
+/* mobile: next to "Filtrēt un kārtot" */
+.facets-container > .velto-mf[data-place='mob'] { align-self: center; margin-left: auto; }
+/* the count is already in the hero above — keep the row on one line */
+.facets-container:has(> .velto-mf[data-place='mob']) > .product-count { display: none; }
+.facets-container > .velto-mf[data-place='mob'] .velto-mf__toggle { height: 3.4rem; font-size: 1.25rem; }
+
+/* filter on: the regular grid and paging make way for the results */
+.velto-mf-on #ProductGridContainer > .collection:not(.velto-mf__results),
+.velto-mf-on velto-load-more,
+.velto-mf-on .pagination-wrapper { display: none !important; }
+
+.velto-mf__results { position: relative; }
+
+.velto-mf__status {
+  margin: 0 0 1.4rem;
+  font-size: 1.35rem;
+  color: rgba(var(--color-foreground), 0.7);
+}
 
 .velto-mf__link {
   padding: 0;
@@ -78,17 +101,6 @@
   text-underline-offset: 0.3rem;
   cursor: pointer;
 }
-
-/* filter on: hide the regular grid, filters and paging */
-.velto-mf-on .facets-wrapper,
-.velto-mf-on .facets-container,
-.velto-mf-on facet-filters-form,
-.velto-mf-on .facets-vertical > aside,
-.velto-mf-on #ProductGridContainer > .collection:not(.velto-mf__results),
-.velto-mf-on velto-load-more,
-.velto-mf-on .pagination-wrapper { display: none !important; }
-
-.velto-mf__results { position: relative; }
 
 /* "Pirkts 5×" on the card */
 .velto-mf__badge {
@@ -118,9 +130,4 @@
 @keyframes velto-mf-shimmer {
   from { background-position: 100% 0; }
   to { background-position: -100% 0; }
-}
-
-@media screen and (max-width: 749px) {
-  .velto-mf__toggle { flex: 0 0 auto; }
-  .velto-mf__hint { flex: 1 1 14rem; }
 }

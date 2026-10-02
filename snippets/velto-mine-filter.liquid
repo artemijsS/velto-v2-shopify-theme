@@ -1,32 +1,33 @@
 {%- comment -%}
-  Velto — "Mani pirkumi" toggle above the collection grid.
+  Velto — "Mani pirkumi" toggle on collection pages. Rendered above the grid,
+  then moved by assets/velto-mine-filter.js into the filter row (desktop:
+  before "Filtri", mobile: next to "Filtrēt un kārtot").
   Logged in: shows only the products of this collection the customer has
-  bought, most frequent first (assets/velto-mine-filter.js).
-  Guests: link to sign-in that returns to this collection with the filter on.
+  bought, most frequent first. Guests: sign-in that returns here with the
+  filter on.
   Params: collection
 {%- endcomment -%}
 {%- liquid
-  assign icon = '<svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3.5 10a6.5 6.5 0 0 1 11.3-4.4L16.5 7.5"/><path d="M16.5 3.5v4h-4"/><path d="M16.5 10a6.5 6.5 0 0 1-11.3 4.4L3.5 12.5"/><path d="M3.5 16.5v-4h4"/></svg>'
+  assign icon = '<svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3.5 10a6.5 6.5 0 0 1 11.3-4.4L16.5 7.5"/><path d="M16.5 3.5v4h-4"/><path d="M16.5 10a6.5 6.5 0 0 1-11.3 4.4L3.5 12.5"/><path d="M3.5 16.5v-4h4"/></svg>'
 -%}
 {{ 'velto-mine-filter.css' | asset_url | stylesheet_tag }}
-<div class="velto-mf page-width">
+<div class="velto-mf-home page-width">
   {%- if customer -%}
     {%- capture mine_page -%}{% render 'velto-mine-url', page_only: true %}{%- endcapture -%}
     <velto-mine-filter
+      class="velto-mf"
       data-src="{{ mine_page | strip }}?view=mine-data"
       data-coll="{{ collection.handle }}"
       data-all="{% if collection.handle == 'all' or collection.handle == blank %}true{% endif %}"
       data-root="{{ routes.root_url }}"
     >
-      <button type="button" class="velto-mf__toggle" aria-pressed="false" data-mf-toggle>
+      <button type="button" class="velto-mf__toggle" aria-pressed="false" title="{{ 'velto.mine.filter_hint' | t | escape }}" data-mf-toggle>
         <span class="velto-mf__icon">{{ icon }}</span>
         <span class="velto-mf__label">{{ 'velto.mine.nav_label' | t }}</span>
         <span class="velto-mf__switch" aria-hidden="true"></span>
       </button>
-      <p class="velto-mf__hint" data-mf-status>{{ 'velto.mine.filter_hint' | t }}</p>
       <script type="application/json" data-mf-strings>
         {
-          "hint": {{ 'velto.mine.filter_hint' | t | json }},
           "status": {{ 'velto.mine.filter_status' | t | json }},
           "empty": {{ 'velto.mine.filter_empty' | t | json }},
           "loading": {{ 'velto.mine.filter_loading' | t | json }},
@@ -36,7 +37,6 @@
         }
       </script>
     </velto-mine-filter>
-    <script src="{{ 'velto-mine-filter.js' | asset_url }}" defer="defer"></script>
   {%- else -%}
     {%- liquid
       capture back
@@ -45,11 +45,11 @@
       endcapture
       assign enc = back | url_encode
     -%}
-    <a class="velto-mf__toggle" href="/customer_authentication/login?locale={{ request.locale.iso_code }}&return_to={{ enc }}">
+    <a class="velto-mf velto-mf__toggle" href="/customer_authentication/login?locale={{ request.locale.iso_code }}&return_to={{ enc }}" title="{{ 'velto.mine.filter_guest' | t | escape }}">
       <span class="velto-mf__icon">{{ icon }}</span>
       <span class="velto-mf__label">{{ 'velto.mine.nav_label' | t }}</span>
       <span class="velto-mf__switch" aria-hidden="true"></span>
     </a>
-    <p class="velto-mf__hint">{{ 'velto.mine.filter_guest' | t }}</p>
   {%- endif -%}
 </div>
+<script src="{{ 'velto-mine-filter.js' | asset_url }}" defer="defer"></script>

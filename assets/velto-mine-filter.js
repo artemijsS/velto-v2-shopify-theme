@@ -9,6 +9,35 @@
 (() => {
   if (customElements.get('velto-mine-filter')) return;
 
+  /* put the toggle into the filter row: desktop — before "Filtri",
+     mobile — right after "Filtrēt un kārtot"; otherwise it stays above the grid */
+  const place = () => {
+    const el = document.querySelector('.velto-mf');
+    if (!el) return;
+    const home = document.querySelector('.velto-mf-home');
+    let target = null;
+    if (matchMedia('(min-width: 750px)').matches) {
+      const w = document.querySelector('#FacetFiltersForm .facets__wrapper');
+      if (w && getComputedStyle(w).display !== 'none') target = ['prepend', w, 'desk'];
+    } else {
+      const m = document.querySelector('.facets-container .mobile-facets__wrapper');
+      if (m) target = ['after', m, 'mob'];
+    }
+    if (target) {
+      if (el.dataset.place === target[2]) return;
+      target[1][target[0]](el);
+      el.dataset.place = target[2];
+      if (home) home.hidden = true;
+    } else if (home && el.parentElement !== home) {
+      home.appendChild(el);
+      el.dataset.place = 'home';
+      home.hidden = false;
+    }
+  };
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', place);
+  else place();
+  matchMedia('(min-width: 750px)').addEventListener('change', place);
+
   const CACHE = 'velto:mine-data';
   const TTL = 10 * 60 * 1000;
   const MAX_CARDS = 60;
@@ -26,10 +55,15 @@
       this._init = true;
       this.S = JSON.parse(this.querySelector('[data-mf-strings]').textContent);
       this.btn = this.querySelector('[data-mf-toggle]');
-      this.status = this.querySelector('[data-mf-status]');
       this.root = (this.dataset.root || '/').replace(/\/$/, '');
       this.section = this.closest('.shopify-section') || document.body;
       this.btn.addEventListener('click', () => (this.on ? this.disable() : this.enable()));
+      // a filter / sort change re-renders the grid — leave "Mani pirkumi" mode
+      const leave = (e) => {
+        if (this.on && e.target.closest && e.target.closest('facet-filters-form, .active-facets, .facets-container') && !e.target.closest('velto-mine-filter')) this.disable();
+      };
+      document.addEventListener('change', leave, true);
+      document.addEventListener('click', (e) => e.target.closest && e.target.closest('facet-remove, .active-facets a') && leave(e), true);
       if (new URLSearchParams(location.search).get('mine') === '1') this.enable(true);
     }
 
@@ -131,10 +165,13 @@
       if (!wrap) {
         wrap = document.createElement('div');
         wrap.className = 'velto-mf__results collection page-width';
-        wrap.innerHTML = `<ul class="${esc(orig && orig.tagName === 'UL' ? orig.className : 'grid product-grid grid--2-col-tablet-down grid--5-col-desktop')}" role="list"></ul>`;
+        wrap.innerHTML =
+          '<p class="velto-mf__status" role="status"></p>' +
+          `<ul class="${esc(orig && orig.tagName === 'UL' ? orig.className : 'grid product-grid grid--2-col-tablet-down grid--5-col-desktop')}" role="list"></ul>`;
         container.prepend(wrap);
       }
       const grid = wrap.querySelector('ul');
+      this.status = wrap.querySelector('.velto-mf__status');
       grid.innerHTML = '<li class="velto-mf__loading"></li>'.repeat(5);
       this.status.textContent = this.S.loading;
       const token = (this.token = {});
@@ -146,12 +183,14 @@
         if (!list.length) {
           grid.innerHTML = '';
           this.status.innerHTML = `${esc(this.S.empty)} <button type="button" class="velto-mf__link" data-mf-off>${esc(this.S.show_all)}</button>`;
+          this.status.classList.add('is-empty');
           this.status.querySelector('[data-mf-off]').addEventListener('click', () => this.disable());
           return;
         }
         const n = await this.cards(list, grid);
         if (token !== this.token) return;
-        this.status.textContent = this.S.status.replace('[count]', n);
+        this.status.innerHTML = `${esc(this.S.status.replace('[count]', n))} · <button type="button" class="velto-mf__link" data-mf-off>${esc(this.S.show_all)}</button>`;
+        this.status.querySelector('[data-mf-off]').addEventListener('click', () => this.disable());
         if (window.veltoCart && window.veltoCart.refresh) window.veltoCart.refresh();
       } catch (e) {
         console.error('[velto-mine-filter]', e);
@@ -167,7 +206,6 @@
       this.btn.setAttribute('aria-pressed', 'false');
       this.section.classList.remove('velto-mf-on');
       this.section.querySelector('.velto-mf__results')?.remove();
-      this.status.textContent = this.S.hint;
       this.setUrl(false);
     }
   }
