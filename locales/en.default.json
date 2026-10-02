@@ -839,7 +839,7 @@
       "filter_error": "Could not load your purchases. Please try again.",
       "filter_show_all": "Show all products",
       "filter_guest": "Sign in to see the products you have bought",
-      "bought_times": "Bought [count]×",
+      "bought_times": "Ordered [count]×",
       "stat_first": "First order: [date]"
     },
     "pmore": {

@@ -852,7 +852,7 @@
       "filter_error": "Neizdevās ielādēt pirkumus. Mēģini vēlreiz.",
       "filter_show_all": "Rādīt visas preces",
       "filter_guest": "Pieslēdzies, lai redzētu preces, ko jau pirki",
-      "bought_times": "Pirkta [count]×",
+      "bought_times": "Pasūtīji [count]×",
       "stat_first": "Pirmais pasūtījums: [date]"
     },
     "pmore": {
