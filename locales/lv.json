@@ -871,6 +871,18 @@
         "many": "Pasūtīji [count] reizes · pēdējoreiz [date]",
         "other": "Pasūtīji [count] reizes · pēdējoreiz [date]"
       }
+    },
+    "account": {
+      "label": "Mans konts",
+      "close": "Aizvērt",
+      "orders": "Pasūtījumi un to statuss",
+      "profile": "Profils un adreses",
+      "logout": "Iziet",
+      "guest_title": "Tavs Velto konts",
+      "guest_text": "Parole nav vajadzīga: ievadi e-pastu, un mēs atsūtīsim vienreizēju kodu.",
+      "perk_reorder": "Atkārto pasūtījumu ar vienu klikšķi",
+      "perk_stats": "Redzi, ko pērc visbiežāk",
+      "perk_status": "Seko līdzi pasūtījumu statusam"
     }
   }
 }

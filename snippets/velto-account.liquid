@@ -1,0 +1,90 @@
+{%- comment -%}
+  Velto — account button + popup in the header (replaces Shopify's
+  <shopify-account> widget, whose texts and look can't be styled).
+  Logged in: greeting, "Mani pirkumi", orders, profile, sign out.
+  Guests: passwordless sign-in / sign-up that returns to the current page.
+  Logic: assets/velto-account.js
+{%- endcomment -%}
+{%- liquid
+  if customer
+    assign initial = customer.first_name | default: customer.email | strip | slice: 0 | upcase
+  endif
+  assign back = request.path | url_encode
+-%}
+<velto-account class="header__icon header__icon--account velto-acc">
+  <button
+    type="button"
+    class="velto-acc__btn link focus-inset"
+    aria-expanded="false"
+    aria-controls="VeltoAccount"
+    aria-haspopup="dialog"
+  >
+    {%- if customer -%}
+      <span class="velto-acc__avatar" aria-hidden="true">{{ initial }}</span>
+      <span class="visually-hidden">{{ 'velto.account.label' | t }}</span>
+    {%- else -%}
+      <span class="svg-wrapper">{{ 'icon-account.svg' | inline_asset_content }}</span>
+      <span class="visually-hidden">{{ 'customer.log_in' | t }}</span>
+    {%- endif -%}
+  </button>
+
+  <div class="velto-acc__panel color-scheme-1" id="VeltoAccount" role="dialog" aria-label="{{ 'velto.account.label' | t }}" hidden>
+    <button type="button" class="velto-acc__close" data-acc-close aria-label="{{ 'velto.account.close' | t }}">
+      <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><path d="m5 5 10 10M15 5 5 15"/></svg>
+    </button>
+
+    {%- if customer -%}
+      <div class="velto-acc__head">
+        <span class="velto-acc__avatar velto-acc__avatar--lg" aria-hidden="true">{{ initial }}</span>
+        <div class="velto-acc__who">
+          <p class="velto-acc__hi">
+            {%- if customer.first_name != blank -%}
+              {{ 'velto.mine.hello' | t: name: customer.first_name }}
+            {%- else -%}
+              {{ 'velto.account.label' | t }}
+            {%- endif -%}
+          </p>
+          <p class="velto-acc__mail">{{ customer.email }}</p>
+        </div>
+      </div>
+
+      {%- if settings.velto_mine_enable -%}
+        <a class="velto-acc__feature" href="{% render 'velto-mine-url' %}">
+          <span class="velto-acc__feature-icon" aria-hidden="true"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 10a6.5 6.5 0 0 1 11.3-4.4L16.5 7.5"/><path d="M16.5 3.5v4h-4"/><path d="M16.5 10a6.5 6.5 0 0 1-11.3 4.4L3.5 12.5"/><path d="M3.5 16.5v-4h4"/></svg></span>
+          <span class="velto-acc__feature-body">
+            <strong>{{ 'velto.mine.nav_label' | t }}</strong>
+            <span>{{ 'velto.mine.nav_hint' | t }}</span>
+          </span>
+          <span class="velto-acc__arrow" aria-hidden="true">→</span>
+        </a>
+      {%- endif -%}
+
+      <nav class="velto-acc__links" aria-label="{{ 'velto.account.label' | t }}">
+        <a href="{{ routes.account_url }}">
+          <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" aria-hidden="true"><path d="M4 5.5h12l-1 10.5H5L4 5.5Z"/><path d="M7.5 8V4.8a2.5 2.5 0 0 1 5 0V8" stroke-linecap="round"/></svg>
+          <span>{{ 'velto.account.orders' | t }}</span>
+        </a>
+        <a href="{{ routes.account_profile_url }}">
+          {{- 'icon-account.svg' | inline_asset_content -}}
+          <span>{{ 'velto.account.profile' | t }}</span>
+        </a>
+      </nav>
+
+      <a class="velto-acc__logout" href="{{ routes.account_logout_url }}">
+        <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 4H5a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h3M13 13.5 16.5 10 13 6.5M16.5 10H8"/></svg>
+        {{ 'velto.account.logout' | t }}
+      </a>
+    {%- else -%}
+      <p class="velto-acc__title">{{ 'velto.account.guest_title' | t }}</p>
+      <p class="velto-acc__text">{{ 'velto.account.guest_text' | t }}</p>
+      <ul class="velto-acc__perks" role="list">
+        <li>{{ 'velto.account.perk_reorder' | t }}</li>
+        <li>{{ 'velto.account.perk_stats' | t }}</li>
+        <li>{{ 'velto.account.perk_status' | t }}</li>
+      </ul>
+      <a class="velto-acc__cta" href="/customer_authentication/login?locale={{ request.locale.iso_code }}&return_to={{ back }}">
+        {{- 'velto.mine.login' | t -}}
+      </a>
+    {%- endif -%}
+  </div>
+</velto-account>

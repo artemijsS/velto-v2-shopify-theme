@@ -858,6 +858,18 @@
         "many": "Ordered [count] times · last on [date]",
         "other": "Ordered [count] times · last on [date]"
       }
+    },
+    "account": {
+      "label": "My account",
+      "close": "Close",
+      "orders": "Orders and their status",
+      "profile": "Profile and addresses",
+      "logout": "Sign out",
+      "guest_title": "Your Velto account",
+      "guest_text": "No password needed: enter your e-mail and we will send you a one-time code.",
+      "perk_reorder": "Reorder in one tap",
+      "perk_stats": "See what you buy most",
+      "perk_status": "Track your orders"
     }
   }
 }
