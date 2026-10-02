@@ -84,7 +84,7 @@
   max-width: 100%;
   align-items: center;
   gap: 0.7rem;
-  margin: 1rem 0 0.4rem;
+  margin: 1.4rem 0 0;
   padding: 0.6rem 1.2rem;
   border-radius: 4rem;
   background: rgba(var(--color-foreground), 0.07);

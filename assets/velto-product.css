@@ -85,16 +85,22 @@
 
 /* grid margins don't collapse → explicit rhythm instead of Dawn's `> * + *` margins */
 .product .product__info-container > * { margin-top: 0; margin-bottom: 0; }
-.product .product__info-container > .velto-pcrumbs { margin-bottom: 1.6rem; }
-.product .product__info-container > .product__text { margin-bottom: 0.4rem; }
-.product .product__info-container > .product__title { margin-bottom: 1.2rem; }
+.product .product__info-container > .velto-pcrumbs { margin-bottom: 2rem; }
+.product .product__info-container > .product__text { margin-bottom: 0.6rem; }
+.product .product__info-container > .product__title { margin-bottom: 1.6rem; }
 .product .product__info-container > .velto-pbadges { margin-bottom: 1.6rem; }
-.product .product__info-container > .product__tax { margin-top: 0.4rem; }
+.product .product__info-container > .product__tax { margin-top: 0.6rem; }
+
+/* price: no hidden space from Dawn's margins / tall line box */
+.product .product__info-container [id^='price-'] .price { margin: 0; }
+.product .product__info-container [id^='price-'] .price__container { margin-bottom: 0; align-items: baseline; }
+.product .product__info-container [id^='price-'] .price-item { line-height: 1.1; }
+.product .product__info-container [id^='price-'] .unit-price { line-height: 1.2; }
 .product .product__info-container > variant-selects,
 .product .product__info-container > variant-radios { margin-top: 2rem; }
 .product .product__info-container > div:has(> form.installment):not(:has(shopify-payment-terms)) { display: none; }
-.product .product__info-container > .velto-deliv-line { margin-top: 0.8rem; }
-.product .product__info-container > .product__description { margin-top: 2.4rem; }
+.product .product__info-container > .velto-deliv-line { margin-top: 1.6rem; }
+.product .product__info-container > .product__description { margin-top: 3.2rem; }
 .product .product__info-container > .share-button { margin-top: 1.6rem; }
 
 .product__info-container > .product-form__quantity {
@@ -144,7 +150,7 @@
 .product .product__pickup-availabilities { display: none !important; }
 
 /* ---------- delivery / share ---------- */
-.product__info-container .velto-deliv-line { margin-top: 0.8rem; }
+.product__info-container .velto-deliv-line { margin-top: 1.6rem; }
 
 .product__info-container .share-button { margin-top: 1.6rem; }
 .product__info-container .share-button__button { font-size: 1.3rem; color: rgba(var(--color-foreground), 0.6); }
