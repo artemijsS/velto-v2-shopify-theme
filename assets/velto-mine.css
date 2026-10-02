@@ -538,3 +538,15 @@ a.velto-mine__bar-row:hover .velto-mine__bar-name { text-decoration: underline; 
 /* ---------- header entry points ---------- */
 .velto-mine-link__icon { display: inline-grid; place-items: center; }
 .velto-mine-link__icon svg { width: 1.5rem; height: 1.5rem; }
+
+/* period the data covers */
+.velto-mine__period {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  margin: 0 0 -1.2rem;
+  font-size: 1.3rem;
+  color: rgba(var(--color-foreground), 0.6);
+}
+
+.velto-mine__period svg { width: 1.6rem; height: 1.6rem; flex: 0 0 auto; }

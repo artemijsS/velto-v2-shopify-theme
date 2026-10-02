@@ -53,11 +53,10 @@
     document.querySelectorAll('velto-qa').forEach((el) => el.sync());
   };
 
-  let snap = null; // latest cart, saved to "Mani pirkumi" at checkout
   const refresh = () =>
     fetch(`${window.routes?.cart_url || '/cart'}.js`, { headers: { Accept: 'application/json' } })
       .then((r) => r.json())
-      .then((cart) => ((snap = cart), applyCart(cart), cart))
+      .then((cart) => (applyCart(cart), cart))
       .catch(() => {});
 
   const renderBubble = (sections) => {
@@ -264,36 +263,6 @@
       refresh().then((cart) => toast(S.added || '✓', cart || null));
     };
   });
-
-  /* ---------- "Mani pirkumi" for guests ----------
-     When checkout is pressed, the cart is remembered on this device
-     (localStorage "velto:orders", newest first, max 10). A repeated checkout
-     within 12 h (e.g. the delivery-date check stopped it) replaces the entry. */
-  const saveSnapshot = () => {
-    try {
-      const goods = snap ? snap.items.filter((i) => !isFee(i)) : [];
-      if (!goods.length) return;
-      const sized = (u) => (u ? u + (u.includes('?') ? '&' : '?') + 'width=160' : null);
-      const entry = {
-        d: new Date().toISOString(),
-        t: goods.reduce((s, i) => s + i.final_line_price, 0),
-        i: goods.map((i) => ({
-          v: i.variant_id,
-          q: i.quantity,
-          p: i.final_price,
-          t: i.product_title + (i.variant_title && !i.product_has_only_default_variant ? ` · ${i.variant_title}` : ''),
-          img: sized(i.image),
-          u: i.url,
-        })),
-      };
-      const list = JSON.parse(localStorage.getItem('velto:orders') || '[]');
-      if (list[0] && Date.now() - new Date(list[0].d).getTime() < 12 * 3600e3) list[0] = entry;
-      else list.unshift(entry);
-      localStorage.setItem('velto:orders', JSON.stringify(list.slice(0, 10)));
-    } catch (e) {}
-  };
-  document.addEventListener('click', (e) => e.target.closest && e.target.closest('#checkout, [name="checkout"]') && saveSnapshot(), true);
-  if (/\/cart\/?$/.test(location.pathname)) refresh();
 
   /* shared helpers (velto-mine.js, product page toast) */
   window.veltoCart = { refresh, renderBubble, toast, money: formatMoney, itemsLabel, isFee, S };

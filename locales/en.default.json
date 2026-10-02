@@ -795,11 +795,9 @@
       "hello": "Hi, {{ name }}!",
       "heading": "Your purchases",
       "sub": "Everything you've bought at Velto: repeat an order, add your favourites in one tap and see what you buy most.",
-      "guest_heading": "Your purchases on this device",
-      "guest_text": "Sign in to see all your orders and stats, and reorder from any device.",
-      "login": "Sign in",
+      "guest_text": "Sign in or sign up with your e-mail to see your orders and reorder in one tap.",
+      "login": "Sign in / sign up",
       "last_order": "Last order",
-      "local_label": "Checked-out cart",
       "reorder": "Reorder",
       "reorder_short": "Reorder",
       "details": "Details",
@@ -829,7 +827,11 @@
       "other": "Other",
       "empty_heading": "No purchases yet",
       "empty_text": "After your first order you'll be able to repeat it in one tap here and see what you buy most.",
-      "to_catalog": "Browse the catalogue"
+      "to_catalog": "Browse the catalogue",
+      "period": "Data for [from] – [to] · orders: [count]",
+      "period_cap": "latest 50 included",
+      "cat_hint": "By number of items bought",
+      "month_hint": "Last 6 months"
     }
   }
 }

@@ -1,10 +1,21 @@
 {%- comment -%}
-  URL of the "Mani pirkumi" page (theme setting, default /pages/mani-pirkumi), locale-aware.
+  Link for the "Mani pirkumi" button. Logged in: the page (theme setting,
+  default /pages/mani-pirkumi), locale-aware. Guests: Shopify sign-in
+  (e-mail code — also creates the account) that returns to the page.
+  Params: page_only (bool) — always return the page URL.
 {%- endcomment -%}
 {%- liquid
   assign mu = '/pages/mani-pirkumi'
   if settings.velto_mine_page != blank
     assign mu = settings.velto_mine_page.url
   endif
-  render 'velto-url', url: mu
+  capture mu
+    render 'velto-url', url: mu
+  endcapture
+  if customer or page_only
+    echo mu
+  else
+    assign enc = mu | strip | url_encode
+    echo '/customer_authentication/login?locale=' | append: request.locale.iso_code | append: '&return_to=' | append: enc
+  endif
 -%}

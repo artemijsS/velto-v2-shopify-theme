@@ -1,26 +1,15 @@
 /* Velto — "Mani pirkumi" page (sections/velto-mine.liquid).
-   Data: logged-in customer orders rendered by Liquid (JSON), or, for guests,
-   the carts checked out on this device (localStorage "velto:orders", written
-   by velto-card-qty.js). Renders: last order + reorder, stat tiles, insights
-   (most bought, categories, spend by month), "buy again" list with the card
-   quantity stepper, and the order history. */
+   Data: the logged-in customer's orders rendered by Liquid (JSON; guests are
+   sent to sign-in). Renders: last order + reorder, the period the data covers,
+   stat tiles, insights (most bought, categories, spend by month), order
+   history and the "buy again" list with the card quantity stepper. */
 (() => {
   if (customElements.get('velto-mine')) return;
 
-  const LS_KEY = 'velto:orders';
   const esc = (s) =>
     String(s == null ? '' : s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]);
   const ICON_REORDER =
     '<svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3.5 10a6.5 6.5 0 0 1 11.3-4.4L16.5 7.5"/><path d="M16.5 3.5v4h-4"/><path d="M16.5 10a6.5 6.5 0 0 1-11.3 4.4L3.5 12.5"/><path d="M3.5 16.5v-4h4"/></svg>';
-
-  const readLocal = () => {
-    try {
-      const v = JSON.parse(localStorage.getItem(LS_KEY) || '[]');
-      return Array.isArray(v) ? v : [];
-    } catch (e) {
-      return [];
-    }
-  };
 
   class VeltoMine extends HTMLElement {
     connectedCallback() {
@@ -49,17 +38,7 @@
       this.money = C.money || ((c) => (c / 100).toFixed(2).replace('.', ',') + ' €');
       this.variants = d.variants || {};
       this.cats = d.cats || {};
-      this.logged = d.logged;
-
-      let orders = (d.orders || []).map((o) => Object.assign(o, { date: new Date(o.d) }));
-      if (!orders.length) {
-        const local = readLocal().filter((o) => o && Array.isArray(o.i) && o.i.length);
-        if (local.length) {
-          this.local = true;
-          orders = local.map((o) => ({ n: '', d: o.d, date: new Date(o.d), t: o.t || 0, x: false, u: null, i: o.i }));
-          await this.loadLiveVariants(orders);
-        }
-      }
+      const orders = (d.orders || []).map((o) => Object.assign(o, { date: new Date(o.d) }));
       orders.sort((a, b) => b.date - a.date);
       this.orders = orders;
       this.valid = orders.filter((o) => !o.x);
@@ -71,10 +50,9 @@
 
       this.aggregate();
       this.renderLast();
-      if (!this.local) {
-        this.renderStats();
-        if (this.valid.length >= 2) this.renderInsights();
-      }
+      this.renderPeriod(orders.length >= 50);
+      this.renderStats();
+      if (this.valid.length >= 2) this.renderInsights();
       this.renderAgain();
       this.renderHistory();
       if (C.refresh) C.refresh();
@@ -102,47 +80,6 @@
 
     itemsLabel(n) {
       return this.C.itemsLabel ? this.C.itemsLabel(n) : String(n);
-    }
-
-    /* guests: refresh price / availability of the saved items */
-    async loadLiveVariants(orders) {
-      const byHandle = {};
-      orders.forEach((o) =>
-        o.i.forEach((li) => {
-          const m = String(li.u || '').match(/\/products\/([^/?#]+)/);
-          if (m) (byHandle[m[1]] = byHandle[m[1]] || []).push(li);
-        })
-      );
-      const handles = Object.keys(byHandle).slice(0, 40);
-      await Promise.all(
-        handles.map((h) =>
-          fetch(`${this.root}/products/${h}.js`, { headers: { Accept: 'application/json' } })
-            .then((r) => (r.ok ? r.json() : null))
-            .then((p) => {
-              if (!p) return;
-              p.variants.forEach((v) => {
-                const li = byHandle[h].find((x) => String(x.v) === String(v.id));
-                if (!li) return;
-                const qr = v.quantity_rule || {};
-                this.variants[v.id] = {
-                  pid: p.id,
-                  t: p.title,
-                  vt: p.variants.length > 1 ? v.title : '',
-                  u: `/products/${p.handle}`,
-                  img: li.img,
-                  a: !!v.available,
-                  pr: v.price,
-                  cp: v.compare_at_price || 0,
-                  up: '',
-                  min: qr.min || 1,
-                  st: qr.increment || 1,
-                  max: qr.max || null,
-                };
-              });
-            })
-            .catch(() => {})
-        )
-      );
     }
 
     aggregate() {
@@ -248,10 +185,24 @@
       const o = this.valid[0];
       const el = this.slot('last');
       el.innerHTML = `
-        <p class="velto-mine__label">${esc(this.local ? this.S.local_label : this.S.last_order)} · ${esc(this.fmtDate(o.date))}</p>
+        <p class="velto-mine__label">${esc(this.S.last_order)} · ${esc(this.fmtDate(o.date))}</p>
         <div class="velto-mine__thumbs">${this.thumbs(o, 5)}</div>
         <p class="velto-mine__last-meta">${esc(this.itemsLabel(this.orderQty(o)))}${o.t ? ' · ' + esc(this.money(o.t)) : ''}</p>`;
       el.appendChild(this.reorderBtn(o, this.S.reorder, 'velto-mine__btn--wide'));
+      el.hidden = false;
+    }
+
+    /* ---------- the period the numbers cover ---------- */
+    renderPeriod(capped) {
+      const v = this.valid;
+      const el = this.slot('period');
+      const from = this.fmtDate(v[v.length - 1].date, true);
+      const to = this.fmtDate(v[0].date, true);
+      el.innerHTML =
+        '<svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="3" y="4.5" width="14" height="12.5" rx="2"/><path d="M3 8.5h14M7 2.5v4M13 2.5v4" stroke-linecap="round"/></svg>' +
+        `<span>${esc(this.S.period.replace('[from]', from).replace('[to]', to).replace('[count]', v.length))}${
+          capped ? ' · ' + esc(this.S.period_cap) : ''
+        }</span>`;
       el.hidden = false;
     }
 
@@ -342,6 +293,7 @@
         cards.push(`
           <div class="velto-mine__card">
             <h2 class="velto-mine__h3">${esc(this.S.cat_heading)}</h2>
+            <p class="velto-mine__muted">${esc(this.S.cat_hint)}</p>
             <ul class="velto-mine__bars velto-mine__bars--cats" role="list">
               ${catRows
                 .map(
@@ -378,6 +330,7 @@
         cards.push(`
           <div class="velto-mine__card">
             <h2 class="velto-mine__h3">${esc(this.S.month_heading)}</h2>
+            <p class="velto-mine__muted">${esc(this.S.month_hint)}</p>
             <div class="velto-mine__cols" role="list">
               ${months
                 .map((m, k) => {
@@ -490,7 +443,6 @@
 
     /* ---------- history ---------- */
     renderHistory() {
-      if (this.orders.length < 2 && this.local) return;
       const el = this.slot('history');
       const list = el.querySelector('[data-orders]');
       const PAGE = 6;
@@ -500,7 +452,7 @@
         li.className = 'velto-mine__order' + (o.x ? ' is-cancelled' : '');
         li.innerHTML = `
           <div class="velto-mine__order-head">
-            <strong>${esc(o.n || this.S.local_label)}</strong>
+            <strong>${esc(o.n)}</strong>
             <span>${esc(this.fmtDate(o.date, true))}</span>
             ${o.x ? `<em>${esc(this.S.cancelled)}</em>` : ''}
           </div>

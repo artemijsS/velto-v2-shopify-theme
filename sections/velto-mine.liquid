@@ -29,17 +29,25 @@
       <span>{{ 'velto.mine.nav_label' | t }}</span>
     </nav>
 
-    <velto-mine class="velto-mine__app" data-logged="{% if customer %}true{% else %}false{% endif %}">
+    {%- unless customer -%}
+      {%- capture velto_login -%}{% render 'velto-mine-url' %}{%- endcapture -%}
+      <script>location.replace({{ velto_login | strip | json }});</script>
+      <div class="velto-mine__empty">
+        <span class="velto-mine__empty-icon" aria-hidden="true">{{- 'icon-account.svg' | inline_asset_content -}}</span>
+        <h1 class="velto-mine__h2">{{ 'velto.mine.nav_label' | t }}</h1>
+        <p class="velto-mine__muted">{{ 'velto.mine.guest_text' | t }}</p>
+        <a class="velto-mine__btn" href="{{ velto_login | strip }}">{{ 'velto.mine.login' | t }}</a>
+      </div>
+    {%- else -%}
+    <velto-mine class="velto-mine__app">
       <header class="velto-mine__head">
         <div>
           <p class="velto-ahero__eyebrow">{{ 'velto.mine.nav_label' | t }}</p>
           <h1 class="velto-mine__title">
-            {%- if customer and customer.first_name != blank -%}
+            {%- if customer.first_name != blank -%}
               {{ 'velto.mine.hello' | t: name: customer.first_name }}
-            {%- elsif customer -%}
-              {{ 'velto.mine.heading' | t }}
             {%- else -%}
-              {{ 'velto.mine.guest_heading' | t }}
+              {{ 'velto.mine.heading' | t }}
             {%- endif -%}
           </h1>
           <p class="velto-mine__intro">{{ 'velto.mine.sub' | t }}</p>
@@ -47,16 +55,17 @@
         <div class="velto-mine__last" data-slot="last" hidden></div>
       </header>
 
-      {%- unless customer -%}
-        <div class="velto-mine__login">
-          <span class="velto-mine__login-icon" aria-hidden="true">{{- 'icon-account.svg' | inline_asset_content -}}</span>
-          <p>{{ 'velto.mine.guest_text' | t }}</p>
-          <a class="velto-mine__btn" href="{{ routes.account_login_url }}">{{ 'velto.mine.login' | t }}</a>
-        </div>
-      {%- endunless -%}
+      <p class="velto-mine__period" data-slot="period" hidden></p>
 
       <div class="velto-mine__stats" data-slot="stats" hidden></div>
       <div class="velto-mine__insights" data-slot="insights" hidden></div>
+
+      <section class="velto-mine__block" data-slot="history" hidden>
+        <div class="velto-mine__block-head">
+          <h2 class="velto-mine__h2">{{ 'velto.mine.history_heading' | t }}</h2>
+        </div>
+        <ul class="velto-mine__orders" role="list" data-orders></ul>
+      </section>
 
       <section class="velto-mine__block" data-slot="again" hidden>
         <div class="velto-mine__block-head">
@@ -80,13 +89,6 @@
         <ul class="velto-mine__rows" role="list" data-rows></ul>
         <p class="velto-mine__muted velto-mine__none" data-none hidden>{{ 'velto.mine.nothing_found' | t }}</p>
         <button type="button" class="velto-mine__more" data-more hidden>{{ 'velto.mine.show_more' | t }}</button>
-      </section>
-
-      <section class="velto-mine__block" data-slot="history" hidden>
-        <div class="velto-mine__block-head">
-          <h2 class="velto-mine__h2">{{ 'velto.mine.history_heading' | t }}</h2>
-        </div>
-        <ul class="velto-mine__orders" role="list" data-orders></ul>
       </section>
 
       <div class="velto-mine__empty" data-slot="empty" hidden>
@@ -117,7 +119,6 @@
 
       <script type="application/json" data-mine-data>
         {
-          "logged": {% if customer %}true{% else %}false{% endif %},
           "root": {{ routes.root_url | json }},
           "orders": [
             {%- if customer -%}
@@ -254,7 +255,6 @@
             "reorder_short": {{ 'velto.mine.reorder_short' | t | json }},
             "details": {{ 'velto.mine.details' | t | json }},
             "last_order": {{ 'velto.mine.last_order' | t | json }},
-            "local_label": {{ 'velto.mine.local_label' | t | json }},
             "added_partial": {{ 'velto.mine.added_partial' | t | json }},
             "none_available": {{ 'velto.mine.none_available' | t | json }},
             "stat_orders": {{ 'velto.mine.stat_orders' | t | json }},
@@ -272,11 +272,16 @@
             "bought_meta": {{ 'velto.mine.bought_meta' | t | json }},
             "unavailable": {{ 'velto.mine.unavailable' | t | json }},
             "cancelled": {{ 'velto.mine.cancelled' | t | json }},
-            "other": {{ 'velto.mine.other' | t | json }}
+            "other": {{ 'velto.mine.other' | t | json }},
+            "period": {{ 'velto.mine.period' | t | json }},
+            "period_cap": {{ 'velto.mine.period_cap' | t | json }},
+            "cat_hint": {{ 'velto.mine.cat_hint' | t | json }},
+            "month_hint": {{ 'velto.mine.month_hint' | t | json }}
           }
         }
       </script>
     </velto-mine>
+    {%- endunless -%}
   </div>
 </section>
 

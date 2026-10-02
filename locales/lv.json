@@ -808,11 +808,9 @@
       "hello": "Sveiks, {{ name }}!",
       "heading": "Tavi pirkumi",
       "sub": "Viss, ko esi pircis Velto: atkārto pasūtījumu, paņem iecienītās preces ar vienu klikšķi un apskaties, ko pērc visbiežāk.",
-      "guest_heading": "Tavi pirkumi šajā ierīcē",
-      "guest_text": "Pieslēdzies, lai redzētu visus pasūtījumus, statistiku un pirktu vēlreiz no jebkuras ierīces.",
-      "login": "Pieslēgties",
+      "guest_text": "Pieslēdzies vai reģistrējies ar e-pastu, lai redzētu savus pasūtījumus un pirktu vēlreiz ar vienu klikšķi.",
+      "login": "Pieslēgties / reģistrēties",
       "last_order": "Pēdējais pasūtījums",
-      "local_label": "Noformētais grozs",
       "reorder": "Atkārtot pasūtījumu",
       "reorder_short": "Atkārtot",
       "details": "Detaļas",
@@ -842,7 +840,11 @@
       "other": "Citas",
       "empty_heading": "Pagaidām nav pirkumu",
       "empty_text": "Pēc pirmā pasūtījuma šeit varēsi to atkārtot ar vienu klikšķi un redzēt, ko pērc visbiežāk.",
-      "to_catalog": "Uz katalogu"
+      "to_catalog": "Uz katalogu",
+      "period": "Dati par periodu [from] – [to] · pasūtījumi: [count]",
+      "period_cap": "ņemti vērā pēdējie 50",
+      "cat_hint": "Pēc nopirkto preču skaita",
+      "month_hint": "Pēdējie 6 mēneši"
     }
   }
 }
