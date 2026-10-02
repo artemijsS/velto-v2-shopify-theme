@@ -45,6 +45,14 @@
     endfor
   endif
 
+  assign mine_cats = ''
+  if c_link and c_link.object
+    assign mine_cats = c_link.object.handle
+  endif
+  if p_link and p_link.type == 'collection_link' and p_link.object
+    assign mine_cats = mine_cats | append: ',' | append: p_link.object.handle
+  endif
+
   assign limit = section.settings.products_to_show
   assign root = routes.root_url
   if root == '/'
@@ -61,6 +69,7 @@
   {% if customer and section.settings.show_mine %}
     {%- capture mine_page -%}{% render 'velto-mine-url', page_only: true %}{%- endcapture -%}
     data-mine-src="{{ mine_page | strip }}?view=mine-data"
+    data-mine-cats="{{ mine_cats }}"
   {% endif %}
 >
   {%- capture arrows -%}

@@ -845,7 +845,7 @@
     "pmore": {
       "category": "More in {{ name }}",
       "brand": "More from {{ brand }}",
-      "mine": "Your regulars",
+      "mine": "Your regulars in this category",
       "mine_all": "All my purchases",
       "recent": "Recently viewed",
       "see_all": "See all",

@@ -157,7 +157,7 @@
           if (!v || !v.u) return;
           const h = v.u.split('/products/')[1];
           if (!h) return;
-          const p = (by[h] = by[h] || { h, pid: String(v.pid), times: 0, qty: 0, last: 0, a: false });
+          const p = (by[h] = by[h] || { h, pid: String(v.pid), col: v.col || [], times: 0, qty: 0, last: 0, a: false });
           if (!seen.has(h)) {
             p.times++;
             seen.add(h);
@@ -192,9 +192,16 @@
     mine: async () => {
       const d = await mineData();
       if (!d) return [];
+      // same subcategory first, then the parent category; nothing outside them
+      const cats = (root.dataset.mineCats || '').split(',').filter(Boolean);
+      if (!cats.length) return [];
+      const tier = (p) => {
+        const i = cats.findIndex((c) => p.col.includes(c));
+        return i < 0 ? Infinity : i;
+      };
       const list = mineStats(d)
-        .filter((p) => p.a && p.h !== handle)
-        .sort((x, y) => y.times - x.times || y.qty - x.qty || y.last - x.last)
+        .filter((p) => p.a && p.h !== handle && tier(p) !== Infinity)
+        .sort((x, y) => tier(x) - tier(y) || y.times - x.times || y.qty - x.qty || y.last - x.last)
         .slice(0, limit);
       return cards(list.map((p) => p.h));
     },

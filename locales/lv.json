@@ -858,7 +858,7 @@
     "pmore": {
       "category": "Citas preces kategorijā „{{ name }}”",
       "brand": "Vairāk no zīmola {{ brand }}",
-      "mine": "Tavi biežākie pirkumi",
+      "mine": "Tavi biežākie pirkumi šajā kategorijā",
       "mine_all": "Visi mani pirkumi",
       "recent": "Nesen skatītās preces",
       "see_all": "Skatīt visu",
