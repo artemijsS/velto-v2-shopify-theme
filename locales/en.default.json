@@ -842,6 +842,15 @@
       "filter_show_all": "Show all products",
       "filter_guest": "Sign in to see only the products you buy",
       "bought_times": "Bought [count]×"
+    },
+    "pmore": {
+      "category": "More in {{ name }}",
+      "brand": "More from {{ brand }}",
+      "mine": "Your regulars",
+      "mine_all": "All my purchases",
+      "recent": "Recently viewed",
+      "see_all": "See all",
+      "bought_line": "You've bought this [count]× · last on [date]"
     }
   }
 }

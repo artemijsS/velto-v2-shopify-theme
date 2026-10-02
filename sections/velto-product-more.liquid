@@ -1,0 +1,161 @@
+{%- comment -%}
+  Velto — under the product: product rails that help to add more to the cart.
+    1. More in this category (the subcategory from the breadcrumbs, best-selling)
+    2. Your regulars (logged in: most often bought, from "Mani pirkumi" data)
+       + "You've bought this 5× · last on …" line next to the price
+    3. More from the brand (vendor)
+    4. Recently viewed (this device)
+  Rails load when scrolled near, skip the current product and sold-out items,
+  and hide themselves when there is nothing to show (assets/velto-pmore.js).
+{%- endcomment -%}
+{{ 'component-card.css' | asset_url | stylesheet_tag }}
+{{ 'component-price.css' | asset_url | stylesheet_tag }}
+{{ 'quick-add.css' | asset_url | stylesheet_tag }}
+{{ 'velto-pmore.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'quick-add.js' | asset_url }}" defer="defer"></script>
+<script src="{{ 'velto-pmore.js' | asset_url }}" defer="defer"></script>
+
+{%- liquid
+  comment
+    category = the deepest main-menu collection that holds this product
+    (same logic as the breadcrumbs)
+  endcomment
+  assign menu = linklists['main-menu']
+  assign ids = product.collections | map: 'id'
+  assign p_link = nil
+  assign c_link = nil
+  for link in menu.links
+    for child in link.links
+      if child.type == 'collection_link' and child.object and child.url != link.url and ids contains child.object.id
+        assign p_link = link
+        assign c_link = child
+        break
+      endif
+    endfor
+    if c_link
+      break
+    endif
+  endfor
+  if c_link == nil
+    for link in menu.links
+      if link.type == 'collection_link' and link.object and ids contains link.object.id
+        assign c_link = link
+        break
+      endif
+    endfor
+  endif
+
+  assign limit = section.settings.products_to_show
+  assign root = routes.root_url
+  if root == '/'
+    assign root = ''
+  endif
+-%}
+
+<div
+  class="velto-pmore page-width section-{{ section.id }}-padding"
+  data-handle="{{ product.handle }}"
+  data-pid="{{ product.id }}"
+  data-limit="{{ limit }}"
+  data-root="{{ root }}"
+  {% if customer and section.settings.show_mine %}
+    {%- capture mine_page -%}{% render 'velto-mine-url', page_only: true %}{%- endcapture -%}
+    data-mine-src="{{ mine_page | strip }}?view=mine-data"
+  {% endif %}
+>
+  {%- capture arrows -%}
+    <div class="velto-pmore__nav">
+      <button type="button" class="velto-pmore__arrow" data-dir="-1" aria-label="{{ 'general.slider.previous_slide' | t }}">
+        {{- 'icon-caret.svg' | inline_asset_content -}}
+      </button>
+      <button type="button" class="velto-pmore__arrow" data-dir="1" aria-label="{{ 'general.slider.next_slide' | t }}">
+        {{- 'icon-caret.svg' | inline_asset_content -}}
+      </button>
+    </div>
+  {%- endcapture -%}
+
+  {%- if section.settings.show_category and c_link -%}
+    {%- capture cat_url -%}{% render 'velto-url', url: c_link.url %}{%- endcapture -%}
+    {%- assign cat_name = c_link.title | remove: '💙' | strip -%}
+    <section class="velto-pmore__rail" data-kind="category" data-src="{{ cat_url | strip }}?sort_by=best-selling&section_id=velto-product-rail" hidden>
+      <div class="velto-pmore__head">
+        <h2 class="velto-pmore__title">{{ 'velto.pmore.category' | t: name: cat_name }}</h2>
+        <a class="velto-pmore__all" href="{{ cat_url | strip }}">{{ 'velto.pmore.see_all' | t }} <span aria-hidden="true">→</span></a>
+        {{ arrows }}
+      </div>
+      <ul class="velto-pmore__list" role="list" aria-label="{{ 'velto.pmore.category' | t: name: cat_name | escape }}"></ul>
+    </section>
+  {%- endif -%}
+
+  {%- if customer and section.settings.show_mine -%}
+    <section class="velto-pmore__rail" data-kind="mine" hidden>
+      <div class="velto-pmore__head">
+        <h2 class="velto-pmore__title">{{ 'velto.pmore.mine' | t }}</h2>
+        <a class="velto-pmore__all" href="{{ mine_page | strip }}">{{ 'velto.pmore.mine_all' | t }} <span aria-hidden="true">→</span></a>
+        {{ arrows }}
+      </div>
+      <ul class="velto-pmore__list" role="list" aria-label="{{ 'velto.pmore.mine' | t | escape }}"></ul>
+    </section>
+  {%- endif -%}
+
+  {%- if section.settings.show_brand and product.vendor != blank -%}
+    {%- capture brand_url -%}{{ root }}/collections/vendors?q={{ product.vendor | url_encode }}{%- endcapture -%}
+    <section class="velto-pmore__rail" data-kind="brand" data-src="{{ brand_url }}&section_id=velto-product-rail" hidden>
+      <div class="velto-pmore__head">
+        <h2 class="velto-pmore__title">{{ 'velto.pmore.brand' | t: brand: product.vendor }}</h2>
+        <a class="velto-pmore__all" href="{{ brand_url }}">{{ 'velto.pmore.see_all' | t }} <span aria-hidden="true">→</span></a>
+        {{ arrows }}
+      </div>
+      <ul class="velto-pmore__list" role="list" aria-label="{{ 'velto.pmore.brand' | t: brand: product.vendor | escape }}"></ul>
+    </section>
+  {%- endif -%}
+
+  {%- if section.settings.show_recent -%}
+    <section class="velto-pmore__rail" data-kind="recent" hidden>
+      <div class="velto-pmore__head">
+        <h2 class="velto-pmore__title">{{ 'velto.pmore.recent' | t }}</h2>
+        {{ arrows }}
+      </div>
+      <ul class="velto-pmore__list" role="list" aria-label="{{ 'velto.pmore.recent' | t | escape }}"></ul>
+    </section>
+  {%- endif -%}
+
+  <script type="application/json" data-pmore-strings>
+    {
+      "bought": {{ 'velto.pmore.bought_line' | t | json }},
+      "lang": {{ request.locale.iso_code | json }}
+    }
+  </script>
+</div>
+
+{%- style -%}
+  .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
+    padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+  }
+  @media screen and (min-width: 750px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+  }
+{%- endstyle -%}
+
+{% schema %}
+{
+  "name": "Velto: vairāk preču",
+  "tag": "div",
+  "class": "section",
+  "enabled_on": { "templates": ["product"] },
+  "settings": [
+    { "type": "checkbox", "id": "show_category", "label": "No šīs kategorijas", "default": true },
+    { "type": "checkbox", "id": "show_mine", "label": "Tavi biežākie pirkumi (pieslēgušies pircēji)", "default": true },
+    { "type": "checkbox", "id": "show_brand", "label": "Vēl no zīmola", "default": true },
+    { "type": "checkbox", "id": "show_recent", "label": "Nesen skatītie", "default": true },
+    { "type": "range", "id": "products_to_show", "min": 4, "max": 16, "step": 1, "label": "Preču skaits rindā", "default": 12 },
+    { "type": "range", "id": "padding_top", "min": 0, "max": 100, "step": 4, "unit": "px", "label": "t:sections.all.padding.padding_top", "default": 36 },
+    { "type": "range", "id": "padding_bottom", "min": 0, "max": 100, "step": 4, "unit": "px", "label": "t:sections.all.padding.padding_bottom", "default": 36 }
+  ],
+  "presets": [{ "name": "Velto: vairāk preču" }]
+}
+{% endschema %}

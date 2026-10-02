@@ -1,0 +1,94 @@
+/* Velto — product rails under the product (sections/velto-product-more.liquid). */
+
+.velto-pmore { display: grid; gap: 4.8rem; }
+.velto-pmore__rail[hidden] { display: none; }
+
+.velto-pmore__head {
+  display: flex;
+  align-items: center;
+  gap: 1.2rem 2rem;
+  margin-bottom: 1.6rem;
+}
+
+.velto-pmore__title {
+  flex: 1 1 auto;
+  min-width: 0;
+  margin: 0;
+  font-size: clamp(2rem, 2.2vw, 2.6rem);
+  line-height: 1.2;
+  letter-spacing: -0.015em;
+}
+
+.velto-pmore__all {
+  flex: 0 0 auto;
+  color: rgb(var(--color-foreground));
+  font-size: 1.4rem;
+  font-weight: 600;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.velto-pmore__all:hover { text-decoration: underline; text-underline-offset: 0.3rem; }
+
+.velto-pmore__nav { display: none; gap: 0.6rem; }
+
+.velto-pmore__arrow {
+  display: grid;
+  place-items: center;
+  width: 4rem;
+  height: 4rem;
+  border-radius: 50%;
+  border: 1px solid rgba(var(--color-foreground), 0.25);
+  background: transparent;
+  color: rgb(var(--color-foreground));
+  cursor: pointer;
+  transition: background-color 0.2s ease, border-color 0.2s ease, opacity 0.2s ease;
+}
+
+.velto-pmore__arrow:hover:not(:disabled) { border-color: rgb(var(--color-foreground)); background: rgba(var(--color-foreground), 0.08); }
+.velto-pmore__arrow:disabled { opacity: 0.3; cursor: default; }
+.velto-pmore__arrow svg { width: 1.2rem; height: 1.2rem; fill: currentColor; transform: rotate(90deg); }
+.velto-pmore__arrow[data-dir='1'] svg { transform: rotate(-90deg); }
+
+.velto-pmore__list {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: calc((100% - 1.2rem) / 2.15);
+  gap: 1.2rem;
+  margin: 0;
+  padding: 0 0 0.4rem;
+  list-style: none;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+}
+
+.velto-pmore__list::-webkit-scrollbar { display: none; }
+.velto-pmore__item { min-width: 0; scroll-snap-align: start; }
+.velto-pmore__item .card-wrapper { height: 100%; }
+
+@media screen and (min-width: 750px) {
+  .velto-pmore__list { grid-auto-columns: calc((100% - 3 * 1.6rem) / 4); gap: 1.6rem; }
+  .velto-pmore__nav:not([hidden]) { display: flex; }
+}
+
+@media screen and (min-width: 1200px) {
+  .velto-pmore__list { grid-auto-columns: calc((100% - 4 * 1.6rem) / 5); }
+}
+
+/* "Tu šo pirki 5× · pēdējo reizi …" next to the price */
+.velto-pmore-bought {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.7rem;
+  margin: 0.4rem 0 0.8rem;
+  padding: 0.6rem 1.2rem;
+  border-radius: 4rem;
+  background: rgba(var(--color-foreground), 0.07);
+  color: rgba(var(--color-foreground), 0.85);
+  font-size: 1.3rem;
+  font-weight: 600;
+}
+
+.velto-pmore-bought svg { width: 1.5rem; height: 1.5rem; flex: 0 0 auto; }

@@ -855,6 +855,15 @@
       "filter_show_all": "Rādīt visas preces",
       "filter_guest": "Pieslēdzies, lai redzētu tikai savas pirktās preces",
       "bought_times": "Pirkts [count]×"
+    },
+    "pmore": {
+      "category": "Vēl kategorijā „{{ name }}”",
+      "brand": "Vēl no {{ brand }}",
+      "mine": "Tavi biežākie pirkumi",
+      "mine_all": "Visi mani pirkumi",
+      "recent": "Nesen skatītie",
+      "see_all": "Skatīt visu",
+      "bought_line": "Tu šo pirki [count]× · pēdējo reizi [date]"
     }
   }
 }
