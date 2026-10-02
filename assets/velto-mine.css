@@ -575,3 +575,64 @@ a.velto-mine__bar-row:hover .velto-mine__bar-name { text-decoration: underline; 
 .velto-mine__range button:hover { border-color: rgb(var(--color-foreground)); }
 .velto-mine__range button.is-active { border-color: rgb(var(--color-foreground)); background: rgb(var(--color-foreground)); color: rgb(var(--color-background)); }
 .velto-mine__range button.is-busy { opacity: 0.5; cursor: progress; }
+
+/* ---------- loading: skeleton while the orders are fetched ---------- */
+.velto-mine__loading { display: grid; gap: 1.6rem; }
+
+.velto-mine__loading-text {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin: 0;
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: rgba(var(--color-foreground), 0.8);
+}
+
+.velto-mine__spinner {
+  width: 1.8rem;
+  height: 1.8rem;
+  border-radius: 50%;
+  border: 2px solid rgba(var(--color-foreground), 0.2);
+  border-top-color: rgb(var(--color-foreground));
+  animation: velto-mine-spin 0.8s linear infinite;
+}
+
+.velto-mine__sk-stats { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; }
+.velto-mine__sk-rows { display: grid; gap: 0.8rem; margin-top: 1.6rem; }
+
+@media screen and (min-width: 990px) {
+  .velto-mine__sk-stats { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .velto-mine__sk-rows { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+.velto-mine__sk {
+  display: block;
+  border-radius: 1.6rem;
+  background: linear-gradient(90deg, rgba(var(--color-foreground), 0.04) 0%, rgba(var(--color-foreground), 0.1) 50%, rgba(var(--color-foreground), 0.04) 100%);
+  background-size: 200% 100%;
+  animation: velto-mine-shimmer 1.3s ease-in-out infinite;
+}
+
+.velto-mine__sk-stats .velto-mine__sk { height: 11rem; }
+.velto-mine__sk-rows .velto-mine__sk { height: 9.2rem; border-radius: 1.4rem; }
+
+@keyframes velto-mine-shimmer {
+  from { background-position: 100% 0; }
+  to { background-position: -100% 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .velto-mine__sk, .velto-mine__spinner { animation: none; }
+}
+
+.velto-mine__error {
+  display: grid;
+  justify-items: start;
+  gap: 1.2rem;
+  padding: 2rem;
+  border-radius: 1.6rem;
+  border: 1px solid rgba(var(--color-foreground), 0.14);
+}
+
+.velto-mine__error p { margin: 0; font-size: 1.5rem; }

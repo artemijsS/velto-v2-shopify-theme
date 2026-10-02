@@ -34,6 +34,8 @@
     return tpl.replace('[count]', n).replace('[date]', d.replace(/\.$/, ''));
   };
   const RANGES = [50, 100, 250];
+  const FULL = 'velto:mine-full';
+  const FULL_TTL = 30 * 60 * 1000;
   const esc = (s) =>
     String(s == null ? '' : s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]);
   const ICON_REORDER =
@@ -58,8 +60,30 @@
       }
     }
 
-    async init() {
-      const d = this.parse(this.querySelector('[data-mine-data]').textContent);
+    /* ---------- data: background fetch, session copy shown instantly ---------- */
+    readCache() {
+      try {
+        const c = JSON.parse(sessionStorage.getItem(FULL) || 'null');
+        if (c && c.src === this.src && Date.now() - c.t < FULL_TTL) return c.raw;
+      } catch (e) {}
+      return null;
+    }
+
+    async fetchRaw() {
+      const html = await fetch(this.src).then((r) => {
+        if (!r.ok) throw new Error(r.status);
+        return r.text();
+      });
+      const el = new DOMParser().parseFromString(html, 'text/html').querySelector('[data-mine-data]');
+      if (!el) throw new Error('no data');
+      const raw = el.textContent;
+      try {
+        sessionStorage.setItem(FULL, JSON.stringify({ t: Date.now(), src: this.src, raw }));
+      } catch (e) {}
+      return raw;
+    }
+
+    setup(d) {
       const C = window.veltoCart || {};
       this.C = C;
       this.S = unesc(Object.assign({}, C.S || {}, d.s));
@@ -69,10 +93,43 @@
       this.money = C.money || ((c) => (c / 100).toFixed(2).replace('.', ',') + ' €');
       this.variants = d.variants || {};
       this.cats = d.cats || {};
-      this.sid = d.sid;
       this.all = (d.orders || []).map((o) => Object.assign(o, { date: new Date(o.d) }));
       this.total = Math.max(d.total || 0, this.all.length);
       this.pages = { 1: true };
+    }
+
+    loading(on) {
+      const l = this.slot('loading');
+      if (l) l.hidden = !on;
+      this.setAttribute('aria-busy', on ? 'true' : 'false');
+    }
+
+    async init() {
+      this.src = this.dataset.src;
+      const inline = this.querySelector('[data-mine-data]');
+      let raw = inline ? inline.textContent : this.readCache();
+      const fromCache = !inline && !!raw;
+
+      if (!raw) {
+        this.loading(true);
+        try {
+          raw = await this.fetchRaw();
+        } catch (e) {
+          console.error('[velto-mine] load', e);
+          this.loading(false);
+          const err = this.slot('error');
+          if (err) {
+            err.hidden = false;
+            err.querySelector('[data-retry]').onclick = () => {
+              err.hidden = true;
+              this.init();
+            };
+          }
+          return;
+        }
+      }
+      this.loading(false);
+      this.setup(this.parse(raw));
 
       // how many orders to analyse: 50 (one page, already here) / 100 / 250
       let range = 50;
@@ -82,13 +139,28 @@
       this.range = RANGES.includes(range) ? range : 50;
       if (this.range > 50 && this.total > 50) await this.ensure(this.range);
 
-      this.slot('period').addEventListener('click', (e) => {
-        const b = e.target.closest('[data-range]');
-        if (b && !b.classList.contains('is-active')) this.setRange(parseInt(b.dataset.range), b);
-      });
+      if (!this._bound) {
+        this._bound = true;
+        this.slot('period').addEventListener('click', (e) => {
+          const b = e.target.closest('[data-range]');
+          if (b && !b.classList.contains('is-active')) this.setRange(parseInt(b.dataset.range), b);
+        });
+      }
 
       this.render();
-      if (C.refresh) C.refresh();
+      if (this.C.refresh) this.C.refresh();
+
+      // shown from the session copy: check for a newer order in the background
+      if (fromCache) {
+        this.fetchRaw()
+          .then(async (fresh) => {
+            if (fresh === raw) return;
+            this.setup(this.parse(fresh));
+            if (this.range > 50 && this.total > 50) await this.ensure(this.range);
+            this.render();
+          })
+          .catch(() => {});
+      }
     }
 
     render() {
@@ -113,7 +185,7 @@
 
     /* older orders: the same section, next pages (Section Rendering API) */
     loadPage(p) {
-      const url = `${location.pathname}?section_id=${encodeURIComponent(this.sid)}&page=${p}`;
+      const url = `${this.src}&page=${p}`;
       return fetch(url)
         .then((r) => r.text())
         .then((html) => {

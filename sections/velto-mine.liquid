@@ -39,7 +39,7 @@
         <a class="velto-mine__btn" href="{{ velto_login | strip }}">{{ 'velto.mine.login' | t }}</a>
       </div>
     {%- else -%}
-    <velto-mine class="velto-mine__app">
+    <velto-mine class="velto-mine__app" data-src="{{ request.path }}?view=mine-data">
       <header class="velto-mine__head">
         <div>
           <p class="velto-ahero__eyebrow">{{ 'velto.mine.nav_label' | t }}</p>
@@ -54,6 +54,22 @@
         </div>
         <div class="velto-mine__last" data-slot="last" hidden></div>
       </header>
+
+      {%- unless template.suffix == 'mine-data' -%}
+        <div class="velto-mine__loading" data-slot="loading" role="status">
+          <p class="velto-mine__loading-text"><span class="velto-mine__spinner" aria-hidden="true"></span>{{ 'velto.mine.loading' | t }}</p>
+          <div class="velto-mine__sk-stats" aria-hidden="true">
+            <span class="velto-mine__sk"></span><span class="velto-mine__sk"></span><span class="velto-mine__sk"></span><span class="velto-mine__sk"></span>
+          </div>
+          <div class="velto-mine__sk-rows" aria-hidden="true">
+            <span class="velto-mine__sk"></span><span class="velto-mine__sk"></span><span class="velto-mine__sk"></span><span class="velto-mine__sk"></span>
+          </div>
+        </div>
+        <div class="velto-mine__error" data-slot="error" hidden>
+          <p>{{ 'velto.mine.load_error' | t }}</p>
+          <button type="button" class="velto-mine__btn velto-mine__btn--ghost" data-retry>{{ 'velto.mine.retry' | t }}</button>
+        </div>
+      {%- endunless -%}
 
       <p class="velto-mine__period" data-slot="period" hidden></p>
 
@@ -117,6 +133,7 @@
         </velto-qa>
       </template>
 
+      {%- if template.suffix == 'mine-data' -%}
       <script type="application/json" data-mine-data>
         {
           "root": {{ routes.root_url | json }},
@@ -292,6 +309,7 @@
           }
         }
       </script>
+      {%- endif -%}
     </velto-mine>
     {%- endunless -%}
   </div>

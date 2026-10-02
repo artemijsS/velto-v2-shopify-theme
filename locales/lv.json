@@ -853,7 +853,10 @@
       "filter_show_all": "Rādīt visas preces",
       "filter_guest": "Pieslēdzies, lai redzētu preces, ko jau pirki",
       "bought_times": "Pasūtīji [count]×",
-      "stat_first": "Pirmais pasūtījums: [date]"
+      "stat_first": "Pirmais pasūtījums: [date]",
+      "loading": "Ielādējam tavus pasūtījumus…",
+      "load_error": "Neizdevās ielādēt pasūtījumus. Pārbaudi interneta savienojumu un mēģini vēlreiz.",
+      "retry": "Mēģināt vēlreiz"
     },
     "pmore": {
       "category": "Citas preces kategorijā „{{ name }}”",

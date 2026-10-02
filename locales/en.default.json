@@ -840,7 +840,10 @@
       "filter_show_all": "Show all products",
       "filter_guest": "Sign in to see the products you have bought",
       "bought_times": "Ordered [count]×",
-      "stat_first": "First order: [date]"
+      "stat_first": "First order: [date]",
+      "loading": "Loading your orders…",
+      "load_error": "Could not load your orders. Check your connection and try again.",
+      "retry": "Try again"
     },
     "pmore": {
       "category": "More in {{ name }}",
