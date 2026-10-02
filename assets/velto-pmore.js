@@ -183,7 +183,9 @@
     p.innerHTML =
       '<svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3.5 10a6.5 6.5 0 0 1 11.3-4.4L16.5 7.5"/><path d="M16.5 3.5v4h-4"/><path d="M16.5 10a6.5 6.5 0 0 1-11.3 4.4L3.5 12.5"/><path d="M3.5 16.5v-4h4"/></svg>';
     p.append(orderedLine(S.ordered, me.times, new Date(me.last), (S.lang || 'lv').split('-')[0]));
-    price.after(p);
+    // below the "Cenā iekļauts PVN." line, if the theme shows it
+    const after = price.parentElement.querySelector(':scope > .product__tax') || price;
+    after.after(p);
   };
 
   const loaders = {

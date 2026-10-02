@@ -79,10 +79,12 @@
 
 /* "Tu šo pirki 5× · pēdējo reizi …" next to the price */
 .velto-pmore-bought {
-  display: inline-flex;
+  display: flex;
+  width: fit-content;
+  max-width: 100%;
   align-items: center;
   gap: 0.7rem;
-  margin: 0.4rem 0 0.8rem;
+  margin: 1rem 0 0.4rem;
   padding: 0.6rem 1.2rem;
   border-radius: 4rem;
   background: rgba(var(--color-foreground), 0.07);
