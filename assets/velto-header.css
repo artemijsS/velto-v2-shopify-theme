@@ -819,6 +819,7 @@
 /* Dawn: `.header__icon span { height: 100% }` stretched the circle into an oval */
 .velto-acc .velto-acc__btn .velto-acc__avatar { flex: 0 0 auto; width: 3rem; height: 3rem; aspect-ratio: 1; }
 .velto-acc .velto-acc__panel .velto-acc__avatar--lg { width: 4.8rem; height: 4.8rem; aspect-ratio: 1; }
+.velto-acc .velto-acc__panel .velto-acc__feature-icon { flex: 0 0 auto; width: 3.6rem; height: 3.6rem; aspect-ratio: 1; }
 
 .velto-acc__panel {
   position: absolute;
