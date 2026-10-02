@@ -10,13 +10,13 @@ velto-mine-filter.velto-mf { display: inline-flex; flex: 0 0 auto; }
   align-items: center;
   gap: 0.7rem;
   height: 3.6rem;
-  padding: 0 0.5rem 0 1.2rem;
-  border: 1px solid rgba(var(--color-foreground), 0.22);
+  padding: 0 1.5rem 0 1.3rem;
+  border: 1px solid rgba(var(--color-foreground), 0.25);
   border-radius: 4rem;
-  background: rgba(var(--color-foreground), 0.04);
+  background: transparent;
   color: rgb(var(--color-foreground));
   font-family: var(--font-body-family);
-  font-size: 1.3rem;
+  font-size: 1.4rem;
   font-weight: 600;
   line-height: 1;
   white-space: nowrap;
@@ -26,56 +26,30 @@ velto-mine-filter.velto-mf { display: inline-flex; flex: 0 0 auto; }
   transition: background-color 0.18s ease, color 0.18s ease, border-color 0.18s ease;
 }
 
-.velto-mf__toggle:hover { border-color: rgba(var(--color-foreground), 0.6); }
+.velto-mf__toggle:hover { border-color: rgb(var(--color-foreground)); }
 .velto-mf__icon { display: inline-grid; place-items: center; }
 .velto-mf__icon svg { width: 1.5rem; height: 1.5rem; }
 
-/* mini switch */
-.velto-mf__switch {
-  position: relative;
-  flex: 0 0 auto;
-  width: 3rem;
-  height: 2.6rem;
-  border-radius: 2rem;
-  background: rgba(var(--color-foreground), 0.12);
-  transition: background-color 0.18s ease;
-}
-
-.velto-mf__switch::after {
-  content: '';
-  position: absolute;
-  top: 50%;
-  left: 0.4rem;
-  width: 1.2rem;
-  height: 1.2rem;
-  margin-top: -0.6rem;
-  border-radius: 50%;
-  background: rgba(var(--color-foreground), 0.55);
-  transition: transform 0.2s ease, background-color 0.2s ease;
-}
-
+/* on: lit like the active category chip */
 .velto-mf__toggle[aria-pressed='true'] {
   border-color: rgb(var(--color-foreground));
   background: rgb(var(--color-foreground));
   color: rgb(var(--color-background));
 }
 
-.velto-mf__toggle[aria-pressed='true'] .velto-mf__switch { background: rgba(var(--color-background), 0.16); }
-.velto-mf__toggle[aria-pressed='true'] .velto-mf__switch::after { transform: translateX(1rem); background: rgb(var(--color-background)); }
-
-/* desktop: first item of the filter row, divided from "Filtri" */
+/* desktop: first item of the filter row */
+/* the row items are text-height (2.1rem) and sit at the top — centre the
+   3.6rem pill on that line without making the row taller */
 .facets__wrapper > .velto-mf[data-place='desk'] {
-  align-self: center;
-  margin-right: 1.4rem;
-  padding-right: 1.6rem;
-  border-right: 1px solid rgba(var(--color-foreground), 0.12);
+  align-self: flex-start;
+  margin: -0.75rem 1.6rem -0.75rem 0;
 }
 
 /* mobile: next to "Filtrēt un kārtot" */
-.facets-container > .velto-mf[data-place='mob'] { align-self: center; margin-left: auto; }
+.facets-container > .velto-mf[data-place='mob'] { align-self: center; margin: -0.3rem 0 0 auto; }
 /* the count is already in the hero above — keep the row on one line */
 .facets-container:has(> .velto-mf[data-place='mob']) > .product-count { display: none; }
-.facets-container > .velto-mf[data-place='mob'] .velto-mf__toggle { height: 3.4rem; font-size: 1.25rem; }
+.facets-container > .velto-mf[data-place='mob'] .velto-mf__toggle { height: 3.4rem; font-size: 1.3rem; }
 
 /* filter on: the regular grid and paging make way for the results */
 .velto-mf-on #ProductGridContainer > .collection:not(.velto-mf__results),
