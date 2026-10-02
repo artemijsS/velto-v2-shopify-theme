@@ -242,7 +242,8 @@
           "shadow": "#0a0a0a"
         }
       }
-    }
+    },
+    "velto_mine_enable": true
   },
   "presets": {
     "Dawn": {

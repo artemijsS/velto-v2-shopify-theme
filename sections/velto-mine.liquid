@@ -1,0 +1,296 @@
+{%- comment -%}
+  Velto — "Mani pirkumi": everything the customer has bought.
+  Logged in: orders come from Shopify (customer.orders, up to 50 latest) with
+  live product data (price, availability, quantity rules, category from the
+  main menu). Guests: the carts they checked out on this device
+  (saved by velto-card-qty.js in localStorage).
+  Rendering, stats and "reorder" logic: assets/velto-mine.js.
+{%- endcomment -%}
+{{ 'velto-about.css' | asset_url | stylesheet_tag }}
+{{ 'velto-mine.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'velto-mine.js' | asset_url }}" defer="defer"></script>
+
+{%- liquid
+  assign menu = linklists['main-menu']
+  assign seen = ','
+  assign seen_p = ','
+  assign vjson = ''
+  assign cjson = ''
+-%}
+
+<section
+  class="velto-mine color-{{ section.settings.color_scheme }}"
+  style="--velto-a-pt: {{ section.settings.padding_top }}px; --velto-a-pb: {{ section.settings.padding_bottom }}px;"
+>
+  <div class="page-width">
+    <nav class="velto-ahero__crumbs" aria-label="{{ 'velto.home' | t }}">
+      <a href="{{ routes.root_url }}">{{ 'velto.home' | t }}</a>
+      <span aria-hidden="true">/</span>
+      <span>{{ 'velto.mine.nav_label' | t }}</span>
+    </nav>
+
+    <velto-mine class="velto-mine__app" data-logged="{% if customer %}true{% else %}false{% endif %}">
+      <header class="velto-mine__head">
+        <div>
+          <p class="velto-ahero__eyebrow">{{ 'velto.mine.nav_label' | t }}</p>
+          <h1 class="velto-mine__title">
+            {%- if customer and customer.first_name != blank -%}
+              {{ 'velto.mine.hello' | t: name: customer.first_name }}
+            {%- elsif customer -%}
+              {{ 'velto.mine.heading' | t }}
+            {%- else -%}
+              {{ 'velto.mine.guest_heading' | t }}
+            {%- endif -%}
+          </h1>
+          <p class="velto-mine__intro">{{ 'velto.mine.sub' | t }}</p>
+        </div>
+        <div class="velto-mine__last" data-slot="last" hidden></div>
+      </header>
+
+      {%- unless customer -%}
+        <div class="velto-mine__login">
+          <span class="velto-mine__login-icon" aria-hidden="true">{{- 'icon-account.svg' | inline_asset_content -}}</span>
+          <p>{{ 'velto.mine.guest_text' | t }}</p>
+          <a class="velto-mine__btn" href="{{ routes.account_login_url }}">{{ 'velto.mine.login' | t }}</a>
+        </div>
+      {%- endunless -%}
+
+      <div class="velto-mine__stats" data-slot="stats" hidden></div>
+      <div class="velto-mine__insights" data-slot="insights" hidden></div>
+
+      <section class="velto-mine__block" data-slot="again" hidden>
+        <div class="velto-mine__block-head">
+          <div>
+            <h2 class="velto-mine__h2">{{ 'velto.mine.again_heading' | t }}</h2>
+            <p class="velto-mine__muted">{{ 'velto.mine.again_sub' | t }}</p>
+          </div>
+          <div class="velto-mine__tools">
+            <div class="velto-mine__sort" role="group" aria-label="{{ 'velto.mine.again_heading' | t }}">
+              <button type="button" class="is-active" data-sort="freq">{{ 'velto.mine.sort_freq' | t }}</button>
+              <button type="button" data-sort="recent">{{ 'velto.mine.sort_recent' | t }}</button>
+              <button type="button" data-sort="az">A–Z</button>
+            </div>
+            <label class="velto-mine__filter">
+              {{- 'icon-search.svg' | inline_asset_content -}}
+              <span class="visually-hidden">{{ 'velto.mine.filter_ph' | t }}</span>
+              <input type="search" placeholder="{{ 'velto.mine.filter_ph' | t }}" data-filter>
+            </label>
+          </div>
+        </div>
+        <ul class="velto-mine__rows" role="list" data-rows></ul>
+        <p class="velto-mine__muted velto-mine__none" data-none hidden>{{ 'velto.mine.nothing_found' | t }}</p>
+        <button type="button" class="velto-mine__more" data-more hidden>{{ 'velto.mine.show_more' | t }}</button>
+      </section>
+
+      <section class="velto-mine__block" data-slot="history" hidden>
+        <div class="velto-mine__block-head">
+          <h2 class="velto-mine__h2">{{ 'velto.mine.history_heading' | t }}</h2>
+        </div>
+        <ul class="velto-mine__orders" role="list" data-orders></ul>
+      </section>
+
+      <div class="velto-mine__empty" data-slot="empty" hidden>
+        <span class="velto-mine__empty-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 4h2l2.2 10.2a1.5 1.5 0 0 0 1.5 1.2h8.6a1.5 1.5 0 0 0 1.5-1.2L20.5 8H6.2"/><circle cx="9.5" cy="19.5" r="1.2"/><circle cx="17" cy="19.5" r="1.2"/></svg></span>
+        <h2 class="velto-mine__h2">{{ 'velto.mine.empty_heading' | t }}</h2>
+        <p class="velto-mine__muted">{{ 'velto.mine.empty_text' | t }}</p>
+        <a class="velto-mine__btn" href="{{ routes.all_products_collection_url }}">{{ 'velto.mine.to_catalog' | t }}</a>
+      </div>
+
+      <template data-qa-tpl>
+        <velto-qa class="velto-qa" data-variant="" data-min="1" data-step="1">
+          <button type="button" class="velto-qa__add" data-qa="add" aria-label="{{ 'velto.qa.add_aria' | t: title: '[title]' }}">
+            <span class="velto-qa__add-icon" aria-hidden="true">{{- 'icon-plus.svg' | inline_asset_content -}}</span>
+            <span>{{ 'velto.qa.add' | t }}</span>
+          </button>
+          <div class="velto-qa__stepper" role="group" aria-label="{{ 'velto.qa.qty' | t }}">
+            <button type="button" class="velto-qa__btn velto-qa__btn--dec" data-qa="dec" aria-label="{{ 'velto.qa.decrease' | t }}">
+              <span class="velto-qa__i-minus" aria-hidden="true">{{- 'icon-minus.svg' | inline_asset_content -}}</span>
+              <span class="velto-qa__i-trash" aria-hidden="true"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 5.5h13M8 5.5V4a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v1.5M5.5 5.5l.7 10.1A1.5 1.5 0 0 0 7.7 17h4.6a1.5 1.5 0 0 0 1.5-1.4l.7-10.1M8.5 9v5M11.5 9v5"/></svg></span>
+            </button>
+            <input class="velto-qa__input" type="number" inputmode="numeric" min="0" value="0" aria-label="{{ 'velto.qa.qty' | t }}">
+            <button type="button" class="velto-qa__btn velto-qa__btn--inc" data-qa="inc" aria-label="{{ 'velto.qa.increase' | t }}">
+              {{- 'icon-plus.svg' | inline_asset_content -}}
+            </button>
+          </div>
+        </velto-qa>
+      </template>
+
+      <script type="application/json" data-mine-data>
+        {
+          "logged": {% if customer %}true{% else %}false{% endif %},
+          "root": {{ routes.root_url | json }},
+          "orders": [
+            {%- if customer -%}
+              {%- paginate customer.orders by 50 -%}
+                {%- for order in customer.orders -%}
+                  {%- unless forloop.first -%},{%- endunless -%}
+                  {"n":{{ order.name | json }},"d":{{ order.created_at | date: '%Y-%m-%dT%H:%M:%S%z' | json }},"t":{{ order.total_price | default: 0 }},"x":{% if order.cancelled %}true{% else %}false{% endif %},"u":{{ order.customer_url | json }},"i":[
+                    {%- assign first = true -%}
+                    {%- for li in order.line_items -%}
+                      {%- liquid
+                        if li.product.type == 'mws_fee_generated' or li.properties['_mws_fee'] != blank or li.vendor == 'mws_fee_generated'
+                          continue
+                        endif
+                        assign img = li.image | default: li.product.featured_image
+                      -%}
+                      {%- unless first -%},{%- endunless -%}{%- assign first = false -%}
+                      {"v":{{ li.variant_id | default: 0 }},"q":{{ li.quantity }},"p":{{ li.final_price }},"t":{{ li.title | json }},"img":{% if img %}{{ img | image_url: width: 160 | json }}{% else %}null{% endif %}}
+                      {%- liquid
+                        assign v = li.variant
+                        assign key = ',' | append: li.variant_id | append: ','
+                        if v and li.product and seen contains key
+                        elsif v and li.product
+                          assign seen = seen | append: li.variant_id | append: ','
+                          assign p = li.product
+                          assign vimg = v.image | default: p.featured_image
+                          assign q_min = v.quantity_rule.min | default: 1
+                          assign q_step = v.quantity_rule.increment | default: 1
+                          assign q_max = v.quantity_rule.max
+                          if v.inventory_management == 'shopify' and v.inventory_policy == 'deny'
+                            if q_max == null or v.inventory_quantity < q_max
+                              assign q_max = v.inventory_quantity
+                            endif
+                          endif
+                          assign up = ''
+                          if v.unit_price_measurement
+                            assign up = v.unit_price | unit_price_with_measurement: v.unit_price_measurement | strip_html | strip
+                          endif
+                          assign vt = ''
+                          unless p.has_only_default_variant
+                            assign vt = v.title
+                          endunless
+
+                          comment
+                            category = top-level main-menu entry holding one of the product's collections
+                          endcomment
+                          assign pkey = ',' | append: p.id | append: ','
+                          unless seen_p contains pkey
+                            assign seen_p = seen_p | append: p.id | append: ','
+                            assign ids = p.collections | map: 'id'
+                            assign cat = nil
+                            for link in menu.links
+                              if link.type == 'collection_link' and link.object and ids contains link.object.id
+                                assign cat = link
+                              else
+                                for child in link.links
+                                  if child.type == 'collection_link' and child.object and ids contains child.object.id
+                                    assign cat = link
+                                    break
+                                  endif
+                                endfor
+                              endif
+                              if cat
+                                break
+                              endif
+                            endfor
+                            if cat
+                              assign ctitle = cat.title | remove: '💙' | strip
+                              capture cjson
+                                echo cjson
+                                if cjson != blank
+                                  echo ','
+                                endif
+                                echo p.id | json
+                                echo ':'
+                                echo ctitle | json
+                              endcapture
+                            endif
+                          endunless
+
+                          capture vjson
+                            echo vjson
+                            if vjson != blank
+                              echo ','
+                            endif
+                            echo '"' | append: v.id | append: '":{"pid":' | append: p.id
+                            echo ',"t":'
+                            echo p.title | json
+                            echo ',"vt":'
+                            echo vt | json
+                            echo ',"u":'
+                            echo p.url | json
+                            echo ',"img":'
+                            if vimg
+                              echo vimg | image_url: width: 160 | json
+                            else
+                              echo 'null'
+                            endif
+                            echo ',"a":'
+                            if v.available
+                              echo 'true'
+                            else
+                              echo 'false'
+                            endif
+                            echo ',"pr":'
+                            echo v.price
+                            echo ',"cp":'
+                            echo v.compare_at_price | default: 0
+                            echo ',"up":'
+                            echo up | json
+                            echo ',"min":'
+                            echo q_min
+                            echo ',"st":'
+                            echo q_step
+                            echo ',"max":'
+                            if q_max == null
+                              echo 'null'
+                            else
+                              echo q_max
+                            endif
+                            echo '}'
+                          endcapture
+                        endif
+                      -%}
+                    {%- endfor -%}
+                  ]}
+                {%- endfor -%}
+              {%- endpaginate -%}
+            {%- endif -%}
+          ],
+          "variants": { {{- vjson -}} },
+          "cats": { {{- cjson -}} },
+          "s": {
+            "lang": {{ request.locale.iso_code | json }},
+            "reorder": {{ 'velto.mine.reorder' | t | json }},
+            "reorder_short": {{ 'velto.mine.reorder_short' | t | json }},
+            "details": {{ 'velto.mine.details' | t | json }},
+            "last_order": {{ 'velto.mine.last_order' | t | json }},
+            "local_label": {{ 'velto.mine.local_label' | t | json }},
+            "added_partial": {{ 'velto.mine.added_partial' | t | json }},
+            "none_available": {{ 'velto.mine.none_available' | t | json }},
+            "stat_orders": {{ 'velto.mine.stat_orders' | t | json }},
+            "stat_spent": {{ 'velto.mine.stat_spent' | t | json }},
+            "stat_avg": {{ 'velto.mine.stat_avg' | t | json }},
+            "stat_items": {{ 'velto.mine.stat_items' | t | json }},
+            "stat_since": {{ 'velto.mine.stat_since' | t | json }},
+            "distinct": {{ 'velto.mine.distinct' | t | json }},
+            "show_more": {{ 'velto.mine.show_more' | t | json }},
+            "error": {{ 'velto.qa.error' | t | json }},
+            "top_heading": {{ 'velto.mine.top_heading' | t | json }},
+            "top_hint": {{ 'velto.mine.top_hint' | t | json }},
+            "cat_heading": {{ 'velto.mine.cat_heading' | t | json }},
+            "month_heading": {{ 'velto.mine.month_heading' | t | json }},
+            "bought_meta": {{ 'velto.mine.bought_meta' | t | json }},
+            "unavailable": {{ 'velto.mine.unavailable' | t | json }},
+            "cancelled": {{ 'velto.mine.cancelled' | t | json }},
+            "other": {{ 'velto.mine.other' | t | json }}
+          }
+        }
+      </script>
+    </velto-mine>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Velto: mani pirkumi",
+  "tag": "div",
+  "class": "section",
+  "settings": [
+    { "type": "color_scheme", "id": "color_scheme", "label": "t:sections.all.colors.label", "default": "scheme-1" },
+    { "type": "range", "id": "padding_top", "min": 0, "max": 100, "step": 4, "unit": "px", "label": "t:sections.all.padding.padding_top", "default": 24 },
+    { "type": "range", "id": "padding_bottom", "min": 0, "max": 100, "step": 4, "unit": "px", "label": "t:sections.all.padding.padding_bottom", "default": 64 }
+  ],
+  "presets": [{ "name": "Velto: mani pirkumi" }]
+}
+{% endschema %}

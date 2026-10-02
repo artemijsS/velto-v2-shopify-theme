@@ -19,6 +19,9 @@
             </button>
           </li>
         {%- endif -%}
+        {%- if settings.velto_mine_enable -%}
+          <li><a class="velto-mnav__chip velto-mnav__chip--mine" href="{% render 'velto-mine-url' %}" data-velto-quick><span class="velto-mine-link__icon"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3.5 10a6.5 6.5 0 0 1 11.3-4.4L16.5 7.5"/><path d="M16.5 3.5v4h-4"/><path d="M16.5 10a6.5 6.5 0 0 1-11.3 4.4L3.5 12.5"/><path d="M3.5 16.5v-4h4"/></svg></span>{{ 'velto.mine.nav_label' | t }}</a></li>
+        {%- endif -%}
         {%- for i in (1..5) -%}
           {%- liquid
             assign lk = 'velto_quick_label_' | append: i

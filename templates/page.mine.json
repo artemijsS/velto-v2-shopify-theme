@@ -1,0 +1,11 @@
+{
+  "sections": {
+    "main": {
+      "type": "velto-mine",
+      "settings": {}
+    }
+  },
+  "order": [
+    "main"
+  ]
+}

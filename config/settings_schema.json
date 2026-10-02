@@ -1539,6 +1539,27 @@
     ]
   },
   {
+    "name": "Velto mani pirkumi",
+    "settings": [
+      {
+        "type": "paragraph",
+        "content": "Lapa \"Mani pirkumi\": pircēja pasūtījumi, statistika un ātra atkārtota pasūtīšana. Izveido lapu (Online Store → Pages) ar veidni \"page.mine\" un izvēlies to šeit."
+      },
+      {
+        "type": "checkbox",
+        "id": "velto_mine_enable",
+        "label": "Rādīt pogu izvēlnē",
+        "default": true
+      },
+      {
+        "type": "page",
+        "id": "velto_mine_page",
+        "label": "Lapa",
+        "info": "Ja nav izvēlēta, tiek izmantota /pages/mani-pirkumi"
+      }
+    ]
+  },
+  {
     "name": "Velto marķējumi",
     "settings": [
       {

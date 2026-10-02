@@ -1,0 +1,10 @@
+{%- comment -%}
+  URL of the "Mani pirkumi" page (theme setting, default /pages/mani-pirkumi), locale-aware.
+{%- endcomment -%}
+{%- liquid
+  assign mu = '/pages/mani-pirkumi'
+  if settings.velto_mine_page != blank
+    assign mu = settings.velto_mine_page.url
+  endif
+  render 'velto-url', url: mu
+-%}
