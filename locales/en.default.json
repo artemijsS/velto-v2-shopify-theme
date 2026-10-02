@@ -817,7 +817,6 @@
       "sort_freq": "Most often",
       "sort_recent": "Recent",
       "filter_ph": "Search my purchases",
-      "bought_meta": "Bought [count]× · last on [date]",
       "unavailable": "Out of stock",
       "show_more": "Show more",
       "nothing_found": "Nothing found",
@@ -850,7 +849,12 @@
       "mine_all": "All my purchases",
       "recent": "Recently viewed",
       "see_all": "See all",
-      "bought_line": "You have bought this [count]× · last on [date]"
+      "ordered": {
+        "one": "Ordered once · last on [date]",
+        "few": "Ordered [count] times · last on [date]",
+        "many": "Ordered [count] times · last on [date]",
+        "other": "Ordered [count] times · last on [date]"
+      }
     }
   }
 }

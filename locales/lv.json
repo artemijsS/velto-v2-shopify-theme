@@ -830,7 +830,6 @@
       "sort_freq": "Biežāk",
       "sort_recent": "Nesen",
       "filter_ph": "Meklēt manos pirkumos",
-      "bought_meta": "Pirkta [count]× · pēdējo reizi [date]",
       "unavailable": "Nav pieejama",
       "show_more": "Rādīt vēl",
       "nothing_found": "Nekas nav atrasts",
@@ -863,7 +862,12 @@
       "mine_all": "Visi mani pirkumi",
       "recent": "Nesen skatītās preces",
       "see_all": "Skatīt visu",
-      "bought_line": "Tu šo pirki [count]× · pēdējo reizi [date]"
+      "ordered": {
+        "one": "Pasūtīji [count] reizi · pēdējoreiz [date]",
+        "few": "Pasūtīji [count] reizes · pēdējoreiz [date]",
+        "many": "Pasūtīji [count] reizes · pēdējoreiz [date]",
+        "other": "Pasūtīji [count] reizes · pēdējoreiz [date]"
+      }
     }
   }
 }

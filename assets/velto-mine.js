@@ -17,6 +17,22 @@
     });
     return o;
   };
+  /* "Pasūtīji 9 reizes · pēdējoreiz 10.07.2026." — plural form by count, numeric date
+     (no case endings to get wrong in lv / ru) */
+  const orderedLine = (forms, n, date, lang) => {
+    let cat = 'other';
+    try {
+      cat = new Intl.PluralRules(lang).select(n);
+    } catch (e) {}
+    const tpl = (forms && (forms[cat] || forms.other)) || '[count]× · [date]';
+    let d;
+    try {
+      d = new Intl.DateTimeFormat(lang, lang === 'en' ? { day: 'numeric', month: 'short', year: 'numeric' } : { day: '2-digit', month: '2-digit', year: 'numeric' }).format(date);
+    } catch (e) {
+      d = date.toLocaleDateString();
+    }
+    return tpl.replace('[count]', n).replace('[date]', d.replace(/\.$/, ''));
+  };
   const RANGES = [50, 100, 250];
   const esc = (s) =>
     String(s == null ? '' : s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]);
@@ -47,6 +63,7 @@
       const C = window.veltoCart || {};
       this.C = C;
       this.S = unesc(Object.assign({}, C.S || {}, d.s));
+      unesc(this.S.ordered);
       this.lang = (d.s.lang || document.documentElement.lang || 'lv').split('-')[0];
       this.root = (d.root || '/').replace(/\/$/, '');
       this.money = C.money || ((c) => (c / 100).toFixed(2).replace('.', ',') + ' €');
@@ -458,7 +475,7 @@
         const vt = v && v.vt ? `<span class="velto-mine__row-vt">${esc(v.vt)}</span>` : '';
         const img = (v && v.img) || a.img;
         const href = esc(this.url(v && v.u));
-        const meta = this.S.bought_meta.replace('[count]', a.times).replace('[date]', this.fmtDate(a.last));
+        const meta = orderedLine(this.S.ordered, a.times, a.last, this.lang);
         li.innerHTML = `
           <a class="velto-mine__row-img" href="${href}" tabindex="-1" aria-hidden="true">${img ? `<img src="${esc(img)}" alt="" loading="lazy" width="80" height="80">` : ''}</a>
           <div class="velto-mine__row-main">

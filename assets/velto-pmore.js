@@ -26,6 +26,23 @@
     return o;
   };
   const S = unesc(JSON.parse(root.querySelector('[data-pmore-strings]').textContent));
+  unesc(S.ordered);
+  /* "Pasūtīji 9 reizes · pēdējoreiz 10.07.2026." — plural form by count, numeric date
+     (no case endings to get wrong in lv / ru) */
+  const orderedLine = (forms, n, date, lang) => {
+    let cat = 'other';
+    try {
+      cat = new Intl.PluralRules(lang).select(n);
+    } catch (e) {}
+    const tpl = (forms && (forms[cat] || forms.other)) || '[count]× · [date]';
+    let d;
+    try {
+      d = new Intl.DateTimeFormat(lang, lang === 'en' ? { day: 'numeric', month: 'short', year: 'numeric' } : { day: '2-digit', month: '2-digit', year: 'numeric' }).format(date);
+    } catch (e) {
+      d = date.toLocaleDateString();
+    }
+    return tpl.replace('[count]', n).replace('[date]', d.replace(/\.$/, ''));
+  };
   const RECENT = 'velto:recent';
   const MINE = 'velto:mine-data';
   const TTL = 10 * 60 * 1000;
@@ -159,19 +176,13 @@
     if (!d) return;
     const me = mineStats(d).find((p) => p.pid === pid || p.h === handle);
     if (!me) return;
-    let date = '';
-    try {
-      date = new Intl.DateTimeFormat((S.lang || 'lv').split('-')[0], { day: 'numeric', month: 'short' }).format(new Date(me.last));
-    } catch (e) {
-      date = new Date(me.last).toLocaleDateString();
-    }
     const price = document.querySelector('.product__info-container [id^="price-"]');
     if (!price || document.querySelector('.velto-pmore-bought')) return;
     const p = document.createElement('p');
     p.className = 'velto-pmore-bought';
     p.innerHTML =
       '<svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3.5 10a6.5 6.5 0 0 1 11.3-4.4L16.5 7.5"/><path d="M16.5 3.5v4h-4"/><path d="M16.5 10a6.5 6.5 0 0 1-11.3 4.4L3.5 12.5"/><path d="M3.5 16.5v-4h4"/></svg>';
-    p.append(S.bought.replace('[count]', me.times).replace('[date]', date));
+    p.append(orderedLine(S.ordered, me.times, new Date(me.last), (S.lang || 'lv').split('-')[0]));
     price.after(p);
   };
 

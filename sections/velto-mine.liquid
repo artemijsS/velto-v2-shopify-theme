@@ -274,7 +274,12 @@
             "top_hint": {{ 'velto.mine.top_hint' | t | json }},
             "cat_heading": {{ 'velto.mine.cat_heading' | t | json }},
             "month_heading": {{ 'velto.mine.month_heading' | t | json }},
-            "bought_meta": {{ 'velto.mine.bought_meta' | t | json }},
+            "ordered": {
+              "one": {{ 'velto.pmore.ordered.one' | t | json }},
+              "few": {{ 'velto.pmore.ordered.few' | t | json }},
+              "many": {{ 'velto.pmore.ordered.many' | t | json }},
+              "other": {{ 'velto.pmore.ordered.other' | t | json }}
+            },
             "unavailable": {{ 'velto.mine.unavailable' | t | json }},
             "cancelled": {{ 'velto.mine.cancelled' | t | json }},
             "other": {{ 'velto.mine.other' | t | json }},
