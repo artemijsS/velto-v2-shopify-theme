@@ -116,6 +116,9 @@
 
         this.addEventListener('click', (e) => {
           const b = e.target.closest('[data-qa]');
+          // near-miss around the buttons (the enlarged tap zone): do nothing,
+          // never open the product page
+          if (e.target === this) { e.preventDefault(); e.stopPropagation(); return; }
           if (!b || b.disabled) return;
           e.preventDefault();
           e.stopPropagation();

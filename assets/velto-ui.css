@@ -703,3 +703,42 @@
 .shopify-policy__body li { margin-bottom: 0.6rem; }
 .shopify-policy__body strong { color: rgb(var(--color-foreground)); }
 .shopify-policy__body a { color: rgb(var(--color-foreground)); text-underline-offset: 0.3rem; }
+
+
+/* ---------- velto-qa: bigger, forgiving tap targets ----------
+   People missed "+" on phones and landed on the product page (the whole card
+   is a link). The buttons get a larger size + an invisible hit area that reaches
+   past the stepper, and the zone around the control swallows near-misses. */
+.velto-qa,
+.velto-qa * { touch-action: manipulation; -webkit-tap-highlight-color: transparent; }
+
+.velto-qa::before {
+  content: '';
+  position: absolute;
+  inset: -1rem -0.6rem;
+}
+
+.velto-qa__btn { position: relative; }
+.velto-qa__btn::before {
+  content: '';
+  position: absolute;
+  top: -1rem;
+  bottom: -1rem;
+}
+.velto-qa__btn--dec::before { left: -0.6rem; right: 0; }
+.velto-qa__btn--inc::before { left: 0; right: -0.6rem; }
+
+.velto-qa__btn:active:not([disabled]) { background: rgba(var(--color-background), 0.18); }
+
+/* phones: the control uses (almost) the full card width */
+@media screen and (max-width: 749px) {
+  .card .velto-qa { margin-inline: -1.2rem; }
+}
+
+@media (hover: none), screen and (max-width: 749px) {
+  .velto-qa { height: 4.4rem; }
+  .velto-qa::before { inset: -1rem -0.6rem -1.8rem; }
+  .velto-qa__stepper { grid-template-columns: 4.6rem minmax(0, 1fr) 4.6rem; }
+  .velto-qa__btn svg { width: 1.5rem; height: 1.5rem; }
+  .velto-qa__i-trash svg { width: 1.7rem; height: 1.7rem; }
+}
