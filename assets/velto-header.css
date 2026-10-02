@@ -996,8 +996,6 @@
 
 
 /* ---------- language picker in the header (same look as the account popup) ---------- */
-.velto-lang__code { display: none; }
-
 .header .header-localization .disclosure__button.localization-form__select {
   display: inline-flex;
   align-items: center;
@@ -1065,8 +1063,8 @@
   align-items: center;
   gap: 1.2rem;
   width: 100%;
-  min-height: 4.6rem;
-  padding: 0.6rem 1.2rem 0.6rem 0.8rem;
+  min-height: 4.4rem;
+  padding: 0.6rem 1.2rem 0.6rem 1.4rem;
   border-radius: 1rem;
   color: rgb(var(--color-foreground));
   font-size: 1.5rem;
@@ -1078,20 +1076,6 @@
 
 .header .header-localization .disclosure__link:hover,
 .header .header-localization .disclosure__link:focus-visible { background: rgba(var(--color-foreground), 0.07); text-decoration: none; }
-
-.header .header-localization .velto-lang__code {
-  order: 1;
-  flex: 0 0 auto;
-  display: grid;
-  place-items: center;
-  width: 3.2rem;
-  height: 3.2rem;
-  border-radius: 50%;
-  background: rgba(var(--color-foreground), 0.08);
-  font-size: 1.1rem;
-  font-weight: 700;
-  letter-spacing: 0.04rem;
-}
 
 .header .header-localization .velto-lang__name { order: 2; flex: 1 1 auto; }
 
@@ -1108,11 +1092,6 @@
 .header .header-localization .disclosure__link > span:first-child svg { width: 1.4rem; height: 1.4rem; margin: 0; }
 
 .header .header-localization .disclosure__link[aria-current='true'] { font-weight: 700; }
-
-.header .header-localization .disclosure__link[aria-current='true'] .velto-lang__code {
-  background: rgb(var(--color-foreground));
-  color: rgb(var(--color-background));
-}
 
 /* mobile menu: the picker sits at the bottom left — open upwards from the left edge */
 .header .menu-drawer__localization .disclosure__list-wrapper {
