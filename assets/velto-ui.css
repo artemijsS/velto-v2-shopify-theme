@@ -18,8 +18,39 @@
 
 @media (hover: hover) {
   .card-wrapper:hover .card__media .media img {
-    transform: scale(1.04);
+    transform: scale(1.06);
   }
+}
+
+/* smart fit (assets/velto-fit.js): the product, not its white margins,
+   fills ~82 % of the square; hover zooms a bit more on desktop */
+.card-wrapper .card__media .media img[data-fit='zoom'],
+.card-wrapper .card__media .media img[data-fit='fit'] {
+  padding: 0;
+  transform: var(--fit);
+  transition: transform 0.35s ease;
+}
+
+@media (hover: hover) {
+  .card-wrapper:hover .card__media .media img[data-fit='zoom'],
+  .card-wrapper:hover .card__media .media img[data-fit='fit'] {
+    transform: var(--fit) scale(1.1);
+  }
+}
+
+/* thumbnails on the "Mani pirkumi" page */
+.velto-mine__thumbs img[data-fit='zoom'],
+.velto-mine__thumbs img[data-fit='fit'],
+.velto-mine__row-img img[data-fit='zoom'],
+.velto-mine__row-img img[data-fit='fit'],
+.velto-mine__bar-img img[data-fit='zoom'],
+.velto-mine__bar-img img[data-fit='fit'] {
+  padding: 0;
+  transform: var(--fit);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .card-wrapper .card__media .media img { transition: none !important; }
 }
 
 .card-wrapper .card--card {
