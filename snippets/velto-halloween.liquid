@@ -1,0 +1,41 @@
+{%- comment -%}
+  Velto — Halloween decoration (seasonal add-on).
+  On/off: Theme settings → "Velto: Helovīns". Turns itself off from the
+  "until" date. Everything lives in this snippet + assets/velto-halloween.css
+  + assets/velto-halloween.js; to remove it for good delete those three files
+  and the `render 'velto-halloween'` line in layout/theme.liquid.
+{%- endcomment -%}
+{%- liquid
+  assign hw_on = false
+  if settings.velto_hw_enable
+    assign hw_today = 'now' | date: '%Y-%m-%d'
+    assign hw_until = settings.velto_hw_until | strip
+    if hw_until == blank or hw_today < hw_until
+      assign hw_on = true
+    endif
+  endif
+-%}
+{%- if hw_on -%}
+  <script>document.documentElement.classList.add('velto-hw');</script>
+  {{ 'velto-halloween.css' | asset_url | stylesheet_tag }}
+  {%- liquid
+    assign hw_coll = settings.velto_hw_collection
+    assign hw_url = ''
+    if hw_coll != blank
+      capture hw_url
+        render 'velto-url', url: hw_coll.url
+      endcapture
+    endif
+  -%}
+  <script type="application/json" id="velto-hw-data">
+    {
+      "collection": {{ hw_url | strip | json }},
+      "root": {{ routes.root_url | json }},
+      "label": {{ 'velto.halloween.chip' | t | json }},
+      "badge": {{ 'velto.halloween.badge' | t | json }},
+      "bats": {{ settings.velto_hw_bats | json }},
+      "spider": {{ settings.velto_hw_spider | json }}
+    }
+  </script>
+  <script src="{{ 'velto-halloween.js' | asset_url }}" defer="defer"></script>
+{%- endif -%}

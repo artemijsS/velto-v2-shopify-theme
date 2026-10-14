@@ -1560,6 +1560,46 @@
     ]
   },
   {
+    "name": "Velto: Helovīns",
+    "settings": [
+      {
+        "type": "paragraph",
+        "content": "Sezonas noformējums: cepure uz logo, sikspārņi, zirneklis, oranži akcenti. Pēc svētkiem vienkārši izslēdz — vai tas izslēgsies pats no norādītā datuma."
+      },
+      {
+        "type": "checkbox",
+        "id": "velto_hw_enable",
+        "label": "Ieslēgt Helovīna noformējumu",
+        "default": false
+      },
+      {
+        "type": "text",
+        "id": "velto_hw_until",
+        "label": "Automātiski izslēgt no datuma",
+        "info": "Formāts GGGG-MM-DD, piem. 2026-11-01. Tukšs = neizslēgt automātiski.",
+        "default": "2026-11-01"
+      },
+      {
+        "type": "collection",
+        "id": "velto_hw_collection",
+        "label": "Helovīna kolekcija (nav obligāta)",
+        "info": "Izvēlnē parādīsies poga „🎃 Helovīnam”, un šīs kolekcijas precēm kartītēs būs zīme."
+      },
+      {
+        "type": "checkbox",
+        "id": "velto_hw_bats",
+        "label": "Sikspārņi (tikai datorā un planšetē)",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "velto_hw_spider",
+        "label": "Zirneklis zem galvenes (tikai datorā)",
+        "default": true
+      }
+    ]
+  },
+  {
     "name": "Velto marķējumi",
     "settings": [
       {

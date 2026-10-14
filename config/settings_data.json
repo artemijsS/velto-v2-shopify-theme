@@ -243,7 +243,11 @@
         }
       }
     },
-    "velto_mine_enable": true
+    "velto_mine_enable": true,
+    "velto_hw_enable": true,
+    "velto_hw_until": "2026-11-01",
+    "velto_hw_bats": true,
+    "velto_hw_spider": true
   },
   "presets": {
     "Dawn": {

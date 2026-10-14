@@ -883,6 +883,10 @@
       "perk_reorder": "Atkārto pasūtījumu ar vienu klikšķi",
       "perk_stats": "Redzi, ko pērc visbiežāk",
       "perk_status": "Seko līdzi pasūtījumu statusam"
+    },
+    "halloween": {
+      "chip": "Helovīnam",
+      "badge": "Helovīnam"
     }
   }
 }

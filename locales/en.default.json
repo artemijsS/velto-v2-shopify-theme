@@ -870,6 +870,10 @@
       "perk_reorder": "Reorder in one tap",
       "perk_stats": "See what you buy most",
       "perk_status": "Track your orders"
+    },
+    "halloween": {
+      "chip": "For Halloween",
+      "badge": "Halloween"
     }
   }
 }
