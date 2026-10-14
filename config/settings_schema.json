@@ -1576,8 +1576,8 @@
         "type": "text",
         "id": "velto_hw_until",
         "label": "Automātiski izslēgt no datuma",
-        "info": "Formāts GGGG-MM-DD, piem. 2026-11-01. Tukšs = neizslēgt automātiski.",
-        "default": "2026-11-01"
+        "info": "Formāts GGGG-MM-DD, piem. 2026-11-04 — no šīs dienas noformējums vairs netiek rādīts. Tukšs = neizslēgt automātiski.",
+        "default": "2026-11-04"
       },
       {
         "type": "checkbox",
