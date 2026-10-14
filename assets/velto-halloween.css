@@ -59,73 +59,17 @@
   .velto-hw-hat { width: 2.8rem; left: -0.8rem; top: -1.6rem; }
 }
 
-/* ---------- bats ---------- */
-.velto-hw-sky {
-  position: fixed;
-  z-index: 60;
-  inset: 0 0 auto 0;
-  height: 45vh;
-  overflow: hidden;
-  pointer-events: none;
-}
-
-.velto-hw-bat {
-  position: absolute;
-  left: 0;
-  top: var(--y, 20%);
-  width: var(--size, 3.4rem);
-  color: #0d0d0d;
-  opacity: 0.9;
-  animation: velto-hw-fly var(--dur, 9s) linear forwards;
-}
-
-.velto-hw-bat > span {
-  display: block;
-  animation: velto-hw-bob 1.6s ease-in-out infinite;
-}
-
-.velto-hw-bat svg {
-  display: block;
-  width: 100%;
-  height: auto;
-  filter: drop-shadow(0 0 1px rgba(255, 255, 255, 0.55)) drop-shadow(0 0 6px rgba(var(--velto-hw), 0.35));
-  animation: velto-hw-flap 0.26s ease-in-out infinite alternate;
-  transform-origin: 50% 40%;
-}
-
-.velto-hw-bat.is-rtl { animation-name: velto-hw-fly-rtl; }
-.velto-hw-bat.is-rtl svg { scale: -1 1; }
-
-@keyframes velto-hw-fly {
-  from { transform: translateX(-12vw); }
-  to { transform: translateX(112vw); }
-}
-
-@keyframes velto-hw-fly-rtl {
-  from { transform: translateX(112vw); }
-  to { transform: translateX(-12vw); }
-}
-
-@keyframes velto-hw-bob {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(var(--bob, 2.4rem)); }
-}
-
-@keyframes velto-hw-flap {
-  from { transform: scaleY(1); }
-  to { transform: scaleY(0.45); }
-}
-
-/* ---------- spider on a thread (desktop) ---------- */
+/* ---------- spiders on threads ---------- */
 .velto-hw-spider {
   position: absolute;
   z-index: 5;
-  top: 100%;
-  right: 7%;
   display: flex;
   flex-direction: column;
   align-items: center;
   width: 3.6rem;
+  padding: 0;
+  border: 0;
+  background: none;
   cursor: pointer;
   transform-origin: 50% 0;
   animation: velto-hw-swing 5s ease-in-out infinite;
@@ -175,12 +119,12 @@
   color: #111 !important;
 }
 
-/* glowing line under the header — a candle-lit edge */
-.velto-hw .section-header { position: relative; }
-
-.velto-hw .section-header::after {
+/* glowing line under the header — a candle-lit edge.
+   (on .header-wrapper: the section itself must stay `position: sticky`) */
+.velto-hw .header-wrapper::after {
   content: '';
   position: absolute;
+  z-index: 1;
   left: 0;
   right: 0;
   bottom: 0;
@@ -220,13 +164,59 @@
   .velto-hw .velto-footer::before { width: 14rem; height: 14rem; }
 }
 
-/* spider on phones: smaller, right under the cart icon, gone once you scroll */
-.velto-hw-spider.is-phone { right: 1.2rem; width: 2.8rem; }
+/* spiders on phones: smaller; the header one is gone once you scroll */
+.velto-hw-spider.is-phone { width: 2.8rem; }
 .velto-hw-spider.is-phone svg { width: 2.4rem; }
-.velto-hw-spider { transition: opacity 0.3s ease, transform 1.2s cubic-bezier(0.5, 0, 0.3, 1); }
+.velto-hw-spider { transition: opacity 0.3s ease; }
 .velto-hw-spider.is-away { opacity: 0; pointer-events: none; }
 
+/* ---------- cobwebs in corners ---------- */
+.velto-hw-web {
+  position: absolute;
+  z-index: 0;
+  top: 0;
+  width: var(--web, 14rem);
+  height: var(--web, 14rem);
+  opacity: 0.13;
+  pointer-events: none;
+  background: var(--velto-hw-web) top right / contain no-repeat;
+}
+
+.velto-hw-web--tr { right: 0; }
+.velto-hw-web--tl { left: 0; transform: scaleX(-1); }
+
+@media screen and (max-width: 749px) {
+  .velto-hw-web { width: calc(var(--web, 14rem) * 0.75); height: calc(var(--web, 14rem) * 0.75); }
+}
+
+/* ---------- even more orange ---------- */
+.velto-hw :is(.velto-hero__eyebrow, .velto-ahero__eyebrow, .velto-best__eyebrow, .velto-cur__eyebrow,
+  .velto-curated__eyebrow, .velto-deliv__eyebrow, .velto-spot__eyebrow, .velto-mine__label) {
+  color: rgb(var(--velto-hw));
+}
+
+/* an item already in the cart: orange quantity stepper */
+.velto-hw .velto-qa__stepper { background: rgb(var(--velto-hw)); color: #111; }
+.velto-hw .velto-qa__input { color: #111; }
+
+.velto-hw .velto-deliv-line__icon,
+.velto-hw .velto-subnav__deliv-icon,
+.velto-hw .velto-dr__deliv-icon { color: rgb(var(--velto-hw)); }
+
+@media (hover: hover) {
+  .velto-hw .product-form__submit:not([disabled]):hover,
+  .velto-hw .velto-satc__btn:hover,
+  .velto-hw .velto-mine__btn:hover,
+  .velto-hw .velto-acc__cta:hover {
+    background: rgb(var(--velto-hw)) !important;
+    border-color: rgb(var(--velto-hw)) !important;
+    color: #111 !important;
+    opacity: 1 !important;
+  }
+
+  .velto-hw .velto-footer a:hover { color: rgb(var(--velto-hw)); }
+}
+
 @media (prefers-reduced-motion: reduce) {
-  .velto-hw-hat, .velto-hw-spider, .velto-hw-bat, .velto-hw-bat > span, .velto-hw-bat svg { animation: none !important; }
-  .velto-hw-sky { display: none; }
+  .velto-hw-hat, .velto-hw-spider { animation: none !important; }
 }

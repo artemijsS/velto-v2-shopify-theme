@@ -1564,7 +1564,7 @@
     "settings": [
       {
         "type": "paragraph",
-        "content": "Sezonas noformējums: cepure uz logo, sikspārņi, zirneklis, zirnekļu tīkli un oranži akcenti. Pēc svētkiem vienkārši izslēdz — vai tas izslēgsies pats no norādītā datuma."
+        "content": "Sezonas noformējums: cepure uz logo, zirnekļi, zirnekļu tīkli un oranži akcenti. Pēc svētkiem vienkārši izslēdz — vai tas izslēgsies pats no norādītā datuma."
       },
       {
         "type": "checkbox",
@@ -1581,14 +1581,8 @@
       },
       {
         "type": "checkbox",
-        "id": "velto_hw_bats",
-        "label": "Sikspārņi",
-        "default": true
-      },
-      {
-        "type": "checkbox",
         "id": "velto_hw_spider",
-        "label": "Zirneklis zem galvenes",
+        "label": "Zirnekļi",
         "default": true
       }
     ]
