@@ -8,13 +8,6 @@
   try {
     D = JSON.parse(dataEl ? dataEl.textContent : '{}');
   } catch (e) {}
-  const unesc = (s) => {
-    const t = document.createElement('textarea');
-    t.innerHTML = s || '';
-    return t.value;
-  };
-  D.label = unesc(D.label);
-  D.badge = unesc(D.badge);
 
   const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
@@ -37,7 +30,8 @@
 
   /* ---------- bats: a small group flies over the top now and then ---------- */
   const bats = () => {
-    if (!D.bats || reduced || !matchMedia('(min-width: 750px)').matches) return;
+    if (!D.bats || reduced) return;
+    const phone = !matchMedia('(min-width: 750px)').matches;
     const sky = document.createElement('div');
     sky.className = 'velto-hw-sky';
     sky.setAttribute('aria-hidden', 'true');
@@ -45,13 +39,13 @@
     const flight = () => {
       if (document.hidden) return;
       const rtl = Math.random() < 0.5;
-      const n = 2 + Math.floor(Math.random() * 2);
+      const n = phone ? 1 + Math.floor(Math.random() * 2) : 2 + Math.floor(Math.random() * 2);
       for (let i = 0; i < n; i++) {
         const b = document.createElement('div');
         b.className = 'velto-hw-bat' + (rtl ? ' is-rtl' : '');
         b.style.setProperty('--y', `${8 + Math.random() * 50}%`);
-        b.style.setProperty('--size', `${2.6 + Math.random() * 1.8}rem`);
-        b.style.setProperty('--dur', `${8 + Math.random() * 4}s`);
+        b.style.setProperty('--size', `${(phone ? 2.2 : 2.6) + Math.random() * (phone ? 1 : 1.8)}rem`);
+        b.style.setProperty('--dur', `${(phone ? 5 : 8) + Math.random() * 3}s`);
         b.style.setProperty('--bob', `${1.5 + Math.random() * 2.5}rem`);
         b.style.animationDelay = `${i * (0.35 + Math.random() * 0.5)}s`;
         b.innerHTML = `<span>${BAT}</span>`;
@@ -60,12 +54,13 @@
       }
     };
     setTimeout(flight, 2500);
-    setInterval(flight, 22000 + Math.random() * 10000);
+    setInterval(flight, (phone ? 26000 : 22000) + Math.random() * 10000);
   };
 
   /* ---------- spider on a thread under the header (desktop) ---------- */
   const spider = () => {
-    if (!D.spider || !matchMedia('(min-width: 990px)').matches) return;
+    if (!D.spider) return;
+    const phone = !matchMedia('(min-width: 990px)').matches;
     const host = document.querySelector('.section-header .header-wrapper, sticky-header, .header-wrapper');
     if (!host || host.querySelector('.velto-hw-spider')) return;
     if (getComputedStyle(host).position === 'static') host.style.position = 'relative';
@@ -73,7 +68,8 @@
     s.type = 'button';
     s.className = 'velto-hw-spider';
     s.setAttribute('aria-label', '🕷');
-    s.style.setProperty('--thread', `${6 + Math.random() * 5}rem`);
+    s.style.setProperty('--thread', phone ? `${3 + Math.random() * 2}rem` : `${6 + Math.random() * 5}rem`);
+    if (phone) s.classList.add('is-phone');
     s.innerHTML = `<span class="velto-hw-spider__thread"></span>${SPIDER}`;
     s.style.background = 'none';
     s.style.border = '0';
@@ -85,80 +81,16 @@
       t = setTimeout(() => s.classList.remove('is-up'), 6000);
     });
     host.appendChild(s);
+    // phones: only at the top of the page, so it never sits on top of products
+    const onScroll = () => s.classList.toggle('is-away', window.scrollY > 60);
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
   };
 
-  /* ---------- "🎃 Helovīnam" button in the menu + badges on its products ---------- */
-  const chip = () => {
-    if (!D.collection) return;
-    const here = location.pathname.replace(/\/$/, '') === D.collection.replace(/\/$/, '');
-    const add = (ul, cls) => {
-      if (!ul || ul.querySelector('.velto-hw-chip')) return;
-      const li = document.createElement('li');
-      const a = document.createElement('a');
-      a.href = D.collection;
-      a.className = `${cls} velto-hw-chip${here ? ' is-active' : ''}`;
-      a.textContent = `🎃 ${D.label}`;
-      li.appendChild(a);
-      // right after "Mani pirkumi" / "Katalogs"
-      const anchor = ul.querySelector('.velto-mine-link, .velto-mnav__chip--mine, .velto-mnav__chip--catalog');
-      const anchorLi = anchor && anchor.closest('li');
-      if (anchorLi) anchorLi.after(li);
-      else ul.prepend(li);
-    };
-    add(document.querySelector('.velto-subnav__quick ul'), '');
-    add(document.querySelector('.velto-mnav__chips ul'), 'velto-mnav__chip');
-  };
-
-  let handles = null;
-  const loadHandles = async () => {
-    if (!D.collection) return null;
-    const key = 'velto:hw-handles';
-    try {
-      const c = JSON.parse(sessionStorage.getItem(key) || 'null');
-      if (c && c.u === D.collection && Date.now() - c.t < 30 * 60 * 1000) return new Set(c.h);
-    } catch (e) {}
-    try {
-      const r = await fetch(`${D.collection}/products.json?limit=250`);
-      const j = await r.json();
-      const h = (j.products || []).map((p) => p.handle);
-      try {
-        sessionStorage.setItem(key, JSON.stringify({ t: Date.now(), u: D.collection, h }));
-      } catch (e) {}
-      return new Set(h);
-    } catch (e) {
-      return null;
-    }
-  };
-
-  const badges = (root = document) => {
-    if (!handles || !handles.size) return;
-    root.querySelectorAll('.card-wrapper').forEach((card) => {
-      if (card.dataset.hw) return;
-      card.dataset.hw = '1';
-      const a = card.querySelector('a[href*="/products/"]');
-      const m = a && a.getAttribute('href').match(/\/products\/([^/?#]+)/);
-      if (!m || !handles.has(decodeURIComponent(m[1]))) return;
-      const inner = card.querySelector('.card__inner') || card.querySelector('.card');
-      if (!inner) return;
-      const b = document.createElement('span');
-      b.className = 'velto-hw-badge';
-      b.textContent = `🎃 ${D.badge}`;
-      inner.appendChild(b);
-    });
-  };
-
-  const start = async () => {
+  const start = () => {
     hats();
-    chip();
     bats();
     spider();
-    handles = await loadHandles();
-    badges();
-    let t;
-    new MutationObserver(() => {
-      clearTimeout(t);
-      t = setTimeout(() => badges(), 200);
-    }).observe(document.body, { childList: true, subtree: true });
   };
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start);
   else start();

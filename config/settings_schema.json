@@ -1564,7 +1564,7 @@
     "settings": [
       {
         "type": "paragraph",
-        "content": "Sezonas noformējums: cepure uz logo, sikspārņi, zirneklis, oranži akcenti. Pēc svētkiem vienkārši izslēdz — vai tas izslēgsies pats no norādītā datuma."
+        "content": "Sezonas noformējums: cepure uz logo, sikspārņi, zirneklis, zirnekļu tīkli un oranži akcenti. Pēc svētkiem vienkārši izslēdz — vai tas izslēgsies pats no norādītā datuma."
       },
       {
         "type": "checkbox",
@@ -1580,21 +1580,15 @@
         "default": "2026-11-01"
       },
       {
-        "type": "collection",
-        "id": "velto_hw_collection",
-        "label": "Helovīna kolekcija (nav obligāta)",
-        "info": "Izvēlnē parādīsies poga „🎃 Helovīnam”, un šīs kolekcijas precēm kartītēs būs zīme."
-      },
-      {
         "type": "checkbox",
         "id": "velto_hw_bats",
-        "label": "Sikspārņi (tikai datorā un planšetē)",
+        "label": "Sikspārņi",
         "default": true
       },
       {
         "type": "checkbox",
         "id": "velto_hw_spider",
-        "label": "Zirneklis zem galvenes (tikai datorā)",
+        "label": "Zirneklis zem galvenes",
         "default": true
       }
     ]
