@@ -27,14 +27,15 @@
 .card-wrapper .card__media .media img[data-fit='zoom'],
 .card-wrapper .card__media .media img[data-fit='fit'] {
   padding: 0;
-  transform: var(--fit);
+  /* !important: Dawn's hover rule (.media--hover-effect > img:only-child) is more specific */
+  transform: var(--fit) !important;
   transition: transform 0.35s ease;
 }
 
 @media (hover: hover) {
   .card-wrapper:hover .card__media .media img[data-fit='zoom'],
   .card-wrapper:hover .card__media .media img[data-fit='fit'] {
-    transform: var(--fit) scale(1.1);
+    transform: var(--fit) scale(1.1) !important;
   }
 }
 
