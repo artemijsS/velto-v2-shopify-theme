@@ -774,3 +774,25 @@
   .velto-qa__btn svg { width: 1.5rem; height: 1.5rem; }
   .velto-qa__i-trash svg { width: 1.7rem; height: 1.7rem; }
 }
+
+/* ---------- Upcharge Fees app: no grey page overlay (velto-fees.js) ---------- */
+.mws-fees-overlay {
+  display: none !important;
+}
+/* while the app is still adding/removing its fee lines, checkout waits a moment */
+html.velto-fees-busy [name='checkout'],
+html.velto-fees-busy [data-velto-checkout] {
+  pointer-events: none;
+  opacity: 0.6;
+  cursor: progress;
+  transition: opacity 0.15s;
+}
+
+/* ---------- Local Delivery Date app: date / time modal ----------
+   The modal is a shadow-DOM host in <body> with a white dialog; its text inherits
+   the dark theme's light colour, so the time slots ("16:30 - 17:00") and the
+   "Izvēlieties laiku" heading were white on white. Inherited colour goes into
+   the shadow tree, so setting it on the host is enough. */
+#mw-delivery-date-modals {
+  color: #121212;
+}

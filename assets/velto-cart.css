@@ -254,10 +254,14 @@ cart-items .cart__items { border: 0; padding-bottom: 0; }
   #MainContent:has(#main-cart-footer:not(.is-empty)) > .shopify-section:has(#main-cart-footer) { padding-top: 10.4rem; }
 }
 
-/* ---------- mobile checkout bar ---------- */
+/* ---------- checkout bar ----------
+   Fixed "Kopā · Noformēt" bar, shown (main-cart-footer.liquid script) only while the
+   real checkout button is out of view. All widths: on tablets in landscape the
+   sticky summary column can be taller than the screen, which left the button
+   reachable only at the very end of a long cart. */
 .velto-cart-bar { display: none; }
 
-@media screen and (max-width: 989px) {
+@media screen {
   .velto-cart-bar {
     position: fixed;
     z-index: 90;
@@ -297,6 +301,23 @@ cart-items .cart__items { border: 0; padding-bottom: 0; }
   }
 
   body.velto-cart-bar-on .velto-toast { bottom: calc(8.4rem + env(safe-area-inset-bottom, 0px)); }
+}
+
+/* wide screens: a compact card over the summary column instead of a full-width strip */
+@media screen and (min-width: 990px) {
+  .velto-cart-bar {
+    left: auto;
+    right: max(5rem, calc((100vw - var(--page-width)) / 2 + 5rem));
+    bottom: calc(1.6rem + env(safe-area-inset-bottom, 0px));
+    width: 40rem;
+    padding: 1rem 1rem 1rem 1.6rem;
+    border: 1px solid rgba(var(--color-foreground), 0.12);
+    border-radius: var(--buttons-radius-outset, 0);
+    box-shadow: 0 1rem 3rem rgba(0, 0, 0, 0.45);
+    transform: translateY(calc(100% + 2.4rem));
+  }
+
+  body.velto-cart-bar-on .velto-toast { bottom: calc(10rem + env(safe-area-inset-bottom, 0px)); }
 }
 
 /* ---------- empty cart ---------- */
@@ -396,4 +417,23 @@ cart-items.is-empty .cart__empty-text { margin: 0 0 0.8rem; font-size: 3rem; let
   width: var(--p, 0%);
   background: rgb(var(--color-foreground));
   border-radius: 0 3px 3px 0;
+}
+
+/* ---------- Instant quantity changes (cart.js queueUpdate) ---------- */
+/* a removed line disappears at once; Shopify is told in the background */
+.cart-item.velto-cart-item--removing {
+  display: none;
+}
+/* totals are being recalculated: dim them a little, checkout waits a moment */
+.velto-cart-syncing .velto-sum__rows,
+.velto-cart-syncing .totals__total-value,
+.velto-cart-syncing .velto-cart-bar__total {
+  opacity: 0.45;
+  transition: opacity 0.15s;
+}
+.velto-cart-syncing [name='checkout'],
+.velto-cart-syncing [data-velto-checkout] {
+  pointer-events: none;
+  opacity: 0.6;
+  cursor: progress;
 }

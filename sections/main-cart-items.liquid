@@ -97,9 +97,20 @@
 
               <tbody>
                 {%- for item in cart.items -%}
+                  {%- comment -%}
+                    Upcharge Fees lines (Depozīts, Maisiņa maksa, Iepakošana) are not goods:
+                    they are listed in the summary (main-cart-footer), not as editable rows.
+                    Skipped here so they never flash back after a re-render.
+                  {%- endcomment -%}
+                  {%- if item.product.type == 'mws_fee_generated' or item.properties['_mws_fee'] != blank -%}
+                    {%- continue -%}
+                  {%- endif -%}
                   <tr
                     class="cart-item {% if item.parent_relationship.parent != null %}cart-item__nested-line{% endif %}"
                     id="CartItem-{{ item.index | plus: 1 }}"
+                    data-line-key="{{ item.key }}"
+                    data-price-final="{{ item.final_price }}"
+                    data-price-original="{{ item.original_price }}"
                     {% if item.parent_relationship.parent != null %}
                       aria-label="{{- 'products.product.nested_label' | t: title: item.product.title, parent_title: item.parent_relationship.parent.title | escape -}}"
                     {% endif %}

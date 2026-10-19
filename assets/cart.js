@@ -22,7 +22,16 @@ class CartItems extends window.StandardEvents.createViewEventElement(HTMLElement
       this.onChange(event);
     }, ON_CHANGE_DEBOUNCE_TIMER);
 
-    this.addEventListener('change', debouncedOnChange.bind(this));
+    // Velto: on the cart page every change is applied on screen at once and sent
+    // to Shopify in one batched request (see queueUpdate) — no waiting, no spinners
+    this.addEventListener('change', (event) => {
+      if (this.isQueued(event.target)) this.onChange(event);
+      else debouncedOnChange(event);
+    });
+
+    this.pendingUpdates = {};
+    this.flushTimer = null;
+    this.inFlight = false;
   }
 
   cartUpdateUnsubscriber = undefined;
@@ -37,8 +46,21 @@ class CartItems extends window.StandardEvents.createViewEventElement(HTMLElement
 
     this.cartUpdateUnsubscriber = subscribe(PUB_SUB_EVENTS.cartUpdate, (event) => {
       if (event.source === 'cart-items') return;
+      if (this.isSyncing()) return;
       return this.onCartUpdate();
     });
+
+    // Upcharge Fees app finished adding/removing its lines (deposit, bag fee…) —
+    // show them without reloading the page (the reload is switched off in velto-fees.js)
+    this.onFeesUpdated = () => {
+      if (this.tagName !== 'CART-ITEMS' || !document.getElementById('main-cart-footer')) return;
+      if (this.isSyncing()) {
+        this.feesDirty = true;
+        return;
+      }
+      this.refreshSections();
+    };
+    document.addEventListener('mwFees::cart::exec::successfully', this.onFeesUpdated);
   }
 
   // Fetches the full cart shape (used to resolve the cart:lines-update event
@@ -62,6 +84,200 @@ class CartItems extends window.StandardEvents.createViewEventElement(HTMLElement
     if (this.cartUpdateUnsubscriber) {
       this.cartUpdateUnsubscriber();
     }
+    if (this.onFeesUpdated) document.removeEventListener('mwFees::cart::exec::successfully', this.onFeesUpdated);
+  }
+
+  /* ---------- Velto: optimistic, batched quantity updates (cart page) ---------- */
+
+  // the cart page rows carry their line key; the (unused) drawer keeps Dawn's flow
+  isQueued(target) {
+    return this.tagName === 'CART-ITEMS' && !!target?.closest?.('tr[data-line-key]');
+  }
+
+  isSyncing() {
+    return this.inFlight || !!this.flushTimer || Object.keys(this.pendingUpdates).length > 0;
+  }
+
+  queueUpdate(line, quantity, name) {
+    const row = document.getElementById(`CartItem-${line}`);
+    const key = row && row.dataset.lineKey;
+    if (!key) return false;
+
+    this.pendingUpdates[key] = { quantity, name };
+    this.paintLine(row, quantity);
+    this.setSyncing(true);
+
+    clearTimeout(this.flushTimer);
+    // removals go out right away, +/- clicks are collected for a moment
+    this.flushTimer = setTimeout(() => {
+      this.flushTimer = null;
+      this.flush();
+    }, quantity === 0 ? 0 : CART_BATCH_DELAY);
+    return true;
+  }
+
+  // instant feedback: line total (and the row itself on removal)
+  paintLine(row, quantity) {
+    const errorText = row.querySelector('.cart-item__error-text');
+    if (errorText) errorText.textContent = '';
+
+    if (quantity === 0) {
+      row.classList.add('velto-cart-item--removing');
+      return;
+    }
+    row.classList.remove('velto-cart-item--removing');
+
+    const money = window.veltoCart && window.veltoCart.money;
+    const finalPrice = parseInt(row.dataset.priceFinal);
+    const originalPrice = parseInt(row.dataset.priceOriginal);
+    if (!money || isNaN(finalPrice)) return;
+
+    row.querySelectorAll('.cart-item__price-wrapper').forEach((wrap) => {
+      const old = wrap.querySelector('.cart-item__old-price');
+      if (old && !isNaN(originalPrice)) old.textContent = money(originalPrice * quantity);
+      const current = wrap.querySelector('dd.price') || wrap.querySelector('span.price');
+      if (current) current.textContent = money(finalPrice * quantity);
+    });
+  }
+
+  setSyncing(on) {
+    // dims the totals and holds the checkout buttons until Shopify has the new quantities
+    document.documentElement.classList.toggle('velto-cart-syncing', on);
+  }
+
+  async flush() {
+    if (this.inFlight) return; // the running request picks the rest up when it finishes
+    const batch = this.pendingUpdates;
+    const keys = Object.keys(batch);
+    if (!keys.length) return this.setSyncing(false);
+    this.pendingUpdates = {};
+    this.inFlight = true;
+
+    const updates = {};
+    keys.forEach((key) => (updates[key] = batch[key].quantity));
+    const lines = keys.map((key) => ({ id: key, quantity: batch[key].quantity }));
+    const linesUpdateDeferred = this.createBatchLinesUpdateEvent(lines);
+    const sectionsToRender = this.getSectionsToRender();
+
+    let state = null;
+    let failed = false;
+    try {
+      const response = await fetch(`${routes.cart_update_url}`, {
+        ...fetchConfig(),
+        body: JSON.stringify({
+          updates,
+          sections: sectionsToRender.map((section) => section.section),
+          sections_url: window.location.pathname,
+        }),
+      });
+      state = await response.json();
+      if (!response.ok || state.status || state.errors || !state.items) {
+        throw new Error(state.description || state.message || state.errors || window.cartStrings.error);
+      }
+      this.resolveCartLinesUpdate(linesUpdateDeferred, state);
+    } catch (e) {
+      failed = true;
+      linesUpdateDeferred?.reject(e);
+      this.dispatchCartErrorEvent(e.message || window.cartStrings.error, 'SERVICE_UNAVAILABLE');
+    }
+
+    this.inFlight = false;
+
+    // newer edits are waiting: send them first, paint once at the end
+    if (Object.keys(this.pendingUpdates).length || this.flushTimer) {
+      if (!this.flushTimer) this.flush();
+      return;
+    }
+
+    if (failed) {
+      await this.refreshSections();
+      const errors = document.getElementById('cart-errors');
+      if (errors) errors.textContent = window.cartStrings.error;
+      this.setSyncing(false);
+      return;
+    }
+
+    this.renderState(state, sectionsToRender);
+
+    // Shopify gave less than asked (stock / quantity rules) → say so on that line
+    keys.forEach((key) => {
+      const wanted = batch[key].quantity;
+      if (!wanted) return;
+      const item = state.items.find((i) => i.key === key);
+      const got = item ? item.quantity : 0;
+      if (got >= wanted) return;
+      const row = this.querySelector(`tr[data-line-key="${CSS.escape(key)}"]`);
+      const text = row?.querySelector('.cart-item__error-text');
+      if (text) text.textContent = item ? window.cartStrings.quantityError.replace('[quantity]', got) : window.cartStrings.error;
+    });
+
+    publish(PUB_SUB_EVENTS.cartUpdate, { source: 'cart-items', cartData: state });
+
+    if (this.feesDirty) {
+      this.feesDirty = false;
+      this.refreshSections();
+    } else {
+      this.setSyncing(false);
+    }
+  }
+
+  renderState(state, sectionsToRender) {
+    if (!state.sections) return;
+    const active = document.activeElement;
+    const focusKey = active?.closest?.('tr[data-line-key]')?.dataset.lineKey;
+    const focusName = active?.getAttribute?.('name');
+
+    this.classList.toggle('is-empty', state.item_count === 0);
+    const cartFooter = document.getElementById('main-cart-footer');
+    if (cartFooter) cartFooter.classList.toggle('is-empty', state.item_count === 0);
+
+    sectionsToRender.forEach((section) => {
+      const html = state.sections[section.section];
+      const host = document.getElementById(section.id);
+      if (!html || !host) return;
+      const target = host.querySelector(section.selector) || host;
+      target.innerHTML = this.getSectionInnerHTML(html, section.selector);
+    });
+
+    // keep the keyboard where it was (the row was re-rendered)
+    if (focusKey && focusName) {
+      const row = this.querySelector(`tr[data-line-key="${CSS.escape(focusKey)}"]`);
+      row?.querySelector(`[name="${focusName}"]`)?.focus({ preventScroll: true });
+    }
+  }
+
+  // re-read the cart from Shopify (after the fees app or an error)
+  async refreshSections() {
+    const sectionsToRender = this.getSectionsToRender();
+    const ids = [...new Set(sectionsToRender.map((s) => s.section))].join(',');
+    try {
+      const [sections, cart] = await Promise.all([
+        fetch(`${routes.cart_url}?sections=${ids}`).then((r) => r.json()),
+        fetch(`${routes.cart_url}.js`).then((r) => r.json()),
+      ]);
+      if (this.isSyncing()) return; // user is editing again — the next response repaints
+      this.renderState({ ...cart, sections }, sectionsToRender);
+      publish(PUB_SUB_EVENTS.cartUpdate, { source: 'cart-items', cartData: cart });
+    } catch (e) {
+      console.error(e);
+    } finally {
+      if (!this.isSyncing()) this.setSyncing(false);
+    }
+  }
+
+  createBatchLinesUpdateEvent(lines) {
+    const { CartLinesUpdateEvent } = window.StandardEvents || {};
+    if (!CartLinesUpdateEvent) return null;
+    const deferred = CartLinesUpdateEvent.createPromise();
+    this.dispatchEvent(
+      new CartLinesUpdateEvent({
+        action: lines.every((l) => l.quantity === 0) ? 'remove' : 'update',
+        context: 'cart',
+        lines,
+        promise: deferred.promise,
+      })
+    );
+    return deferred;
   }
 
   resetQuantityInput(id) {
@@ -167,6 +383,8 @@ class CartItems extends window.StandardEvents.createViewEventElement(HTMLElement
   }
 
   updateQuantity(line, quantity, event, name, variantId) {
+    if (this.tagName === 'CART-ITEMS' && this.queueUpdate(line, quantity, name)) return;
+
     const eventTarget = event.currentTarget instanceof CartRemoveButton ? 'clear' : 'change';
     const cartPerformanceUpdateMarker = CartPerformance.createStartingMarker(`${eventTarget}:user-action`);
 
