@@ -219,10 +219,13 @@
         const doc = new DOMParser().parseFromString(html, 'text/html');
         const fresh = doc.querySelector('#main-cart-footer .js-contents');
         const cur = footer.querySelector('.js-contents');
-        if (fresh && cur) cur.innerHTML = fresh.innerHTML;
+        // write only what really changed: an identical re-render still mutates the DOM,
+        // and the apps in this footer (delivery date, fees) react to that with new cart
+        // requests — which re-render again, and so on
+        if (fresh && cur && cur.innerHTML !== fresh.innerHTML) cur.innerHTML = fresh.innerHTML;
         const b = document.getElementById('cart-icon-bubble');
         const src = new DOMParser().parseFromString(bubble, 'text/html').querySelector('.shopify-section');
-        if (b && src) b.innerHTML = src.innerHTML;
+        if (b && src && b.innerHTML !== src.innerHTML) b.innerHTML = src.innerHTML;
       } catch (e) {}
       busy = false;
     };

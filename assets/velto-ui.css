@@ -796,3 +796,15 @@ html.velto-fees-busy [data-velto-checkout] {
 #mw-delivery-date-modals {
   color: #121212;
 }
+
+/* ---------- Local Delivery Date app: stuck grey overlay ----------
+   When the Delivery profile has a fee product set ("Delivery €5"), the app puts its
+   #mws_dd_loader overlay over the page after a date is saved, then calls its legacy
+   "add fee to cart" step — which the app has switched off ("Legacy cart fees are
+   disabled") — and never removes the overlay again. The page stayed blocked and the
+   order could not be placed. The overlay only ever appears on that dead path, so it
+   is never shown. Remove this rule once the fee product is removed from the
+   Delivery profile in the app (or the app fixes it). */
+#mws_dd_loader {
+  display: none !important;
+}

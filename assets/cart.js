@@ -222,7 +222,8 @@ class CartItems extends window.StandardEvents.createViewEventElement(HTMLElement
   }
 
   renderState(state, sectionsToRender) {
-    if (!state.sections) return;
+    if (!state.sections) return false;
+    let changed = false;
     const active = document.activeElement;
     const focusKey = active?.closest?.('tr[data-line-key]')?.dataset.lineKey;
     const focusName = active?.getAttribute?.('name');
@@ -236,7 +237,12 @@ class CartItems extends window.StandardEvents.createViewEventElement(HTMLElement
       const host = document.getElementById(section.id);
       if (!html || !host) return;
       const target = host.querySelector(section.selector) || host;
-      target.innerHTML = this.getSectionInnerHTML(html, section.selector);
+      const next = this.getSectionInnerHTML(html, section.selector);
+      // identical HTML is not written back: a needless re-render makes the delivery
+      // date / fees apps fire new cart requests, which can end in a refresh loop
+      if (target.innerHTML === next) return;
+      target.innerHTML = next;
+      changed = true;
     });
 
     // keep the keyboard where it was (the row was re-rendered)
@@ -244,6 +250,7 @@ class CartItems extends window.StandardEvents.createViewEventElement(HTMLElement
       const row = this.querySelector(`tr[data-line-key="${CSS.escape(focusKey)}"]`);
       row?.querySelector(`[name="${focusName}"]`)?.focus({ preventScroll: true });
     }
+    return changed;
   }
 
   // re-read the cart from Shopify (after the fees app or an error)
@@ -256,8 +263,10 @@ class CartItems extends window.StandardEvents.createViewEventElement(HTMLElement
         fetch(`${routes.cart_url}.js`).then((r) => r.json()),
       ]);
       if (this.isSyncing()) return; // user is editing again — the next response repaints
-      this.renderState({ ...cart, sections }, sectionsToRender);
-      publish(PUB_SUB_EVENTS.cartUpdate, { source: 'cart-items', cartData: cart });
+      // nothing changed (e.g. the app only re-checked its fees) → stay quiet
+      if (this.renderState({ ...cart, sections }, sectionsToRender)) {
+        publish(PUB_SUB_EVENTS.cartUpdate, { source: 'cart-items', cartData: cart });
+      }
     } catch (e) {
       console.error(e);
     } finally {
