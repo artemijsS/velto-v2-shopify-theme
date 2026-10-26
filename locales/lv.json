@@ -802,6 +802,9 @@
       "subscription": "Abonēšanas noteikumi",
       "lv_only": ""
     },
+    "halloween": {
+      "nav_label": "Helovīns"
+    },
     "mine": {
       "nav_label": "Mani pirkumi",
       "nav_hint": "Atkārto pasūtījumu ar vienu klikšķi",

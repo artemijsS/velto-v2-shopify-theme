@@ -1,0 +1,19 @@
+{%- comment -%}
+  Velto — Halloween collection link for the header quick links
+  (desktop sub-nav and mobile chips). Rendered only while the Halloween
+  season is on (snippets/velto-halloween-active.liquid) and the collection
+  exists and has products, so it disappears together with the decoration.
+  Params: class (link CSS class)
+{%- endcomment -%}
+{%- capture hw -%}{% render 'velto-halloween-active' %}{%- endcapture -%}
+{%- if hw contains 'on' -%}
+  {%- assign hw_col = collections['helloween-🎃'] -%}
+  {%- if hw_col != blank and hw_col.products_count > 0 -%}
+    <li>
+      <a class="{{ class }} velto-hw-link" href="{{ hw_col.url }}" data-velto-quick>
+        <span class="velto-hw-link__icon" aria-hidden="true">🎃</span>
+        {{- 'velto.halloween.nav_label' | t -}}
+      </a>
+    </li>
+  {%- endif -%}
+{%- endif -%}

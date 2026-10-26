@@ -1,0 +1,15 @@
+{%- comment -%}
+  Velto — is the Halloween season on right now? Outputs "on" or nothing.
+  Same rule everywhere: Theme settings → "Velto: Helovīns" is enabled and
+  today is before the "until" date (blank date = no auto switch-off).
+  Usage: {%- capture hw -%}{% render 'velto-halloween-active' %}{%- endcapture -%}
+{%- endcomment -%}
+{%- liquid
+  if settings.velto_hw_enable
+    assign hw_today = 'now' | date: '%Y-%m-%d'
+    assign hw_until = settings.velto_hw_until | strip
+    if hw_until == blank or hw_today < hw_until
+      echo 'on'
+    endif
+  endif
+-%}

@@ -2,20 +2,13 @@
   Velto — Halloween decoration (seasonal add-on).
   On/off: Theme settings → "Velto: Helovīns". Turns itself off from the
   "until" date. Everything lives in this snippet + assets/velto-halloween.css
-  + assets/velto-halloween.js; to remove it for good delete those three files
-  and the `render 'velto-halloween'` line in layout/theme.liquid.
+  + assets/velto-halloween.js (+ velto-halloween-active / velto-halloween-link
+  snippets for the header "Helovīns" quick link); to remove it for good delete
+  those files, the `render 'velto-halloween'` line in layout/theme.liquid and
+  the `render 'velto-halloween-link'` lines in velto-subnav / velto-mnav.
 {%- endcomment -%}
-{%- liquid
-  assign hw_on = false
-  if settings.velto_hw_enable
-    assign hw_today = 'now' | date: '%Y-%m-%d'
-    assign hw_until = settings.velto_hw_until | strip
-    if hw_until == blank or hw_today < hw_until
-      assign hw_on = true
-    endif
-  endif
--%}
-{%- if hw_on -%}
+{%- capture hw_on -%}{% render 'velto-halloween-active' %}{%- endcapture -%}
+{%- if hw_on contains 'on' -%}
   <script>document.documentElement.classList.add('velto-hw');</script>
   {{ 'velto-halloween.css' | asset_url | stylesheet_tag }}
   <script type="application/json" id="velto-hw-data">

@@ -789,6 +789,9 @@
       "subscription": "Subscription policy",
       "lv_only": "This document is available in Latvian only."
     },
+    "halloween": {
+      "nav_label": "Halloween"
+    },
     "mine": {
       "nav_label": "My purchases",
       "nav_hint": "Reorder in one tap",
