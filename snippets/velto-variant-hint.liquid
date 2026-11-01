@@ -1,0 +1,12 @@
+{%- comment -%}
+  Velto — option values of a product with variants, under the price on a product card
+  (e.g. "250 g · 500 g · 1 kg"). Takes the place of the unit price line (hidden via CSS in
+  assets/velto-ui.css — it would show only one variant's unit price), so the card keeps
+  the same height as its neighbours.
+
+  Params: product (product), quick_add (string), horizontal (boolean)
+{%- endcomment -%}
+{%- if product.variants_count > 1 and quick_add == 'standard' and horizontal != true -%}
+  {%- assign first_option = product.options_with_values | first -%}
+  <p class="velto-vhint">{{ first_option.values | map: 'name' | join: ' · ' | escape }}</p>
+{%- endif -%}

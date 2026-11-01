@@ -822,11 +822,13 @@ html.velto-fees-busy [data-velto-checkout] {
 /* the card content is a CSS grid: long hints / labels must never widen the card */
 .card-wrapper .quick-add:has(> velto-vpick) { min-width: 0; }
 
-.velto-vpick__hint {
-  display: block;
-  margin: 0 0 0.6rem;
+/* option values under the price — takes the place of the unit price line */
+/* same box as .unit-price: 0.2rem gap above, 1.4rem line */
+.card-wrapper .card-information > .velto-vhint,
+.card-wrapper .card .card-information > *:not(.visually-hidden:first-child) + .velto-vhint {
+  margin: 0.2rem 0 0;
   font-size: 1.2rem;
-  line-height: 1.35;
+  line-height: 1.2;  /* = .unit-price (14.4px) */
   color: rgba(var(--color-foreground), 0.6);
   width: 0;
   min-width: 100%;
@@ -834,6 +836,8 @@ html.velto-fees-busy [data-velto-checkout] {
   overflow: hidden;
   text-overflow: ellipsis;
 }
+
+.card-information:has(.velto-vhint) .unit-price { display: none; }
 
 .velto-vpick__btn {
   min-width: 0;
@@ -896,7 +900,6 @@ html.velto-fees-busy [data-velto-checkout] {
 
 /* phones: same size and width as the velto-qa control on single-variant cards */
 @media screen and (max-width: 749px) {
-  .velto-vpick__hint { font-size: 1.1rem; margin-bottom: 0.5rem; }
   .velto-vpick__btn { font-size: 1.1rem; letter-spacing: 0.04rem; padding: 0 0.4rem; }
   .card .velto-vpick__btn { width: calc(100% + 2.4rem); margin-inline: -1.2rem; }
   .velto-vpick__choose,

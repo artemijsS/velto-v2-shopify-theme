@@ -2,7 +2,8 @@
   Velto — add-to-cart with quantity right on the product card.
   • Single-variant products: "Pievienot" → becomes a [− N +] stepper synced with the cart;
     the number can be typed. Logic: assets/velto-card-qty.js.
-  • Products with variants: "Izvēlēties" + a one-line hint of the option values.
+  • Products with variants: "Izvēlēties" (the option values hint is printed by card-product.liquid
+    in place of the unit price line, so the card keeps the same height).
     Opens the variant sheet (snippets/velto-variant-sheet.liquid, assets/velto-variants.js)
     where the variant is picked and added with the same stepper — no product page visit.
     Variant data is embedded as JSON, so nothing is fetched when the sheet opens.
@@ -18,12 +19,9 @@
       endif
     endfor
     assign ptitle = product.title | escape
-    assign first_option = product.options_with_values | first
-    assign hint = first_option.values | map: 'name' | join: ' · '
   -%}
   {%- if product.available -%}
     <velto-vpick class="velto-vpick{% if in_cart > 0 %} is-in-cart{% endif %}" data-product="{{ product.id }}">
-      <span class="velto-vpick__hint" aria-hidden="true">{{ hint | escape }}</span>
       <button
         type="button"
         class="velto-vpick__btn"
