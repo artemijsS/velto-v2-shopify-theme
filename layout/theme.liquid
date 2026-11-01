@@ -440,6 +440,8 @@
 
     <script src="{{ 'velto-fees.js' | asset_url }}" defer="defer"></script>
     <script src="{{ 'velto-card-qty.js' | asset_url }}" defer="defer"></script>
+    <script src="{{ 'velto-variants.js' | asset_url }}" defer="defer"></script>
+    {% render 'velto-variant-sheet' %}
     <script src="{{ 'velto-fit.js' | asset_url }}" defer="defer"></script>
     {%- if request.page_type == 'policy' -%}
       {%- capture velto_policy_title -%}{% render 'velto-policy-title', url: request.path, fallback: '' %}{%- endcapture -%}

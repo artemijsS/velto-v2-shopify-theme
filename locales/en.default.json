@@ -873,6 +873,12 @@
       "perk_reorder": "Reorder in one tap",
       "perk_stats": "See what you buy most",
       "perk_status": "Track your orders"
+    },
+    "variants": {
+      "choose": "Choose",
+      "choose_aria": "Choose an option: {{ title }}",
+      "in_cart": "In cart",
+      "details": "Full product details"
     }
   }
 }

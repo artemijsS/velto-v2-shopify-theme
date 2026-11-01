@@ -302,7 +302,9 @@
               -%}
               {%- liquid
                 assign use_modal = false
-                if card_product.variants_count > 1
+                # Velto: multi-variant products on regular cards use the Velto variant sheet
+                # (velto-card-qty); Dawn's full-page quick-add modal is kept only for horizontal cards
+                if card_product.variants_count > 1 and horizontal_quick_add
                   assign use_modal = true
                 elsif qty_rules and horizontal_quick_add
                   assign use_modal = true

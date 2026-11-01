@@ -39,7 +39,9 @@
         {
           "title": {{ product.title | json }},
           "url": {{ product.url | json }},
-          "price": {{ product.price | money | json }},
+          {%- assign tile_price = product.price | money -%}
+          {%- if product.price_varies -%}{%- assign tile_price = 'products.product.price.from_price_html' | t: price: tile_price -%}{%- endif -%}
+          "price": {{ tile_price | json }},
           "img": {{ product.featured_media | image_url: width: 500 | json }},
           "img_small": {{ product.featured_media | image_url: width: 300 | json }}
         }

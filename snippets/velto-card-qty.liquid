@@ -1,10 +1,84 @@
 {%- comment -%}
-  Velto — add-to-cart with quantity right on the product card (single-variant products).
-  "Pievienot" → becomes a [− N +] stepper synced with the cart; the number can be typed.
-  Logic: assets/velto-card-qty.js (loaded globally in layout/theme.liquid).
+  Velto — add-to-cart with quantity right on the product card.
+  • Single-variant products: "Pievienot" → becomes a [− N +] stepper synced with the cart;
+    the number can be typed. Logic: assets/velto-card-qty.js.
+  • Products with variants: "Izvēlēties" + a one-line hint of the option values.
+    Opens the variant sheet (snippets/velto-variant-sheet.liquid, assets/velto-variants.js)
+    where the variant is picked and added with the same stepper — no product page visit.
+    Variant data is embedded as JSON, so nothing is fetched when the sheet opens.
 
   Params: product (product)
 {%- endcomment -%}
+{%- if product.variants.size > 1 -%}
+  {%- liquid
+    assign in_cart = 0
+    for item in cart.items
+      if item.product_id == product.id
+        assign in_cart = in_cart | plus: item.quantity
+      endif
+    endfor
+    assign ptitle = product.title | escape
+    assign first_option = product.options_with_values | first
+    assign hint = first_option.values | map: 'name' | join: ' · '
+  -%}
+  {%- if product.available -%}
+    <velto-vpick class="velto-vpick{% if in_cart > 0 %} is-in-cart{% endif %}" data-product="{{ product.id }}">
+      <span class="velto-vpick__hint" aria-hidden="true">{{ hint | escape }}</span>
+      <button
+        type="button"
+        class="velto-vpick__btn"
+        aria-haspopup="dialog"
+        aria-label="{{ 'velto.variants.choose_aria' | t: title: ptitle }}"
+      >
+        <span class="velto-vpick__choose">
+          <span class="velto-vpick__icon" aria-hidden="true">{{- 'icon-plus.svg' | inline_asset_content -}}</span>
+          <span>{{ 'velto.variants.choose' | t }}</span>
+        </span>
+        <span class="velto-vpick__incart">
+          <span class="velto-vpick__icon" aria-hidden="true">{{- 'icon-checkmark.svg' | inline_asset_content -}}</span>
+          <span>{{ 'velto.variants.in_cart' | t }}: <span data-vpick-count>{{ in_cart }}</span></span>
+        </span>
+      </button>
+      <script type="application/json" data-vpick>
+        {
+          "t": {{ product.title | json }},
+          "u": {{ product.url | json }},
+          "img": {% if product.featured_media %}{{ product.featured_media | image_url: width: 240 | json }}{% else %}null{% endif %},
+          "o": {{ product.options | json }},
+          "s": {{ product.selected_or_first_available_variant.id }},
+          "v": [
+            {%- for v in product.variants -%}
+              {%- liquid
+                assign q_max = v.quantity_rule.max
+                if v.inventory_management == 'shopify' and v.inventory_policy == 'deny'
+                  if q_max == null or v.inventory_quantity < q_max
+                    assign q_max = v.inventory_quantity
+                  endif
+                endif
+              -%}
+              {
+                "id": {{ v.id }},
+                "o": {{ v.options | json }},
+                "p": {{ v.price }},
+                "c": {{ v.compare_at_price | default: 0 }},
+                "a": {{ v.available | json }},
+                "min": {{ v.quantity_rule.min | default: 1 }},
+                "st": {{ v.quantity_rule.increment | default: 1 }},
+                "max": {% if q_max != null %}{{ q_max }}{% else %}null{% endif %},
+                "img": {% if v.featured_image %}{{ v.featured_image | image_url: width: 240 | json }}{% else %}null{% endif %},
+                "up": {% if v.unit_price_measurement %}{{ v.unit_price | unit_price_with_measurement: v.unit_price_measurement | strip_html | strip | json }}{% else %}null{% endif %}
+              }{%- unless forloop.last -%},{%- endunless -%}
+            {%- endfor -%}
+          ]
+        }
+      </script>
+    </velto-vpick>
+  {%- else -%}
+    <button type="button" class="quick-add__submit button button--full-width button--secondary" disabled>
+      <span>{{ 'products.product.sold_out' | t }}</span>
+    </button>
+  {%- endif -%}
+{%- else -%}
 {%- liquid
   assign v = product.selected_or_first_available_variant
   assign in_cart = 0
@@ -72,4 +146,5 @@
   <button type="button" class="quick-add__submit button button--full-width button--secondary" disabled>
     <span>{{ 'products.product.sold_out' | t }}</span>
   </button>
+{%- endif -%}
 {%- endif -%}

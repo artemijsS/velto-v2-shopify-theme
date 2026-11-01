@@ -62,6 +62,7 @@
     Object.keys(map).forEach((k) => delete map[k]);
     cart.items.forEach((i) => (map[i.variant_id] = (map[i.variant_id] || 0) + i.quantity));
     document.querySelectorAll('velto-qa').forEach((el) => el.sync());
+    document.dispatchEvent(new CustomEvent('velto:cart', { detail: map }));
   };
 
   const refresh = () =>
@@ -179,6 +180,7 @@
       if (v === this.qty) return this.render(v);
       this.desired = v;
       document.querySelectorAll(`velto-qa[data-variant="${this.vid}"]`).forEach((el) => el.render(v));
+      document.dispatchEvent(new CustomEvent('velto:qa-set', { detail: { vid: this.vid, q: v } }));
       if (focusInput) requestAnimationFrame(() => this.querySelector('[data-qa="inc"]')?.focus({ preventScroll: true }));
       clearTimeout(this.timer);
       this.timer = setTimeout(() => this.send(), DEBOUNCE);

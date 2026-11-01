@@ -886,6 +886,12 @@
       "perk_reorder": "Atkārto pasūtījumu ar vienu klikšķi",
       "perk_stats": "Redzi, ko pērc visbiežāk",
       "perk_status": "Seko līdzi pasūtījumu statusam"
+    },
+    "variants": {
+      "choose": "Izvēlēties",
+      "choose_aria": "Izvēlēties variantu: {{ title }}",
+      "in_cart": "Grozā",
+      "details": "Visa informācija par preci"
     }
   }
 }

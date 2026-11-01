@@ -239,6 +239,11 @@
     });
     document.body.appendChild(bar);
 
+    // variant switched while the bar is visible → price / button state follow
+    if (typeof subscribe === 'function' && typeof PUB_SUB_EVENTS !== 'undefined') {
+      subscribe(PUB_SUB_EVENTS.variantChange, () => setTimeout(() => shown && sync(), 60));
+    }
+
     let shown = false;
     let ticking = false;
     const check = () => {

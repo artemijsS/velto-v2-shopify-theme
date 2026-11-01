@@ -362,3 +362,33 @@
 
 /* keep the cart toast above the bar */
 body.velto-has-satc .velto-toast { bottom: calc(8.4rem + env(safe-area-inset-bottom, 0px)); }
+
+/* ---------- Variant picker (pills) ---------- */
+.product .product-form__input--pill { margin-bottom: 0; }
+.product .product-form__input--pill + .product-form__input--pill { margin-top: 1.6rem; }
+.product .product-form__input--pill .form__label {
+  font-size: 1.3rem;
+  color: rgba(var(--color-foreground), 0.6);
+}
+.product .product-form__input--pill input[type='radio'] + label {
+  min-height: 4.4rem;
+  margin: 0.8rem 0.8rem 0 0;
+  padding: 1.4rem 2rem;
+  border-color: rgba(var(--color-foreground), 0.28);
+  font-size: 1.4rem;
+  letter-spacing: 0.02rem;
+}
+.product .product-form__input--pill input[type='radio']:checked + label {
+  border-color: rgb(var(--color-foreground));
+  font-weight: 600;
+}
+.product .product-form__input--pill input[type='radio'].disabled + label,
+.product .product-form__input--pill input[type='radio']:disabled + label {
+  border-style: dashed;
+  color: rgba(var(--color-foreground), 0.45);
+}
+.product .product-form__input--pill input[type='radio']:focus-visible + label {
+  outline: 2px solid rgb(var(--color-foreground));
+  outline-offset: 2px;
+}
+

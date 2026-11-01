@@ -1,0 +1,61 @@
+{%- comment -%}
+  Velto — variant picker sheet for product cards (rendered once, in layout/theme.liquid).
+  Bottom sheet on mobile, small centered dialog on desktop. Filled and driven by
+  assets/velto-variants.js from the JSON embedded in each <velto-vpick> card
+  (snippets/velto-card-qty.liquid). The quantity control is the regular <velto-qa>
+  from assets/velto-card-qty.js, so cart sync, limits and the toast work the same.
+{%- endcomment -%}
+<template id="VeltoVSheetTpl">
+  <div class="velto-vsheet" role="dialog" aria-modal="true" aria-labelledby="VeltoVSheetTitle" hidden>
+    <div class="velto-vsheet__backdrop" data-vs-close></div>
+    <div class="velto-vsheet__panel color-{{ settings.card_color_scheme }}" tabindex="-1">
+      <span class="velto-vsheet__grab" aria-hidden="true"></span>
+      <button type="button" class="velto-vsheet__close" data-vs-close aria-label="{{ 'accessibility.close' | t }}">
+        {{- 'icon-close.svg' | inline_asset_content -}}
+      </button>
+      <div class="velto-vsheet__head">
+        <a class="velto-vsheet__img" data-vs-link tabindex="-1" aria-hidden="true"></a>
+        <div class="velto-vsheet__meta">
+          <a class="velto-vsheet__title" id="VeltoVSheetTitle" data-vs-link data-vs-title></a>
+          <div class="velto-vsheet__price">
+            <strong data-vs-price></strong>
+            <s data-vs-compare></s>
+            <small data-vs-unit></small>
+          </div>
+        </div>
+      </div>
+      <div class="velto-vsheet__opts" data-vs-opts></div>
+      <div class="velto-vsheet__cta" data-vs-cta></div>
+      <a class="velto-vsheet__more" data-vs-link data-vs-more>
+        {{- 'velto.variants.details' | t }} <span aria-hidden="true">→</span>
+      </a>
+    </div>
+  </div>
+</template>
+
+<template id="VeltoVQATpl">
+  <velto-qa class="velto-qa" data-variant="" data-min="1" data-step="1">
+    <button type="button" class="velto-qa__add" data-qa="add" aria-label="{{ 'velto.qa.add_aria' | t: title: '[title]' }}">
+      <span class="velto-qa__add-icon" aria-hidden="true">{{- 'icon-plus.svg' | inline_asset_content -}}</span>
+      <span>{{ 'velto.qa.add' | t }}</span>
+    </button>
+    <div class="velto-qa__stepper" role="group" aria-label="{{ 'velto.qa.qty' | t }}">
+      <button type="button" class="velto-qa__btn velto-qa__btn--dec" data-qa="dec" aria-label="{{ 'velto.qa.decrease' | t }}">
+        <span class="velto-qa__i-minus" aria-hidden="true">{{- 'icon-minus.svg' | inline_asset_content -}}</span>
+        <span class="velto-qa__i-trash" aria-hidden="true"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 5.5h13M8 5.5V4a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v1.5M5.5 5.5l.7 10.1A1.5 1.5 0 0 0 7.7 17h4.6a1.5 1.5 0 0 0 1.5-1.4l.7-10.1M8.5 9v5M11.5 9v5"/></svg></span>
+      </button>
+      <input class="velto-qa__input" type="number" inputmode="numeric" min="0" step="1" value="0" aria-label="{{ 'velto.qa.qty' | t }}">
+      <button type="button" class="velto-qa__btn velto-qa__btn--inc" data-qa="inc" aria-label="{{ 'velto.qa.increase' | t }}">
+        {{- 'icon-plus.svg' | inline_asset_content -}}
+      </button>
+    </div>
+  </velto-qa>
+</template>
+
+<script>
+  window.veltoVStrings = {
+    sold_out: {{ 'products.product.sold_out' | t | json }},
+    unavailable: {{ 'products.product.unavailable' | t | json }},
+    in_cart: {{ 'velto.variants.in_cart' | t | json }},
+  };
+</script>
