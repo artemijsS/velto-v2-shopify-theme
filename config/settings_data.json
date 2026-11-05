@@ -246,7 +246,12 @@
     "velto_mine_enable": true,
     "velto_hw_enable": true,
     "velto_hw_until": "2026-11-04",
-    "velto_hw_spider": true
+    "velto_hw_spider": true,
+    "velto_season_enable": true,
+    "velto_season_force": "auto",
+    "velto_season_particles": true,
+    "velto_season_amount": "normal",
+    "velto_season_logo": true
   },
   "presets": {
     "Dawn": {

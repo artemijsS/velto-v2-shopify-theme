@@ -1,0 +1,249 @@
+/* Velto — living seasonal look (snippets/velto-season.liquid).
+   Everything is scoped to html.velto-season; the month/season classes
+   (.velto-m-1 … .velto-m-12, .velto-s-winter/spring/summer/autumn) are set
+   in <head> by the snippet, so the colours are right from the first paint. */
+
+/* ---------- monthly accent colours ---------- */
+.velto-season { --vs: 255, 255, 255; }
+.velto-m-1  { --vs: 125, 196, 255; } /* janvāris — ledus zils */
+.velto-m-2  { --vs: 182, 166, 255; } /* februāris — sarmas ceriņu */
+.velto-m-3  { --vs: 120, 220, 170; } /* marts — pirmā zaļuma piparmētra */
+.velto-m-4  { --vs: 146, 214, 92; }  /* aprīlis — pavasara zaļš */
+.velto-m-5  { --vs: 255, 143, 184; } /* maijs — ābeļziedu rozā */
+.velto-m-6  { --vs: 255, 212, 71; }  /* jūnijs — saules dzeltens */
+.velto-m-7  { --vs: 64, 214, 214; }  /* jūlijs — jūras tirkīzs */
+.velto-m-8  { --vs: 240, 182, 80; }  /* augusts — nogatavojušos labību zelts */
+.velto-m-9  { --vs: 236, 196, 64; }  /* septembris — bērzu zelts */
+.velto-m-10 { --vs: 240, 104, 56; }  /* oktobris — kļavu sarkanoranžs */
+.velto-m-11 { --vs: 222, 92, 110; }  /* novembris — dzērveņu sarkans */
+.velto-m-12 { --vs: 236, 200, 120; } /* decembris — silts sveču zelts */
+
+/* ---------- particles canvas (assets/velto-season.js) ---------- */
+.velto-season-fx {
+  position: fixed;
+  inset: 0;
+  z-index: 2;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  transition: opacity 0.8s ease;
+}
+.velto-season-fx.is-calm { opacity: 0.55; }
+
+/* ---------- accents ---------- */
+.velto-season .velto-progress > span {
+  background: rgb(var(--vs));
+  box-shadow: 0 0 10px rgba(var(--vs), 0.8), 0 0 4px rgba(var(--vs), 0.7);
+}
+
+.velto-season .velto-accent::after {
+  background: rgb(var(--vs));
+  box-shadow: 0 0 12px rgba(var(--vs), 0.45);
+}
+
+.velto-season .cart-count-bubble { background: rgb(var(--vs)); color: #111; }
+
+.velto-season :is(.velto-hero__eyebrow, .velto-ahero__eyebrow, .velto-best__eyebrow, .velto-cur__eyebrow,
+  .velto-curated__eyebrow, .velto-deliv__eyebrow, .velto-spot__eyebrow, .velto-mine__label) {
+  color: rgb(var(--vs));
+}
+
+.velto-season .velto-chip.is-active,
+.velto-season .velto-subnav__quick a.is-active,
+.velto-season .velto-mnav__chip.is-active,
+.velto-season .velto-mf__toggle[aria-pressed='true'] {
+  border-color: rgb(var(--vs)) !important;
+  background: rgb(var(--vs)) !important;
+  color: #111 !important;
+}
+
+.velto-season .velto-qa__stepper { background: rgb(var(--vs)); color: #111; }
+.velto-season .velto-qa__input { color: #111; }
+
+.velto-season .velto-deliv-line__icon,
+.velto-season .velto-subnav__deliv-icon,
+.velto-season .velto-dr__deliv-icon { color: rgb(var(--vs)); }
+
+@media (hover: hover) {
+  .velto-season .velto-qa__add:hover {
+    border-color: rgb(var(--vs));
+    background: rgb(var(--vs));
+    color: #111;
+  }
+
+  .velto-season .product-form__submit:not([disabled]):hover,
+  .velto-season .velto-satc__btn:hover,
+  .velto-season .velto-mine__btn:hover,
+  .velto-season .velto-acc__cta:hover {
+    background: rgb(var(--vs)) !important;
+    border-color: rgb(var(--vs)) !important;
+    color: #111 !important;
+    opacity: 1 !important;
+  }
+
+  .velto-season .velto-footer a:hover { color: rgb(var(--vs)); }
+}
+
+/* the hero's soft corner light takes the colour of the month */
+.velto-season .velto-hero::before { background: radial-gradient(closest-side, rgba(var(--vs), 0.12), transparent); }
+
+/* ---------- edge under the header ---------- */
+/* (on .header-wrapper: the section itself must stay `position: sticky`) */
+.velto-season .header-wrapper::after {
+  content: '';
+  position: absolute;
+  z-index: 1;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(var(--vs), 0.75) 20%, rgba(var(--vs), 0.75) 80%, transparent);
+  box-shadow: 0 0 14px 1px rgba(var(--vs), 0.35);
+  pointer-events: none;
+}
+
+/* winter: snow lying on the header's edge */
+.velto-s-winter .header-wrapper::after {
+  bottom: -7px;
+  height: 9px;
+  box-shadow: none;
+  opacity: 0.85;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 160 9' preserveAspectRatio='none'%3E%3Cpath fill='%23eef5ff' d='M0 0h160v2.5c-5 0-6 4.5-12 4.5s-6-3.5-12-3.5-7 5.5-14 5.5-7-4.5-13-4.5-6 2.5-12 2.5-6-4-12-4-7 6-15 6-8-5-14-5-6 3-11 3-6-4-12-4-6 3.5-11 3.5S8 2.5 0 2.5Z'/%3E%3C/svg%3E") 0 0 / 160px 9px repeat-x;
+}
+
+/* January: icicles hang from the snow */
+.velto-m-1 .header-wrapper::before {
+  content: '';
+  position: absolute;
+  z-index: 1;
+  left: 0;
+  right: 0;
+  bottom: -16px;
+  height: 14px;
+  pointer-events: none;
+  opacity: 0.5;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 240 14'%3E%3Cpath fill='%23cfe8ff' d='M18 0l2 12 2-12zM61 0l1.5 8L64 0zM104 0l2 14 2-14zM151 0l1.5 7 1.5-7zM197 0l2 11 2-11z'/%3E%3C/svg%3E") 0 0 / 240px 14px repeat-x;
+}
+
+/* the hanging snow/icicles must not peek out while the header is hidden on scroll */
+.velto-season .shopify-section-header-hidden:not(.menu-open) .header-wrapper::after,
+.velto-season .shopify-section-header-hidden:not(.menu-open) .header-wrapper::before { opacity: 0; }
+
+/* ---------- logo ornament (assets/velto-season.js) ---------- */
+.velto-season .header__heading-logo-wrapper { position: relative; }
+
+.velto-season-deco {
+  position: absolute;
+  z-index: 2;
+  top: -1.4rem;
+  left: -1.3rem;
+  width: 2.8rem;
+  color: rgb(var(--vs));
+  pointer-events: none;
+  filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.5));
+  transform-origin: 50% 50%;
+}
+.velto-season-deco svg { display: block; width: 100%; height: auto; overflow: visible; }
+
+.velto-season-deco--flake { animation: velto-vs-spin 24s linear infinite; }
+.velto-season-deco--sun { width: 3rem; top: -1.6rem; animation: velto-vs-spin 40s linear infinite; }
+.velto-season-deco--snowdrop,
+.velto-season-deco--sprout { top: -2rem; left: -1.2rem; transform-origin: 50% 100%; animation: velto-vs-sway 5s ease-in-out infinite; }
+.velto-season-deco--blossom { animation: velto-vs-spin 30s linear infinite; }
+.velto-season-deco--shades { width: 3.8rem; top: -1rem; left: -1.6rem; transform: rotate(-14deg); }
+.velto-season-deco--moon { animation: velto-vs-glow 5s ease-in-out infinite; }
+.velto-season-deco--birch,
+.velto-season-deco--maple { transform-origin: 50% 90%; animation: velto-vs-sway 4.5s ease-in-out infinite; }
+.velto-season-deco--umbrella { width: 3.2rem; top: -2rem; left: -1.5rem; transform: rotate(-16deg); transform-origin: 50% 80%; animation: velto-vs-tilt 5.5s ease-in-out infinite; }
+.velto-season-deco--beanie { width: 3.4rem; top: -2.2rem; left: -1.2rem; transform: rotate(-16deg); transform-origin: 50% 90%; animation: velto-vs-tilt 4.5s ease-in-out infinite; }
+
+@keyframes velto-vs-spin { to { transform: rotate(360deg); } }
+@keyframes velto-vs-sway { 0%, 100% { transform: rotate(-8deg); } 50% { transform: rotate(8deg); } }
+@keyframes velto-vs-tilt { 0%, 100% { transform: rotate(-16deg); } 50% { transform: rotate(-10deg) translateY(-1px); } }
+@keyframes velto-vs-glow {
+  0%, 100% { filter: drop-shadow(0 0 2px rgba(var(--vs), 0.3)); }
+  50% { filter: drop-shadow(0 0 8px rgba(var(--vs), 0.75)); }
+}
+
+@media screen and (max-width: 749px) {
+  .velto-season-deco { width: 2.3rem; top: -1.1rem; left: -1rem; }
+  .velto-season-deco--shades { width: 3.1rem; top: -0.8rem; left: -1.2rem; }
+  .velto-season-deco--umbrella,
+  .velto-season-deco--beanie { width: 2.7rem; top: -1.7rem; left: -1.1rem; }
+  .velto-season-deco--snowdrop,
+  .velto-season-deco--sprout { top: -1.6rem; }
+}
+
+/* ---------- "ground" along the bottom of the footer ---------- */
+.velto-season .velto-footer::after {
+  content: '';
+  position: absolute;
+  z-index: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 4rem;
+  pointer-events: none;
+  opacity: 0.14;
+  background: var(--vs-ground) 0 100% / auto 100% repeat-x;
+}
+
+/* winter — snowdrifts */
+.velto-s-winter {
+  --vs-ground: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 40'%3E%3Cpath fill='%23ffffff' d='M0 40V26c30-14 60-16 95-6s55 12 90-2 70-14 105-2 70 12 110 0v24Z'/%3E%3C/svg%3E");
+}
+.velto-s-winter .velto-footer::after { opacity: 0.1; }
+
+/* spring — grass blades */
+.velto-s-spring {
+  --vs-ground: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 40'%3E%3Cpath fill='%2392d65c' d='M0 40c4-10 6-20 4-32 4 10 6 22 5 32Zm14 0c2-8 6-16 13-22-5 8-7 15-7 22Zm18 0c0-12 3-22 9-30-3 10-4 20-3 30Zm16 0c3-6 2-14-2-20 7 6 9 13 8 20Zm20 0c1-12-1-22-6-30 9 8 12 18 12 30Zm16 0c3-9 8-15 15-19-5 6-8 12-9 19Zm20 0c-1-10 1-19 6-27-2 9-2 18 0 27Zm18 0c2-7 1-14-3-21 7 5 10 12 9 21Zm20 0c2-11 6-20 13-26-6 8-8 17-7 26Zm18 0c0-9-2-17-7-24 8 6 12 14 13 24Zm16 0c3-12 3-23-1-33 6 9 8 20 7 33Zm14 0c3-7 7-12 12-15-4 4-6 9-6 15Z'/%3E%3C/svg%3E");
+}
+.velto-m-5 .velto-footer::after { opacity: 0.18; }
+
+/* summer — soft waves */
+.velto-s-summer {
+  --vs-ground: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 40'%3E%3Cpath fill='none' stroke='%2340d6d6' stroke-width='2' d='M0 14c25-8 25 8 50 0s25 8 50 0 25 8 50 0 25 8 50 0M0 24c25-8 25 8 50 0s25 8 50 0 25 8 50 0 25 8 50 0'/%3E%3Cpath fill='%2340d6d6' d='M0 34c25-8 25 8 50 0s25 8 50 0 25 8 50 0 25 8 50 0v6H0Z'/%3E%3C/svg%3E");
+}
+
+/* autumn — fallen leaves */
+.velto-s-autumn {
+  --vs-ground: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 240 40'%3E%3Cg fill='%23f07a2a'%3E%3Cpath d='M20 32c-8-2-10-10-4-16 6 6 8 12 4 16Z'/%3E%3Cpath d='M70 36c2-8 10-10 16-4-6 6-12 7-16 4Z'/%3E%3Cpath d='M126 30c-6-6-4-14 4-16 2 8 0 13-4 16Z'/%3E%3Cpath d='M170 37c4-7 12-7 16 0-6 4-12 4-16 0Z'/%3E%3Cpath d='M214 31c-8 0-12-8-8-14 7 4 10 9 8 14Z'/%3E%3C/g%3E%3Cpath fill='%23e8c13f' d='M44 38c-2-8 4-14 12-12-2 8-6 12-12 12Zm56-2c-6-4-6-12 0-16 4 6 4 12 0 16Zm52 3c-4-6-2-13 5-15 1 7-1 12-5 15Zm40-4c4-6 12-6 14 0-5 4-10 4-14 0Z'/%3E%3C/svg%3E");
+}
+
+
+/* ---------- announcement bar: two seasonal emojis ---------- */
+.velto-season .announcement-bar__message::before { margin-right: 0.8rem; }
+.velto-season .announcement-bar__message::after { margin-left: 0.8rem; }
+.velto-m-1  .announcement-bar__message::before { content: '❄️'; } .velto-m-1  .announcement-bar__message::after { content: '☃️'; }
+.velto-m-2  .announcement-bar__message::before { content: '❄️'; } .velto-m-2  .announcement-bar__message::after { content: '🌨️'; }
+.velto-m-3  .announcement-bar__message::before { content: '🌱'; } .velto-m-3  .announcement-bar__message::after { content: '💧'; }
+.velto-m-4  .announcement-bar__message::before { content: '🌷'; } .velto-m-4  .announcement-bar__message::after { content: '🌦️'; }
+.velto-m-5  .announcement-bar__message::before { content: '🌸'; } .velto-m-5  .announcement-bar__message::after { content: '🌼'; }
+.velto-m-6  .announcement-bar__message::before { content: '☀️'; } .velto-m-6  .announcement-bar__message::after { content: '🌼'; }
+.velto-m-7  .announcement-bar__message::before { content: '☀️'; } .velto-m-7  .announcement-bar__message::after { content: '🍓'; }
+.velto-m-8  .announcement-bar__message::before { content: '🌻'; } .velto-m-8  .announcement-bar__message::after { content: '✨'; }
+.velto-m-9  .announcement-bar__message::before { content: '🍂'; } .velto-m-9  .announcement-bar__message::after { content: '🍎'; }
+.velto-m-10 .announcement-bar__message::before { content: '🍁'; } .velto-m-10 .announcement-bar__message::after { content: '🍄'; }
+.velto-m-11 .announcement-bar__message::before { content: '🍂'; } .velto-m-11 .announcement-bar__message::after { content: '☔'; }
+.velto-m-12 .announcement-bar__message::before { content: '❄️'; } .velto-m-12 .announcement-bar__message::after { content: '✨'; }
+
+/* ---------- "Pievienots grozam" toast: the month's emoji instead of the tick ---------- */
+.velto-season .velto-toast:not(.is-error) .velto-toast__icon { font-size: 0; background: rgba(var(--vs), 0.16); }
+.velto-season .velto-toast:not(.is-error) .velto-toast__icon::after { font-size: 1.6rem; line-height: 1; }
+.velto-m-1  .velto-toast:not(.is-error) .velto-toast__icon::after { content: '❄️'; }
+.velto-m-2  .velto-toast:not(.is-error) .velto-toast__icon::after { content: '☃️'; }
+.velto-m-3  .velto-toast:not(.is-error) .velto-toast__icon::after { content: '🌱'; }
+.velto-m-4  .velto-toast:not(.is-error) .velto-toast__icon::after { content: '🌷'; }
+.velto-m-5  .velto-toast:not(.is-error) .velto-toast__icon::after { content: '🌸'; }
+.velto-m-6  .velto-toast:not(.is-error) .velto-toast__icon::after { content: '🌼'; }
+.velto-m-7  .velto-toast:not(.is-error) .velto-toast__icon::after { content: '🍓'; }
+.velto-m-8  .velto-toast:not(.is-error) .velto-toast__icon::after { content: '🌻'; }
+.velto-m-9  .velto-toast:not(.is-error) .velto-toast__icon::after { content: '🍎'; }
+.velto-m-10 .velto-toast:not(.is-error) .velto-toast__icon::after { content: '🍁'; }
+.velto-m-11 .velto-toast:not(.is-error) .velto-toast__icon::after { content: '🍂'; }
+.velto-m-12 .velto-toast:not(.is-error) .velto-toast__icon::after { content: '✨'; }
+
+@media (prefers-reduced-motion: reduce) {
+  .velto-season-deco { animation: none !important; }
+  .velto-season-fx { display: none; }
+}

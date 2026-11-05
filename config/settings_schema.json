@@ -1560,6 +1560,114 @@
     ]
   },
   {
+    "name": "Velto: Sezonas",
+    "settings": [
+      {
+        "type": "paragraph",
+        "content": "Dzīvs sezonas noformējums, kas katru mēnesi mainās pats (pēc Rīgas laika): akcentu krāsa, rotājums pie logo, sniegs, lietus, ziedlapiņas, lapas, jāņtārpiņi u.c. Kamēr ieslēgts svētku noformējums (piem., Helovīns), sezonas noformējums netiek rādīts."
+      },
+      {
+        "type": "checkbox",
+        "id": "velto_season_enable",
+        "label": "Ieslēgt sezonas noformējumu",
+        "default": true
+      },
+      {
+        "type": "select",
+        "id": "velto_season_force",
+        "label": "Mēnesis",
+        "default": "auto",
+        "options": [
+          {
+            "value": "auto",
+            "label": "Automātiski (pēc datuma)"
+          },
+          {
+            "value": "1",
+            "label": "Janvāris"
+          },
+          {
+            "value": "2",
+            "label": "Februāris"
+          },
+          {
+            "value": "3",
+            "label": "Marts"
+          },
+          {
+            "value": "4",
+            "label": "Aprīlis"
+          },
+          {
+            "value": "5",
+            "label": "Maijs"
+          },
+          {
+            "value": "6",
+            "label": "Jūnijs"
+          },
+          {
+            "value": "7",
+            "label": "Jūlijs"
+          },
+          {
+            "value": "8",
+            "label": "Augusts"
+          },
+          {
+            "value": "9",
+            "label": "Septembris"
+          },
+          {
+            "value": "10",
+            "label": "Oktobris"
+          },
+          {
+            "value": "11",
+            "label": "Novembris"
+          },
+          {
+            "value": "12",
+            "label": "Decembris"
+          }
+        ],
+        "info": "Konkrētu mēnesi izvēlies tikai apskatei un pēc tam atgriez «Automātiski», citādi to redzēs visi pircēji. Apskatīt var arī bez šī iestatījuma: pievieno lapas adresei ?velto_season=5 (atpakaļ — ?velto_season=auto)."
+      },
+      {
+        "type": "checkbox",
+        "id": "velto_season_particles",
+        "label": "Krītoši un lidojoši elementi (sniegs, lapas, ziedlapiņas…)",
+        "default": true
+      },
+      {
+        "type": "select",
+        "id": "velto_season_amount",
+        "label": "Elementu daudzums",
+        "default": "normal",
+        "options": [
+          {
+            "value": "less",
+            "label": "Mazāk"
+          },
+          {
+            "value": "normal",
+            "label": "Vidēji"
+          },
+          {
+            "value": "more",
+            "label": "Vairāk"
+          }
+        ]
+      },
+      {
+        "type": "checkbox",
+        "id": "velto_season_logo",
+        "label": "Rotājums pie logo",
+        "default": true
+      }
+    ]
+  },
+  {
     "name": "Velto: Helovīns",
     "settings": [
       {

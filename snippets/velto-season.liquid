@@ -1,0 +1,50 @@
+{%- comment -%}
+  Velto — living seasonal look (rendered in <head> of layout/theme.liquid).
+  On/off and options: Theme settings → "Velto: Sezonas".
+  The month is taken from the visitor's clock in Riga time (Europe/Riga), so
+  the look changes by itself on the 1st of every month, even on cached pages.
+  Every month has its own accent colour, logo ornament and particles
+  (snow, rain, petals, leaves, fireflies…): assets/velto-season.css + .js.
+
+  Holidays win: while a holiday look is on (now: Halloween —
+  snippets/velto-halloween-active.liquid) the seasonal look is not loaded.
+  A new holiday = add its "-active" check to the `holiday` capture below.
+
+  Preview another month: Theme settings → "Velto: Sezonas" → Mēnesis, or add
+  ?velto_season=1…12 to any page URL (remembered for the browser tab;
+  ?velto_season=auto goes back to the real date).
+{%- endcomment -%}
+{%- capture holiday -%}{% render 'velto-halloween-active' %}{%- endcapture -%}
+{%- if settings.velto_season_enable and holiday == blank -%}
+  <script>
+    (function () {
+      var f = {{ settings.velto_season_force | default: 'auto' | json }}, m, s;
+      try {
+        var q = new URLSearchParams(location.search).get('velto_season');
+        if (q) q === 'auto' ? sessionStorage.removeItem('veltoSeason') : sessionStorage.setItem('veltoSeason', q);
+        s = sessionStorage.getItem('veltoSeason');
+        if (s) f = s;
+      } catch (e) {}
+      m = parseInt(f, 10);
+      if (!(m >= 1 && m <= 12)) {
+        try {
+          m = parseInt(new Intl.DateTimeFormat('en-US', { timeZone: 'Europe/Riga', month: 'numeric' }).format(new Date()), 10);
+        } catch (e) {}
+        if (!(m >= 1 && m <= 12)) m = new Date().getMonth() + 1;
+      }
+      var season = ['winter', 'winter', 'spring', 'spring', 'spring', 'summer', 'summer', 'summer', 'autumn', 'autumn', 'autumn', 'winter'][m - 1];
+      var h = document.documentElement;
+      h.classList.add('velto-season', 'velto-s-' + season, 'velto-m-' + m);
+      h.setAttribute('data-velto-month', m);
+    })();
+  </script>
+  {{ 'velto-season.css' | asset_url | stylesheet_tag }}
+  <script type="application/json" id="velto-season-data">
+    {
+      "particles": {{ settings.velto_season_particles | json }},
+      "amount": {{ settings.velto_season_amount | default: 'normal' | json }},
+      "logo": {{ settings.velto_season_logo | json }}
+    }
+  </script>
+  <script src="{{ 'velto-season.js' | asset_url }}" defer="defer"></script>
+{%- endif -%}
