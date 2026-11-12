@@ -132,6 +132,15 @@
     "velto_cutoff_time": "23:59",
     "velto_delivery_days": "5,6,7",
     "velto_small_order_min": 70,
+    "velto_mine_enable": true,
+    "velto_season_enable": true,
+    "velto_season_force": "auto",
+    "velto_season_particles": true,
+    "velto_season_amount": "normal",
+    "velto_season_logo": true,
+    "velto_hw_enable": true,
+    "velto_hw_until": "2026-11-04",
+    "velto_hw_spider": true,
     "velto_badges_enable": true,
     "velto_badge_exclusive_tag": "exclusive",
     "velto_badge_price_min": 4,
@@ -151,39 +160,15 @@
     },
     "content_for_index": [],
     "blocks": {
-      "2310698031238674758": {
-        "type": "shopify://apps/rp-local-delivery-date/blocks/app-embed-block/3fd2f2b6-9126-45e7-a20a-a58ae4f5c2d5",
-        "disabled": false,
-        "settings": {}
-      },
       "16256948136948485038": {
         "type": "shopify://apps/upcharge-fees/blocks/app-embed-block/3660e544-1847-4d53-9b3b-f0cb50c2d9f7",
         "disabled": false,
         "settings": {}
       },
-      "1923486770171284578": {
-        "type": "shopify://apps/simplee-memberships/blocks/app-block/f502d2a4-3112-42c9-ad39-89fb8aca93a7",
+      "2310698031238674758": {
+        "type": "shopify://apps/rp-local-delivery-date/blocks/app-embed-block/3fd2f2b6-9126-45e7-a20a-a58ae4f5c2d5",
         "disabled": true,
-        "settings": {
-          "text_color": "#2f3537",
-          "widget_background_color": "#ffffff",
-          "background_color": "#2e90fa",
-          "description_color": "#5b5f62",
-          "renewal_color": "#9fa9ad",
-          "heading_color": "#2f3537",
-          "button_color": "#667085",
-          "selected_button_color": "#ffffff",
-          "renewal_text": "/ Renewal",
-          "trial_days_text": "[initial_price] for [count] days, then [regular_price]",
-          "trial_orders_text": "[initial_price] for [count] orders, then [regular_price]",
-          "life_time_text": "Lifetime Access",
-          "simplee_widget_type": "widget_1",
-          "css": "#Simplee-Product_widget{}",
-          "link_color": "#000000",
-          "link_text": "My Membership",
-          "link_css": ".simplee-membership-link{}",
-          "link_icon_size": 16
-        }
+        "settings": {}
       }
     },
     "color_schemes": {
@@ -242,16 +227,7 @@
           "shadow": "#0a0a0a"
         }
       }
-    },
-    "velto_mine_enable": true,
-    "velto_hw_enable": true,
-    "velto_hw_until": "2026-11-04",
-    "velto_hw_spider": true,
-    "velto_season_enable": true,
-    "velto_season_force": "auto",
-    "velto_season_particles": true,
-    "velto_season_amount": "normal",
-    "velto_season_logo": true
+    }
   },
   "presets": {
     "Dawn": {
