@@ -3,6 +3,17 @@
   translation key (e.g. "@velto.content.home.hero_eyebrow") and is rendered
   from the current locale file (lv / ru / en), so section texts switch with
   the storefront language. Any other value is printed as is.
+
+  Translations may use these placeholders, so the texts change together
+  with the order day (theme settings → "Velto piegāde") and the delivery
+  days (snippets/velto-delivery-days.liquid). Word forms: locale → velto.days.
+    {{ day_until }}       last day to order, after "līdz" / "до" / "by": otrdienai · вторника · Tuesday
+    {{ time }}            last time to order: 23:59
+    {{ days_when }}       delivery days as "when": no piektdienas līdz svētdienai · с пятницы по воскресенье · Friday to Sunday
+                          (three or more days in a row; otherwise a list: piektdien un sestdien)
+    {{ days_list }}       delivery days as a choice: piektdien, sestdien vai svētdien
+    {{ days_short }}      pk.–sv. · пт–вс · Fri–Sun
+    {{ days_short_cap }}  Pk–Sv · Пт–Вс · Fri–Sun
   Params: s (string)
 {%- endcomment -%}
 {%- liquid
@@ -10,7 +21,66 @@
   assign first = plain | slice: 0
   if first == '@'
     assign key = plain | remove_first: '@' | strip
-    assign out = key | t
+
+    assign vt_until = 'velto.days.until' | t | split: ','
+    assign vt_i = settings.velto_cutoff_day | plus: 0 | minus: 1
+    assign vt_time = settings.velto_cutoff_time | default: '23:59'
+
+    capture vt_days_csv
+      render 'velto-delivery-days'
+    endcapture
+    assign vt_days = vt_days_csv | split: ','
+    assign vt_from = 'velto.days.from' | t | split: ','
+    assign vt_to = 'velto.days.to' | t | split: ','
+    assign vt_on_first = 'velto.days.on_first' | t | split: ','
+    assign vt_on = 'velto.days.on' | t | split: ','
+    assign vt_short = 'velto.days.short' | t | split: ','
+    assign vt_short_cap = 'velto.days.short_cap' | t | split: ','
+    assign vt_and = 'velto.days.and' | t
+    assign vt_or = 'velto.days.or' | t
+
+    assign vt_first = vt_days.first | plus: 0 | minus: 1
+    assign vt_last = vt_days.last | plus: 0 | minus: 1
+    assign vt_span = vt_last | minus: vt_first | plus: 1
+    assign vt_row = false
+    if vt_span == vt_days.size and vt_days.size > 1
+      assign vt_row = true
+    endif
+
+    assign vt_list_and = ''
+    assign vt_list_or = ''
+    assign vt_list_short = ''
+    assign vt_list_short_cap = ''
+    for d in vt_days
+      assign di = d | plus: 0 | minus: 1
+      if forloop.first
+        assign vt_list_and = vt_on_first[di]
+        assign vt_list_or = vt_on_first[di]
+        assign vt_list_short = vt_short[di]
+        assign vt_list_short_cap = vt_short_cap[di]
+      elsif forloop.last
+        assign vt_list_and = vt_list_and | append: ' ' | append: vt_and | append: ' ' | append: vt_on[di]
+        assign vt_list_or = vt_list_or | append: ' ' | append: vt_or | append: ' ' | append: vt_on[di]
+        assign vt_list_short = vt_list_short | append: ', ' | append: vt_short[di]
+        assign vt_list_short_cap = vt_list_short_cap | append: ', ' | append: vt_short_cap[di]
+      else
+        assign vt_list_and = vt_list_and | append: ', ' | append: vt_on[di]
+        assign vt_list_or = vt_list_or | append: ', ' | append: vt_on[di]
+        assign vt_list_short = vt_list_short | append: ', ' | append: vt_short[di]
+        assign vt_list_short_cap = vt_list_short_cap | append: ', ' | append: vt_short_cap[di]
+      endif
+    endfor
+
+    assign vt_when = vt_list_and
+    if vt_row and vt_days.size > 2
+      assign vt_when = vt_from[vt_first] | append: ' ' | append: vt_to[vt_last]
+    endif
+    if vt_row
+      assign vt_list_short = vt_short[vt_first] | append: '–' | append: vt_short[vt_last]
+      assign vt_list_short_cap = vt_short_cap[vt_first] | append: '–' | append: vt_short_cap[vt_last]
+    endif
+
+    assign out = key | t: day_until: vt_until[vt_i], time: vt_time, days_when: vt_when, days_list: vt_list_or, days_short: vt_list_short, days_short_cap: vt_list_short_cap
     if s contains '<p'
       echo '<p>' | append: out | append: '</p>'
     else

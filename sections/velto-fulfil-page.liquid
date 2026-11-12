@@ -1,0 +1,304 @@
+{%- comment -%}
+  Velto — "Delivery and pickup" page (template page.delivery): the essentials
+  at a glance, map with the delivery zones and pickup points, prices, days
+  and times, how to order.
+  Everything comes from the same metaobjects as the cart block
+  (snippets/velto-fulfil.liquid), so the page never disagrees with the cart.
+  The page's own content from Shopify admin is shown below, if there is any.
+{%- endcomment -%}
+{{ 'velto-home.css' | asset_url | stylesheet_tag }}
+{{ 'velto-about.css' | asset_url | stylesheet_tag }}
+{{ 'velto-contact.css' | asset_url | stylesheet_tag }}
+{{ 'velto-fulfil-page.css' | asset_url | stylesheet_tag }}
+
+{%- liquid
+  comment
+    The deadline shown to customers: theme settings → "Velto piegāde" (the real
+    cutoff in velto_delivery_settings may be a few hours later).
+  endcomment
+  assign vf_min = 0
+  for st in shop.metaobjects.velto_delivery_settings.values limit: 1
+    assign vf_min = st.min_order_delivery.value | default: 0 | times: 100 | round
+  endfor
+  assign weekdays = 'velto.fulfil_page.weekdays' | t | split: ','
+  assign weekdays_until = 'velto.fulfil_page.weekdays_until' | t | split: ','
+  assign cutoff_index = settings.velto_cutoff_day | plus: 0 | minus: 1
+  assign cutoff_time = settings.velto_cutoff_time | default: '23:59'
+  assign colors = '#5bb8ff,#7fd1a0,#ffb454,#ff7a72,#c79bff,#f7e06e' | split: ','
+  assign zones = shop.metaobjects.velto_delivery_zone.values
+  assign points = shop.metaobjects.velto_pickup_point.values
+  assign days = shop.metaobjects.velto_delivery_day.values
+  assign methods = 'delivery,pickup' | split: ','
+
+  assign first_wd = 0
+  assign last_wd = 0
+  for wd in (1..7)
+    for d in days
+      if d.weekday.value == wd and d.slots.value.size > 0
+        if first_wd == 0
+          assign first_wd = wd
+        endif
+        assign last_wd = wd
+      endif
+    endfor
+  endfor
+  assign first_i = first_wd | minus: 1
+  assign last_i = last_wd | minus: 1
+
+  assign min_price = -1
+  for z in zones
+    assign zp = z.variant.value.price | default: 0
+    if min_price < 0 or zp < min_price
+      assign min_price = zp
+    endif
+  endfor
+-%}
+
+{%- capture icon_store -%}
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.1" stroke-linejoin="round" aria-hidden="true"><path d="M2.75 9.5v7.25h14.5V9.5M8 16.75v-4.5h4v4.5M3.2 3.25h13.6l1.45 4.6a2.07 2.07 0 0 1-4.12 0 2.07 2.07 0 0 1-4.13 0 2.07 2.07 0 0 1-4.13 0 2.07 2.07 0 0 1-4.12 0z"/></svg>
+{%- endcapture -%}
+{%- capture icon_clock -%}
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="10" cy="10" r="7.25"/><path d="M10 5.75V10l2.75 1.75"/></svg>
+{%- endcapture -%}
+{%- capture icon_calendar -%}
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2.75" y="4.25" width="14.5" height="13" rx="2"/><path d="M2.75 8.25h14.5M6.5 2.5v3M13.5 2.5v3"/></svg>
+{%- endcapture -%}
+
+<section
+  class="velto-fpage color-{{ section.settings.color_scheme }}"
+  style="--velto-a-pt: {{ section.settings.padding_top }}px; --velto-a-pb: {{ section.settings.padding_bottom }}px;"
+>
+  <div class="page-width">
+    <nav class="velto-ahero__crumbs" aria-label="{{ 'velto.home' | t }}">
+      <a href="{{ routes.root_url }}">{{ 'velto.home' | t }}</a>
+      <span aria-hidden="true">/</span>
+      <span>{{ 'velto.fulfil_page.heading' | t }}</span>
+    </nav>
+
+    <p class="velto-ahero__eyebrow">{{ 'velto.fulfil_page.eyebrow' | t }}</p>
+    <h1 class="velto-contact__title">{{ 'velto.fulfil_page.heading' | t }}</h1>
+    <div class="velto-contact__intro">{{ 'velto.fulfil_page.intro' | t }}</div>
+    {% render 'velto-fulfil-notice' %}
+
+    {%- comment -%} ---------- the essentials at a glance ---------- {%- endcomment -%}
+    <ul class="velto-fpage__facts list-unstyled" role="list">
+      <li>
+        <span class="velto-fpage__ico" aria-hidden="true">{{ icon_clock }}</span>
+        <span>
+          <span class="velto-fpage__fact-label">{{ 'velto.fulfil_page.hl_deadline_label' | t }}</span>
+          <strong>{{ 'velto.fulfil_page.hl_deadline' | t: day: weekdays_until[cutoff_index], time: cutoff_time }}</strong>
+        </span>
+      </li>
+      {%- if first_wd > 0 -%}
+        <li>
+          <span class="velto-fpage__ico" aria-hidden="true">{{ icon_calendar }}</span>
+          <span>
+            <span class="velto-fpage__fact-label">{{ 'velto.fulfil_page.hl_days_label' | t }}</span>
+            <strong>
+              {%- if first_wd == last_wd -%}
+                {{ weekdays[first_i] }}
+              {%- elsif request.locale.iso_code == 'en' -%}
+                {{ weekdays[first_i] }} – {{ weekdays[last_i] }}
+              {%- else -%}
+                {{ weekdays[first_i] }} – {{ weekdays[last_i] | downcase }}
+              {%- endif -%}
+            </strong>
+          </span>
+        </li>
+      {%- endif -%}
+      {%- if min_price >= 0 -%}
+        <li>
+          <span class="velto-fpage__ico" aria-hidden="true">{{- 'icon-truck.svg' | inline_asset_content -}}</span>
+          <span>
+            <span class="velto-fpage__fact-label">{{ 'velto.fulfil_page.hl_delivery_label' | t }}</span>
+            <strong>
+              {%- if min_price > 0 -%}
+                {%- assign min_price_money = min_price | money -%}
+                {{ 'velto.fulfil_page.hl_from' | t: price: min_price_money }}
+              {%- else -%}
+                {{ 'velto.fulfil.free' | t }}
+              {%- endif -%}
+            </strong>
+          </span>
+        </li>
+      {%- endif -%}
+      {%- if points.size > 0 -%}
+        <li>
+          <span class="velto-fpage__ico" aria-hidden="true">{{ icon_store }}</span>
+          <span>
+            <span class="velto-fpage__fact-label">{{ 'velto.fulfil_page.hl_pickup_label' | t }}</span>
+            <strong>{{ 'velto.fulfil.free' | t }}</strong>
+          </span>
+        </li>
+      {%- endif -%}
+    </ul>
+
+    {%- comment -%} ---------- map + zones + pickup points ---------- {%- endcomment -%}
+    <div class="velto-fpage__grid">
+      {%- if settings.velto_fulfil_maps_key != blank and zones.size > 0 or points.size > 0 -%}
+        <div class="velto-fpage__map" data-velto-fmap role="region" aria-label="{{ 'velto.fulfil_page.map_label' | t }}"></div>
+      {%- endif -%}
+
+      <div class="velto-fpage__side">
+        <div class="velto-fpage__card">
+          <h2 class="velto-fpage__h">
+            <span class="velto-fpage__ico" aria-hidden="true">{{- 'icon-truck.svg' | inline_asset_content -}}</span>
+            {{ 'velto.fulfil_page.zones_heading' | t }}
+          </h2>
+          {%- if zones.size > 0 -%}
+            <ul class="velto-fpage__zones list-unstyled" role="list">
+              {%- for z in zones -%}
+                {%- assign ci = forloop.index0 | modulo: colors.size -%}
+                {%- assign zv = z.variant.value -%}
+                <li>
+                  <span class="velto-fpage__swatch" style="--c: {{ colors[ci] }}" aria-hidden="true"></span>
+                  <span class="velto-fpage__zname">{{ z.name.value }}</span>
+                  <span class="velto-fpage__zprice">
+                    {%- if zv.price > 0 -%}{{ zv.price | money }}{%- else -%}{{ 'velto.fulfil.free' | t }}{%- endif -%}
+                  </span>
+                </li>
+              {%- endfor -%}
+            </ul>
+            <p class="velto-fpage__note">{{ 'velto.fulfil_page.zones_text' | t }}</p>
+          {%- else -%}
+            <p class="velto-fpage__note">{{ 'velto.fulfil_page.zones_empty' | t }}</p>
+          {%- endif -%}
+        </div>
+
+        {%- if points.size > 0 -%}
+          <div class="velto-fpage__card velto-fpage__card--pickup">
+            <h2 class="velto-fpage__h">
+              <span class="velto-fpage__ico" aria-hidden="true">{{ icon_store }}</span>
+              {{ 'velto.fulfil_page.pickup_heading' | t }}
+              <span class="velto-fpage__badge">{{ 'velto.fulfil_page.pickup_badge' | t }}</span>
+            </h2>
+            <ul class="velto-fpage__points list-unstyled" role="list">
+              {%- for p in points -%}
+                {%- capture map_link -%}
+                  {%- if p.map_url.value != blank -%}
+                    {{- p.map_url.value -}}
+                  {%- elsif p.address.value != blank -%}
+                    https://www.google.com/maps/search/?api=1&query={{ p.address.value | url_encode }}
+                  {%- endif -%}
+                {%- endcapture -%}
+                <li>
+                  <strong>{{ p.name.value }}</strong>
+                  {%- if p.address.value != blank -%}
+                    <span class="velto-fpage__addr">{{ p.address.value }}</span>
+                  {%- endif -%}
+                  {%- if map_link != blank -%}
+                    <a class="velto-fpage__route" href="{{ map_link | strip }}" target="_blank" rel="noopener">
+                      {{- 'icon-map-pin.svg' | inline_asset_content -}}
+                      {{- 'velto.fulfil_page.route' | t -}}
+                    </a>
+                  {%- endif -%}
+                </li>
+              {%- endfor -%}
+            </ul>
+            <p class="velto-fpage__note">{{ 'velto.fulfil_page.pickup_free' | t }}</p>
+          </div>
+        {%- endif -%}
+      </div>
+    </div>
+
+    {%- comment -%} ---------- days and times: one card per day ---------- {%- endcomment -%}
+    {%- if days.size > 0 -%}
+      <h2 class="velto-fpage__section-title">{{ 'velto.fulfil_page.schedule_heading' | t }}</h2>
+      <ul class="velto-fpage__days list-unstyled" role="list">
+        {%- for wd in (1..7) -%}
+          {%- assign has_day = false -%}
+          {%- capture rows -%}
+            {%- for m in methods -%}
+              {%- assign hours = '' -%}
+              {%- for d in days -%}
+                {%- if d.weekday.value == wd and d.method.value == m and d.slots.value.size > 0 -%}
+                  {%- assign from = d.slots.value.first | split: '-' | first -%}
+                  {%- assign to = d.slots.value.last | split: '-' | last -%}
+                  {%- assign hours = from | append: '–' | append: to -%}
+                  {%- assign has_day = true -%}
+                {%- endif -%}
+              {%- endfor -%}
+              <div class="velto-fpage__day-row{% if hours == '' %} is-off{% endif %}">
+                <dt>
+                  <span class="velto-fpage__day-ico" aria-hidden="true">
+                    {%- if m == 'delivery' -%}{{- 'icon-truck.svg' | inline_asset_content -}}{%- else -%}{{ icon_store }}{%- endif -%}
+                  </span>
+                  {%- if m == 'delivery' -%}{{ 'velto.fulfil.method_delivery' | t }}{%- else -%}{{ 'velto.fulfil.method_pickup' | t }}{%- endif -%}
+                </dt>
+                <dd>{%- if hours != '' -%}{{ hours }}{%- else -%}—{%- endif -%}</dd>
+              </div>
+            {%- endfor -%}
+          {%- endcapture -%}
+          {%- if has_day -%}
+            {%- assign wi = wd | minus: 1 -%}
+            <li class="velto-fpage__day">
+              <h3 class="velto-fpage__day-name">{{ weekdays[wi] }}</h3>
+              <dl class="velto-fpage__day-rows">{{ rows }}</dl>
+            </li>
+          {%- endif -%}
+        {%- endfor -%}
+      </ul>
+    {%- endif -%}
+
+    {%- comment -%} ---------- how to order: numbered steps ---------- {%- endcomment -%}
+    <h2 class="velto-fpage__section-title">{{ 'velto.fulfil_page.rules_heading' | t }}</h2>
+    <ol class="velto-fpage__steps list-unstyled">
+      <li>{{ 'velto.fulfil_page.rule_cart' | t }}</li>
+      <li>{{ 'velto.fulfil_page.rule_deadline' | t: day: weekdays_until[cutoff_index], time: cutoff_time }}</li>
+      {%- if vf_min > 0 -%}
+        {%- assign min_money = vf_min | money -%}
+        <li>{{ 'velto.fulfil_page.rule_min' | t: amount: min_money }}</li>
+      {%- endif -%}
+      <li>{{ 'velto.fulfil_page.rule_slots' | t }}</li>
+      <li>{{ 'velto.fulfil_page.rule_phone' | t }}</li>
+      <li>{{ 'velto.fulfil_page.rule_outside' | t }}</li>
+    </ol>
+
+    {%- if page.content != blank -%}
+      <div class="velto-fpage__content rte">{{ page.content }}</div>
+    {%- endif -%}
+  </div>
+
+  <script type="application/json" data-velto-fmap-config>
+    {
+      "mapsKey": {{ settings.velto_fulfil_maps_key | strip | json }},
+      "locale": {{ request.locale.iso_code | json }},
+      "free": {{ 'velto.fulfil.free' | t | json }},
+      "route": {{ 'velto.fulfil_page.route' | t | json }},
+      "zoneLabel": {{ 'velto.fulfil_page.popup_zone' | t | json }},
+      "pickupLabel": {{ 'velto.fulfil.method_pickup' | t | json }},
+      "close": {{ 'accessibility.close' | t | json }},
+      "zones": [
+        {%- for z in zones -%}
+          {%- assign ci = forloop.index0 | modulo: colors.size -%}
+          {%- assign zv = z.variant.value -%}
+          {%- capture zprice -%}{%- if zv.price > 0 -%}{{ zv.price | money }}{%- endif -%}{%- endcapture -%}
+          { "name": {{ z.name.value | json }}, "polygon": {{ z.polygon.value | default: '[]' | json }}, "price": {{ zprice | strip_html | json }}, "color": {{ colors[ci] | json }} }{% unless forloop.last %},{% endunless %}
+        {%- endfor -%}
+      ],
+      "points": [
+        {%- for p in points -%}
+          { "name": {{ p.name.value | json }}, "address": {{ p.address.value | json }}, "coords": {{ p.coordinates.value | default: '' | json }}, "url": {{ p.map_url.value | default: '' | json }} }{% unless forloop.last %},{% endunless %}
+        {%- endfor -%}
+      ]
+    }
+  </script>
+  <script src="{{ 'velto-fulfil.js' | asset_url }}" defer="defer"></script>
+  <script src="{{ 'velto-fulfil-page.js' | asset_url }}" defer="defer"></script>
+</section>
+
+{% schema %}
+{
+  "name": "Velto: Piegāde (lapa)",
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "Zonas, cenas, saņemšanas vietas, dienas un laiki tiek ņemti no Content → Metaobjects. Lapas saturs no Shopify tiek rādīts apakšā."
+    },
+    { "type": "color_scheme", "id": "color_scheme", "label": "t:sections.all.colors.label", "default": "scheme-1" },
+    { "type": "range", "id": "padding_top", "min": 0, "max": 120, "step": 4, "unit": "px", "label": "t:sections.all.padding.padding_top", "default": 36 },
+    { "type": "range", "id": "padding_bottom", "min": 0, "max": 120, "step": 4, "unit": "px", "label": "t:sections.all.padding.padding_bottom", "default": 72 }
+  ],
+  "presets": [{ "name": "Velto: Piegāde (lapa)" }]
+}
+{% endschema %}

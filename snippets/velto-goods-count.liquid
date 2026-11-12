@@ -1,12 +1,13 @@
 {%- comment -%}
   Cart item count without app-generated fee lines (Upcharge Fees:
-  product type "mws_fee_generated" / line property "_mws_fee").
+  product type "mws_fee_generated" / line property "_mws_fee") and
+  without the delivery line (product type "velto_delivery", snippets/velto-fulfil.liquid).
   Usage: {%- capture n -%}{% render 'velto-goods-count' %}{%- endcapture -%}
 {%- endcomment -%}
 {%- liquid
   assign n = 0
   for item in cart.items
-    if item.product.type == 'mws_fee_generated' or item.properties['_mws_fee'] != blank
+    if item.product.type == 'mws_fee_generated' or item.properties['_mws_fee'] != blank or item.product.type == 'velto_delivery'
       continue
     endif
     assign n = n | plus: item.quantity

@@ -44,11 +44,14 @@
         >
           {{- 'general.cart.view_empty_cart' | t -}}
         </a>
-        <form action="{{ routes.cart_url }}" method="post" id="cart-notification-form">
-          <button class="button button--primary button--full-width" name="checkout">
-            {{ 'sections.cart.checkout' | t }}
-          </button>
-        </form>
+        {%- comment -%} own delivery block (velto-fulfil): the day and time are picked in the cart {%- endcomment -%}
+        {%- unless settings.velto_fulfil_enable -%}
+          <form action="{{ routes.cart_url }}" method="post" id="cart-notification-form">
+            <button class="button button--primary button--full-width" name="checkout">
+              {{ 'sections.cart.checkout' | t }}
+            </button>
+          </form>
+        {%- endunless -%}
         <button type="button" class="link button-label">{{ 'general.continue_shopping' | t }}</button>
       </div>
     </div>

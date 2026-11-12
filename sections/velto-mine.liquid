@@ -147,7 +147,7 @@
                     {%- assign first = true -%}
                     {%- for li in order.line_items -%}
                       {%- liquid
-                        if li.product.type == 'mws_fee_generated' or li.properties['_mws_fee'] != blank or li.vendor == 'mws_fee_generated'
+                        if li.product.type == 'mws_fee_generated' or li.properties['_mws_fee'] != blank or li.vendor == 'mws_fee_generated' or li.product.type == 'velto_delivery'
                           continue
                         endif
                         assign img = li.image | default: li.product.featured_image

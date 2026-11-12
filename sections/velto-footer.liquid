@@ -86,6 +86,10 @@
             {%- for link in info_menu.links -%}
               <li><a href="{{ link.url }}">{{ link.title }}</a></li>
             {%- endfor -%}
+            {%- comment -%} delivery and pickup page: theme settings → "Velto: sava piegāde" {%- endcomment -%}
+            {%- if settings.velto_fulfil_page != blank -%}
+              <li><a href="{{ settings.velto_fulfil_page.url }}">{{ 'velto.fulfil_page.heading' | t }}</a></li>
+            {%- endif -%}
           </ul>
         </nav>
       {%- endif -%}
@@ -135,11 +139,11 @@
             class="velto-footer__cycle"
             data-cutoff-day="{{ settings.velto_cutoff_day }}"
             data-cutoff-time="{{ settings.velto_cutoff_time }}"
-            data-delivery-days="{{ settings.velto_delivery_days }}"
+            data-delivery-days="{% render 'velto-delivery-days' %}"
           >
             <span class="velto-footer__cycle-dot" aria-hidden="true"></span>
             <span>
-              <strong>{{ 'velto.delivery.order' | t }} <span data-v="deadline">{{ 'velto.delivery.fallback' | t }}</span></strong>
+              <strong>{{ 'velto.delivery.order' | t }} <span data-v="deadline">{% render 'velto-t', s: '@velto.delivery.fallback' %}</span></strong>
               <span class="velto-footer__muted">{{ 'velto.delivery.delivery' | t }} <span data-v="days"></span></span>
             </span>
           </velto-delivery>

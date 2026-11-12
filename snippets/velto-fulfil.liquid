@@ -1,0 +1,146 @@
+{%- comment -%}
+  Velto — own delivery / pickup block on the cart page (replaces the delivery
+  date app). The customer picks: method → address (delivery zone) or pickup
+  point → day → time slot → contact phone. The choice is saved to cart attributes and ends up
+  in the order; the delivery price is a line of the hidden product with the
+  type "velto_delivery" (one variant per zone).
+
+  Shown above the cart items; once the choice is complete it folds into one
+  line with a "change" button.
+
+  Off unless theme settings → "Velto: sava piegāde" → enabled.
+  Settings are metaobjects (Shopify admin → Content → Metaobjects):
+    velto_delivery_settings  cutoff_weekday, cutoff_time, min_order_delivery
+    velto_delivery_day       weekday, method, slots, slot_limit
+    velto_delivery_closed    date, scope
+    velto_pickup_point       name, address
+    velto_delivery_zone      name, polygon, variant
+  Logic: assets/velto-fulfil.js. Slot occupancy: Cloudflare worker
+  (repository velto-v2-shopify-theme-delivery-plugin).
+
+  Usage: {% render 'velto-fulfil' %}
+{%- endcomment -%}
+{%- if settings.velto_fulfil_enable -%}
+  {%- liquid
+    assign vf_cutoff_weekday = 3
+    assign vf_cutoff_time = '05:00'
+    assign vf_min = 0
+    for st in shop.metaobjects.velto_delivery_settings.values limit: 1
+      assign vf_cutoff_weekday = st.cutoff_weekday.value | default: 3
+      assign vf_cutoff_time = st.cutoff_time.value | default: '05:00'
+      assign vf_min = st.min_order_delivery.value | default: 0 | times: 100 | round
+    endfor
+    comment
+      contact phone of a signed-in customer: the last order that has one, else the account phone
+    endcomment
+    assign vf_contact = ''
+    if customer
+      for o in customer.orders limit: 10
+        if o.attributes['Contact phone'] != blank
+          assign vf_contact = o.attributes['Contact phone']
+          break
+        endif
+      endfor
+      if vf_contact == blank
+        assign vf_contact = customer.phone | default: customer.default_address.phone | default: ''
+      endif
+    endif
+  -%}
+  <velto-fulfil class="velto-fulfil" id="VeltoFulfil">
+    <h2 class="velto-fulfil__title">{{ 'velto.fulfil.title' | t }}</h2>
+    {% render 'velto-fulfil-notice' %}
+    <div class="velto-fulfil__body" data-body></div>
+    <template data-icon="delivery">{{- 'icon-truck.svg' | inline_asset_content -}}</template>
+    <template data-icon="pickup">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.1" stroke-linejoin="round" aria-hidden="true"><path d="M2.75 9.5v7.25h14.5V9.5M8 16.75v-4.5h4v4.5M3.2 3.25h13.6l1.45 4.6a2.07 2.07 0 0 1-4.12 0 2.07 2.07 0 0 1-4.13 0 2.07 2.07 0 0 1-4.13 0 2.07 2.07 0 0 1-4.12 0z"/></svg>
+    </template>
+    <template data-icon="pin">{{- 'icon-map-pin.svg' | inline_asset_content -}}</template>
+    <script type="application/json" data-config>
+      {
+        "locale": {{ request.locale.iso_code | json }},
+        "currency": {{ cart.currency.iso_code | json }},
+        "worker": {{ settings.velto_fulfil_worker_url | strip | json }},
+        "mapsKey": {{ settings.velto_fulfil_maps_key | strip | json }},
+        "routes": { "cart": {{ routes.cart_url | json }}, "update": {{ routes.cart_update_url | json }} },
+        "attributes": {{ cart.attributes | json }},
+        "contact": {{ vf_contact | json }},
+        "writeNote": {% if settings.show_cart_note %}false{% else %}true{% endif %},
+        "display": { "weekday": {{ settings.velto_cutoff_day | plus: 0 | json }}, "time": {{ settings.velto_cutoff_time | json }} },
+        "settings": {
+          "cutoffWeekday": {{ vf_cutoff_weekday | json }},
+          "cutoffTime": {{ vf_cutoff_time | json }},
+          "minOrderDelivery": {{ vf_min | json }}
+        },
+        "days": [
+          {%- for d in shop.metaobjects.velto_delivery_day.values -%}
+            {
+              "weekday": {{ d.weekday.value | default: 0 | json }},
+              "method": {{ d.method.value | json }},
+              "slots": {{ d.slots.value | json }},
+              "limit": {{ d.slot_limit.value | default: 0 | json }}
+            }{% unless forloop.last %},{% endunless %}
+          {%- endfor -%}
+        ],
+        "closed": [
+          {%- for c in shop.metaobjects.velto_delivery_closed.values -%}
+            { "date": {{ c.date.value | date: '%Y-%m-%d' | json }}, "scope": {{ c.scope.value | default: 'all' | json }} }{% unless forloop.last %},{% endunless %}
+          {%- endfor -%}
+        ],
+        "pickupPoints": [
+          {%- for p in shop.metaobjects.velto_pickup_point.values -%}
+            { "name": {{ p.name.value | json }}, "address": {{ p.address.value | json }} }{% unless forloop.last %},{% endunless %}
+          {%- endfor -%}
+        ],
+        "zones": [
+          {%- for z in shop.metaobjects.velto_delivery_zone.values -%}
+            {%- assign zv = z.variant.value -%}
+            {
+              "name": {{ z.name.value | json }},
+              "polygon": {{ z.polygon.value | default: '[]' | json }},
+              "variant": {{ zv.id | default: 0 | json }},
+              "price": {{ zv.price | default: 0 | json }}
+            }{% unless forloop.last %},{% endunless %}
+          {%- endfor -%}
+        ],
+        "t": {
+          "delivery": {{ 'velto.fulfil.method_delivery' | t | json }},
+          "pickup": {{ 'velto.fulfil.method_pickup' | t | json }},
+          "delivery_from": {{ 'velto.fulfil.delivery_from' | t: amount: '[amount]' | json }},
+          "delivery_missing": {{ 'velto.fulfil.delivery_missing' | t: missing: '[missing]' | json }},
+          "price_by_address": {{ 'velto.fulfil.price_by_address' | t | json }},
+          "address_label": {{ 'velto.fulfil.address_label' | t | json }},
+          "address_placeholder": {{ 'velto.fulfil.address_placeholder' | t | json }},
+          "address_none": {{ 'velto.fulfil.address_none' | t | json }},
+          "maps_missing": {{ 'velto.fulfil.maps_missing' | t | json }},
+          "zone_ok": {{ 'velto.fulfil.zone_ok' | t: zone: '[zone]', price: '[price]' | json }},
+          "outside": {{ 'velto.fulfil.outside' | t | json }},
+          "pickup_label": {{ 'velto.fulfil.pickup_label' | t | json }},
+          "date_label": {{ 'velto.fulfil.date_label' | t | json }},
+          "slot_label": {{ 'velto.fulfil.slot_label' | t | json }},
+          "full": {{ 'velto.fulfil.full' | t | json }},
+          "free": {{ 'velto.fulfil.free' | t | json }},
+          "closed": {{ 'velto.fulfil.closed' | t | json }},
+          "unavailable": {{ 'velto.fulfil.unavailable' | t | json }},
+          "deadline": {{ 'velto.fulfil.deadline' | t: deadline: '[deadline]' | json }},
+          "deadline_soon": {{ 'velto.fulfil.deadline_soon' | t | json }},
+          "err_method": {{ 'velto.fulfil.err_method' | t | json }},
+          "err_address": {{ 'velto.fulfil.err_address' | t | json }},
+          "err_min": {{ 'velto.fulfil.err_min' | t: amount: '[amount]' | json }},
+          "err_pickup": {{ 'velto.fulfil.err_pickup' | t | json }},
+          "err_date": {{ 'velto.fulfil.err_date' | t | json }},
+          "err_slot": {{ 'velto.fulfil.err_slot' | t | json }},
+          "change": {{ 'velto.fulfil.change' | t | json }},
+          "comment_label": {{ 'velto.fulfil.comment_label' | t | json }},
+          "comment_placeholder": {{ 'velto.fulfil.comment_placeholder' | t | json }},
+          "contact_label": {{ 'velto.fulfil.contact_label' | t | json }},
+          "contact_hint": {{ 'velto.fulfil.contact_hint' | t | json }},
+          "err_contact": {{ 'velto.fulfil.err_contact' | t | json }},
+          "err_full": {{ 'velto.fulfil.err_full' | t | json }},
+          "err_cycle": {{ 'velto.fulfil.err_cycle' | t | json }}
+        }
+      }
+    </script>
+  </velto-fulfil>
+  {{ 'velto-fulfil.css' | asset_url | stylesheet_tag }}
+  <script src="{{ 'velto-fulfil.js' | asset_url }}" defer="defer"></script>
+{%- endif -%}

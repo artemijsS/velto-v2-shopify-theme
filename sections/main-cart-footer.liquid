@@ -62,8 +62,15 @@
                 {%- liquid
                   assign fee_total = 0
                   assign fee_qty = 0
+                  assign delivery_total = 0
+                  assign delivery_lines = 0
                   for item in cart.items
-                    if item.product.type == 'mws_fee_generated' or item.properties['_mws_fee'] != blank
+                    if item.product.type == 'velto_delivery'
+                      assign delivery_total = delivery_total | plus: item.final_line_price
+                      assign delivery_lines = delivery_lines | plus: 1
+                      assign fee_total = fee_total | plus: item.final_line_price
+                      assign fee_qty = fee_qty | plus: item.quantity
+                    elsif item.product.type == 'mws_fee_generated' or item.properties['_mws_fee'] != blank
                       assign fee_total = fee_total | plus: item.final_line_price
                       assign fee_qty = fee_qty | plus: item.quantity
                     endif
@@ -92,8 +99,24 @@
                     </div>
                   {%- endif -%}
                   <div>
-                    <dt>{{ 'velto.cart.delivery' | t }}</dt>
-                    <dd class="velto-sum__muted">{{ 'velto.cart.delivery_at_checkout' | t }}</dd>
+                    <dt>
+                      {%- if settings.velto_fulfil_enable and cart.attributes['Delivery method'] == 'pickup' -%}
+                        {{ 'velto.fulfil.method_pickup' | t }}
+                      {%- else -%}
+                        {{ 'velto.cart.delivery' | t }}
+                      {%- endif -%}
+                    </dt>
+                    {%- if settings.velto_fulfil_enable -%}
+                      {%- if delivery_lines > 0 -%}
+                        <dd>{% if delivery_total > 0 %}{{ delivery_total | money }}{% else %}{{ 'velto.fulfil.free' | t }}{% endif %}</dd>
+                      {%- elsif cart.attributes['Delivery method'] == 'pickup' -%}
+                        <dd>{{ 'velto.fulfil.free' | t }}</dd>
+                      {%- else -%}
+                        <dd><a class="velto-sum__choose" href="#VeltoFulfil">{{ 'velto.fulfil.summary_choose' | t }}</a></dd>
+                      {%- endif -%}
+                    {%- else -%}
+                      <dd class="velto-sum__muted">{{ 'velto.cart.delivery_at_checkout' | t }}</dd>
+                    {%- endif -%}
                   </div>
                 </dl>
 
@@ -110,7 +133,10 @@
                   <p class="totals__total-value">{{ cart.total_price | money }}</p>
                 </div>
 
-                {% render 'velto-delivery-info' %}
+                {%- comment -%} with the own delivery block the day, time and deadline are shown there {%- endcomment -%}
+                {%- unless settings.velto_fulfil_enable -%}
+                  {% render 'velto-delivery-info' %}
+                {%- endunless -%}
 
                 {%- unless cart == empty -%}
                   <div class="velto-cart-bar" aria-hidden="true">
@@ -249,6 +275,8 @@
     const real = document.getElementById('checkout');
     if (!real) return;
     real.click();
+    // the own delivery block (velto-fulfil) scrolls to itself when something is missing
+    if (document.querySelector('velto-fulfil')) return;
     setTimeout(() => {
       if (document.visibilityState !== 'visible') return;
       const target =
