@@ -206,6 +206,8 @@
   );
 </script>
 
+{% render 'velto-seo-schema', email: section.settings.email, phones: section.settings.phones %}
+
 {% schema %}
 {
   "name": "Velto kājene",

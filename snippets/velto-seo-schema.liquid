@@ -1,0 +1,92 @@
+{%- comment -%}
+  Velto — structured data (JSON-LD) for search engines, on every page:
+    OnlineStore     name, address of the site, logo, contacts, social profiles
+    WebSite         home page only: site name + search box
+    BreadcrumbList  ordinary pages: Home / page title
+  Breadcrumbs of products and collections are emitted next to the visible
+  ones (snippets/velto-product-crumbs.liquid, sections/velto-collection-hero.liquid),
+  Product data — by sections/main-product.liquid, FAQ — by sections/velto-faq.liquid.
+
+  Rendered from sections/velto-footer.liquid, where the contacts are set.
+  Params: email, phones (comma separated)
+{%- endcomment -%}
+{%- liquid
+  assign vs_home = request.origin | append: routes.root_url
+  assign vs_org_id = request.origin | append: '/#organization'
+  assign vs_logo = 'velto-favicon-192.png' | asset_url | prepend: 'https:'
+  if settings.logo != blank
+    assign vs_logo = settings.logo | image_url: width: 600 | prepend: 'https:'
+  endif
+  assign vs_social = ''
+  assign vs_social_all = settings.social_facebook_link | append: '|' | append: settings.social_instagram_link | append: '|' | append: settings.social_tiktok_link | append: '|' | append: settings.social_youtube_link | append: '|' | append: settings.social_twitter_link | append: '|' | append: settings.social_pinterest_link | append: '|' | append: settings.social_snapchat_link | append: '|' | append: settings.social_tumblr_link | append: '|' | append: settings.social_vimeo_link | split: '|'
+  assign vs_phone = phones | split: ',' | first | strip
+  assign vs_description = 'velto.seo.home_description' | t
+-%}
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "OnlineStore",
+    "@id": {{ vs_org_id | json }},
+    "name": {{ shop.name | json }},
+    "url": {{ vs_home | json }},
+    "logo": {{ vs_logo | json }},
+    "description": {{ vs_description | json }},
+    {%- if email != blank %}
+    "email": {{ email | strip | json }},
+    {%- endif -%}
+    {%- if vs_phone != blank %}
+    "telephone": {{ vs_phone | json }},
+    "contactPoint": {
+      "@type": "ContactPoint",
+      "contactType": "customer service",
+      "telephone": {{ vs_phone | json }},
+      {%- if email != blank %}
+      "email": {{ email | strip | json }},
+      {%- endif %}
+      "availableLanguage": ["lv", "ru", "en"]
+    },
+    {%- endif %}
+    "areaServed": { "@type": "Country", "name": "Latvia" },
+    "sameAs": [
+      {%- assign vs_first = true -%}
+      {%- for s in vs_social_all -%}
+        {%- if s != blank -%}
+          {%- unless vs_first -%},{%- endunless -%}
+          {{ s | json }}
+          {%- assign vs_first = false -%}
+        {%- endif -%}
+      {%- endfor -%}
+    ]
+  }
+</script>
+
+{%- if request.page_type == 'index' -%}
+  {%- assign vs_search = request.origin | append: routes.search_url | append: '?q={search_term_string}' -%}
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "name": {{ shop.name | json }},
+      "url": {{ vs_home | json }},
+      "inLanguage": {{ request.locale.iso_code | json }},
+      "publisher": { "@id": {{ vs_org_id | json }} },
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": {{ vs_search | json }},
+        "query-input": "required name=search_term_string"
+      }
+    }
+  </script>
+{%- elsif request.page_type == 'page' and page -%}
+  {%- assign vs_page = request.origin | append: page.url -%}
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        { "@type": "ListItem", "position": 1, "name": {{ 'velto.home' | t | json }}, "item": {{ vs_home | json }} },
+        { "@type": "ListItem", "position": 2, "name": {{ page.title | json }}, "item": {{ vs_page | json }} }
+      ]
+    }
+  </script>
+{%- endif -%}

@@ -1573,6 +1573,22 @@
     ]
   },
   {
+    "name": "Velto: SEO",
+    "settings": [
+      {
+        "type": "paragraph",
+        "content": "Sākumlapas virsraksts (title) meklētājiem visās valodās tiek ņemts no tēmas tulkojumiem (velto.seo.home_title). Aprakstu trūkstošajām lapām (kategorijas, piegāde) tēma izveido automātiski; Shopify administrācijā ievadītie SEO apraksti vienmēr ir prioritāri."
+      },
+      {
+        "type": "checkbox",
+        "id": "velto_seo_home_title",
+        "label": "Sākumlapas title no tēmas tulkojumiem",
+        "info": "Izslēdz, lai izmantotu Shopify iestatījumos (Preferences) ievadīto sākumlapas virsrakstu.",
+        "default": true
+      }
+    ]
+  },
+  {
     "name": "Velto mani pirkumi",
     "settings": [
       {

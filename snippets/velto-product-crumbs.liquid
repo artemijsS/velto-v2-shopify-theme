@@ -49,3 +49,31 @@
     <a href="{{ c_link.url }}">{{ c_link.title }}</a>
   {%- endif -%}
 </nav>
+{%- comment -%} the same trail for search engines {%- endcomment -%}
+{%- liquid
+  assign bc_home = request.origin | append: routes.root_url
+  assign bc_pos = 1
+-%}
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      { "@type": "ListItem", "position": 1, "name": {{ 'velto.home' | t | json }}, "item": {{ bc_home | json }} }
+      {%- if p_link -%}
+        {%- assign bc_pos = bc_pos | plus: 1 -%}
+        {%- assign bc_name = p_link.title | remove: '💙' | strip -%}
+        {%- assign bc_url = request.origin | append: p_link.url -%}
+        ,{ "@type": "ListItem", "position": {{ bc_pos }}, "name": {{ bc_name | json }}, "item": {{ bc_url | json }} }
+      {%- endif -%}
+      {%- if c_link -%}
+        {%- assign bc_pos = bc_pos | plus: 1 -%}
+        {%- assign bc_url = request.origin | append: c_link.url -%}
+        ,{ "@type": "ListItem", "position": {{ bc_pos }}, "name": {{ c_link.title | json }}, "item": {{ bc_url | json }} }
+      {%- endif -%}
+      {%- assign bc_pos = bc_pos | plus: 1 -%}
+      {%- assign bc_url = request.origin | append: product.url -%}
+      ,{ "@type": "ListItem", "position": {{ bc_pos }}, "name": {{ product.title | json }}, "item": {{ bc_url | json }} }
+    ]
+  }
+</script>

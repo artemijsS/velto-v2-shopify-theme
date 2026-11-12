@@ -992,6 +992,11 @@
       "more": "Vairāk par piegādi un saņemšanu",
       "terms": "Zonas, cenas un laiki",
       "line_more": "Piegāde vai saņemšana uz vietas — cenas un nosacījumi"
+    },
+    "seo": {
+      "home_title": "Velto — pārtikas un ikdienas preču interneta veikals Latvijā",
+      "home_description": "Velto — interneta veikals Latvijā: pārtika, dzērieni, sadzīves ķīmija un ikdienas preces par godīgu cenu. Piegāde uz mājām vai saņemšana uz vietas katru nedēļu.",
+      "collection_description": "{{ title }} interneta veikalā Velto — {{ count }} par godīgu cenu. Piegāde uz mājām vai saņemšana uz vietas katru nedēļu."
     }
   }
 }

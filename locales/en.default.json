@@ -979,6 +979,11 @@
       "more": "More about delivery and pickup",
       "terms": "Zones, prices and times",
       "line_more": "Delivery or pickup — prices and terms"
+    },
+    "seo": {
+      "home_title": "Velto — online grocery and everyday essentials store in Latvia",
+      "home_description": "Velto is an online store in Latvia: food, drinks, household goods and everyday essentials at a fair price. Home delivery or pickup every week.",
+      "collection_description": "{{ title }} at the Velto online store — {{ count }} at a fair price. Home delivery or pickup every week."
     }
   }
 }

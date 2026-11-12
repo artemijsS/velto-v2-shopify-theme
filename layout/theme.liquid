@@ -25,7 +25,9 @@
 
     <title>
       {%- assign velto_ex_tag = settings.velto_badge_exclusive_tag | default: 'exclusive' | downcase -%}
-      {%- if request.page_type == 'collection' and collection.handle == 'all' -%}
+      {%- if request.page_type == 'index' and settings.velto_seo_home_title -%}
+        {{ 'velto.seo.home_title' | t }}
+      {%- elsif request.page_type == 'collection' and collection.handle == 'all' -%}
         {%- if current_tags contains velto_ex_tag -%}{{ 'velto.collection.exclusive_title' | t }}{%- else -%}{{ 'velto.collection.all_title' | t }}{%- endif -%}
       {%- elsif request.page_type == 'policy' -%}
         {% render 'velto-policy-title', url: request.path, fallback: page_title %}
@@ -40,13 +42,13 @@
         {%- if current_tags contains velto_ex_tag %} &ndash; {{ 'velto.badges.exclusive_filter' | t }}{% else %} &ndash; {{ current_tags | join: ', ' }}{% endif -%}
       {%- endif -%}
       {%- if current_page != 1 %} &ndash; {{ 'general.pagination.page' | t: number: current_page }}{% endif -%}
-      {%- unless page_title contains shop.name %} &ndash; {{ shop.name }}{% endunless -%}
+      {%- assign velto_title_has_name = false -%}
+      {%- if page_title contains shop.name -%}{%- assign velto_title_has_name = true -%}{%- endif -%}
+      {%- if request.page_type == 'index' and settings.velto_seo_home_title -%}{%- assign velto_title_has_name = true -%}{%- endif -%}
+      {%- unless velto_title_has_name %} &ndash; {{ shop.name }}{% endunless -%}
     </title>
 
-    {% if page_description %}
-      <meta name="description" content="{{ page_description | escape }}">
-    {% endif %}
-
+    {%- comment -%} description, robots, Open Graph: snippets/meta-tags.liquid {%- endcomment -%}
     {% render 'meta-tags' %}
 
     <script type="module">
