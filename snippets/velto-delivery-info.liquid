@@ -22,6 +22,9 @@
       <span class="velto-deliv-line__sub">
         {{- 'velto.delivery.pick_slot' | t }} · {{ 'velto.delivery.time_left' | t }} <strong data-v="countdown"></strong>
       </span>
+      {%- if settings.velto_fulfil_enable -%}
+        {% render 'velto-fulfil-link', label: 'velto.facts.line_more', class: 'velto-deliv-line__more' %}
+      {%- endif -%}
     </span>
   </velto-delivery>
   {% render 'velto-fulfil-notice' %}

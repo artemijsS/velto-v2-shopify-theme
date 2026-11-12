@@ -1,0 +1,114 @@
+{%- comment -%}
+  Velto — one fact about delivery / pickup as plain text, always taken from the
+  same metaobjects as the cart block and the "Delivery and pickup" page
+  (snippets/velto-fulfil.liquid), so texts on the home page, in the FAQ and
+  elsewhere never disagree with the cart.
+
+  what:
+    'url'          address of the "Delivery and pickup" page
+    'price'        cheapest delivery: "no 2,99 €" · "2,99 €" (one price for all zones) · "bez maksas" ·
+                   "cena atkarīga no adreses" (free and paid zones); empty without zones
+    'price_note'   the same as a sentence
+    'min_note'     sentence about the minimum order amount for delivery; empty if there is none
+    'points'       pickup points: "Name, address; Name, address"; empty if there are none
+    'pickup_note'  the same as a sentence
+
+  Usage: {% render 'velto-fulfil-fact', what: 'price' %}
+         {%- capture price -%}{% render 'velto-fulfil-fact', what: 'price' %}{%- endcapture -%}
+{%- endcomment -%}
+{%- liquid
+  assign vff = ''
+  case what
+    when 'url'
+      if settings.velto_fulfil_page != blank
+        assign vff = settings.velto_fulfil_page.url
+      else
+        capture vff
+          render 'velto-url', url: '/pages/piegade-un-sanemsana'
+        endcapture
+      endif
+
+    when 'price', 'price_note'
+      assign vff_min = -1
+      assign vff_max = -1
+      if settings.velto_fulfil_enable
+        for z in shop.metaobjects.velto_delivery_zone.values
+          assign zp = z.variant.value.price | default: 0
+          if vff_min < 0 or zp < vff_min
+            assign vff_min = zp
+          endif
+          if zp > vff_max
+            assign vff_max = zp
+          endif
+        endfor
+      endif
+      assign vff_money = vff_min | money | strip_html
+      if what == 'price'
+        if vff_min < 0
+          assign vff = ''
+        elsif vff_max == 0
+          assign vff = 'velto.fulfil.free' | t
+        elsif vff_min == vff_max
+          assign vff = vff_money
+        elsif vff_min == 0
+          assign vff = 'velto.fulfil.price_by_address' | t
+        elsif vff_min > 0
+          assign vff = 'velto.fulfil_page.hl_from' | t: price: vff_money
+        endif
+      else
+        if vff_min < 0
+          assign vff = 'velto.facts.price_unknown' | t
+        elsif vff_max == 0
+          assign vff = 'velto.facts.price_free' | t
+        elsif vff_min == vff_max
+          assign vff = 'velto.facts.price_flat' | t: price: vff_money
+        elsif vff_min == 0
+          assign vff = 'velto.facts.price_unknown' | t
+        else
+          assign vff = 'velto.facts.price_from' | t: price: vff_money
+        endif
+      endif
+
+    when 'min_note'
+      if settings.velto_fulfil_enable
+        for st in shop.metaobjects.velto_delivery_settings.values limit: 1
+          assign vff_amount = st.min_order_delivery.value | default: 0 | times: 100 | round
+          if vff_amount > 0
+            assign vff_amount = vff_amount | money | strip_html
+            assign vff = 'velto.fulfil_page.rule_min' | t: amount: vff_amount
+          endif
+        endfor
+      endif
+
+    when 'points', 'pickup_note'
+      assign vff_count = 0
+      if settings.velto_fulfil_enable
+        for p in shop.metaobjects.velto_pickup_point.values
+          assign vff_name = p.name.value | strip
+          assign vff_addr = p.address.value | strip
+          assign vff_point = vff_name
+          if vff_name == blank
+            assign vff_point = vff_addr
+          elsif vff_addr != blank and vff_addr != vff_name
+            assign vff_point = vff_name | append: ', ' | append: vff_addr
+          endif
+          if vff_point == blank
+            continue
+          endif
+          if vff_count > 0
+            assign vff = vff | append: '; '
+          endif
+          assign vff = vff | append: vff_point
+          assign vff_count = vff_count | plus: 1
+        endfor
+      endif
+      if what == 'pickup_note' and vff_count > 0
+        if vff_count == 1
+          assign vff = 'velto.facts.pickup_one' | t: points: vff
+        else
+          assign vff = 'velto.facts.pickup_many' | t: points: vff
+        endif
+      endif
+  endcase
+  echo vff
+-%}

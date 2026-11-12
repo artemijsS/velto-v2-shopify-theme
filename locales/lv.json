@@ -561,14 +561,14 @@
     "shown_of": "Parādītas {{ shown }} no {{ total }}",
     "delivery": {
       "fallback": "Pasūti līdz {{ day_until }} {{ time }} — piegāde {{ days_when }}.",
-      "pick_slot": "Dienu un laiku izvēlies, noformējot pasūtījumu",
+      "pick_slot": "Dienu un laiku izvēlies grozā",
       "time_left": "Līdz pieņemšanas beigām:",
       "time_left_long": "Pasūtījumu pieņemšana beigsies pēc",
       "next_delivery": "Tuvākā piegāde",
       "week_label": "Nedēļas piegādes grafiks",
       "weekdays_short": "P,O,T,C,Pk,S,Sv",
       "legend_cutoff": "Pēdējā diena pasūtīt",
-      "legend_delivery": "Piegāde",
+      "legend_delivery": "Piegāde un saņemšana",
       "legend_today": "Šodien",
       "order": "Pasūti",
       "delivery": "Piegāde"
@@ -674,7 +674,7 @@
         "step2_title": "Pasūti līdz {{ day_until }}",
         "step2_text": "Pievieno grozam un noformē pasūtījumu līdz {{ day_until }} plkst. {{ time }}.",
         "step3_title": "Saņem {{ days_when }}",
-        "step3_text": "Piegādes dienu un ērtāko laiku izvēlies pats, noformējot pasūtījumu.",
+        "step3_text": "Piegāde uz mājām vai saņemšana uz vietas — dienu un ērtāko laiku izvēlies pats grozā.",
         "curated_eyebrow": "Kvalitāte par labu cenu",
         "curated_heading": "Iepērcies gudri",
         "pick1_eyebrow": "Cena un kvalitāte",
@@ -689,10 +689,10 @@
         "pick4_eyebrow": "Īpašiem brīžiem",
         "pick4_title": "Svētku galdam",
         "pick4_text": "Delikateses un gardumi, ar kuriem pārsteigt viesus.",
-        "delivery_eyebrow": "Kā notiek piegāde",
+        "delivery_eyebrow": "Kā saņemt pasūtījumu",
         "delivery_heading": "Pasūti līdz {{ day_until }} —",
         "delivery_accent": "saņem {{ days_when }}",
-        "delivery_text": "Pasūtījumus pieņemam līdz {{ day_until }} plkst. {{ time }}. Piegāde notiek {{ days_when }} — ērtāko dienu un laiku izvēlies pats, noformējot pasūtījumu.",
+        "delivery_text": "Pasūtījumus pieņemam līdz {{ day_until }} plkst. {{ time }}. Pasūtījumu vari saņemt {{ days_when }} — ar piegādi uz mājām vai uz vietas. Ērtāko dienu un laiku izvēlies pats grozā.",
         "excl_eyebrow": "Tikai Velto",
         "excl_heading": "Ekskluzīvas",
         "excl_accent": "preces",
@@ -716,7 +716,7 @@
         "quick_ready": "Gatavā kulinārija"
       },
       "announcement": {
-        "text": "Pasūti līdz {{ day_until }} {{ time }} — piegāde {{ days_when }}",
+        "text": "Pasūti līdz {{ day_until }} {{ time }} — piegāde vai saņemšana uz vietas {{ days_when }}",
         "short": "Pasūti līdz {{ day_until }} — piegāde {{ days_short }}"
       },
       "footer": {
@@ -765,9 +765,9 @@
         "faq_heading": "Biežāk uzdotie jautājumi",
         "faq_intro": "Neatradi atbildi? Raksti vai zvani mums — palīdzēsim.",
         "q1": "Līdz kuram laikam var veikt pasūtījumu?",
-        "a1": "Pasūtījumus pieņemam līdz {{ day_until }} plkst. {{ time }}. Pēc tam veiktie pasūtījumi tiek iekļauti nākamās nedēļas piegādē.",
+        "a1": "Pasūtījumus kārtējai nedēļai pieņemam līdz {{ day_until }} plkst. {{ time }}. Vēlāk veiktos pasūtījumus izsniedzam nākamajā nedēļā.",
         "q2": "Kad es saņemšu pasūtījumu?",
-        "a2": "Piegāde notiek tajā pašā nedēļā — {{ days_when }}. Konkrētu dienu un laiku izvēlies, noformējot pasūtījumu.",
+        "a2": "Tajā pašā nedēļā — {{ days_when }}. Vari izvēlēties piegādi uz mājām vai saņemt pasūtījumu uz vietas — dienu un laiku izvēlies grozā.",
         "q3": "Kā es varu samaksāt?",
         "a3": "Apmaksu veic droši tiešsaistē, noformējot pasūtījumu. Pieejamie maksājumu veidi ir redzami noformēšanas lapā.",
         "q4": "Ko nozīmē atzīme „Lieliska cena”?",
@@ -792,6 +792,12 @@
         "topics": "Pasūtījums, Piegāde, Preces, Sadarbība, Cits",
         "order_label": "Pasūtījuma nr. (ja ir)",
         "faq_more_html": "Atbildes uz citiem jautājumiem atradīsi lapā <a href=\"/pages/par-velto\">Par Velto</a>."
+      },
+      "fulfil": {
+        "q_cost": "Cik maksā piegāde?",
+        "a_cost_html": "{{ price_note }} {{ min_note }} Precīzu cenu redzēsi grozā, kad ievadīsi adresi. Ja tava adrese neietilpst piegādes zonās, pasūtījumu vari saņemt uz vietas. Zonas un cenas — lapā <a href=\"{{ delivery_url }}\">Piegāde un saņemšana</a>.",
+        "q_pickup": "Vai pasūtījumu var saņemt pašam?",
+        "a_pickup_html": "Jā — saņemšana uz vietas ir bez maksas un bez minimālās pasūtījuma summas. {{ pickup_note }} Dienu un laiku izvēlies grozā, tāpat kā piegādei. Vairāk — lapā <a href=\"{{ delivery_url }}\">Piegāde un saņemšana</a>."
       }
     },
     "policies": {
@@ -974,6 +980,18 @@
       "short_cap": "P,O,T,C,Pk,S,Sv",
       "and": "un",
       "or": "vai"
+    },
+    "facts": {
+      "delivery_label": "Piegāde uz mājām",
+      "price_from": "Piegāde uz mājām maksā no {{ price }} — cena ir atkarīga no adreses.",
+      "price_flat": "Piegāde uz mājām maksā {{ price }}.",
+      "price_free": "Piegāde uz mājām ir bez maksas.",
+      "price_unknown": "Piegādes cena ir atkarīga no adreses.",
+      "pickup_one": "Saņemšanas vieta: {{ points }}.",
+      "pickup_many": "Saņemšanas vietas: {{ points }}.",
+      "more": "Vairāk par piegādi un saņemšanu",
+      "terms": "Zonas, cenas un laiki",
+      "line_more": "Piegāde vai saņemšana uz vietas — cenas un nosacījumi"
     }
   }
 }

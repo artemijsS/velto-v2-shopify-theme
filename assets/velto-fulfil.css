@@ -13,8 +13,20 @@
 
 cart-items.is-empty .velto-fulfil { display: none; }
 
-.velto-fulfil__title {
+/* title + link to the "Delivery and pickup" page */
+.velto-fulfil__head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.4rem 1.6rem;
   margin: 0 0 1.6rem;
+}
+
+.velto-fulfil__more { font-size: 1.3rem; }
+
+.velto-fulfil__title {
+  margin: 0;
   font-size: 1.8rem;
   font-weight: 700;
   letter-spacing: -0.01em;
@@ -245,7 +257,7 @@ cart-items.is-empty .velto-fulfil { display: none; }
 
 /* ---------- folded: the choice in one line ---------- */
 .velto-fulfil--folded { padding: 1.6rem 2.4rem; }
-.velto-fulfil--folded .velto-fulfil__title { display: none; }
+.velto-fulfil--folded .velto-fulfil__head { display: none; }
 .velto-fulfil--folded [data-r]:not([data-r='summary']) { display: none; }
 
 .velto-fulfil__sum { display: flex; align-items: center; gap: 1.4rem; }

@@ -213,6 +213,20 @@
             "answer": "<p>@velto.content.about.a2</p>"
           }
         },
+        "q_cost": {
+          "type": "question",
+          "settings": {
+            "question": "@velto.content.fulfil.q_cost",
+            "answer": "<p>@velto.content.fulfil.a_cost_html</p>"
+          }
+        },
+        "q_pickup": {
+          "type": "question",
+          "settings": {
+            "question": "@velto.content.fulfil.q_pickup",
+            "answer": "<p>@velto.content.fulfil.a_pickup_html</p>"
+          }
+        },
         "q3": {
           "type": "question",
           "settings": {
@@ -245,6 +259,8 @@
       "block_order": [
         "q1",
         "q2",
+        "q_cost",
+        "q_pickup",
         "q3",
         "q4",
         "q5",

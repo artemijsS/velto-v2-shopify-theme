@@ -1,0 +1,16 @@
+{%- comment -%}
+  Velto — link to the "Delivery and pickup" page (theme settings →
+  "Velto: sava piegāde" → page). Nothing is shown until the page is chosen.
+
+  Params:
+    label  translation key of the link text (default: velto.facts.more)
+    class  extra class
+  Usage: {% render 'velto-fulfil-link', label: 'velto.facts.terms', class: 'velto-fulfil__more' %}
+{%- endcomment -%}
+{%- if settings.velto_fulfil_page != blank -%}
+  {%- assign vfl_label = label | default: 'velto.facts.more' -%}
+  <a class="velto-more-link{% if class != blank %} {{ class }}{% endif %}" href="{{ settings.velto_fulfil_page.url }}">
+    <span>{{ vfl_label | t }}</span>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M4.5 10h11M11 5.5l4.5 4.5-4.5 4.5"/></svg>
+  </a>
+{%- endif -%}

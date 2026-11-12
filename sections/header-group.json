@@ -19,7 +19,7 @@
           "settings": {
             "text": "@velto.content.announcement.text",
             "velto_mobile_text": "@velto.content.announcement.short",
-            "link": ""
+            "link": "shopify://pages/piegade-un-sanemsana"
           }
         }
       },

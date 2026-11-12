@@ -47,7 +47,10 @@
     endif
   -%}
   <velto-fulfil class="velto-fulfil" id="VeltoFulfil">
-    <h2 class="velto-fulfil__title">{{ 'velto.fulfil.title' | t }}</h2>
+    <div class="velto-fulfil__head">
+      <h2 class="velto-fulfil__title">{{ 'velto.fulfil.title' | t }}</h2>
+      {% render 'velto-fulfil-link', label: 'velto.facts.terms', class: 'velto-fulfil__more' %}
+    </div>
     {% render 'velto-fulfil-notice' %}
     <div class="velto-fulfil__body" data-body></div>
     <template data-icon="delivery">{{- 'icon-truck.svg' | inline_asset_content -}}</template>

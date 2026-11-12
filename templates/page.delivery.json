@@ -27,6 +27,7 @@
         "text": "<p>@velto.content.home.delivery_text</p>",
         "button_label": "@velto.content.home.start_shopping",
         "button_link": "shopify://collections/all",
+        "show_facts": false,
         "color_scheme": "scheme-1",
         "padding_top": 0,
         "padding_bottom": 72

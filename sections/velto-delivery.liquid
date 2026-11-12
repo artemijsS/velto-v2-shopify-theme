@@ -1,8 +1,10 @@
 {%- comment -%}
   Velto delivery — homepage explainer of the weekly cycle:
-  a week strip (last order day + delivery days + today), a live countdown
-  to the order cutoff and the next delivery dates. Rule comes from theme
-  settings → "Velto piegāde".
+  a week strip (last order day + delivery / pickup days + today), a live
+  countdown to the order cutoff and the next delivery dates. Rule comes from
+  theme settings → "Velto piegāde". With the own delivery block on, the price
+  of delivery, the pickup point and a link to the "Delivery and pickup" page
+  are shown too (snippets/velto-fulfil-facts.liquid).
 {%- endcomment -%}
 {{ 'velto-delivery.css' | asset_url | stylesheet_tag }}
 <script src="{{ 'velto-delivery.js' | asset_url }}" defer="defer"></script>
@@ -43,6 +45,9 @@
           <div class="velto-deliv__text">{% render 'velto-t', s: section.settings.text %}</div>
         {%- endif -%}
         {% render 'velto-fulfil-notice' %}
+        {%- if section.settings.show_facts -%}
+          {% render 'velto-fulfil-facts' %}
+        {%- endif -%}
 
         <ol class="velto-week" role="list" aria-label="{{ 'velto.delivery.week_label' | t | escape }}">
           {%- for i in (1..7) -%}
@@ -108,6 +113,7 @@
     { "type": "richtext", "id": "text", "label": "Teksts", "default": "<p>Pasūtījumus pieņemam līdz otrdienas beigām. Piegāde notiek no piektdienas līdz svētdienai — ērtāko dienu un laiku izvēlies pats, noformējot pasūtījumu.</p>" },
     { "type": "text", "id": "button_label", "label": "Pogas teksts", "default": "Sākt iepirkties" },
     { "type": "url", "id": "button_link", "label": "Pogas saite" },
+    { "type": "checkbox", "id": "show_facts", "label": "Rādīt piegādes cenu un saņemšanas vietu", "info": "Dati tiek ņemti no Content → Metaobjects (tie paši, kas grozā).", "default": true },
     { "type": "color_scheme", "id": "color_scheme", "label": "t:sections.all.colors.label", "default": "scheme-1" },
     { "type": "range", "id": "padding_top", "min": 0, "max": 100, "step": 4, "unit": "px", "label": "Atstarpe augšā", "default": 40 },
     { "type": "range", "id": "padding_bottom", "min": 0, "max": 100, "step": 4, "unit": "px", "label": "Atstarpe apakšā", "default": 16 }

@@ -292,3 +292,6 @@
   margin-top: 2.4rem;
   align-self: flex-start;
 }
+
+/* link to the "Delivery and pickup" page under the compact line */
+.velto-deliv-line__more { align-self: flex-start; margin-top: 0.4rem; font-size: 1.3rem; }

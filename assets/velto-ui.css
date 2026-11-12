@@ -1217,3 +1217,65 @@ body.velto-vsheet-open { overflow: hidden; }
 .velto-fulfil > .velto-notice { margin-top: 0; }
 .velto-fulfil--folded > .velto-notice { margin: 0 0 1.4rem; }
 .velto-deliv-line + .velto-notice { margin-bottom: 0; }
+
+/* ---------- Link to the "Delivery and pickup" page (snippets/velto-fulfil-link.liquid) ---------- */
+.velto-more-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  color: rgb(var(--color-foreground));
+  font-size: 1.4rem;
+  font-weight: 600;
+  line-height: 1.4;
+  text-decoration: underline;
+  text-decoration-color: rgba(var(--color-foreground), 0.35);
+  text-underline-offset: 0.4rem;
+  transition: text-decoration-color 0.15s ease;
+}
+
+.velto-more-link:hover { text-decoration-color: currentColor; }
+.velto-more-link svg { flex: 0 0 auto; width: 1.6rem; height: 1.6rem; transition: transform 0.15s ease; }
+.velto-more-link:hover svg { transform: translateX(0.3rem); }
+
+/* ---------- Delivery / pickup at a glance (snippets/velto-fulfil-facts.liquid) ---------- */
+.velto-facts {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(22rem, 1fr));
+  gap: 1.2rem;
+  margin: 2.4rem 0 0;
+  padding: 0;
+  max-width: 62rem;
+}
+
+.velto-facts__item {
+  display: flex;
+  align-items: flex-start;
+  gap: 1.2rem;
+  padding: 1.4rem 1.6rem;
+  border-radius: 1.2rem;
+  border: 1px solid rgba(var(--color-foreground), 0.12);
+  background: rgba(var(--color-foreground), 0.04);
+  text-align: left;
+}
+
+.velto-facts__ico {
+  flex: 0 0 auto;
+  display: grid;
+  place-items: center;
+  width: 3.4rem;
+  height: 3.4rem;
+  border-radius: 50%;
+  background: rgba(var(--color-foreground), 0.08);
+  color: rgb(var(--color-foreground));
+}
+
+.velto-facts__ico svg { width: 1.8rem; height: 1.8rem; fill: currentColor; }
+.velto-facts__ico--line svg { fill: none; }
+
+.velto-facts__body { display: flex; flex-direction: column; gap: 0.2rem; min-width: 0; }
+.velto-facts__label { font-size: 1.2rem; color: rgba(var(--color-foreground), 0.6); }
+.velto-facts__value { font-size: 1.6rem; line-height: 1.3; letter-spacing: -0.01em; }
+.velto-facts__value::first-letter { text-transform: uppercase; }
+.velto-facts__note { font-size: 1.3rem; line-height: 1.4; color: rgba(var(--color-foreground), 0.65); }
+.velto-facts__more { margin-top: 1.6rem; }
+.velto-deliv__intro > .velto-facts__more { display: flex; width: fit-content; }

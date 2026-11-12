@@ -548,14 +548,14 @@
     "shown_of": "Showing {{ shown }} of {{ total }}",
     "delivery": {
       "fallback": "Order by {{ day_until }}, {{ time }} — delivered {{ days_when }}.",
-      "pick_slot": "Pick the day and time slot at checkout",
+      "pick_slot": "Pick the day and time in the cart",
       "time_left": "Time left to order:",
       "time_left_long": "Orders for this week close in",
       "next_delivery": "Next delivery",
       "week_label": "Weekly delivery schedule",
       "weekdays_short": "Mo,Tu,We,Th,Fr,Sa,Su",
       "legend_cutoff": "Last day to order",
-      "legend_delivery": "Delivery",
+      "legend_delivery": "Delivery and pickup",
       "legend_today": "Today",
       "order": "Order",
       "delivery": "Delivery:"
@@ -661,7 +661,7 @@
         "step2_title": "Order by {{ day_until }}",
         "step2_text": "Add to cart and check out by {{ day_until }}, {{ time }}.",
         "step3_title": "Receive {{ days_when }}",
-        "step3_text": "Pick the delivery day and time that suits you at checkout.",
+        "step3_text": "Home delivery or pickup — you choose the day and time that suit you in the cart.",
         "curated_eyebrow": "Quality at a good price",
         "curated_heading": "Shop smart",
         "pick1_eyebrow": "Price & quality",
@@ -676,10 +676,10 @@
         "pick4_eyebrow": "For special moments",
         "pick4_title": "For the festive table",
         "pick4_text": "Delicacies and treats to impress your guests.",
-        "delivery_eyebrow": "How delivery works",
+        "delivery_eyebrow": "How to get your order",
         "delivery_heading": "Order by {{ day_until }} —",
         "delivery_accent": "get it {{ days_when }}",
-        "delivery_text": "We take orders until {{ day_until }}, {{ time }}. Delivery runs {{ days_when }} — you choose the day and time that suit you at checkout.",
+        "delivery_text": "We take orders until {{ day_until }}, {{ time }}. Get your order {{ days_when }} — delivered to your door or collected at the pickup point. You choose the day and time that suit you in the cart.",
         "excl_eyebrow": "Only at Velto",
         "excl_heading": "Exclusive",
         "excl_accent": "products",
@@ -703,7 +703,7 @@
         "quick_ready": "Ready meals"
       },
       "announcement": {
-        "text": "Order by {{ day_until }}, {{ time }} — delivery {{ days_when }}",
+        "text": "Order by {{ day_until }}, {{ time }} — delivery or pickup {{ days_when }}",
         "short": "Order by {{ day_until }} — delivery {{ days_short }}"
       },
       "footer": {
@@ -752,9 +752,9 @@
         "faq_heading": "Frequently asked questions",
         "faq_intro": "Didn't find an answer? Write or call us — we'll help.",
         "q1": "What is the order deadline?",
-        "a1": "We take orders until {{ day_until }}, {{ time }}. Orders placed later go into the following week’s delivery.",
+        "a1": "We take orders for the current week until {{ day_until }}, {{ time }}. Orders placed later are handed out the following week.",
         "q2": "When will I receive my order?",
-        "a2": "Delivery takes place the same week — {{ days_when }}. You choose the exact day and time at checkout.",
+        "a2": "The same week — {{ days_when }}. Choose home delivery or collect the order yourself — you pick the day and time in the cart.",
         "q3": "How can I pay?",
         "a3": "Payment is made securely online at checkout. The available payment methods are shown on the checkout page.",
         "q4": "What does “Great price” mean?",
@@ -779,6 +779,12 @@
         "topics": "Order, Delivery, Products, Partnership, Other",
         "order_label": "Order no. (if any)",
         "faq_more_html": "More answers on the <a href=\"/en/pages/par-velto\">About Velto</a> page."
+      },
+      "fulfil": {
+        "q_cost": "How much does delivery cost?",
+        "a_cost_html": "{{ price_note }} {{ min_note }} You’ll see the exact price in the cart once you enter your address. If your address is outside the delivery zones, you can collect the order at the pickup point. Zones and prices are on the <a href=\"{{ delivery_url }}\">Delivery and pickup</a> page.",
+        "q_pickup": "Can I collect my order myself?",
+        "a_pickup_html": "Yes — pickup is free of charge, with no minimum order amount. {{ pickup_note }} Choose the day and time in the cart, just as for delivery. More on the <a href=\"{{ delivery_url }}\">Delivery and pickup</a> page."
       }
     },
     "policies": {
@@ -961,6 +967,18 @@
       "short_cap": "Mon,Tue,Wed,Thu,Fri,Sat,Sun",
       "and": "and",
       "or": "or"
+    },
+    "facts": {
+      "delivery_label": "Home delivery",
+      "price_from": "Home delivery costs from {{ price }}, depending on your address.",
+      "price_flat": "Home delivery costs {{ price }}.",
+      "price_free": "Home delivery is free.",
+      "price_unknown": "The delivery price depends on your address.",
+      "pickup_one": "Pickup point: {{ points }}.",
+      "pickup_many": "Pickup points: {{ points }}.",
+      "more": "More about delivery and pickup",
+      "terms": "Zones, prices and times",
+      "line_more": "Delivery or pickup — prices and terms"
     }
   }
 }

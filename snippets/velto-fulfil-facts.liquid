@@ -1,0 +1,58 @@
+{%- comment -%}
+  Velto — the two ways to get an order, side by side: home delivery (price)
+  and pickup (free, where), plus a link to the "Delivery and pickup" page.
+  Shown in the weekly cycle banner (sections/velto-delivery.liquid).
+  Data: snippets/velto-fulfil-fact.liquid — the same metaobjects as the cart.
+  "Price depends on the address" is shown only next to a "from …" price
+  (zones with different prices).
+
+  Usage: {% render 'velto-fulfil-facts' %}
+{%- endcomment -%}
+{%- if settings.velto_fulfil_enable -%}
+  {%- liquid
+    capture vfs_price
+      render 'velto-fulfil-fact', what: 'price'
+    endcapture
+    capture vfs_points
+      render 'velto-fulfil-fact', what: 'points'
+    endcapture
+    assign vfs_price = vfs_price | strip
+    assign vfs_points = vfs_points | strip
+    assign vfs_by_address = 'velto.fulfil.price_by_address' | t
+    assign vfs_free = 'velto.fulfil.free' | t
+    assign vfs_from = 'velto.fulfil_page.hl_from' | t: price: '' | strip
+    assign vfs_varies = false
+    if vfs_price != vfs_by_address and vfs_price != vfs_free and vfs_price contains vfs_from
+      assign vfs_varies = true
+    endif
+  -%}
+  {%- if vfs_price != blank or vfs_points != blank -%}
+    <ul class="velto-facts list-unstyled" role="list">
+      {%- if vfs_price != blank -%}
+        <li class="velto-facts__item">
+          <span class="velto-facts__ico" aria-hidden="true">{{- 'icon-truck.svg' | inline_asset_content -}}</span>
+          <span class="velto-facts__body">
+            <span class="velto-facts__label">{{ 'velto.facts.delivery_label' | t }}</span>
+            <strong class="velto-facts__value">{{ vfs_price }}</strong>
+            {%- if vfs_varies -%}
+              <span class="velto-facts__note">{{ vfs_by_address }}</span>
+            {%- endif -%}
+          </span>
+        </li>
+      {%- endif -%}
+      {%- if vfs_points != blank -%}
+        <li class="velto-facts__item">
+          <span class="velto-facts__ico velto-facts__ico--line" aria-hidden="true">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.1" stroke-linejoin="round"><path d="M2.75 9.5v7.25h14.5V9.5M8 16.75v-4.5h4v4.5M3.2 3.25h13.6l1.45 4.6a2.07 2.07 0 0 1-4.12 0 2.07 2.07 0 0 1-4.13 0 2.07 2.07 0 0 1-4.13 0 2.07 2.07 0 0 1-4.12 0z"/></svg>
+          </span>
+          <span class="velto-facts__body">
+            <span class="velto-facts__label">{{ 'velto.fulfil.method_pickup' | t }}</span>
+            <strong class="velto-facts__value">{{ 'velto.fulfil.free' | t }}</strong>
+            <span class="velto-facts__note">{{ vfs_points | escape }}</span>
+          </span>
+        </li>
+      {%- endif -%}
+    </ul>
+  {%- endif -%}
+  {% render 'velto-fulfil-link', class: 'velto-facts__more' %}
+{%- endif -%}

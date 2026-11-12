@@ -14,6 +14,14 @@
     {{ days_list }}       delivery days as a choice: piektdien, sestdien vai svētdien
     {{ days_short }}      pk.–sv. · пт–вс · Fri–Sun
     {{ days_short_cap }}  Pk–Sv · Пт–Вс · Fri–Sun
+
+  Keys with ".fulfil." in the path (velto.content.fulfil.*) also get the facts
+  about delivery and pickup from the metaobjects the cart uses
+  (snippets/velto-fulfil-fact.liquid):
+    {{ price_note }}      Piegāde uz mājām maksā no 2,99 € — cena ir atkarīga no adreses.
+    {{ min_note }}        sentence about the minimum order amount for delivery (empty if there is none)
+    {{ pickup_note }}     Saņemšanas vieta: Velto, Brīvības iela 1, Rīga. (empty without pickup points)
+    {{ delivery_url }}    address of the "Delivery and pickup" page
   Params: s (string)
 {%- endcomment -%}
 {%- liquid
@@ -80,7 +88,23 @@
       assign vt_list_short_cap = vt_short_cap[vt_first] | append: '–' | append: vt_short_cap[vt_last]
     endif
 
-    assign out = key | t: day_until: vt_until[vt_i], time: vt_time, days_when: vt_when, days_list: vt_list_or, days_short: vt_list_short, days_short_cap: vt_list_short_cap
+    if key contains '.fulfil.'
+      capture vt_price_note
+        render 'velto-fulfil-fact', what: 'price_note'
+      endcapture
+      capture vt_min_note
+        render 'velto-fulfil-fact', what: 'min_note'
+      endcapture
+      capture vt_pickup_note
+        render 'velto-fulfil-fact', what: 'pickup_note'
+      endcapture
+      capture vt_delivery_url
+        render 'velto-fulfil-fact', what: 'url'
+      endcapture
+      assign out = key | t: day_until: vt_until[vt_i], time: vt_time, days_when: vt_when, days_list: vt_list_or, days_short: vt_list_short, days_short_cap: vt_list_short_cap, price_note: vt_price_note, min_note: vt_min_note, pickup_note: vt_pickup_note, delivery_url: vt_delivery_url
+    else
+      assign out = key | t: day_until: vt_until[vt_i], time: vt_time, days_when: vt_when, days_list: vt_list_or, days_short: vt_list_short, days_short_cap: vt_list_short_cap
+    endif
     if s contains '<p'
       echo '<p>' | append: out | append: '</p>'
     else
