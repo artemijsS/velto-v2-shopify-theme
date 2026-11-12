@@ -1,0 +1,28 @@
+{
+  "sections": {
+    "delivery": {
+      "type": "velto-fulfil-page",
+      "settings": {
+        "color_scheme": "scheme-1",
+        "padding_top": 36,
+        "padding_bottom": 24
+      }
+    },
+    "cycle": {
+      "type": "velto-delivery",
+      "settings": {
+        "eyebrow": "@velto.content.home.delivery_eyebrow",
+        "heading_before": "@velto.content.home.delivery_heading",
+        "heading_accent": "@velto.content.home.delivery_accent",
+        "heading_after": "",
+        "text": "<p>@velto.content.home.delivery_text</p>",
+        "button_label": "@velto.content.home.start_shopping",
+        "button_link": "shopify://collections/all",
+        "color_scheme": "scheme-1",
+        "padding_top": 0,
+        "padding_bottom": 72
+      }
+    }
+  },
+  "order": ["delivery", "cycle"]
+}

@@ -37,10 +37,12 @@
       </a>
     </div>
 
+    {% render 'velto-fulfil' %}
+
     <div class="cart__warnings">
       <span class="velto-cart-empty__icon" aria-hidden="true">{{- 'icon-cart-empty.svg' | inline_asset_content -}}</span>
       <h1 class="cart__empty-text">{{ 'sections.cart.empty' | t }}</h1>
-      <p class="velto-cart-empty__text">{{ 'velto.cart.empty_text' | t }}</p>
+      <p class="velto-cart-empty__text">{% render 'velto-t', s: '@velto.cart.empty_text' %}</p>
       <a href="{{ routes.all_products_collection_url }}" class="button">
         {{ 'general.continue_shopping' | t }}
       </a>
@@ -102,7 +104,7 @@
                     they are listed in the summary (main-cart-footer), not as editable rows.
                     Skipped here so they never flash back after a re-render.
                   {%- endcomment -%}
-                  {%- if item.product.type == 'mws_fee_generated' or item.properties['_mws_fee'] != blank -%}
+                  {%- if item.product.type == 'mws_fee_generated' or item.properties['_mws_fee'] != blank or item.product.type == 'velto_delivery' -%}
                     {%- continue -%}
                   {%- endif -%}
                   <tr

@@ -9,7 +9,10 @@
 
 {%- liquid
   assign short = 'velto.delivery.weekdays_short' | t | split: ','
-  assign delivery_days = settings.velto_delivery_days | split: ','
+  capture delivery_days_csv
+    render 'velto-delivery-days'
+  endcapture
+  assign delivery_days = delivery_days_csv | split: ','
   assign cutoff_day = settings.velto_cutoff_day | plus: 0
 -%}
 
@@ -23,7 +26,7 @@
       class="velto-deliv__card gradient"
       data-cutoff-day="{{ settings.velto_cutoff_day }}"
       data-cutoff-time="{{ settings.velto_cutoff_time }}"
-      data-delivery-days="{{ settings.velto_delivery_days }}"
+      data-delivery-days="{% render 'velto-delivery-days' %}"
     >
       <div class="velto-deliv__intro">
         {%- if section.settings.eyebrow != blank -%}
@@ -39,6 +42,7 @@
         {%- if section.settings.text != blank -%}
           <div class="velto-deliv__text">{% render 'velto-t', s: section.settings.text %}</div>
         {%- endif -%}
+        {% render 'velto-fulfil-notice' %}
 
         <ol class="velto-week" role="list" aria-label="{{ 'velto.delivery.week_label' | t | escape }}">
           {%- for i in (1..7) -%}
@@ -76,7 +80,7 @@
 
         <div class="velto-deliv__next">
           <p class="velto-deliv__label">{{ 'velto.delivery.next_delivery' | t }}</p>
-          <p class="velto-deliv__days" data-v="days-lines">{{ 'velto.delivery.fallback' | t }}</p>
+          <p class="velto-deliv__days" data-v="days-lines">{% render 'velto-t', s: '@velto.delivery.fallback' %}</p>
           <p class="velto-deliv__slot">{{ 'velto.delivery.pick_slot' | t }}</p>
         </div>
 

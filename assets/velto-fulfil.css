@@ -1,0 +1,293 @@
+/* Velto — own delivery / pickup block on the cart page (snippets/velto-fulfil.liquid).
+   First thing in the left column, above the cart items. Once the choice is
+   complete it folds into one line (.velto-fulfil--folded). */
+.velto-fulfil {
+  display: block;
+  margin-bottom: 2.4rem;
+  padding: 2.4rem;
+  border-radius: 1.6rem;
+  border: 1px solid rgba(var(--color-foreground), 0.1);
+  background: rgba(var(--color-foreground), 0.03);
+  scroll-margin-top: 12rem;
+}
+
+cart-items.is-empty .velto-fulfil { display: none; }
+
+.velto-fulfil__title {
+  margin: 0 0 1.6rem;
+  font-size: 1.8rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+.velto-fulfil__body { display: grid; gap: 2.4rem; }
+.velto-fulfil__body > :empty { display: none; }
+
+.velto-fulfil__label {
+  display: block;
+  margin: 0 0 1rem;
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: rgba(var(--color-foreground), 0.7);
+}
+
+/* ---------- shared option button ---------- */
+.velto-fulfil__opt {
+  display: flex;
+  align-items: center;
+  gap: 1.2rem;
+  min-height: 4.8rem;
+  padding: 1rem 1.4rem;
+  border: 1px solid rgba(var(--color-foreground), 0.16);
+  border-radius: 1.2rem;
+  background: rgb(var(--color-background));
+  color: rgb(var(--color-foreground));
+  font: inherit;
+  font-size: 1.4rem;
+  font-weight: 600;
+  line-height: 1.3;
+  text-align: left;
+  cursor: pointer;
+  transition: border-color 0.15s, background-color 0.15s, color 0.15s, opacity 0.15s;
+}
+
+.velto-fulfil__opt small {
+  display: block;
+  margin-top: 0.2rem;
+  font-size: 1.2rem;
+  font-weight: 400;
+  line-height: 1.35;
+  color: rgba(var(--color-foreground), 0.6);
+}
+
+.velto-fulfil__opt:hover:not(:disabled) { border-color: rgba(var(--color-foreground), 0.5); }
+.velto-fulfil__opt:focus-visible { outline: 2px solid rgb(var(--color-foreground)); outline-offset: 2px; }
+.velto-fulfil__opt:disabled { cursor: not-allowed; }
+
+/* ---------- method: two cards with an icon ---------- */
+.velto-fulfil__methods { display: grid; grid-template-columns: 1fr 1fr; gap: 1.2rem; }
+
+.velto-fulfil__method { min-height: 7.2rem; padding: 1.4rem 1.6rem; font-size: 1.5rem; }
+.velto-fulfil__method-text { min-width: 0; }
+
+.velto-fulfil__icon {
+  flex: 0 0 auto;
+  display: grid;
+  place-items: center;
+  width: 4.4rem;
+  height: 4.4rem;
+  border-radius: 50%;
+  background: rgba(var(--color-foreground), 0.07);
+  transition: background-color 0.15s, color 0.15s;
+}
+
+.velto-fulfil__icon svg { width: 2.2rem; height: 2.2rem; }
+.velto-fulfil__icon .icon { fill: currentColor; }
+
+.velto-fulfil__method[aria-checked='true'] {
+  border-color: rgb(var(--color-foreground));
+  box-shadow: inset 0 0 0 1px rgb(var(--color-foreground));
+  background: rgba(var(--color-foreground), 0.06);
+}
+
+.velto-fulfil__method[aria-checked='true'] .velto-fulfil__icon {
+  background: rgb(var(--color-foreground));
+  color: rgb(var(--color-background));
+}
+
+.velto-fulfil__method:disabled { border-style: dashed; }
+.velto-fulfil__method:disabled .velto-fulfil__icon,
+.velto-fulfil__method:disabled .velto-fulfil__method-text { opacity: 0.5; }
+
+/* ---------- pickup point ---------- */
+.velto-fulfil__point {
+  display: flex;
+  align-items: center;
+  gap: 1.2rem;
+  font-size: 1.4rem;
+  font-weight: 600;
+  line-height: 1.3;
+}
+
+.velto-fulfil__point small {
+  display: block;
+  margin-top: 0.2rem;
+  font-size: 1.3rem;
+  font-weight: 400;
+  color: rgba(var(--color-foreground), 0.6);
+}
+
+.velto-fulfil__points { display: grid; gap: 0.8rem; }
+
+.velto-fulfil__points .velto-fulfil__opt[aria-checked='true'] {
+  border-color: rgb(var(--color-foreground));
+  box-shadow: inset 0 0 0 1px rgb(var(--color-foreground));
+}
+
+/* ---------- days and time slots ---------- */
+.velto-fulfil__chips { display: grid; grid-template-columns: repeat(auto-fill, minmax(12rem, 1fr)); gap: 0.8rem; }
+.velto-fulfil__chips + .velto-fulfil__label { margin-top: 2.4rem; }
+
+.velto-fulfil__chip {
+  flex-direction: column;
+  justify-content: center;
+  gap: 0;
+  padding: 0.8rem;
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+}
+
+.velto-fulfil__chip::first-letter { text-transform: uppercase; }
+
+.velto-fulfil__chip[aria-checked='true'] {
+  border-color: rgb(var(--color-foreground));
+  background: rgb(var(--color-foreground));
+  color: rgb(var(--color-background));
+}
+
+.velto-fulfil__chip[aria-checked='true'] small { color: rgba(var(--color-background), 0.7); }
+
+.velto-fulfil__chip:disabled {
+  border-style: dashed;
+  background: none;
+  color: rgba(var(--color-foreground), 0.4);
+}
+
+.velto-fulfil__chip:disabled small { color: inherit; }
+
+/* ---------- address and phone ---------- */
+.velto-fulfil__ac { position: relative; }
+
+.velto-fulfil__input {
+  width: 100%;
+  min-height: 4.8rem;
+  padding: 1rem 1.4rem;
+  border: 1px solid rgba(var(--color-foreground), 0.16);
+  border-radius: 1.2rem;
+  background: rgb(var(--color-background));
+  color: rgb(var(--color-foreground));
+  font: inherit;
+  font-size: 1.6rem; /* no zoom on iOS */
+}
+
+.velto-fulfil__input::placeholder { color: rgba(var(--color-foreground), 0.4); }
+.velto-fulfil__input:focus-visible { outline: 2px solid rgb(var(--color-foreground)); outline-offset: 1px; box-shadow: none; }
+.velto-fulfil__input[data-contact] { max-width: 34rem; }
+.velto-fulfil__textarea { display: block; min-height: 7.2rem; line-height: 1.4; resize: vertical; }
+
+.velto-fulfil__list {
+  position: absolute;
+  z-index: 5;
+  top: calc(100% + 0.4rem);
+  left: 0;
+  right: 0;
+  margin: 0;
+  padding: 0.4rem;
+  list-style: none;
+  border: 1px solid rgba(var(--color-foreground), 0.16);
+  border-radius: 1.2rem;
+  background: rgb(var(--color-background));
+  box-shadow: 0 1rem 3rem rgba(0, 0, 0, 0.35);
+}
+
+.velto-fulfil__list li {
+  padding: 1rem;
+  border-radius: 0.8rem;
+  font-size: 1.4rem;
+  line-height: 1.35;
+  cursor: pointer;
+}
+
+.velto-fulfil__list li[aria-selected='true'],
+.velto-fulfil__list li:hover { background: rgba(var(--color-foreground), 0.08); }
+.velto-fulfil__list li[aria-disabled='true'] { color: rgba(var(--color-foreground), 0.6); cursor: default; background: none; }
+
+.velto-fulfil__zone {
+  margin: 0.8rem 0 0;
+  font-size: 1.3rem;
+  line-height: 1.45;
+  color: rgba(var(--color-foreground), 0.6);
+}
+
+.velto-fulfil__zone--ok { color: rgb(var(--color-foreground)); font-weight: 600; }
+.velto-fulfil__zone--bad { color: #ff7a72; }
+
+/* ---------- notes ---------- */
+.velto-fulfil__hint {
+  margin: 0;
+  padding: 1.2rem 1.4rem;
+  border-radius: 1rem;
+  background: rgba(var(--color-foreground), 0.06);
+  font-size: 1.3rem;
+  line-height: 1.45;
+  color: rgba(var(--color-foreground), 0.85);
+}
+
+.velto-fulfil__deadline {
+  margin: 0;
+  padding-top: 1.6rem;
+  border-top: 1px solid rgba(var(--color-foreground), 0.1);
+  font-size: 1.3rem;
+  line-height: 1.45;
+  color: rgba(var(--color-foreground), 0.6);
+}
+
+.velto-fulfil__msg {
+  margin: 0;
+  padding: 1.2rem 1.4rem;
+  border-radius: 1rem;
+  background: rgba(255, 122, 114, 0.12);
+  color: #ff7a72;
+  font-size: 1.4rem;
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+/* ---------- folded: the choice in one line ---------- */
+.velto-fulfil--folded { padding: 1.6rem 2.4rem; }
+.velto-fulfil--folded .velto-fulfil__title { display: none; }
+.velto-fulfil--folded [data-r]:not([data-r='summary']) { display: none; }
+
+.velto-fulfil__sum { display: flex; align-items: center; gap: 1.4rem; }
+
+.velto-fulfil__sum .velto-fulfil__icon {
+  background: rgb(var(--color-foreground));
+  color: rgb(var(--color-background));
+}
+
+.velto-fulfil__sum-text { flex: 1 1 auto; min-width: 0; display: grid; gap: 0.2rem; font-size: 1.4rem; line-height: 1.35; }
+.velto-fulfil__sum-text strong { font-size: 1.5rem; }
+.velto-fulfil__sum-when::first-letter { text-transform: uppercase; }
+.velto-fulfil__sum-text small { font-size: 1.3rem; color: rgba(var(--color-foreground), 0.6); overflow-wrap: anywhere; }
+
+.velto-fulfil__edit {
+  flex: 0 0 auto;
+  min-height: 4rem;
+  padding: 0 1.6rem;
+  border: 1px solid rgba(var(--color-foreground), 0.3);
+  border-radius: 10rem;
+  background: none;
+  color: rgb(var(--color-foreground));
+  font: inherit;
+  font-size: 1.3rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.velto-fulfil__edit:hover { border-color: rgb(var(--color-foreground)); }
+.velto-fulfil__edit:focus-visible { outline: 2px solid rgb(var(--color-foreground)); outline-offset: 2px; }
+
+/* "choose" link in the summary card */
+.velto-sum__choose { color: inherit; text-underline-offset: 0.3rem; }
+
+@media screen and (max-width: 749px) {
+  .velto-fulfil { margin-bottom: 1.6rem; padding: 1.6rem; }
+  .velto-fulfil--folded { padding: 1.4rem 1.6rem; }
+  .velto-fulfil__sum { gap: 1.2rem; }
+  .velto-fulfil__edit { padding: 0 1.2rem; }
+  .velto-fulfil__body { gap: 2rem; }
+  .velto-fulfil__methods { gap: 0.8rem; }
+  .velto-fulfil__method { flex-direction: column; align-items: flex-start; gap: 1rem; padding: 1.2rem; }
+  .velto-fulfil__chips { grid-template-columns: repeat(auto-fill, minmax(9.6rem, 1fr)); }
+  .velto-fulfil__input[data-contact] { max-width: none; }
+}

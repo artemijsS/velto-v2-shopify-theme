@@ -1,0 +1,29 @@
+{%- comment -%}
+  Velto — highlighted notice about a change in the order / delivery dates
+  (e.g. a holiday week). Text: metaobject velto_delivery_settings → "notice"
+  (translatable), shown until "notice_until" (inclusive; empty = until the
+  text is removed). Rendered in the cart block, on the delivery page, in the
+  weekly cycle banner and next to the delivery line on product pages.
+
+  Usage: {% render 'velto-fulfil-notice' %}
+{%- endcomment -%}
+{%- liquid
+  assign vn_text = ''
+  assign vn_until = ''
+  for st in shop.metaobjects.velto_delivery_settings.values limit: 1
+    assign vn_text = st.notice.value | strip
+    assign vn_until = st.notice_until.value | date: '%Y-%m-%d'
+  endfor
+  assign vn_today = 'now' | date: '%Y-%m-%d'
+  if vn_until != blank and vn_today > vn_until
+    assign vn_text = ''
+  endif
+-%}
+{%- if vn_text != blank -%}
+  <p class="velto-notice" role="note">
+    <span class="velto-notice__icon" aria-hidden="true">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><rect x="2.75" y="4.25" width="14.5" height="13" rx="2"/><path d="M2.75 8.25h14.5M6.5 2.5v3M13.5 2.5v3M10 10.75v2.5M10 15.2v.05"/></svg>
+    </span>
+    <span>{{ vn_text | escape | newline_to_br }}</span>
+  </p>
+{%- endif -%}

@@ -73,7 +73,7 @@
               class="velto-ccard velto-ccard--deliv"
               data-cutoff-day="{{ settings.velto_cutoff_day }}"
               data-cutoff-time="{{ settings.velto_cutoff_time }}"
-              data-delivery-days="{{ settings.velto_delivery_days }}"
+              data-delivery-days="{% render 'velto-delivery-days' %}"
             >
               <span class="velto-ccard__icon" aria-hidden="true">{{- 'icon-truck.svg' | inline_asset_content -}}</span>
               <span class="velto-ccard__body">

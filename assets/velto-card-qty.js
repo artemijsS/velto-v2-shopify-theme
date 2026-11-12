@@ -52,7 +52,8 @@
   };
 
   // fee lines added by the Upcharge Fees app are not goods
-  const isFee = (i) => (i.properties && i.properties._mws_fee) || i.product_type === 'mws_fee_generated';
+  const isFee = (i) =>
+    (i.properties && i.properties._mws_fee) || i.product_type === 'mws_fee_generated' || i.product_type === 'velto_delivery';
   const goodsCount = (cart) => cart.items.reduce((s, i) => (isFee(i) ? s : s + i.quantity), 0);
 
   const cartQty = (cart, id) =>

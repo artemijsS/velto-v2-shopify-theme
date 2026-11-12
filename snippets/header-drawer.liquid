@@ -165,7 +165,7 @@
                 class="velto-dr__deliv"
                 data-cutoff-day="{{ settings.velto_cutoff_day }}"
                 data-cutoff-time="{{ settings.velto_cutoff_time }}"
-                data-delivery-days="{{ settings.velto_delivery_days }}"
+                data-delivery-days="{% render 'velto-delivery-days' %}"
               >
                 <span class="velto-dr__deliv-icon" aria-hidden="true">{{- 'icon-truck.svg' | inline_asset_content -}}</span>
                 <span class="velto-dr__deliv-body">

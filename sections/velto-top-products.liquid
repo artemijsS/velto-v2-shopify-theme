@@ -21,7 +21,7 @@
         assign skip = false
         if product.available == false or product.featured_media == blank or product.gift_card?
           assign skip = true
-        elsif product.type == 'mws_fee_generated' or product.tags contains 'mws_fee_generated'
+        elsif product.type == 'mws_fee_generated' or product.type == 'velto_delivery' or product.tags contains 'mws_fee_generated'
           assign skip = true
         elsif product.tags contains 'main-subscriptions' or product.tags contains 'velto-hide-showcase'
           assign skip = true

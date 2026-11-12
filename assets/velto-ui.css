@@ -282,7 +282,7 @@
   outline-offset: 0.3rem;
 }
 
-/* ---------- Velto product badges (Ekskluzīvs / Lieliska cena) ---------- */
+/* ---------- Velto product badges (18+ / Ekskluzīvs / Lieliska cena) ---------- */
 .velto-pbadges {
   margin: 0;
   padding: 0;
@@ -340,6 +340,15 @@
   box-shadow: inset 0 0 0 1.5px #0a0a0a;
 }
 
+/* 18+ — accent red: the one badge that is a warning */
+.velto-pbadges--card .velto-pbadge--adult {
+  padding: 0.35rem 0.8rem;
+  background: #e5484d;
+  color: #fff;
+  font-weight: 800;
+  letter-spacing: 0.03rem;
+}
+
 @media screen and (max-width: 749px) {
   .velto-pbadges--card { top: 0.6rem; right: 0.6rem; }
   .velto-pbadges--card .velto-pbadge { font-size: 1rem; padding: 0.3rem 0.7rem 0.3rem 0.6rem; }
@@ -374,6 +383,13 @@
 
 .velto-pbadges--page .velto-pbadge--exclusive,
 .velto-pbadges--page .velto-pbadge--price { background: none; color: inherit; }
+
+.velto-pbadges--page .velto-pbadge--adult .velto-pbadge__pill {
+  padding: 0 1.2rem;
+  background: #e5484d;
+  color: #fff;
+  font-weight: 800;
+}
 
 .velto-pbadges--page .velto-pbadge--exclusive .velto-pbadge__pill {
   background: rgb(var(--color-foreground));
@@ -1178,3 +1194,26 @@ body.velto-vsheet-open { overflow: hidden; }
   .velto-vsheet__panel,
   .velto-vsheet__backdrop { transition: none; }
 }
+
+/* ---------- Notice about changed order / delivery dates (snippets/velto-fulfil-notice.liquid) ---------- */
+.velto-notice {
+  display: flex;
+  align-items: flex-start;
+  gap: 1.2rem;
+  margin: 1.6rem 0;
+  padding: 1.4rem 1.6rem;
+  border: 1px solid rgba(255, 180, 84, 0.45);
+  border-radius: 1.2rem;
+  background: rgba(255, 180, 84, 0.1);
+  color: #ffc77d;
+  font-size: 1.4rem;
+  font-weight: 600;
+  line-height: 1.45;
+  text-align: left;
+}
+
+.velto-notice__icon { flex: 0 0 auto; display: grid; place-items: center; width: 2.2rem; height: 2.2rem; margin-top: -0.1rem; }
+.velto-notice__icon svg { width: 2.2rem; height: 2.2rem; }
+.velto-fulfil > .velto-notice { margin-top: 0; }
+.velto-fulfil--folded > .velto-notice { margin: 0 0 1.4rem; }
+.velto-deliv-line + .velto-notice { margin-bottom: 0; }

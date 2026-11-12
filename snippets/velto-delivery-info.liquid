@@ -12,11 +12,11 @@
     class="velto-deliv-line"
     data-cutoff-day="{{ settings.velto_cutoff_day }}"
     data-cutoff-time="{{ settings.velto_cutoff_time }}"
-    data-delivery-days="{{ settings.velto_delivery_days }}"
+    data-delivery-days="{% render 'velto-delivery-days' %}"
   >
     <span class="velto-deliv-line__icon" aria-hidden="true">{{- 'icon-truck.svg' | inline_asset_content -}}</span>
     <span class="velto-deliv-line__body">
-      <span class="velto-deliv-line__fallback">{{ 'velto.delivery.fallback' | t }}</span>
+      <span class="velto-deliv-line__fallback">{% render 'velto-t', s: '@velto.delivery.fallback' %}</span>
       <span class="velto-deliv-line__main">{{ 'velto.delivery.order' | t }} <span data-v="deadline"></span></span>
       <span class="velto-deliv-line__days">{{ 'velto.delivery.delivery' | t }} <span data-v="days"></span></span>
       <span class="velto-deliv-line__sub">
@@ -24,6 +24,7 @@
       </span>
     </span>
   </velto-delivery>
+  {% render 'velto-fulfil-notice' %}
   {{ 'velto-delivery.css' | asset_url | stylesheet_tag }}
   <script src="{{ 'velto-delivery.js' | asset_url }}" defer="defer"></script>
 {%- endif -%}

@@ -1472,7 +1472,7 @@
     "settings": [
       {
         "type": "paragraph",
-        "content": "Nedēļas cikls: pasūtījumus pieņem līdz termiņam, piegāde nākamajās piegādes dienās. Informācija tiek rādīta produkta lapā, grozā un sākumlapā (sadaļa \"Velto piegāde\") un aprēķināta pēc Rīgas laika."
+        "content": "Nedēļas cikls: pasūtījumus pieņem līdz termiņam, piegāde nākamajās piegādes dienās. Informācija tiek rādīta produkta lapā, grozā un sākumlapā (sadaļa \"Velto piegāde\") un aprēķināta pēc Rīgas laika. Tas ir termiņš, ko redz pircēji; faktiskais pieņemšanas beigu laiks savam piegādes blokam ir metaobjektā velto_delivery_settings un var būt vēlāks."
       },
       {
         "type": "checkbox",
@@ -1527,7 +1527,7 @@
         "id": "velto_delivery_days",
         "label": "Piegādes dienas (1=P … 7=Sv, ar komatu)",
         "default": "5,6,7",
-        "info": "Piektdiena–svētdiena = 5,6,7"
+        "info": "Piektdiena–svētdiena = 5,6,7. Ja ieslēgts savs piegādes bloks (Velto: sava piegāde), dienas tiek ņemtas no metaobjektiem velto_delivery_day un šis lauks netiek izmantots."
       },
       {
         "type": "number",
@@ -1535,6 +1535,40 @@
         "label": "Bezmaksas iepakošanas robeža (EUR)",
         "info": "Grozā rāda, cik vēl jāpievieno līdz šai summai, lai nebūtu maksas (Upcharge Fees). 0 = nerādīt.",
         "default": 70
+      }
+    ]
+  },
+  {
+    "name": "Velto: sava piegāde",
+    "settings": [
+      {
+        "type": "paragraph",
+        "content": "Pašu piegādes un saņemšanas bloks grozā (aizstāj piegādes datuma lietotni): veids, adrese un zona, diena un laiks. Dienas, laiki, zonas un saņemšanas vietas tiek rediģētas sadaļā Content → Metaobjects."
+      },
+      {
+        "type": "checkbox",
+        "id": "velto_fulfil_enable",
+        "label": "Ieslēgt savu piegādes bloku grozā",
+        "info": "Pirms ieslēgšanas izslēdz piegādes datuma lietotni (App embeds), citādi grozā būs divi izvēles bloki.",
+        "default": false
+      },
+      {
+        "type": "text",
+        "id": "velto_fulfil_worker_url",
+        "label": "Cloudflare Worker adrese",
+        "info": "Piemēram, https://velto-delivery.xxx.workers.dev. Ja tukšs, laiku aizņemtība netiek pārbaudīta."
+      },
+      {
+        "type": "text",
+        "id": "velto_fulfil_maps_key",
+        "label": "Google Maps API atslēga",
+        "info": "Adrešu meklēšanai (Maps JavaScript API + Places API (New)). Atslēgu ierobežo ar vietnes domēnu."
+      },
+      {
+        "type": "page",
+        "id": "velto_fulfil_page",
+        "label": "Lapa \"Piegāde un saņemšana\"",
+        "info": "Lapa ar veidni \"page.delivery\". Ja izvēlēta, saite uz to tiek rādīta kājenē."
       }
     ]
   },
@@ -1707,6 +1741,13 @@
         "id": "velto_badges_enable",
         "label": "Rādīt marķējumus",
         "default": true
+      },
+      {
+        "type": "text",
+        "id": "velto_badge_adult_tag",
+        "label": "\"18+\" — produkta tags",
+        "default": "18+",
+        "info": "Preces ar šo tagu saņem sarkanu marķējumu \"18+\" kartītē un produkta lapā."
       },
       {
         "type": "text",

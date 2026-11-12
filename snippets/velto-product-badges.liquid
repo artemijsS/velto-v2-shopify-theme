@@ -1,6 +1,8 @@
 {%- comment -%}
-  Velto product badges — "Ekskluzīvs" and "Lieliska cena".
+  Velto product badges — "18+", "Ekskluzīvs" and "Lieliska cena".
   Rules (theme settings → "Velto marķējumi"):
+    18+        : product has the tag settings.velto_badge_adult_tag (default "18+");
+                 accent (red) colour — the only badge that is a warning, not a perk
     exclusive  : product has the tag settings.velto_badge_exclusive_tag (default "exclusive")
     great price: metafield custom.price_category ≥ settings.velto_badge_price_min (default 4)
                  — the same values the storefront filter "Cenas kategorija → Lieliska cena" groups
@@ -21,6 +23,16 @@
       endif
     endfor
 
+    assign adult_tag = settings.velto_badge_adult_tag | default: '18+' | strip | downcase
+    assign is_adult = false
+    for t in product.tags
+      assign tl = t | strip | downcase
+      if tl == adult_tag
+        assign is_adult = true
+        break
+      endif
+    endfor
+
     assign pc = product.metafields.custom.price_category.value | plus: 0
     assign pmin = settings.velto_badge_price_min | plus: 0
     assign is_great = false
@@ -28,9 +40,15 @@
       assign is_great = true
     endif
   -%}
-  {%- if is_exclusive or is_great -%}
+  {%- if is_exclusive or is_great or is_adult -%}
     {%- if style == 'page' -%}
       <ul class="velto-pbadges velto-pbadges--page" role="list">
+        {%- if is_adult -%}
+          <li class="velto-pbadge velto-pbadge--adult">
+            <span class="velto-pbadge__pill">{{ 'velto.badges.adult' | t }}</span>
+            <span class="velto-pbadge__note">{{ 'velto.badges.adult_note' | t }}</span>
+          </li>
+        {%- endif -%}
         {%- if is_exclusive -%}
           <li class="velto-pbadge velto-pbadge--exclusive">
             <span class="velto-pbadge__pill">
@@ -52,6 +70,11 @@
       </ul>
     {%- else -%}
       <ul class="velto-pbadges velto-pbadges--card" role="list">
+        {%- if is_adult -%}
+          <li class="velto-pbadge velto-pbadge--adult" title="{{ 'velto.badges.adult_note' | t | escape }}">
+            {{- 'velto.badges.adult' | t -}}
+          </li>
+        {%- endif -%}
         {%- if is_exclusive -%}
           <li class="velto-pbadge velto-pbadge--exclusive">
             <span class="velto-pbadge__icon" aria-hidden="true">✦</span>{{ 'velto.badges.exclusive' | t }}
