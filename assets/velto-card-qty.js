@@ -1,6 +1,7 @@
 /* Velto — quantity add-to-cart on product cards.
    <velto-qa data-variant data-min data-step data-max>: "Pievienot" → [− N +] stepper.
-   Every change goes to /cart/update.js (debounced, one request in flight per card),
+   Every change goes to /cart/update.js (debounced; all pending changes are batched and
+   only one request is in flight for the whole page, so fast clicks are never lost),
    the header cart bubble is re-rendered, all cards of the same variant stay in sync,
    and a small toast shows the cart total. Cards inserted later (rails, tabs,
    "Rādīt vēl") sync themselves from the shared cart map on connect. */
@@ -64,6 +65,10 @@
     cart.items.forEach((i) => (map[i.variant_id] = (map[i.variant_id] || 0) + i.quantity));
     document.querySelectorAll('velto-qa').forEach((el) => el.sync());
     document.dispatchEvent(new CustomEvent('velto:cart', { detail: map }));
+    // quantities still waiting to be sent stay optimistic for listeners (velto-variants.js)
+    Object.keys(want).forEach((vid) =>
+      document.dispatchEvent(new CustomEvent('velto:qa-set', { detail: { vid, q: want[vid] } }))
+    );
   };
 
   const refresh = () =>
@@ -114,6 +119,115 @@
     toastTimer = setTimeout(() => toastEl && toastEl.classList.remove('is-visible'), ms);
   };
 
+  /* ---------- shared optimistic state + ONE request queue for the whole page ----------
+     `want` holds the quantities the customer asked for that the server has not confirmed
+     yet (per variant, shared by every card of that variant). All pending changes are sent
+     together in a single /cart/update request and only one request is in flight at a
+     time — parallel cart requests overwrite each other on Shopify's side, and a response
+     must never wipe a quantity that was changed while the request was on its way. */
+  const want = {};
+  let flushTimer = null;
+  let inFlight = false;
+
+  const els = (vid) => document.querySelectorAll(`velto-qa[data-variant="${vid}"]`);
+  const setBusy = (vids, on) => vids.forEach((v) => els(v).forEach((el) => el.classList.toggle('is-busy', on)));
+
+  const post = async (updates, keepalive = false) => {
+    const res = await fetch(window.routes?.cart_update_url || '/cart/update', {
+      method: 'POST',
+      keepalive,
+      headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+      body: JSON.stringify({
+        updates,
+        sections: ['cart-icon-bubble'],
+        sections_url: window.location.pathname,
+      }),
+    });
+    const cart = await res.json();
+    if (!res.ok || cart.status || !cart.items) throw new Error(cart.description || cart.message || S.error);
+    return cart;
+  };
+
+  const schedule = () => {
+    clearTimeout(flushTimer);
+    flushTimer = setTimeout(flush, DEBOUNCE);
+  };
+
+  async function flush() {
+    clearTimeout(flushTimer);
+    flushTimer = null;
+    if (inFlight) return; // the running request re-flushes when it finishes
+    const batch = Object.assign({}, want);
+    const vids = Object.keys(batch);
+    if (!vids.length) return;
+
+    inFlight = true;
+    setBusy(vids, true);
+    const before = {};
+    vids.forEach((v) => (before[v] = map[v] || 0));
+    let cart = null;
+    let error = null;
+    try {
+      try {
+        cart = await post(batch);
+      } catch (e) {
+        if (vids.length === 1) error = e;
+        else {
+          // one bad line must not block the others — retry them one by one
+          for (const v of vids) {
+            try { cart = await post({ [v]: batch[v] }); } catch (e2) { error = e2; }
+          }
+        }
+      }
+
+      // confirmed (or failed) — unless the customer changed the number again meanwhile
+      vids.forEach((v) => { if (want[v] === batch[v]) delete want[v]; });
+      const settled = Object.keys(want).length === 0;
+
+      if (cart) {
+        let capped = null;
+        vids.forEach((v) => {
+          const actual = cartQty(cart, v);
+          if (actual < batch[v]) {
+            capped = actual;
+            els(v).forEach((el) => (el.max = actual));
+            if (want[v] !== undefined && want[v] > actual) delete want[v];
+          }
+        });
+        renderBubble(cart.sections);
+        applyCart(cart);
+
+        if (error) toast(error.message || S.error, null, true);
+        else if (capped !== null) toast((S.max || '[max]').replace('[max]', capped), cart, true);
+        else if (settled) {
+          const removed = vids.every((v) => batch[v] === 0);
+          const added = vids.some((v) => before[v] === 0 && batch[v] > 0);
+          toast(removed ? S.removed : added ? S.added : S.updated, cart);
+        }
+        if (typeof publish === 'function' && typeof PUB_SUB_EVENTS !== 'undefined') {
+          publish(PUB_SUB_EVENTS.cartUpdate, { source: 'velto-qa', productVariantId: vids[0], cartData: cart });
+        }
+      } else {
+        toast((error && error.message) || S.error, null, true);
+      }
+      if (error) refresh();
+    } finally {
+      setBusy(vids, false);
+      inFlight = false;
+      document.querySelectorAll('velto-qa').forEach((el) => el.sync());
+      if (Object.keys(want).length && !flushTimer) flush();
+    }
+  }
+
+  /* leaving the page before the debounce fired — send what is pending anyway */
+  window.addEventListener('pagehide', () => {
+    if (!Object.keys(want).length) return;
+    clearTimeout(flushTimer);
+    flushTimer = null;
+    try { post(Object.assign({}, want), true).catch(() => {}); } catch (e) {}
+    Object.keys(want).forEach((k) => delete want[k]);
+  });
+
   /* ---------- element ---------- */
   class VeltoQA extends HTMLElement {
     connectedCallback() {
@@ -125,7 +239,6 @@
         this.max = this.dataset.max !== undefined && this.dataset.max !== '' ? parseInt(this.dataset.max) : Infinity;
         this.input = this.querySelector('.velto-qa__input');
         this.incBtn = this.querySelector('[data-qa="inc"]');
-        this.desired = null;
 
         this.addEventListener('click', (e) => {
           const b = e.target.closest('[data-qa]');
@@ -157,7 +270,7 @@
     }
 
     get qty() {
-      return this.desired !== null ? this.desired : map[this.vid] || 0;
+      return want[this.vid] !== undefined ? want[this.vid] : map[this.vid] || 0;
     }
 
     normalize(v) {
@@ -179,76 +292,23 @@
         toast((S.max || '[max]').replace('[max]', this.max), null, true);
       }
       if (v === this.qty) return this.render(v);
-      this.desired = v;
-      document.querySelectorAll(`velto-qa[data-variant="${this.vid}"]`).forEach((el) => el.render(v));
+      want[this.vid] = v;
+      els(this.vid).forEach((el) => el.render(v));
       document.dispatchEvent(new CustomEvent('velto:qa-set', { detail: { vid: this.vid, q: v } }));
       if (focusInput) requestAnimationFrame(() => this.querySelector('[data-qa="inc"]')?.focus({ preventScroll: true }));
-      clearTimeout(this.timer);
-      this.timer = setTimeout(() => this.send(), DEBOUNCE);
+      schedule();
     }
 
     render(v) {
       this.classList.toggle('is-in-cart', v > 0);
       this.classList.toggle('is-min', v <= this.min);
-      if (document.activeElement !== this.input || this.desired === null) this.input.value = v;
+      if (document.activeElement !== this.input || want[this.vid] === undefined) this.input.value = v;
       if (this.incBtn) this.incBtn.disabled = v + this.step > this.max;
     }
 
+    /* show the cart quantity — or the still-unconfirmed one the customer asked for */
     sync() {
-      if (this.desired === null && !this.busy) this.render(map[this.vid] || 0);
-    }
-
-    async send() {
-      if (this.busy) {
-        this.again = true;
-        return;
-      }
-      this.busy = true;
-      this.classList.add('is-busy');
-      const target = this.desired;
-      const before = map[this.vid] || 0;
-      try {
-        const res = await fetch(window.routes?.cart_update_url || '/cart/update', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
-          body: JSON.stringify({
-            updates: { [this.vid]: target },
-            sections: ['cart-icon-bubble'],
-            sections_url: window.location.pathname,
-          }),
-        });
-        const cart = await res.json();
-        if (!res.ok || cart.status || !cart.items) throw new Error(cart.description || cart.message || S.error);
-
-        const actual = cartQty(cart, this.vid);
-        if (!this.again) this.desired = null;
-        renderBubble(cart.sections);
-        applyCart(cart);
-
-        if (actual < target) {
-          this.max = actual;
-          toast((S.max || '[max]').replace('[max]', actual), cart, true);
-        } else if (!this.again) {
-          toast(target === 0 ? S.removed : before === 0 ? S.added : S.updated, cart);
-        }
-        if (typeof publish === 'function' && typeof PUB_SUB_EVENTS !== 'undefined') {
-          publish(PUB_SUB_EVENTS.cartUpdate, { source: 'velto-qa', productVariantId: this.vid, cartData: cart });
-        }
-      } catch (e) {
-        this.desired = null;
-        this.again = false;
-        toast(e.message || S.error, null, true);
-        refresh();
-      } finally {
-        this.busy = false;
-        this.classList.remove('is-busy');
-        if (this.again) {
-          this.again = false;
-          this.send();
-        } else {
-          this.sync();
-        }
-      }
+      this.render(this.qty);
     }
   }
 
