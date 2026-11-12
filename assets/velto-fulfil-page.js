@@ -125,22 +125,52 @@
     const bounds = new google.maps.LatLngBounds();
     let any = false;
 
-    (cfg.zones || []).forEach((z) => {
-      const path = geo.polygonPoints(z.polygon).map(([lat, lng]) => ({ lat, lng }));
-      if (path.length < 3) return;
-      path.forEach((p) => bounds.extend(p));
+    // Cheapest zone first. Where zones overlap, the cheaper one wins (same rule as the
+    // cart), so every dearer zone is drawn with the cheaper ones cut out of it — the
+    // colours never blend. Cutting needs assets/velto-polygon-clipping.min.js; without it
+    // the cheaper zones are simply stacked on top.
+    const pc = window.polygonClipping;
+    const zones = (cfg.zones || [])
+      .map((z) => ({ ...z, pts: geo.polygonPoints(z.polygon) }))
+      .filter((z) => z.pts.length > 2)
+      .sort((a, b) => (Number(a.cents) || 0) - (Number(b.cents) || 0));
+    const ring = (pts) => {
+      const r = pts.map(([lat, lng]) => [lng, lat]);
+      const f = r[0], l = r[r.length - 1];
+      if (f[0] !== l[0] || f[1] !== l[1]) r.push([f[0], f[1]]);
+      return r;
+    };
+    const cheaper = []; // geometries of the zones already drawn
+
+    zones.forEach((z, i) => {
+      z.pts.forEach(([lat, lng]) => bounds.extend({ lat, lng }));
       any = true;
-      const poly = new google.maps.Polygon({
-        paths: path,
-        map,
-        strokeColor: z.color,
-        strokeWeight: 2,
-        strokeOpacity: 0.9,
-        fillColor: z.color,
-        fillOpacity: 0.22,
-      });
-      poly.addListener('click', (e) => {
-        show(e.latLng, { label: cfg.zoneLabel, color: z.color, title: z.name, price: z.price || cfg.free });
+      // list of polygons, each a list of rings (outer first, then holes) of {lat, lng}
+      let shapes = [[z.pts.map(([lat, lng]) => ({ lat, lng }))]];
+      if (pc) {
+        try {
+          const own = [[ring(z.pts)]];
+          const cut = cheaper.length ? pc.difference(own, ...cheaper) : own;
+          shapes = cut.map((poly) => poly.map((r) => r.map(([lng, lat]) => ({ lat, lng }))));
+          cheaper.push(own);
+        } catch (e) {
+          console.error('[velto-fulfil-page] zone overlap', e);
+        }
+      }
+      shapes.forEach((paths) => {
+        const poly = new google.maps.Polygon({
+          paths,
+          map,
+          strokeColor: z.color,
+          strokeWeight: 2,
+          strokeOpacity: 0.9,
+          fillColor: z.color,
+          fillOpacity: 0.22,
+          zIndex: zones.length - i,
+        });
+        poly.addListener('click', (e) => {
+          show(e.latLng, { label: cfg.zoneLabel, color: z.color, title: z.name, price: z.price || cfg.free });
+        });
       });
     });
 

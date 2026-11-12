@@ -46,12 +46,19 @@
   assign last_i = last_wd | minus: 1
 
   assign min_price = -1
+  assign zone_keys = ''
   for z in zones
     assign zp = z.variant.value.price | default: 0
     if min_price < 0 or zp < min_price
       assign min_price = zp
     endif
+    # sort key "price:index", both padded to a fixed width: zones are listed (and
+    # coloured) cheapest first; where zones overlap the cheaper one wins, same as in the cart
+    assign k_price = zp | plus: 1000000000
+    assign k_index = forloop.index0 | plus: 1000
+    assign zone_keys = zone_keys | append: k_price | append: ':' | append: k_index | append: ','
   endfor
+  assign zone_keys = zone_keys | split: ',' | sort
 -%}
 
 {%- capture icon_store -%}
@@ -147,16 +154,20 @@
           </h2>
           {%- if zones.size > 0 -%}
             <ul class="velto-fpage__zones list-unstyled" role="list">
-              {%- for z in zones -%}
+              {%- for key in zone_keys -%}
+                {%- assign zi = key | split: ':' | last | minus: 1000 -%}
                 {%- assign ci = forloop.index0 | modulo: colors.size -%}
-                {%- assign zv = z.variant.value -%}
-                <li>
-                  <span class="velto-fpage__swatch" style="--c: {{ colors[ci] }}" aria-hidden="true"></span>
-                  <span class="velto-fpage__zname">{{ z.name.value }}</span>
-                  <span class="velto-fpage__zprice">
-                    {%- if zv.price > 0 -%}{{ zv.price | money }}{%- else -%}{{ 'velto.fulfil.free' | t }}{%- endif -%}
-                  </span>
-                </li>
+                {%- for z in zones -%}
+                  {%- if forloop.index0 != zi -%}{%- continue -%}{%- endif -%}
+                  {%- assign zv = z.variant.value -%}
+                  <li>
+                    <span class="velto-fpage__swatch" style="--c: {{ colors[ci] }}" aria-hidden="true"></span>
+                    <span class="velto-fpage__zname">{{ z.name.value }}</span>
+                    <span class="velto-fpage__zprice">
+                      {%- if zv.price > 0 -%}{{ zv.price | money }}{%- else -%}{{ 'velto.fulfil.free' | t }}{%- endif -%}
+                    </span>
+                  </li>
+                {%- endfor -%}
               {%- endfor -%}
             </ul>
             <p class="velto-fpage__note">{{ 'velto.fulfil_page.zones_text' | t }}</p>
@@ -269,11 +280,16 @@
       "pickupLabel": {{ 'velto.fulfil.method_pickup' | t | json }},
       "close": {{ 'accessibility.close' | t | json }},
       "zones": [
-        {%- for z in zones -%}
+        {%- for key in zone_keys -%}
+          {%- assign zi = key | split: ':' | last | minus: 1000 -%}
           {%- assign ci = forloop.index0 | modulo: colors.size -%}
-          {%- assign zv = z.variant.value -%}
-          {%- capture zprice -%}{%- if zv.price > 0 -%}{{ zv.price | money }}{%- endif -%}{%- endcapture -%}
-          { "name": {{ z.name.value | json }}, "polygon": {{ z.polygon.value | default: '[]' | json }}, "price": {{ zprice | strip_html | json }}, "color": {{ colors[ci] | json }} }{% unless forloop.last %},{% endunless %}
+          {%- assign zlast = forloop.last -%}
+          {%- for z in zones -%}
+            {%- if forloop.index0 != zi -%}{%- continue -%}{%- endif -%}
+            {%- assign zv = z.variant.value -%}
+            {%- capture zprice -%}{%- if zv.price > 0 -%}{{ zv.price | money }}{%- endif -%}{%- endcapture -%}
+            { "name": {{ z.name.value | json }}, "polygon": {{ z.polygon.value | default: '[]' | json }}, "price": {{ zprice | strip_html | json }}, "cents": {{ zv.price | default: 0 | json }}, "color": {{ colors[ci] | json }} }{% unless zlast %},{% endunless %}
+          {%- endfor -%}
         {%- endfor -%}
       ],
       "points": [
@@ -284,6 +300,7 @@
     }
   </script>
   <script src="{{ 'velto-fulfil.js' | asset_url }}" defer="defer"></script>
+  <script src="{{ 'velto-polygon-clipping.min.js' | asset_url }}" defer="defer"></script>
   <script src="{{ 'velto-fulfil-page.js' | asset_url }}" defer="defer"></script>
 </section>
 

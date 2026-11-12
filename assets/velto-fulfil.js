@@ -150,7 +150,10 @@
       }
       const cfg = this.cfg;
       this.t = cfg.t || {};
-      this.zones = (cfg.zones || []).map((z) => ({ ...z, points: polygonPoints(z.polygon) }));
+      // cheapest first: where zones overlap, the address gets the cheaper one
+      this.zones = (cfg.zones || [])
+        .map((z) => ({ ...z, points: polygonPoints(z.polygon) }))
+        .sort((a, b) => (Number(a.price) || 0) - (Number(b.price) || 0));
       this.min = Number(cfg.settings.minOrderDelivery) || 0;
       this.icons = {};
       this.querySelectorAll('template[data-icon]').forEach((tpl) => (this.icons[tpl.dataset.icon] = tpl.innerHTML.trim()));
