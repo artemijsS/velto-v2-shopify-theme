@@ -948,7 +948,8 @@
       "hl_from": "from {{ price }}",
       "hl_pickup_label": "Pickup",
       "pickup_badge": "Free",
-      "popup_zone": "Delivery zone"
+      "popup_zone": "Delivery zone",
+      "zone_name": "Zone {{ name }}"
     },
     "days": {
       "until": "Monday,Tuesday,Wednesday,Thursday,Friday,Saturday,Sunday",

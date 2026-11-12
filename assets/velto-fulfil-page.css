@@ -251,8 +251,8 @@
   display: flex;
   align-items: center;
   gap: 0.8rem;
-  padding: 0.6rem 1.2rem 0.6rem 0.8rem;
-  border-radius: 10rem;
+  padding: 0.6rem 1.2rem;
+  border-radius: 1.4rem;
   background: #fff;
   color: #111;
   font: 800 1.3rem/1 var(--font-body-family);
@@ -276,30 +276,10 @@
   z-index: -1;
 }
 
-.velto-fpage__marker-dot {
-  position: relative;
-  width: 1.2rem;
-  height: 1.2rem;
-  border-radius: 50%;
-  background: #e5484d;
-}
-
-.velto-fpage__marker-dot::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  border-radius: 50%;
-  background: #e5484d;
-  animation: velto-fpage-pulse 1.8s ease-out infinite;
-}
-
-@keyframes velto-fpage-pulse {
-  from { transform: scale(1); opacity: 0.7; }
-  to { transform: scale(3.2); opacity: 0; }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .velto-fpage__marker-dot::after { animation: none; }
+.velto-fpage__marker-logo {
+  display: block;
+  height: 2.6rem;
+  width: auto;
 }
 
 .velto-fpage__tip a { display: inline-block; margin-top: 0.6rem; color: #111; font-weight: 600; }

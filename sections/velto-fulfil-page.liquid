@@ -162,7 +162,7 @@
                   {%- assign zv = z.variant.value -%}
                   <li>
                     <span class="velto-fpage__swatch" style="--c: {{ colors[ci] }}" aria-hidden="true"></span>
-                    <span class="velto-fpage__zname">{{ z.name.value }}</span>
+                    <span class="velto-fpage__zname">{{ 'velto.fulfil_page.zone_name' | t: name: z.name.value }}</span>
                     <span class="velto-fpage__zprice">
                       {%- if zv.price > 0 -%}{{ zv.price | money }}{%- else -%}{{ 'velto.fulfil.free' | t }}{%- endif -%}
                     </span>
@@ -279,6 +279,7 @@
       "zoneLabel": {{ 'velto.fulfil_page.popup_zone' | t | json }},
       "pickupLabel": {{ 'velto.fulfil.method_pickup' | t | json }},
       "close": {{ 'accessibility.close' | t | json }},
+      "logo": {{ 'velto-logo-black-full.svg' | asset_url | json }},
       "zones": [
         {%- for key in zone_keys -%}
           {%- assign zi = key | split: ':' | last | minus: 1000 -%}

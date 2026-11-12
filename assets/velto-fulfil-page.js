@@ -187,9 +187,19 @@
       const href = p.url || (p.address ? `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(p.address)}` : '');
       const open = () => show(pos, { label: cfg.pickupLabel, badge: cfg.free, title: p.name, text: p.address, href }, true);
       if (Adv) {
-        // a pulsing pin with the point's name instead of the stock red marker
+        // a pin with the Velto logo instead of the stock red marker
+        // (the point's name stays as the tooltip and in the card that opens on click)
         const pin = el('div', 'velto-fpage__marker');
-        pin.append(el('span', 'velto-fpage__marker-dot'), el('span', 'velto-fpage__marker-name', p.name));
+        if (cfg.logo) {
+          const img = el('img', 'velto-fpage__marker-logo');
+          img.src = cfg.logo;
+          img.alt = p.name;
+          // logo failed to load → fall back to the name
+          img.onerror = () => img.replaceWith(el('span', 'velto-fpage__marker-name', p.name));
+          pin.append(img);
+        } else {
+          pin.append(el('span', 'velto-fpage__marker-name', p.name));
+        }
         new Adv({ map, position: pos, title: p.name, content: pin, zIndex: 10 }).addListener('gmp-click', open);
       } else if (google.maps.Marker) {
         new google.maps.Marker({ map, position: pos, title: p.name }).addListener('click', open);

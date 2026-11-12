@@ -961,7 +961,8 @@
       "hl_from": "no {{ price }}",
       "hl_pickup_label": "Saņemšana uz vietas",
       "pickup_badge": "Bez maksas",
-      "popup_zone": "Piegādes zona"
+      "popup_zone": "Piegādes zona",
+      "zone_name": "Zona {{ name }}"
     },
     "days": {
       "until": "pirmdienai,otrdienai,trešdienai,ceturtdienai,piektdienai,sestdienai,svētdienai",
