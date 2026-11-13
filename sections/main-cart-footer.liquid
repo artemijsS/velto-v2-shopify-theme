@@ -138,6 +138,8 @@
                   {% render 'velto-delivery-info' %}
                 {%- endunless -%}
 
+                {% render 'velto-cart-adult' %}
+
                 {%- unless cart == empty -%}
                   <div class="velto-cart-bar" aria-hidden="true">
                     <div class="velto-cart-bar__total">

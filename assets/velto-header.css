@@ -1102,3 +1102,9 @@
 }
 
 .header .menu-drawer__localization .disclosure__button.localization-form__select { border-color: rgba(var(--color-foreground), 0.25); }
+
+/* The "added to cart" popup is styled by component-cart-notification.css, which
+   loads late (media="print" → onload). Until then keep it out of the page —
+   otherwise its unsized checkmark icon flashes across the whole screen.
+   That stylesheet turns it back on (.cart-notification-wrapper .cart-notification). */
+.cart-notification { display: none; }

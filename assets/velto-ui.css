@@ -1259,6 +1259,33 @@ body.velto-vsheet-open { overflow: hidden; }
 .velto-fulfil--folded > .velto-notice { margin: 0 0 1.4rem; }
 .velto-deliv-line + .velto-notice { margin-bottom: 0; }
 
+/* ---------- 18+ items in the cart: ID needed on receipt (snippets/velto-cart-adult.liquid) ---------- */
+.velto-adult-note {
+  display: flex;
+  align-items: flex-start;
+  gap: 1.2rem;
+  margin: 1.4rem 0 0;
+  padding: 1.2rem 1.4rem;
+  border: 1px solid rgba(229, 72, 77, 0.45);
+  border-radius: 1rem;
+  background: rgba(229, 72, 77, 0.08);
+  font-size: 1.3rem;
+  line-height: 1.45;
+  text-align: left;
+  color: rgba(var(--color-foreground), 0.9);
+}
+
+.velto-adult-note__pill {
+  flex: 0 0 auto;
+  padding: 0.2rem 0.8rem;
+  border-radius: 2rem;
+  background: #e5484d;
+  color: #fff;
+  font-size: 1.2rem;
+  font-weight: 800;
+  line-height: 1.5;
+}
+
 /* ---------- Link to the "Delivery and pickup" page (snippets/velto-fulfil-link.liquid) ---------- */
 .velto-more-link {
   display: inline-flex;

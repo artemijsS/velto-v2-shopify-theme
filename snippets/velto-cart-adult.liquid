@@ -1,0 +1,31 @@
+{%- comment -%}
+  Velto — notice in the cart when at least one item is for adults only:
+  the customer will have to show an ID when receiving the order.
+  An item counts as 18+ when its product has the tag
+  settings.velto_badge_adult_tag (default "18+") — the same tag as the
+  "18+" badge (snippets/velto-product-badges.liquid).
+
+  Usage: {% render 'velto-cart-adult' %}
+{%- endcomment -%}
+{%- liquid
+  assign adult_tag = settings.velto_badge_adult_tag | default: '18+' | strip | downcase
+  assign has_adult = false
+  for item in cart.items
+    for t in item.product.tags
+      assign tl = t | strip | downcase
+      if tl == adult_tag
+        assign has_adult = true
+        break
+      endif
+    endfor
+    if has_adult
+      break
+    endif
+  endfor
+-%}
+{%- if has_adult -%}
+  <p class="velto-adult-note" role="note">
+    <span class="velto-adult-note__pill" aria-hidden="true">{{ 'velto.badges.adult' | t }}</span>
+    <span>{{ 'velto.cart.adult_notice' | t }}</span>
+  </p>
+{%- endif -%}

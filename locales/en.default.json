@@ -624,6 +624,7 @@
       "delivery_at_checkout": "chosen at checkout",
       "empty_text": "Pick products in the catalog — delivered {{ days_when }}.",
       "bar_total": "Total",
+      "adult_notice": "Your cart contains items for adults only. You will need to show a valid ID when you receive the order.",
       "small_order_hint": "Add {{ amount }} more and packaging will be free of charge."
     },
     "content": {
