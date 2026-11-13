@@ -592,6 +592,9 @@
       "crumb": "Meklēšana",
       "title": "Meklēšana"
     },
+    "country": {
+      "label": "Izcelsmes valsts"
+    },
     "badges": {
       "exclusive": "Ekskluzīvs",
       "great_price": "Lieliska cena",

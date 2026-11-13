@@ -1,0 +1,48 @@
+{%- comment -%}
+  Velto country of origin — flag (and name) of the country a product comes from.
+  Data: product metafield custom.country → metaobject "Country" with the fields
+    code   ISO 3166-1 alpha-2, lower case: fr, it, es …
+    title  country name; translated per language in Translate & Adapt
+  Flag files: assets/velto-flag-<code>.svg (from flag-icons, MIT). For a new
+  country add its file there; without a file only the name is shown.
+  Products without the metafield output nothing — fill it in only where the
+  flag should appear (for now: wines).
+
+  Usage:
+    {% render 'velto-product-country', product: card_product, style: 'card' %}  – flag only, bottom-right corner of the card image
+    {% render 'velto-product-country', product: product, style: 'page' %}       – product page: flag + name
+{%- endcomment -%}
+{%- liquid
+  assign country = product.metafields.custom.country.value
+  assign c_code = country.code.value | default: country.system.handle | downcase | strip
+  assign c_title = country.title.value | default: c_code | strip
+-%}
+{%- if country != blank and c_code != blank -%}
+  {%- assign c_file = 'velto-flag-' | append: c_code | append: '.svg' -%}
+  {%- if style == 'page' -%}
+    <p class="velto-country velto-country--page">
+      <img
+        class="velto-flag"
+        src="{{ c_file | asset_url }}"
+        alt=""
+        width="24"
+        height="18"
+        loading="lazy"
+        onerror="this.remove()"
+      >
+      <span class="visually-hidden">{{ 'velto.country.label' | t }}:</span>
+      <span class="velto-country__name">{{ c_title | escape }}</span>
+    </p>
+  {%- else -%}
+    <img
+      class="velto-flag velto-flag--card"
+      src="{{ c_file | asset_url }}"
+      alt="{{ c_title | escape }}"
+      title="{{ c_title | escape }}"
+      width="24"
+      height="18"
+      loading="lazy"
+      onerror="this.remove()"
+    >
+  {%- endif -%}
+{%- endif -%}

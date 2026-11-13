@@ -579,6 +579,9 @@
       "crumb": "Search",
       "title": "Search"
     },
+    "country": {
+      "label": "Country of origin"
+    },
     "badges": {
       "exclusive": "Exclusive",
       "great_price": "Great price",

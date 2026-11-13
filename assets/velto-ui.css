@@ -412,6 +412,47 @@
   .velto-pbadges--page { flex-direction: column; gap: 0.8rem; }
 }
 
+/* ---------- Velto country of origin (flag on the card image / under the product title) ---------- */
+.velto-flag {
+  display: inline-block;
+  width: 2rem;
+  height: 1.5rem;
+  border-radius: 0.2rem;
+  object-fit: cover;
+  /* hairline so white flag areas do not melt into the background */
+  box-shadow: 0 0 0 1px rgba(var(--color-foreground), 0.14);
+}
+
+.velto-flag--card {
+  /* on the card image — bottom-right (top-left: rank number, top-right: badges, bottom-left: sale / sold out) */
+  position: absolute;
+  z-index: 2;
+  right: 0.8rem;
+  bottom: 0.8rem;
+  width: 2.4rem;
+  height: 1.8rem;
+  pointer-events: none;
+}
+
+@media screen and (max-width: 749px) {
+  .velto-flag--card { right: 0.6rem; bottom: 0.6rem; width: 2rem; height: 1.5rem; }
+}
+
+.velto-country--page {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  margin: 0.4rem 0 1.2rem;
+  font-size: 1.4rem;
+  color: rgba(var(--color-foreground), 0.75);
+}
+
+.velto-country--page .velto-flag {
+  width: 2.4rem;
+  height: 1.8rem;
+  flex: none;
+}
+
 /* ---------- Card quantity add-to-cart (velto-qa) ---------- */
 .velto-qa {
   position: relative;

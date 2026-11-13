@@ -89,6 +89,8 @@
 .product .product__info-container > .product__text { margin-bottom: 0.6rem; }
 .product .product__info-container > .product__title { margin-bottom: 1.6rem; }
 .product .product__info-container > .velto-pbadges { margin-bottom: 1.6rem; }
+/* country of origin sits right under the title (title keeps its 1.6rem) */
+.product .product__info-container > .velto-country { margin-top: -0.6rem; margin-bottom: 1.6rem; }
 .product .product__info-container > .product__tax { margin-top: 0.6rem; }
 
 /* price: no hidden space from Dawn's margins / tall line box */
