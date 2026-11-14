@@ -442,7 +442,13 @@
       };
     </script>
 
-    <script src="{{ 'velto-fees.js' | asset_url }}" defer="defer"></script>
+    {%- comment -%} fees: own (velto-own-fees.js) or the Upcharge Fees app (velto-fees.js tames it) {%- endcomment -%}
+    {%- if settings.velto_fees_enable -%}
+      <script type="application/json" id="VeltoFeesState">{% render 'velto-fees-state' %}</script>
+      <script src="{{ 'velto-own-fees.js' | asset_url }}" defer="defer"></script>
+    {%- else -%}
+      <script src="{{ 'velto-fees.js' | asset_url }}" defer="defer"></script>
+    {%- endif -%}
     <script src="{{ 'velto-card-qty.js' | asset_url }}" defer="defer"></script>
     <script src="{{ 'velto-variants.js' | asset_url }}" defer="defer"></script>
     {% render 'velto-variant-sheet' %}

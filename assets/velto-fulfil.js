@@ -267,7 +267,7 @@
     }
 
     isFee(i) {
-      return (i.properties && i.properties._mws_fee) || i.product_type === 'mws_fee_generated';
+      return (i.properties && i.properties._mws_fee) || i.product_type === 'mws_fee_generated' || i.product_type === 'velto_fee';
     }
 
     isDelivery(i) {

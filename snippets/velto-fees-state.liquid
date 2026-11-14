@@ -1,0 +1,55 @@
+{%- comment -%}
+  Velto own fees — what the cart holds, as JSON for assets/velto-own-fees.js.
+
+  The fees are lines of hidden products (product type "velto_fee"), chosen in
+  Theme settings → "Velto: savas maksas":
+    Depozīts    one per deposit container: products with the deposit tag; a pack
+                counts as product metafield custom.deposit_count containers (default 1)
+    Maisiņa maksa   quantity = number of bags, by the goods total (bag steps)
+    Iepakošana  one while the goods total is below "velto_small_order_min"
+
+  goods    — goods total in cents: no fee lines, no delivery line
+  deposits — deposit containers in the cart
+  lines    — fee lines now in the cart; own = ours, otherwise a line left by the
+             Upcharge Fees app (removed by the script)
+
+  Rendered inline in layout/theme.liquid and, after cart changes, through
+  sections/velto-fees-state.liquid.
+{%- endcomment -%}
+{%- liquid
+  assign vf_goods = 0
+  assign vf_deposits = 0
+  assign vf_tag = settings.velto_fee_deposit_tag | default: 'depozits' | strip
+  assign vf_dep = settings.velto_fee_deposit_product.variants.first.id
+  assign vf_bag = settings.velto_fee_bag_product.variants.first.id
+  assign vf_pack = settings.velto_fee_pack_product.variants.first.id
+  assign vf_first = true
+-%}
+{"lines":[
+{%- for item in cart.items -%}
+  {%- liquid
+    assign vf_own = false
+    assign vf_app = false
+    if item.product.type == 'velto_fee'
+      assign vf_own = true
+    elsif item.product.type == 'mws_fee_generated' or item.properties['_mws_fee'] != blank
+      assign vf_app = true
+    endif
+  -%}
+  {%- if vf_own or vf_app -%}
+    {%- unless vf_first -%},{%- endunless -%}{%- assign vf_first = false -%}
+    {"key":{{ item.key | json }},"id":{{ item.variant_id }},"qty":{{ item.quantity }},"own":{{ vf_own }}}
+  {%- elsif item.product.type != 'velto_delivery' -%}
+    {%- liquid
+      assign vf_goods = vf_goods | plus: item.final_line_price
+      if item.product.tags contains vf_tag
+        assign vf_n = item.product.metafields.custom.deposit_count.value | default: 1 | plus: 0
+        if vf_n < 1
+          assign vf_n = 1
+        endif
+        assign vf_deposits = item.quantity | times: vf_n | plus: vf_deposits
+      endif
+    -%}
+  {%- endif -%}
+{%- endfor -%}
+],"goods":{{ vf_goods }},"deposits":{{ vf_deposits }},"cfg":{"deposit":{{ vf_dep | default: 'null' }},"bag":{{ vf_bag | default: 'null' }},"bagSteps":{{ settings.velto_fee_bag_steps | default: '' | json }},"pack":{{ vf_pack | default: 'null' }},"packBelow":{{ settings.velto_small_order_min | default: 0 | times: 100 | round }}}}

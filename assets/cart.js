@@ -61,6 +61,8 @@ class CartItems extends window.StandardEvents.createViewEventElement(HTMLElement
       this.refreshSections();
     };
     document.addEventListener('mwFees::cart::exec::successfully', this.onFeesUpdated);
+    // the own fees (velto-own-fees.js)
+    document.addEventListener('velto:fees:updated', this.onFeesUpdated);
   }
 
   // Fetches the full cart shape (used to resolve the cart:lines-update event
@@ -84,7 +86,10 @@ class CartItems extends window.StandardEvents.createViewEventElement(HTMLElement
     if (this.cartUpdateUnsubscriber) {
       this.cartUpdateUnsubscriber();
     }
-    if (this.onFeesUpdated) document.removeEventListener('mwFees::cart::exec::successfully', this.onFeesUpdated);
+    if (this.onFeesUpdated) {
+      document.removeEventListener('mwFees::cart::exec::successfully', this.onFeesUpdated);
+      document.removeEventListener('velto:fees:updated', this.onFeesUpdated);
+    }
   }
 
   /* ---------- Velto: optimistic, batched quantity updates (cart page) ---------- */

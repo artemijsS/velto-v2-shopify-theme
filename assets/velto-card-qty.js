@@ -52,9 +52,9 @@
     }).replace(/<[^>]*>/g, '');
   };
 
-  // fee lines added by the Upcharge Fees app are not goods
+  // fee lines (own "velto_fee" products or the Upcharge Fees app) are not goods
   const isFee = (i) =>
-    (i.properties && i.properties._mws_fee) || i.product_type === 'mws_fee_generated' || i.product_type === 'velto_delivery';
+    (i.properties && i.properties._mws_fee) || i.product_type === 'mws_fee_generated' || i.product_type === 'velto_fee' || i.product_type === 'velto_delivery';
   const goodsCount = (cart) => cart.items.reduce((s, i) => (isFee(i) ? s : s + i.quantity), 0);
 
   const cartQty = (cart, id) =>

@@ -1,0 +1,12 @@
+{%- comment -%}
+  Cart state for the own fees (assets/velto-own-fees.js), fetched after cart
+  changes: /?sections=velto-fees-state. Not placed in any template.
+{%- endcomment -%}
+<script type="application/json" data-velto-fees-state>{% render 'velto-fees-state' %}</script>
+
+{% schema %}
+{
+  "name": "Velto fees state",
+  "settings": []
+}
+{% endschema %}

@@ -104,7 +104,7 @@
                     they are listed in the summary (main-cart-footer), not as editable rows.
                     Skipped here so they never flash back after a re-render.
                   {%- endcomment -%}
-                  {%- if item.product.type == 'mws_fee_generated' or item.properties['_mws_fee'] != blank or item.product.type == 'velto_delivery' -%}
+                  {%- if item.product.type == 'velto_fee' or item.product.type == 'mws_fee_generated' or item.properties['_mws_fee'] != blank or item.product.type == 'velto_delivery' -%}
                     {%- continue -%}
                   {%- endif -%}
                   <tr

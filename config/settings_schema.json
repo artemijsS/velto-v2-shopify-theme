@@ -1533,7 +1533,7 @@
         "type": "number",
         "id": "velto_small_order_min",
         "label": "Bezmaksas iepakošanas robeža (EUR)",
-        "info": "Grozā rāda, cik vēl jāpievieno līdz šai summai, lai nebūtu maksas (Upcharge Fees). 0 = nerādīt.",
+        "info": "Grozā rāda, cik vēl jāpievieno līdz šai summai, lai nebūtu iepakošanas maksas. Savām maksām (Velto: savas maksas) šī ir arī robeža, līdz kurai tiek pieskaitīta iepakošana. 0 = nerādīt.",
         "default": 70
       }
     ]
@@ -1569,6 +1569,66 @@
         "id": "velto_fulfil_page",
         "label": "Lapa \"Piegāde un saņemšana\"",
         "info": "Lapa ar veidni \"page.delivery\". Ja izvēlēta, saite uz to tiek rādīta kājenē."
+      }
+    ]
+  },
+  {
+    "name": "Velto: savas maksas",
+    "settings": [
+      {
+        "type": "paragraph",
+        "content": "Depozīts, maisiņa maksa un iepakošana bez lietotnes Upcharge Fees. Katra maksa ir slēpta prece ar preces tipu (Product type) \"velto_fee\": cena tiek ņemta no preces, nosaukums — no preces nosaukuma (tulkojams). Maksa bez izvēlētas preces netiek pieskaitīta."
+      },
+      {
+        "type": "checkbox",
+        "id": "velto_fees_enable",
+        "label": "Ieslēgt savas maksas",
+        "info": "Pirms ieslēgšanas izslēdz Upcharge Fees (App embeds), citādi maksas tiks pieskaitītas divreiz.",
+        "default": false
+      },
+      {
+        "type": "header",
+        "content": "Depozīts"
+      },
+      {
+        "type": "product",
+        "id": "velto_fee_deposit_product",
+        "label": "Prece \"Depozīts\"",
+        "info": "Cena par vienu iepakojumu (0,10 €). Daudzums grozā = depozīta iepakojumu skaits."
+      },
+      {
+        "type": "text",
+        "id": "velto_fee_deposit_tag",
+        "label": "Depozīta preču birka (tag)",
+        "default": "depozits",
+        "info": "Precēm ar šo birku tiek pieskaitīts depozīts. Ja vienā precē ir vairāki iepakojumi (piem., 6 bundžas), norādi skaitu preces metalaukā custom.deposit_count (vesels skaitlis)."
+      },
+      {
+        "type": "header",
+        "content": "Maisiņi"
+      },
+      {
+        "type": "product",
+        "id": "velto_fee_bag_product",
+        "label": "Prece \"Maisiņa maksa\"",
+        "info": "Cena par vienu maisiņu (0,30 €). Daudzums grozā = maisiņu skaits."
+      },
+      {
+        "type": "text",
+        "id": "velto_fee_bag_steps",
+        "label": "Maisiņu sliekšņi (EUR, ar komatu)",
+        "default": "5, 40, 70, 100",
+        "info": "Katrs sasniegtais preču summas slieksnis pieskaita vienu maisiņu: no 5 € — 1, no 40 € — 2, no 70 € — 3, no 100 € — 4. Zem pirmā sliekšņa maisiņa nav."
+      },
+      {
+        "type": "header",
+        "content": "Iepakošana"
+      },
+      {
+        "type": "product",
+        "id": "velto_fee_pack_product",
+        "label": "Prece \"Iepakošana\"",
+        "info": "Tiek pieskaitīta vienreiz, kamēr preču summa ir mazāka par \"Bezmaksas iepakošanas robeža\" (Velto piegāde)."
       }
     ]
   },
