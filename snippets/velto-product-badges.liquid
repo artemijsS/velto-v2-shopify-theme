@@ -5,7 +5,9 @@
                  accent (red) colour — the only badge that is a warning, not a perk
     exclusive  : product has the tag settings.velto_badge_exclusive_tag (default "exclusive")
     great price: metafield custom.price_category ≥ settings.velto_badge_price_min (default 4)
-                 — the same values the storefront filter "Cenas kategorija → Lieliska cena" groups
+                 — the same values the storefront filter "Cenas kategorija → Lieliska cena" groups.
+                 On a card it says how much below the market the price is and opens the
+                 comparison with other stores (snippets/velto-price-compare.liquid)
 
   Usage:
     {% render 'velto-product-badges', product: card_product, style: 'card' %}  – over the card image
@@ -81,8 +83,26 @@
           </li>
         {%- endif -%}
         {%- if is_great -%}
-          <li class="velto-pbadge velto-pbadge--price">
-            <span class="velto-pbadge__icon" aria-hidden="true">{{- 'icon-price-tag.svg' | inline_asset_content -}}</span>{{ 'velto.badges.great_price' | t }}
+          {%- comment -%} how much below the market, and — when Cenu Depo can show it — a button that opens the comparison {%- endcomment -%}
+          {%- capture cmp_pct -%}{%- render 'velto-price-compare', product: product, style: 'pct' -%}{%- endcapture -%}
+          {%- capture cmp_attrs -%}{%- render 'velto-price-compare', product: product, style: 'attrs' -%}{%- endcapture -%}
+          {%- liquid
+            assign cmp_pct = cmp_pct | strip | plus: 0
+            assign cmp_attrs = cmp_attrs | strip
+            if cmp_pct >= 1
+              assign great_label = 'velto.compare.below_market' | t: value: cmp_pct
+            else
+              assign great_label = 'velto.badges.great_price' | t
+            endif
+          -%}
+          <li class="velto-pbadge velto-pbadge--price{% if cmp_attrs != blank %} velto-pbadge--compare{% endif %}">
+            {%- if cmp_attrs != blank -%}
+              <button type="button" class="velto-pbadge__btn" {{ cmp_attrs }} aria-label="{{ great_label | escape }}. {{ 'velto.compare.button' | t | escape }}">
+                <span class="velto-pbadge__icon" aria-hidden="true">{{- 'icon-price-tag.svg' | inline_asset_content -}}</span>{{ great_label }}
+              </button>
+            {%- else -%}
+              <span class="velto-pbadge__icon" aria-hidden="true">{{- 'icon-price-tag.svg' | inline_asset_content -}}</span>{{ great_label }}
+            {%- endif -%}
           </li>
         {%- endif -%}
       </ul>

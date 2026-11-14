@@ -604,6 +604,13 @@
       "adult": "18+",
       "adult_note": "Tikai pilngadīgām personām. Saņemot pasūtījumu, var lūgt uzrādīt personu apliecinošu dokumentu."
     },
+    "compare": {
+      "below_market": "{{ value }} % zem tirgus cenas",
+      "cheaper": "Par {{ value }} % lētāk nekā vidēji citos veikalos",
+      "button": "Salīdzināt cenas",
+      "title": "Cenas citos veikalos",
+      "source": "Salīdzinājumu nodrošina CenuDepo"
+    },
     "collection": {
       "all_title": "Visas preces",
       "exclusive_title": "Ekskluzīvās preces"

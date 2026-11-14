@@ -591,6 +591,13 @@
       "adult": "18+",
       "adult_note": "For adults only. You may be asked to show ID when you receive the order."
     },
+    "compare": {
+      "below_market": "{{ value }}% below market",
+      "cheaper": "{{ value }}% cheaper than the average price in other stores",
+      "button": "Compare prices",
+      "title": "Prices in other stores",
+      "source": "Comparison provided by CenuDepo"
+    },
     "collection": {
       "all_title": "All products",
       "exclusive_title": "Exclusive products"

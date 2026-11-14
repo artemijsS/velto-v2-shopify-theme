@@ -1,0 +1,32 @@
+{%- comment -%}
+  Velto — "prices in other stores" dialog (rendered once, in layout/theme.liquid).
+  Bottom sheet on mobile, centered dialog on desktop. Opened by assets/velto-compare.js from
+  any element with data-velto-compare + data-barcode (snippets/velto-price-compare.liquid);
+  the content is the price widget of Cenu Depo, loaded only when the dialog opens.
+{%- endcomment -%}
+{%- if settings.velto_compare_enable -%}
+  <dialog
+    class="velto-cmpd"
+    id="VeltoCompare"
+    aria-labelledby="VeltoCompareTitle"
+    data-src="https://cenudepo.lv/api/external/price-widget/?shop=velto&locale={{ request.locale.iso_code }}"
+  >
+    <div class="velto-cmpd__panel color-{{ settings.card_color_scheme }}">
+      <div class="velto-cmpd__head">
+        <div class="velto-cmpd__titles">
+          <h2 class="velto-cmpd__title" id="VeltoCompareTitle">{{ 'velto.compare.title' | t }}</h2>
+          <p class="velto-cmpd__product" data-cmp-product></p>
+        </div>
+        <button type="button" class="velto-cmpd__close" data-cmp-close aria-label="{{ 'accessibility.close' | t }}">
+          {{- 'icon-close.svg' | inline_asset_content -}}
+        </button>
+      </div>
+      <div class="velto-cmpd__body">
+        <span class="velto-cmpd__spinner" aria-hidden="true"></span>
+        <iframe class="velto-cmpd__frame" data-cmp-frame title="{{ 'velto.compare.title' | t | escape }}"></iframe>
+      </div>
+      <p class="velto-cmpd__foot">{{ 'velto.compare.source' | t }}</p>
+    </div>
+  </dialog>
+  <script src="{{ 'velto-compare.js' | asset_url }}" defer="defer"></script>
+{%- endif -%}

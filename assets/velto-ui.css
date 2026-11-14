@@ -412,6 +412,283 @@
   .velto-pbadges--page { flex-direction: column; gap: 0.8rem; }
 }
 
+/* ---------- Velto price comparison with other stores (snippets/velto-price-compare.liquid) ---------- */
+/* card: the "great price" badge is the button that opens the comparison */
+.velto-pbadges--card .velto-pbadge--compare {
+  padding: 0;
+  pointer-events: auto;
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.velto-pbadge__btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.35rem 0.8rem 0.35rem 0.7rem;
+  border: 0;
+  border-radius: inherit;
+  background: none;
+  color: inherit;
+  font: inherit;
+  letter-spacing: inherit;
+  white-space: nowrap;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* a finger-sized target around the small pill */
+.velto-pbadge__btn::before {
+  content: '';
+  position: absolute;
+  inset: -0.8rem;
+}
+
+.velto-pbadge__btn::after {
+  content: '›';
+  margin-left: 0.1rem;
+  opacity: 0.5;
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+
+@media (hover: hover) {
+  .velto-pbadges--card .velto-pbadge--compare:hover { background: #0a0a0a; color: #fff; }
+  .velto-pbadge--compare:hover .velto-pbadge__btn::after { opacity: 1; transform: translateX(0.2rem); }
+}
+
+@media screen and (max-width: 749px) {
+  .velto-pbadge__btn { padding: 0.3rem 0.6rem; }
+}
+
+/* product page: one quiet line under the price */
+.velto-cmp {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.8rem 1.8rem;
+  margin-top: 1.4rem;
+}
+
+.velto-cmp__lead {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.6rem 1rem;
+  margin: 0;
+}
+
+.velto-cmp__pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  height: 2.8rem;
+  padding: 0 1.2rem 0 1rem;
+  border: 1.5px solid rgb(var(--color-foreground));
+  border-radius: 3rem;
+  font-size: 1.3rem;
+  font-weight: 700;
+  letter-spacing: 0.04rem;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.velto-cmp__icon { display: inline-grid; place-items: center; line-height: 1; }
+.velto-cmp__icon svg { width: 1.1em; height: 1.1em; fill: currentColor; }
+
+.velto-cmp__note {
+  font-size: 1.4rem;
+  line-height: 1.3;
+  color: rgba(var(--color-foreground), 0.75);
+}
+
+.velto-cmp__btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  min-height: 2.8rem;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: rgb(var(--color-foreground));
+  font: inherit;
+  font-size: 1.4rem;
+  font-weight: 600;
+  line-height: 1.3;
+  text-decoration: underline;
+  text-decoration-color: rgba(var(--color-foreground), 0.3);
+  text-underline-offset: 0.4rem;
+  cursor: pointer;
+  transition: text-decoration-color 0.15s ease;
+}
+
+.velto-cmp__chart { flex: none; width: 1.8rem; height: 1.8rem; }
+.velto-cmp__arrow { transition: transform 0.15s ease; }
+
+@media (hover: hover) {
+  .velto-cmp__btn:hover { text-decoration-color: currentColor; }
+  .velto-cmp__btn:hover .velto-cmp__arrow { transform: translateX(0.3rem); }
+}
+
+/* the dialog: bottom sheet on mobile, centered on desktop (same look as .velto-vsheet) */
+body.velto-cmpd-open { overflow: hidden; }
+
+.velto-cmpd {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  max-height: none;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  overflow: hidden;
+}
+
+.velto-cmpd[open] {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+}
+
+.velto-cmpd::backdrop { background: rgba(0, 0, 0, 0.62); }
+
+.velto-cmpd__panel {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 56rem;
+  height: calc(100vh - 4rem);
+  height: min(72rem, calc(100dvh - 4rem));
+  border-radius: 1.6rem 1.6rem 0 0;
+  background: rgb(var(--color-background));
+  color: rgb(var(--color-foreground));
+  box-shadow: 0 -2rem 5rem rgba(0, 0, 0, 0.5);
+  overflow: hidden;
+  animation: velto-cmpd-up 0.26s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+@keyframes velto-cmpd-up {
+  from { transform: translateY(100%); }
+}
+
+@keyframes velto-cmpd-in {
+  from { opacity: 0; transform: translateY(1.2rem); }
+}
+
+.velto-cmpd__head {
+  display: flex;
+  align-items: center;
+  gap: 1.2rem;
+  padding: 1.4rem 1.4rem 1.4rem 1.8rem;
+  border-bottom: 1px solid rgba(var(--color-foreground), 0.12);
+}
+
+.velto-cmpd__titles { flex: 1; min-width: 0; }
+
+.velto-cmpd__title {
+  margin: 0;
+  font-size: 1.7rem;
+  font-weight: 700;
+  line-height: 1.3;
+}
+
+.velto-cmpd__product {
+  margin: 0.2rem 0 0;
+  font-size: 1.3rem;
+  line-height: 1.3;
+  color: rgba(var(--color-foreground), 0.6);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.velto-cmpd__product:empty { display: none; }
+
+.velto-cmpd__close {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 3.6rem;
+  height: 3.6rem;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: rgba(var(--color-foreground), 0.08);
+  color: rgb(var(--color-foreground));
+  cursor: pointer;
+}
+
+.velto-cmpd__close:hover { background: rgba(var(--color-foreground), 0.16); }
+.velto-cmpd__close svg { width: 1.3rem; height: 1.3rem; }
+
+/* the widget of Cenu Depo is a light page, whatever the colours of the theme */
+.velto-cmpd__body {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+  background: #fff;
+}
+
+.velto-cmpd__frame {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border: 0;
+  transition: opacity 0.2s ease;
+}
+
+.velto-cmpd.is-loading .velto-cmpd__frame { opacity: 0; }
+
+.velto-cmpd__spinner {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 3rem;
+  height: 3rem;
+  margin: -1.5rem 0 0 -1.5rem;
+  border: 0.3rem solid rgba(10, 10, 10, 0.12);
+  border-top-color: #0a0a0a;
+  border-radius: 50%;
+  opacity: 0;
+}
+
+.velto-cmpd.is-loading .velto-cmpd__spinner {
+  opacity: 1;
+  animation: velto-cmpd-spin 0.8s linear infinite;
+}
+
+@keyframes velto-cmpd-spin {
+  to { transform: rotate(360deg); }
+}
+
+.velto-cmpd__foot {
+  margin: 0;
+  padding: 1rem 1.6rem calc(1rem + env(safe-area-inset-bottom, 0px));
+  border-top: 1px solid rgba(var(--color-foreground), 0.12);
+  font-size: 1.2rem;
+  line-height: 1.3;
+  text-align: center;
+  color: rgba(var(--color-foreground), 0.55);
+}
+
+@media screen and (min-width: 750px) {
+  .velto-cmpd[open] { align-items: center; }
+
+  .velto-cmpd__panel {
+    height: calc(100vh - 8rem);
+    height: min(72rem, calc(100dvh - 8rem));
+    border-radius: 1.6rem;
+    box-shadow: 0 2rem 6rem rgba(0, 0, 0, 0.5);
+    animation-name: velto-cmpd-in;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .velto-cmpd__panel { animation: none; }
+}
+
 /* ---------- Velto country of origin (flag on the card image / under the product title) ---------- */
 .velto-flag {
   display: inline-block;

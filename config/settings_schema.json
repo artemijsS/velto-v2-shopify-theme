@@ -1780,6 +1780,13 @@
         "label": "\"Lieliska cena\" — minimālā cenas kategorija (custom.price_category)",
         "default": 4,
         "info": "Filtrs \"Lieliska cena\" apvieno vērtības 4 un 5."
+      },
+      {
+        "type": "checkbox",
+        "id": "velto_compare_enable",
+        "label": "Rādīt cenu salīdzinājumu ar citiem veikaliem (CenuDepo)",
+        "default": true,
+        "info": "Poga \"Salīdzināt cenas\" produkta lapā un uz marķējuma \"Lieliska cena\" kartītē. Ekskluzīvajām precēm un precēm bez svītrkoda netiek rādīta."
       }
     ]
   }
