@@ -465,40 +465,7 @@
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: 0.8rem 1.8rem;
-  margin-top: 1.4rem;
-}
-
-.velto-cmp__lead {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 0.6rem 1rem;
-  margin: 0;
-}
-
-.velto-cmp__pill {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.6rem;
-  height: 2.8rem;
-  padding: 0 1.2rem 0 1rem;
-  border: 1.5px solid rgb(var(--color-foreground));
-  border-radius: 3rem;
-  font-size: 1.3rem;
-  font-weight: 700;
-  letter-spacing: 0.04rem;
-  line-height: 1;
-  white-space: nowrap;
-}
-
-.velto-cmp__icon { display: inline-grid; place-items: center; line-height: 1; }
-.velto-cmp__icon svg { width: 1.1em; height: 1.1em; fill: currentColor; }
-
-.velto-cmp__note {
-  font-size: 1.4rem;
-  line-height: 1.3;
-  color: rgba(var(--color-foreground), 0.75);
+  margin-top: 1.2rem;
 }
 
 .velto-cmp__btn {

@@ -66,7 +66,16 @@
               <span class="velto-pbadge__icon" aria-hidden="true">{{- 'icon-price-tag.svg' | inline_asset_content -}}</span>
               {{- 'velto.badges.great_price' | t -}}
             </span>
-            <span class="velto-pbadge__note">{{ 'velto.badges.great_price_note' | t }}</span>
+            {%- comment -%} how much below the market when Cenu Depo knows it, the general note otherwise {%- endcomment -%}
+            {%- capture cmp_pct -%}{%- render 'velto-price-compare', product: product, style: 'pct' -%}{%- endcapture -%}
+            {%- assign cmp_pct = cmp_pct | strip | plus: 0 -%}
+            <span class="velto-pbadge__note">
+              {%- if cmp_pct >= 1 -%}
+                {{- 'velto.compare.cheaper' | t: value: cmp_pct -}}
+              {%- else -%}
+                {{- 'velto.badges.great_price_note' | t -}}
+              {%- endif -%}
+            </span>
           </li>
         {%- endif -%}
       </ul>

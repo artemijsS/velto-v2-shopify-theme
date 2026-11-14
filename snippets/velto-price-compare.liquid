@@ -8,8 +8,8 @@
     pct      : whole % below the average market price; 0 unless the price is "great"
                (price_category ≥ settings.velto_badge_price_min)
 
-  style: 'page' – product page, under the price: "great price" pill, how much cheaper,
-                  and the "compare prices" button
+  style: 'page' – product page, under the price: the "compare prices" button (how much cheaper
+                  the product is stands next to the "great price" pill, snippets/velto-product-badges.liquid)
          'attrs' – only the attributes that turn an element into the button that opens the
                   comparison (used by the "great price" badge of a card); nothing when not eligible
          'pct'   – only the number, for the caller's own text
@@ -36,10 +36,8 @@
     assign cmp_eligible = true
   endif
 
-  assign cmp_great = false
   assign cmp_pct = 0
   if cmp_min > 0 and cmp_category >= cmp_min
-    assign cmp_great = true
     assign cmp_pct = product.metafields.custom.price_percentage_diff_to_average.value | abs | round
   endif
 -%}
@@ -49,24 +47,8 @@
   {%- if cmp_eligible -%}
     data-velto-compare data-barcode="{{ cmp_barcode | escape }}" data-title="{{ product.title | escape }}"
   {%- endif -%}
-{%- elsif cmp_eligible or cmp_great -%}
-  <div class="velto-cmp{% if cmp_great %} velto-cmp--great{% endif %}">
-    {%- if cmp_great -%}
-      <p class="velto-cmp__lead">
-        <span class="velto-cmp__pill">
-          <span class="velto-cmp__icon" aria-hidden="true">{{- 'icon-price-tag.svg' | inline_asset_content -}}</span>
-          {{- 'velto.badges.great_price' | t -}}
-        </span>
-        <span class="velto-cmp__note">
-          {%- if cmp_pct >= 1 -%}
-            {{- 'velto.compare.cheaper' | t: value: cmp_pct -}}
-          {%- else -%}
-            {{- 'velto.badges.great_price_note' | t -}}
-          {%- endif -%}
-        </span>
-      </p>
-    {%- endif -%}
-    {%- if cmp_eligible -%}
+{%- elsif cmp_eligible -%}
+  <div class="velto-cmp">
       <button
         type="button"
         class="velto-cmp__btn"
@@ -78,6 +60,5 @@
         <span>{{ 'velto.compare.button' | t }}</span>
         <span class="velto-cmp__arrow" aria-hidden="true">→</span>
       </button>
-    {%- endif -%}
   </div>
 {%- endif -%}
