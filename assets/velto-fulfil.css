@@ -255,6 +255,15 @@ cart-items.is-empty .velto-fulfil { display: none; }
   line-height: 1.4;
 }
 
+/* checkout was pressed while something is missing: the whole card is marked,
+   until the customer changes something in it */
+.velto-fulfil--date-missing {
+  border-color: rgba(255, 122, 114, 0.7);
+  background: rgba(255, 122, 114, 0.06);
+  box-shadow: 0 0 0 3px rgba(255, 122, 114, 0.15);
+  transition: border-color 0.2s, background-color 0.2s, box-shadow 0.2s;
+}
+
 /* ---------- folded: the choice in one line ---------- */
 .velto-fulfil--folded { padding: 1.6rem 2.4rem; }
 .velto-fulfil--folded .velto-fulfil__head { display: none; }
