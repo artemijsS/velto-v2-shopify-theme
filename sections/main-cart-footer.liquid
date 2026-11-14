@@ -289,6 +289,36 @@
     }, 350);
   });
 
+  /* desktop: the summary column is sticky. The header hides on scroll down and
+     slides back in on scroll up; --velto-header-bottom is the part of it that is
+     on screen right now, measured (not guessed from its classes), so the summary
+     follows the header frame by frame and never ends up under it or far below it. */
+  (() => {
+    if (window.__veltoSumTop) return;
+    window.__veltoSumTop = true;
+    const header = document.querySelector('.section-header');
+    if (!header) return;
+    const root = document.documentElement;
+    let last = -1, until = 0, raf = 0;
+    const step = () => {
+      raf = 0;
+      const b = Math.max(0, Math.round(header.getBoundingClientRect().bottom));
+      if (b !== last) {
+        last = b;
+        root.style.setProperty('--velto-header-bottom', `${b}px`);
+      }
+      // keep measuring a little longer: the header's slide outlasts the scroll event
+      if (performance.now() < until) raf = requestAnimationFrame(step);
+    };
+    const kick = () => {
+      until = performance.now() + 400;
+      if (!raf) raf = requestAnimationFrame(step);
+    };
+    window.addEventListener('scroll', kick, { passive: true });
+    window.addEventListener('resize', kick);
+    kick();
+  })();
+
   /* mobile: fixed "Kopā · Noformēt" bar while the real checkout button is below the fold */
   (() => {
     if (window.__veltoCartBar) return;

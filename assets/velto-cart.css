@@ -240,15 +240,9 @@ cart-items .cart__items { border: 0; padding-bottom: 0; }
     grid-column: 2;
     grid-row: 1 / span 2;
     position: sticky;
-    top: 2.4rem;
-    transition: top 0.15s ease-out;
-  }
-
-  /* the header slides back in on scroll up: the summary moves down with it
-     instead of ending up underneath */
-  body:has(.shopify-section-header-sticky:not(.shopify-section-header-hidden))
-    #MainContent:has(#main-cart-footer:not(.is-empty)) > .shopify-section:has(#main-cart-footer) {
-    top: calc(var(--header-height, 0px) + 2.4rem);
+    /* --velto-header-bottom: how much of the header is on screen right now
+       (main-cart-footer.liquid) — the summary stays right below it */
+    top: calc(var(--velto-header-bottom, 0px) + 2.4rem);
   }
 
   #MainContent:has(#main-cart-footer:not(.is-empty)) .page-width {
