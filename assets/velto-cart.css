@@ -252,8 +252,10 @@ cart-items .cart__items { border: 0; padding-bottom: 0; }
 
   #MainContent:has(#main-cart-footer:not(.is-empty)) #main-cart-footer .cart__footer { padding: 0 0 4rem; }
 
-  /* line up the summary card with the first item row */
-  #MainContent:has(#main-cart-footer:not(.is-empty)) > .shopify-section:has(#main-cart-footer) { padding-top: 10.4rem; }
+  /* line up the summary card with the first card of the left column. A margin, not a
+     padding: the sticky box is then the card itself, so while it sticks there is no
+     empty strip above it and it does not get pushed below the left column's line */
+  #MainContent:has(#main-cart-footer:not(.is-empty)) > .shopify-section:has(#main-cart-footer) { margin-top: 10.4rem; }
 }
 
 /* ---------- checkout bar ----------
