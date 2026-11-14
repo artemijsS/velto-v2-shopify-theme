@@ -136,6 +136,10 @@
     "velto_fulfil_worker_url": "https://velto-delivery.family-reminder-bot.workers.dev/",
     "velto_fulfil_maps_key": "AIzaSyDrLtGPtCdM9YWZhMTFgDo-usrU5kzKfZQ",
     "velto_fulfil_page": "piegade-un-sanemsana",
+    "velto_fees_enable": true,
+    "velto_fee_deposit_product": "depozits",
+    "velto_fee_bag_product": "maisina-maksa",
+    "velto_fee_pack_product": "iepakosana-lidz-70",
     "velto_mine_enable": true,
     "velto_season_enable": true,
     "velto_season_force": "auto",
@@ -164,13 +168,13 @@
     },
     "content_for_index": [],
     "blocks": {
-      "16256948136948485038": {
-        "type": "shopify://apps/upcharge-fees/blocks/app-embed-block/3660e544-1847-4d53-9b3b-f0cb50c2d9f7",
-        "disabled": false,
+      "15567772368581731482": {
+        "type": "shopify://apps/mulwi-feeds/blocks/app-embed/d03db6a1-24ff-47d2-9ea7-1b57d66b3851",
+        "disabled": true,
         "settings": {}
       },
-      "2310698031238674758": {
-        "type": "shopify://apps/rp-local-delivery-date/blocks/app-embed-block/3fd2f2b6-9126-45e7-a20a-a58ae4f5c2d5",
+      "16256948136948485038": {
+        "type": "shopify://apps/upcharge-fees/blocks/app-embed-block/3660e544-1847-4d53-9b3b-f0cb50c2d9f7",
         "disabled": true,
         "settings": {}
       }
