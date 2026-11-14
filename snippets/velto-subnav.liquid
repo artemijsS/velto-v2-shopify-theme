@@ -110,8 +110,19 @@
           data-cutoff-time="{{ settings.velto_cutoff_time }}"
           data-delivery-days="{% render 'velto-delivery-days' %}"
         >
+          {%- comment -%} links to the "Delivery and pickup" page once it is chosen (theme settings → "Velto: sava piegāde") {%- endcomment -%}
+          {%- if settings.velto_fulfil_page != blank -%}
+            <a
+              class="velto-subnav__deliv-link"
+              href="{{ settings.velto_fulfil_page.url }}"
+              title="{{ 'velto.facts.more' | t | escape }}"
+            >
+          {%- endif -%}
           <span class="velto-subnav__deliv-icon" aria-hidden="true">{{- 'icon-truck.svg' | inline_asset_content -}}</span>
           <span>{{ 'velto.delivery.order' | t }} <strong data-v="deadline"></strong></span>
+          {%- if settings.velto_fulfil_page != blank -%}
+            </a>
+          {%- endif -%}
         </velto-delivery>
         <script src="{{ 'velto-delivery.js' | asset_url }}" defer="defer"></script>
       {%- endif -%}

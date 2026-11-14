@@ -183,6 +183,16 @@
   }
 
   .velto-subnav__deliv strong { color: rgb(var(--color-foreground)); font-weight: 600; }
+  .velto-subnav__deliv-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.8rem;
+    color: inherit;
+    text-decoration: none;
+    transition: color 0.15s ease;
+  }
+  .velto-subnav__deliv-link:hover { color: rgb(var(--color-foreground)); }
+  .velto-subnav__deliv-link:hover strong { text-decoration: underline; text-underline-offset: 0.3rem; }
   .velto-subnav__deliv-icon svg { width: 1.8rem; height: 1.8rem; fill: currentColor; display: block; }
 
   /* ---------- catalog panel ---------- */
