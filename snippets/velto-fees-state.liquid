@@ -11,7 +11,10 @@
   goods    — goods total in cents: no fee lines, no delivery line
   deposits — deposit containers in the cart
   lines    — fee lines now in the cart; own = ours, otherwise a line left by the
-             Upcharge Fees app (removed by the script)
+             Upcharge Fees app (removed by the script). A line the app added keeps
+             its "_mws_fee" property even when its product is now one of ours
+             (the app's products reused with the type "velto_fee"): it is replaced
+             by a clean line, so the property does not reach the order
 
   Rendered inline in layout/theme.liquid and, after cart changes, through
   sections/velto-fees-state.liquid.
@@ -30,10 +33,10 @@
   {%- liquid
     assign vf_own = false
     assign vf_app = false
-    if item.product.type == 'velto_fee'
-      assign vf_own = true
-    elsif item.product.type == 'mws_fee_generated' or item.properties['_mws_fee'] != blank
+    if item.properties['_mws_fee'] != blank or item.product.type == 'mws_fee_generated'
       assign vf_app = true
+    elsif item.product.type == 'velto_fee'
+      assign vf_own = true
     endif
   -%}
   {%- if vf_own or vf_app -%}
