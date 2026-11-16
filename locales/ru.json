@@ -196,9 +196,9 @@
       "label": "Галерея мультимедиа"
     },
     "facets": {
-      "apply": "Добавить",
-      "clear": "Удалить",
-      "clear_all": "Удалить все",
+      "apply": "Применить",
+      "clear": "Сбросить",
+      "clear_all": "Сбросить все",
       "from": "От",
       "filter_and_sort": "Фильтр и сортировка",
       "filter_by_label": "Фильтр:",
@@ -207,7 +207,7 @@
       "reset": "Сбросить",
       "sort_button": "Сортировка",
       "sort_by_label": "Сортировка:",
-      "to": "Для",
+      "to": "До",
       "filters_selected": {
         "one": "Выбрано: {{ count }}",
         "other": "Выбрано: {{ count }}",
@@ -215,16 +215,16 @@
         "many": "Выбрано: {{ count }}"
       },
       "product_count": {
-        "one": "{{ product_count }} из {{ count }} прод.",
-        "other": "{{ product_count }} из {{ count }} прод.",
-        "few": "{{ product_count }} из {{ count }} прод.",
-        "many": "{{ product_count }} из {{ count }} прод."
+        "one": "{{ product_count }} из {{ count }} товара",
+        "other": "{{ product_count }} из {{ count }} товаров",
+        "few": "{{ product_count }} из {{ count }} товаров",
+        "many": "{{ product_count }} из {{ count }} товаров"
       },
       "product_count_simple": {
-        "one": "{{ count }} прод.",
-        "other": "Продуктов: {{ count }}",
-        "few": "Продуктов: {{ count }}",
-        "many": "Продуктов: {{ count }}"
+        "one": "{{ count }} товар",
+        "other": "{{ count }} товара",
+        "few": "{{ count }} товара",
+        "many": "{{ count }} товаров"
       },
       "clear_filter": "Снять фильтр",
       "filter_selected_accessibility": "{{ type }} (установлены фильтры: {{ count }})",
@@ -562,6 +562,18 @@
     }
   },
   "velto": {
+    "sort": {
+      "manual": "Рекомендуемые",
+      "most_relevant": "Наиболее подходящие",
+      "relevance": "Наиболее подходящие",
+      "best_selling": "Популярные",
+      "title_ascending": "По названию: А–Я",
+      "title_descending": "По названию: Я–А",
+      "price_ascending": "Сначала дешевле",
+      "price_descending": "Сначала дороже",
+      "created_ascending": "Сначала старые",
+      "created_descending": "Сначала новые"
+    },
     "home": "Главная",
     "all": "Все",
     "products_count": {
@@ -620,6 +632,7 @@
     },
     "compare": {
       "below_market": "На {{ value }} % ниже рынка",
+      "below_market_short": "−{{ value }} %",
       "cheaper": "На {{ value }} % дешевле, чем в среднем в других магазинах",
       "button": "Сравнить цены",
       "title": "Цены в других магазинах",

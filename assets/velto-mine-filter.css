@@ -38,18 +38,19 @@ velto-mine-filter.velto-mf { display: inline-flex; flex: 0 0 auto; }
 }
 
 /* desktop: first item of the filter row */
-/* the row items are text-height (2.1rem) and sit at the top — centre the
-   3.6rem pill on that line without making the row taller */
+/* the filters are pills of the same height (velto-collection.css) — it just lines up */
 .facets__wrapper > .velto-mf[data-place='desk'] {
-  align-self: flex-start;
-  margin: -0.75rem 1.6rem -0.75rem 0;
+  align-self: center;
+  margin: 0 0.4rem 0 0;
 }
 
 /* mobile: next to "Filtrēt un kārtot" */
-.facets-container > .velto-mf[data-place='mob'] { align-self: center; margin: -0.3rem 0 0 auto; }
+.facets-container > .velto-mf[data-place='mob'] { align-self: center; margin: 0 0 0 auto; }
 /* the count is already in the hero above — keep the row on one line */
 .facets-container:has(> .velto-mf[data-place='mob']) > .product-count { display: none; }
-.facets-container > .velto-mf[data-place='mob'] .velto-mf__toggle { height: 3.4rem; font-size: 1.3rem; }
+/* signed out, the link itself is both .velto-mf and the toggle */
+.facets-container > .velto-mf[data-place='mob'] .velto-mf__toggle,
+.facets-container > .velto-mf__toggle[data-place='mob'] { height: 3.4rem; font-size: 1.3rem; }
 
 /* filter on: the regular grid and paging make way for the results */
 .velto-mf-on #ProductGridContainer > .collection:not(.velto-mf__results),
@@ -88,7 +89,19 @@ velto-mine-filter.velto-mf { display: inline-flex; flex: 0 0 auto; }
   color: #fff;
   font-size: 1.1rem;
   font-weight: 700;
+  line-height: 1.2;
+  white-space: nowrap;
   pointer-events: none;
+}
+
+/* the product badges (18+ / exclusive / price) go on the rows under it — the two never overlap */
+.card__inner:has(> .velto-mf__badge) > .velto-pbadges--card,
+.card:has(> .velto-mf__badge) > .velto-pbadges--card { top: 3.6rem; }
+
+@media screen and (max-width: 749px) {
+  .velto-mf__badge { top: 0.6rem; left: 0.6rem; font-size: 1rem; }
+  .card__inner:has(> .velto-mf__badge) > .velto-pbadges--card,
+  .card:has(> .velto-mf__badge) > .velto-pbadges--card { top: 3.2rem; }
 }
 
 /* loading placeholders */

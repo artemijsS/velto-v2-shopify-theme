@@ -198,7 +198,7 @@
       "filter_and_operator_subtitle": "Atbilst visiem",
       "apply": "Lietot",
       "clear": "Notīrīt",
-      "clear_all": "Noņemt visus",
+      "clear_all": "Notīrīt visus",
       "from": "No",
       "filter_and_sort": "Filtrēt un kārtot",
       "filter_by_label": "Filtrs:",
@@ -213,14 +213,14 @@
       "show_less": "Rādīt mazāk",
       "max_price": "Augstākā cena ir {{ price }}",
       "product_count": {
-        "zero": "{{ product_count }} no {{ count }} produktiem",
-        "one": "{{ product_count }} no {{ count }} produkta",
-        "other": "{{ product_count }} no {{ count }} produktiem"
+        "zero": "{{ product_count }} no {{ count }} precēm",
+        "one": "{{ product_count }} no {{ count }} preces",
+        "other": "{{ product_count }} no {{ count }} precēm"
       },
       "product_count_simple": {
-        "zero": "{{ count }} produkti",
-        "one": "{{ count }} produkts",
-        "other": "{{ count }} produkti"
+        "zero": "{{ count }} preces",
+        "one": "{{ count }} prece",
+        "other": "{{ count }} preces"
       },
       "reset": "Atiestatīt",
       "sort_button": "Kārtot",
@@ -550,6 +550,18 @@
     }
   },
   "velto": {
+    "sort": {
+      "manual": "Ieteiktie",
+      "most_relevant": "Atbilstošākie",
+      "relevance": "Atbilstošākie",
+      "best_selling": "Pirktākie",
+      "title_ascending": "Nosaukums: A–Z",
+      "title_descending": "Nosaukums: Z–A",
+      "price_ascending": "Lētākie vispirms",
+      "price_descending": "Dārgākie vispirms",
+      "created_ascending": "Vecākie vispirms",
+      "created_descending": "Jaunākie vispirms"
+    },
     "home": "Sākums",
     "all": "Visi",
     "products_count": {
@@ -607,6 +619,7 @@
     },
     "compare": {
       "below_market": "{{ value }} % zem tirgus cenas",
+      "below_market_short": "−{{ value }} %",
       "cheaper": "Par {{ value }} % lētāk nekā vidēji citos veikalos",
       "button": "Salīdzināt cenas",
       "title": "Cenas citos veikalos",

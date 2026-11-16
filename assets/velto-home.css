@@ -1118,6 +1118,16 @@ velto-showcase.is-paused .velto-hero__dot.is-active::after {
   pointer-events: none;
 }
 
+/* the product badges keep clear of the rank number (they turn compact when the room is
+   short — velto-ui.css); on the smallest phones they go under it */
+.velto-best__item .velto-pbadges--card { left: 5.2rem; }
+.velto-best__item:nth-child(-n + 3) .velto-pbadges--card { left: 6rem; }
+
+@media screen and (max-width: 359px) {
+  .velto-best__item .velto-pbadges--card,
+  .velto-best__item:nth-child(-n + 3) .velto-pbadges--card { top: 6rem; left: 0.6rem; }
+}
+
 /* podium: top 3 get a bigger, outlined numeral */
 .velto-best__item:nth-child(-n + 3)::before {
   min-width: 4.4rem;

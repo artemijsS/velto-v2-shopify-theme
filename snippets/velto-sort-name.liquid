@@ -1,0 +1,15 @@
+{%- comment -%}
+  Velto: name of a sort option. Shopify's own names are long and, in Russian, clumsy
+  ("Рекомендуется", "Лидер продаж") — ours live in locales (velto.sort.<value>); an
+  option we have no name for keeps Shopify's.
+  Params: option (sort option)
+{%- endcomment -%}
+{%- liquid
+  assign velto_sort_key = 'velto.sort.' | append: option.value | replace: '-', '_'
+  assign velto_sort_name = velto_sort_key | t
+  assign velto_sort_probe = velto_sort_name | downcase
+  if velto_sort_name == blank or velto_sort_probe contains 'translation missing'
+    assign velto_sort_name = option.name
+  endif
+-%}
+{{- velto_sort_name | strip_html | escape -}}

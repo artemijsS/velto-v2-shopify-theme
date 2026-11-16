@@ -15,6 +15,8 @@
 {{ 'component-show-more.css' | asset_url | stylesheet_tag }}
 {{ 'component-swatch-input.css' | asset_url | stylesheet_tag }}
 {{ 'component-swatch.css' | asset_url | stylesheet_tag }}
+{%- comment -%} Velto: the sort control as a pill with its own list (desktop) {%- endcomment -%}
+<script src="{{ 'velto-sort.js' | asset_url }}" defer="defer"></script>
 
 {%- liquid
   assign sort_by = results.sort_by | default: results.default_sort_by
@@ -115,6 +117,23 @@
             <script src="{{ 'show-more.js' | asset_url }}" defer="defer"></script>
             {% comment %} Filters for both horizontal and vertical filter {% endcomment %}
             {%- for filter in results.filters -%}
+              {%- liquid
+                comment
+                  Velto: "-" is the Search & Discovery group for "no value" — it is not offered
+                  as a choice, and a filter with nothing else to choose is not shown at all
+                endcomment
+                if filter.type == 'list'
+                  assign velto_real_values = 0
+                  for v in filter.values
+                    if v.label != '-'
+                      assign velto_real_values = velto_real_values | plus: 1
+                    endif
+                  endfor
+                  if velto_real_values == 0
+                    continue
+                  endif
+                endif
+              -%}
               {% liquid
                 assign total_active_values = total_active_values | plus: filter.active_values.size
                 assign presentation = filter.presentation | default: default_presentation
@@ -151,6 +170,9 @@
                             >
                           {%- endif -%}
                         </span>
+                        {%- if filter_type == 'horizontal' and filter.active_values.size > 0 -%}
+                          <span class="velto-facet-count" aria-hidden="true">{{ filter.active_values.size }}</span>
+                        {%- endif -%}
                         {%- if filter_type == 'vertical' and filter.operator == 'AND' -%}
                           <span class="facets__and-helptext">
                             {{ 'products.facets.filter_and_operator_subtitle' | t }}
@@ -198,6 +220,7 @@
                           role="list"
                         >
                           {%- for value in sorted_values -%}
+                            {%- if value.label == '-' -%}{%- continue -%}{%- endif -%}
                             {% liquid
                               assign input_id = 'Filter-' | append: filter.param_name | escape | append: '-' | append: forloop.index
                               assign is_disabled = false
@@ -312,6 +335,11 @@
                     <summary class="facets__summary caption-large focus-offset">
                       <div>
                         <span>{{ filter.label | escape }}</span>
+                        {%- if filter_type == 'horizontal' -%}
+                          {%- if filter.min_value.value != null or filter.max_value.value != null -%}
+                            <span class="velto-facet-count velto-facet-count--dot" aria-hidden="true"></span>
+                          {%- endif -%}
+                        {%- endif -%}
                         {{- 'icon-caret.svg' | inline_asset_content -}}
                       </div>
                     </summary>
@@ -396,6 +424,7 @@
                 <h2 class="facet-filters__label caption-large text-body">
                   <label for="SortBy">{{ 'products.facets.sort_by_label' | t }}</label>
                 </h2>
+                <velto-sort hidden></velto-sort>
                 <div class="select">
                   {%- assign sort_by = results.sort_by | default: results.default_sort_by -%}
                   <select
@@ -411,7 +440,7 @@
                           selected="selected"
                         {% endif %}
                       >
-                        {{ option.name | escape }}
+                        {%- render 'velto-sort-name', option: option -%}
                       </option>
                     {%- endfor -%}
                   </select>
@@ -514,6 +543,23 @@
             >
               {%- if enable_filtering -%}
                 {%- for filter in results.filters -%}
+                  {%- liquid
+                    comment
+                      Velto: "-" is the Search & Discovery group for "no value" — it is not offered
+                      as a choice, and a filter with nothing else to choose is not shown at all
+                    endcomment
+                    if filter.type == 'list'
+                      assign velto_real_values = 0
+                      for v in filter.values
+                        if v.label != '-'
+                          assign velto_real_values = velto_real_values | plus: 1
+                        endif
+                      endfor
+                      if velto_real_values == 0
+                        continue
+                      endif
+                    endif
+                  -%}
                   {% liquid
                     assign presentation = filter.presentation | default: default_presentation
                     if presentation == 'image'
@@ -566,6 +612,7 @@
                               endif
                             -%}
                             {%- for value in sorted_values -%}
+                            {%- if value.label == '-' -%}{%- continue -%}{%- endif -%}
                               {% liquid
                                 assign input_id = 'Filter-' | append: filter.param_name | escape | append: '-mobile-' | append: forloop.index
                                 assign is_disabled = false
@@ -744,7 +791,7 @@
                                 selected="selected"
                               {% endif %}
                             >
-                              {{ option.name | escape }}
+                              {%- render 'velto-sort-name', option: option -%}
                             </option>
                           {%- endfor -%}
                         </select>
@@ -836,6 +883,7 @@
             <h2 class="facet-filters__label caption-large text-body">
               <label for="SortBy">{{ 'products.facets.sort_by_label' | t }}</label>
             </h2>
+            <velto-sort hidden></velto-sort>
             <div class="select">
               {%- assign sort_by = results.sort_by | default: results.default_sort_by -%}
               <select
@@ -851,7 +899,7 @@
                       selected="selected"
                     {% endif %}
                   >
-                    {{ option.name | escape }}
+                    {%- render 'velto-sort-name', option: option -%}
                   </option>
                 {%- endfor -%}
               </select>

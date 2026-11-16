@@ -301,12 +301,17 @@
   fill: currentColor;
 }
 
-/* on the card image — top-right, stacked (top-left is used by rank numbers) */
+/* on the card image — top-right, stacked (top-left is used by rank numbers).
+   The list spans the card (left + right) and is a size container: when the card is too
+   narrow for a full label the badges switch to a compact form (see @container below),
+   so they never stick out of the card or run into the badge in the other corner. */
 .velto-pbadges--card {
   position: absolute;
   z-index: 2;
   top: 0.8rem;
   right: 0.8rem;
+  left: 0.8rem;
+  container: velto-pb / inline-size;
   display: flex;
   flex-direction: column;
   align-items: flex-end;
@@ -350,8 +355,40 @@
 }
 
 @media screen and (max-width: 749px) {
-  .velto-pbadges--card { top: 0.6rem; right: 0.6rem; }
+  .velto-pbadges--card { top: 0.6rem; right: 0.6rem; left: 0.6rem; }
   .velto-pbadges--card .velto-pbadge { font-size: 1rem; padding: 0.3rem 0.7rem 0.3rem 0.6rem; }
+}
+
+/* compact badges on narrow cards */
+.velto-pbadge__short { display: none; }
+
+/* no room for "12 % zem tirgus cenas" → "−12 %" (the full text stays for screen readers) */
+@container velto-pb (max-width: 17.2rem) {
+  .velto-pbadge--has-short .velto-pbadge__short { display: inline; }
+  .velto-pbadge--has-short .velto-pbadge__txt {
+    position: absolute;
+    overflow: hidden;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+  }
+}
+
+/* next to nothing left (small phone, rank number beside it) → the icon alone */
+@container velto-pb (max-width: 10.4rem) {
+  .velto-pbadge--exclusive .velto-pbadge__txt,
+  .velto-pbadge--price:not(.velto-pbadge--has-short) .velto-pbadge__txt {
+    position: absolute;
+    overflow: hidden;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+  }
+  .velto-pbadges--card .velto-pbadge--exclusive { padding-right: 0.7rem; }
 }
 
 /* product page — pills with a short explanation */

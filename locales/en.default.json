@@ -538,6 +538,18 @@
     }
   },
   "velto": {
+    "sort": {
+      "manual": "Featured",
+      "most_relevant": "Most relevant",
+      "relevance": "Most relevant",
+      "best_selling": "Best selling",
+      "title_ascending": "Name: A–Z",
+      "title_descending": "Name: Z–A",
+      "price_ascending": "Price: low to high",
+      "price_descending": "Price: high to low",
+      "created_ascending": "Oldest first",
+      "created_descending": "Newest first"
+    },
     "home": "Home",
     "all": "All",
     "products_count": {
@@ -594,6 +606,7 @@
     },
     "compare": {
       "below_market": "{{ value }}% below market",
+      "below_market_short": "−{{ value }}%",
       "cheaper": "{{ value }}% cheaper than the average price in other stores",
       "button": "Compare prices",
       "title": "Prices in other stores",
