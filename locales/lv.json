@@ -586,7 +586,8 @@
       "popular_title": "Populāri meklējumi",
       "popular_searches": "piens,siers,olas,zupa,čipsi,kafija,sviests,maize",
       "categories_title": "Kategorijas",
-      "account": "Mans konts"
+      "account": "Mans konts",
+      "products_count": "preču skaits: {{ n }}"
     },
     "search": {
       "crumb": "Meklēšana",

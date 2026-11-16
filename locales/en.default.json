@@ -573,7 +573,8 @@
       "popular_title": "Popular searches",
       "popular_searches": "milk,cheese,eggs,soup,chips,coffee,butter,bread",
       "categories_title": "Categories",
-      "account": "My account"
+      "account": "My account",
+      "products_count": "{{ n }} products"
     },
     "search": {
       "crumb": "Search",

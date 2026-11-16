@@ -1,0 +1,27 @@
+{%- comment -%}
+  Muted product count next to a header quick link (e.g. "Jaunumi 24").
+  Shown only when the link points straight at the collection chosen in
+  header settings (Velto: ātrās saites → "Rādīt jaunumu skaitu") and it has products.
+  Params: url (quick-link url, already normalised to /collections/…), section
+{%- endcomment -%}
+{%- liquid
+  assign vqc_handle = section.settings.velto_new_count_handle | strip
+  if section.settings.velto_new_count_enable and vqc_handle != blank
+    assign vqc_path = url | split: '?' | first | split: '#' | first
+    assign vqc_target = '/collections/' | append: vqc_handle
+    assign vqc_target_slash = vqc_target | append: '/'
+    if vqc_path == vqc_target or vqc_path == vqc_target_slash
+      assign vqc_n = collections[vqc_handle].products_count | default: 0
+      if vqc_n > 0
+        if vqc_n > 99
+          assign vqc_label = '99+'
+        else
+          assign vqc_label = vqc_n
+        endif
+        assign vqc_sr = 'velto.nav.products_count' | t: n: vqc_n
+        echo '<span class="velto-quick-count" aria-hidden="true">' | append: vqc_label | append: '</span>'
+        echo '<span class="visually-hidden"> (' | append: vqc_sr | append: ')</span>'
+      endif
+    endif
+  endif
+-%}

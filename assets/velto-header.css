@@ -1118,3 +1118,17 @@
    otherwise its unsized checkmark icon flashes across the whole screen.
    That stylesheet turns it back on (.cart-notification-wrapper .cart-notification). */
 .cart-notification { display: none; }
+
+/* Muted product count next to a quick link ("Jaunumi 24") */
+.velto-quick-count {
+  margin-left: 0.5rem;
+  font-size: 0.85em;
+  font-weight: 400;
+  font-variant-numeric: tabular-nums;
+  color: rgba(var(--color-foreground), 0.45);
+}
+.velto-mnav__chip .velto-quick-count { margin-left: -0.3rem; }
+.velto-subnav__quick a.is-active .velto-quick-count,
+.velto-mnav__chip.is-active .velto-quick-count {
+  color: rgba(var(--color-background), 0.6);
+}
