@@ -10,6 +10,7 @@
   - show_rating: {Boolean} Show the product rating. Default: false
   - extend_height: {Boolean} Card height extends to available container space. Default: true (optional)
   - lazy_load: {Boolean} Image should be lazy loaded. Default: true (optional)
+  - fetch_priority: {String} 'high' for the first cards of a page, with lazy_load: false (optional)
   - skip_styles: {Boolean} Don't include component styles. Useful when rendering multiple product cards in a loop. Default: false (optional)
   - quick_add: {Boolean} Show the quick add button.
   - section_id: {String} The ID of the section that contains this card.
@@ -80,6 +81,9 @@
                   {% unless lazy_load == false %}
                     loading="lazy"
                   {% endunless %}
+                  {% if fetch_priority == 'high' and lazy_load == false %}
+                    fetchpriority="high"
+                  {% endif %}
                   width="{{ card_product.featured_media.width }}"
                   height="{{ card_product.featured_media.height }}"
                 >

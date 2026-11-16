@@ -156,7 +156,7 @@
             {{
               p.featured_media
               | image_url: width: 400
-              | image_tag: loading: 'eager', sizes: '180px', widths: '200, 300, 400', alt: ''
+              | image_tag: loading: 'lazy', sizes: '180px', widths: '200, 300, 400', alt: ''
             }}
           </li>
         {%- endfor -%}

@@ -95,6 +95,16 @@
       i.src = u.toString();
     });
 
+  /* width (px) of the source the browser has already picked for this image; 0 = none yet */
+  const pickedWidth = (img) => {
+    if (!img.currentSrc) return 0;
+    try {
+      const w = parseInt(new URL(img.currentSrc, location.href).searchParams.get('width'), 10);
+      if (w > 0) return w;
+    } catch (e) {}
+    return img.complete ? img.naturalWidth : 0;
+  };
+
   const apply = (img, bb) => {
     if (!bb) {
       img.dataset.fit = 'none';
@@ -114,9 +124,15 @@
     img.style.setProperty('--fit', `translate(${tx.toFixed(2)}%, ${ty.toFixed(2)}%) scale(${s.toFixed(3)})`);
     img.dataset.fit = s > 1.02 ? 'zoom' : 'fit';
     // a zoomed photo needs a sharper source from the srcset
+    // …unless the source the browser already picked is sharp enough (2× is plenty):
+    // asking for a bigger one downloads the photo a second time, and for the first
+    // cards of a page that late swap is what the browser counts as the main image (LCP)
     if (s > 1.15 && img.hasAttribute('srcset')) {
       const box = img.getBoundingClientRect().width;
-      if (box > 0) img.sizes = `${Math.ceil(box * Math.min(s, MAX))}px`;
+      if (box > 0) {
+        const need = Math.ceil(box * Math.min(s, MAX));
+        if (pickedWidth(img) < need * Math.min(window.devicePixelRatio || 1, 2)) img.sizes = `${need}px`;
+      }
     }
   };
 

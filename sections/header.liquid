@@ -227,8 +227,13 @@
       <span class="velto-search-pill__kbd" aria-hidden="true">{{ 'general.search.search' | t }}</span>
     </button>
 
+    {%- comment -%}
+      Velto: with the logo top-left the inline menu is never shown (velto-header.css hides
+      it on desktop, base.css below 990px — the catalog panel and the drawer are the menus),
+      so it is not rendered at all: ~35 KB of HTML less on every page.
+    {%- endcomment -%}
     {%- liquid
-      if section.settings.menu != blank
+      if section.settings.menu != blank and section.settings.logo_position != 'top-left'
         if section.settings.menu_type_desktop == 'dropdown'
           render 'header-dropdown-menu'
         elsif section.settings.menu_type_desktop != 'drawer'
