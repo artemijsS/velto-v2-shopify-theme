@@ -25,6 +25,8 @@
 
       <ul class="velto-cats__list" role="list">
         {%- for link in menu.links -%}
+          {%- comment -%} categories without products are not shown {%- endcomment -%}
+          {%- if link.type == 'collection_link' and link.object.all_products_count == 0 and link.active == false -%}{%- continue -%}{%- endif -%}
           {%- liquid
             assign img = nil
             if link.type == 'collection_link' and link.object

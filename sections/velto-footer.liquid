@@ -64,6 +64,7 @@
           <h2 class="velto-footer__heading" id="VeltoFooterCats">{% render 'velto-t', s: section.settings.categories_heading %}</h2>
           <ul class="velto-footer__links" role="list">
             {%- for link in cat_menu.links limit: cat_limit -%}
+              {%- if link.type == 'collection_link' and link.object.all_products_count == 0 and link.active == false -%}{%- continue -%}{%- endif -%}
               <li><a href="{{ link.url }}">{{ link.title | remove: '💙' | strip }}</a></li>
             {%- endfor -%}
             {%- if cat_menu.links.size > cat_limit -%}

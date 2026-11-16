@@ -207,6 +207,8 @@
             </li>
             {%- for child in parent_link.links -%}
               {%- if child.url == parent_link.url -%}{%- continue -%}{%- endif -%}
+              {%- comment -%} sub-categories without products are not shown {%- endcomment -%}
+              {%- if child.type == 'collection_link' and child.object.all_products_count == 0 and child.active == false -%}{%- continue -%}{%- endif -%}
               {%- liquid
                 assign img = nil
                 if child.type == 'collection_link' and child.object

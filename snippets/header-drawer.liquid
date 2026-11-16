@@ -27,8 +27,25 @@
             <p class="velto-dr__eyebrow">{{ 'velto.nav.catalog' | t }}</p>
             <ul class="menu-drawer__menu has-submenu list-menu" role="list">
               {%- for link in section.settings.menu.links -%}
+                {%- liquid
+                  comment
+                    Velto: categories without products are not shown (unless it is the open page);
+                    vis = sub-categories of this link that will be shown
+                  endcomment
+                  assign vis = 0
+                  for c in link.links
+                    if c.url == link.url and c.links == blank
+                      continue
+                    endif
+                    if c.links == blank and c.type == 'collection_link' and c.object.all_products_count == 0 and c.active == false
+                      continue
+                    endif
+                    assign vis = vis | plus: 1
+                  endfor
+                -%}
+                {%- if link.type == 'collection_link' and link.object.all_products_count == 0 and link.active == false and vis == 0 -%}{%- continue -%}{%- endif -%}
                 <li>
-                  {%- if link.links != blank -%}
+                  {%- if vis > 0 -%}
                     <details id="Details-menu-drawer-menu-item-{{ forloop.index }}">
                       <summary
                         id="HeaderDrawer-{{ link.handle }}"
@@ -63,6 +80,7 @@
                           <ul class="menu-drawer__menu list-menu" role="list" tabindex="-1">
                             {%- for childlink in link.links -%}
                               {%- if childlink.url == link.url and childlink.links == blank -%}{%- continue -%}{%- endif -%}
+                              {%- if childlink.links == blank and childlink.type == 'collection_link' and childlink.object.all_products_count == 0 and childlink.active == false -%}{%- continue -%}{%- endif -%}
                               <li>
                                 {%- if childlink.links == blank -%}
                                   <a
@@ -109,6 +127,7 @@
                                         tabindex="-1"
                                       >
                                         {%- for grandchildlink in childlink.links -%}
+                                          {%- if grandchildlink.type == 'collection_link' and grandchildlink.object.all_products_count == 0 and grandchildlink.active == false -%}{%- continue -%}{%- endif -%}
                                           <li>
                                             <a
                                               id="HeaderDrawer-{{ link.handle }}-{{ childlink.handle }}-{{ grandchildlink.handle }}"

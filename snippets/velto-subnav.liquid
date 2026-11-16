@@ -22,35 +22,75 @@
 
         <div class="velto-catalog__panel" id="VeltoCatalogPanel" hidden>
           <ul class="velto-catalog__cats" role="list">
+            {%- comment -%} ci: position among the shown categories (velto-catalog.js pairs category ↔ pane by it) {%- endcomment -%}
+            {%- assign ci = 0 -%}
             {%- for link in menu.links -%}
+              {%- liquid
+                comment
+                  Velto: categories without products are not shown (unless it is the open page);
+                  vis = sub-categories of this link that will be shown
+                endcomment
+                assign vis = 0
+                for c in link.links
+                  if c.url == link.url
+                    continue
+                  endif
+                  if c.type == 'collection_link' and c.object.all_products_count == 0 and c.active == false
+                    continue
+                  endif
+                  assign vis = vis | plus: 1
+                endfor
+              -%}
+              {%- if link.type == 'collection_link' and link.object.all_products_count == 0 and link.active == false and vis == 0 -%}{%- continue -%}{%- endif -%}
               <li>
                 <a
                   href="{{ link.url }}"
-                  class="velto-catalog__cat{% if forloop.first %} is-active{% endif %}{% if link.active or link.child_active %} is-current{% endif %}"
-                  data-index="{{ forloop.index0 }}"
+                  class="velto-catalog__cat{% if ci == 0 %} is-active{% endif %}{% if link.active or link.child_active %} is-current{% endif %}"
+                  data-index="{{ ci }}"
                 >
                   <span>{{ link.title | remove: '💙' | strip }}</span>
-                  {%- if link.links.size > 0 -%}
+                  {%- if vis > 0 -%}
                     <span class="velto-catalog__chev" aria-hidden="true">{{- 'icon-caret.svg' | inline_asset_content -}}</span>
                   {%- endif -%}
                 </a>
               </li>
+              {%- assign ci = ci | plus: 1 -%}
             {%- endfor -%}
           </ul>
 
           <div class="velto-catalog__panes">
+            {%- assign ci = 0 -%}
             {%- for link in menu.links -%}
-              <div class="velto-catalog__pane{% if forloop.first %} is-active{% endif %}" data-index="{{ forloop.index0 }}">
+              {%- liquid
+                comment
+                  Velto: categories without products are not shown (unless it is the open page);
+                  vis = sub-categories of this link that will be shown
+                endcomment
+                assign vis = 0
+                for c in link.links
+                  if c.url == link.url
+                    continue
+                  endif
+                  if c.type == 'collection_link' and c.object.all_products_count == 0 and c.active == false
+                    continue
+                  endif
+                  assign vis = vis | plus: 1
+                endfor
+              -%}
+              {%- if link.type == 'collection_link' and link.object.all_products_count == 0 and link.active == false and vis == 0 -%}{%- continue -%}{%- endif -%}
+              <div class="velto-catalog__pane{% if ci == 0 %} is-active{% endif %}" data-index="{{ ci }}">
+              {%- assign ci = ci | plus: 1 -%}
                 <div class="velto-catalog__pane-head">
                   <p class="velto-catalog__pane-title">{{ link.title | remove: '💙' | strip }}</p>
                   <a class="velto-catalog__pane-all" href="{{ link.url }}">
                     {{- 'velto.nav.view_all' | t }} <span aria-hidden="true">→</span>
                   </a>
                 </div>
-                {%- if link.links.size > 0 -%}
+                {%- if vis > 0 -%}
                   <ul class="velto-catalog__subs" role="list">
                     {%- for child in link.links -%}
                       {%- if child.url == link.url -%}{%- continue -%}{%- endif -%}
+                      {%- if child.type == 'collection_link' and child.object.all_products_count == 0 and child.active == false -%}{%- continue -%}{%- endif -%}
                       {%- liquid
                         assign img = nil
                         if child.type == 'collection_link' and child.object
