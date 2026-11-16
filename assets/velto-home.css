@@ -198,9 +198,12 @@
   flex-wrap: wrap;
   gap: 0.6rem;
   margin-top: 1.4rem;
+  min-height: 0.4rem;
 }
 
-.velto-hero__dots[hidden] { display: none; }
+/* the dots are added by velto-showcase.js once the best sellers are loaded: keep their
+   row reserved until then, otherwise the hero grows and the page jumps (layout shift) */
+.velto-hero__dots[hidden] { display: flex; visibility: hidden; }
 
 .velto-hero__dot {
   position: relative;
