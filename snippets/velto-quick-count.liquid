@@ -1,5 +1,5 @@
 {%- comment -%}
-  Muted product count next to a header quick link (e.g. "Jaunumi 24").
+  Product count badge next to a header quick link (e.g. "Jaunumi 128", capped at "999+").
   Shown only when the link points straight at the collection chosen in
   header settings (Velto: ātrās saites → "Rādīt jaunumu skaitu") and it has products.
   Params: url (quick-link url, already normalised to /collections/…), section
@@ -13,8 +13,8 @@
     if vqc_path == vqc_target or vqc_path == vqc_target_slash
       assign vqc_n = collections[vqc_handle].products_count | default: 0
       if vqc_n > 0
-        if vqc_n > 99
-          assign vqc_label = '99+'
+        if vqc_n > 999
+          assign vqc_label = '999+'
         else
           assign vqc_label = vqc_n
         endif

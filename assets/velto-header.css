@@ -1119,16 +1119,29 @@
    That stylesheet turns it back on (.cart-notification-wrapper .cart-notification). */
 .cart-notification { display: none; }
 
-/* Muted product count next to a quick link ("Jaunumi 24") */
+/* Product count badge next to a quick link ("Jaunumi 128") */
 .velto-quick-count {
-  margin-left: 0.5rem;
-  font-size: 0.85em;
-  font-weight: 400;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  min-width: 2rem;
+  height: 1.8rem;
+  margin: 0 -0.4rem 0 0.7rem;
+  padding: 0 0.6rem;
+  border-radius: 1rem;
+  background: rgba(var(--color-foreground), 0.1);
+  color: rgba(var(--color-foreground), 0.8);
+  font-size: 1.1rem;
+  font-weight: 600;
+  line-height: 1;
   font-variant-numeric: tabular-nums;
-  color: rgba(var(--color-foreground), 0.45);
+  transition: background-color 0.2s ease, color 0.2s ease;
 }
-.velto-mnav__chip .velto-quick-count { margin-left: -0.3rem; }
+.velto-mnav__chip .velto-quick-count { margin-left: -0.2rem; }
+/* current page: inverted so the number stays readable on the filled pill */
 .velto-subnav__quick a.is-active .velto-quick-count,
 .velto-mnav__chip.is-active .velto-quick-count {
-  color: rgba(var(--color-background), 0.6);
+  background: rgb(var(--color-background));
+  color: rgb(var(--color-foreground));
 }
