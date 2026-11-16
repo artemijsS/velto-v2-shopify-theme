@@ -484,6 +484,29 @@
   .facets__form .product-count__text { margin: 0; }
 }
 
+/* scrolling lists inside the panels: a thin dim scrollbar like the page's own, instead of
+   the browser's light one (same as the catalog panel in velto-header.css) */
+.facets__display,
+.velto-sort__list,
+.mobile-facets__main,
+.mobile-facets__submenu {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(var(--color-foreground), 0.25) transparent;
+}
+
+/* Safari before 18.2 has no scrollbar-color */
+@supports not (scrollbar-color: auto) {
+  .facets__display::-webkit-scrollbar,
+  .velto-sort__list::-webkit-scrollbar { width: 0.8rem; }
+  .facets__display::-webkit-scrollbar-track,
+  .velto-sort__list::-webkit-scrollbar-track { background: transparent; }
+  .facets__display::-webkit-scrollbar-thumb,
+  .velto-sort__list::-webkit-scrollbar-thumb {
+    border-radius: 0.4rem;
+    background: rgba(var(--color-foreground), 0.25);
+  }
+}
+
 /* tablets: the filters take the whole first row, sort and count go under them */
 @media screen and (min-width: 750px) and (max-width: 989px) {
   .facets__form { grid-template-columns: 1fr max-content; }
