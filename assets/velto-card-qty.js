@@ -56,6 +56,8 @@
   const isFee = (i) =>
     (i.properties && i.properties._mws_fee) || i.product_type === 'mws_fee_generated' || i.product_type === 'velto_fee' || i.product_type === 'velto_delivery';
   const goodsCount = (cart) => cart.items.reduce((s, i) => (isFee(i) ? s : s + i.quantity), 0);
+  // goods total without fee lines: the fees are brought in line only after the toast (velto-own-fees.js)
+  const goodsTotal = (cart) => cart.items.reduce((s, i) => (isFee(i) ? s : s + i.final_line_price), 0);
 
   const cartQty = (cart, id) =>
     cart.items.reduce((s, i) => (String(i.variant_id) === String(id) ? s + i.quantity : s), 0);
@@ -108,7 +110,7 @@
     toastEl.querySelector('.velto-toast__icon').textContent = isError ? '!' : '✓';
     toastEl.querySelector('.velto-toast__title').textContent = title;
     toastEl.querySelector('.velto-toast__meta').textContent = cart
-      ? `${itemsLabel(goodsCount(cart))} · ${formatMoney(cart.total_price)}`
+      ? `${itemsLabel(goodsCount(cart))} · ${formatMoney(goodsTotal(cart))}`
       : '';
     toastEl.querySelector('.velto-toast__link').hidden = !cart || goodsCount(cart) === 0;
     requestAnimationFrame(() => toastEl.classList.add('is-visible'));
